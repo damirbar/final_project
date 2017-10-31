@@ -1,0 +1,15 @@
+{
+  "teacher":{
+    "id":"int",
+    "name":"string",
+    "mail":"string",
+    "unis":"obj arr",
+    "courses":"obj arr",
+    "photos":"arr",
+    "fs":"obj",
+    "grades":"obj arr",
+    "cred":"long",
+    "fame":"long",
+    "msg":"obj arr"
+  }
+}

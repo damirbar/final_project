@@ -1,0 +1,9 @@
+{
+  "unis":{
+    "id":"int",
+    "name":"string",
+    "teacher":"obj arra",
+    "department":"obj arr",
+    "phone":"obj"
+  }
+}

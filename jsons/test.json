@@ -1,0 +1,10 @@
+{
+  "test":{
+    "id":"int",
+    "name":"string",
+    "teacher":"obj",
+    "students":"obj arr",
+    "place":"string",
+    "naz":"long"
+  }
+}

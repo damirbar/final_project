@@ -1,0 +1,16 @@
+{
+  "course":{
+    "id":"int",
+    "name":"string",
+    "teacher":"obj",
+    "students":"obj arr",
+    "fs":"obj",
+    "place":"string",
+    "q&a":"obj arr",
+    "quiz":"obj arr",
+    "test":"obj",
+    "#ex":"obj arr",
+    "naz":"long",
+    "msg":"obj arr"
+  }
+}
