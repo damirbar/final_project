@@ -2,8 +2,8 @@
   "unis":{
     "id":"int",
     "name":"string",
-    "teacher":"obj arra",
-    "department":"obj arr",
-    "phone":"obj"
+    "teachers":"obj arra",
+    "departments":"obj arr",
+    "phones":"obj"
   }
 }

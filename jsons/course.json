@@ -11,6 +11,9 @@
     "test":"obj",
     "#ex":"obj arr",
     "naz":"long",
-    "msg":"obj arr"
+    "msg":"obj arr",
+    "register_date":"date",
+    "last_update":"date",
+    "notifications":"arr"
   }
 }
