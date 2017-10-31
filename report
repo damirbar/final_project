@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{wizer}
+\author{Supervisor: Dr. Amit Dvir}
+\author{Students: Shay Cohen, Damir Bar, Eran Sterman, Dima Volgin}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Over the passed hundred years, the educational system never evolved. By the 00' it improved massively by using a wide range of different services and applications to ease the learning experience, such as: 
+\begin{itemize}
+\item WhatsApp, Facebook - Forum/messaging tools for group chatting, messy file sharing system and Q&A.
+\item Google Drive, Dropbox - Generic not student-oriented cloud system.
+\itemMoodle - Old communication system between students and lecturers, an exercise submittion feature and Q&A option.
+\item Gool - Non-free on-demand video courses.
+\item Kahoot - Interactive student teacher app.
+\item Institution based feedback.
+\end{itemize}
+\textbf{wizer}  is a reality which combines and enhances these features and more in to one easy-to-use user-friendly platform.
+
+\textbf{You are our audience if you}:
+\begin{itemize}
+\item Study in the academy.
+\item Are a lecturer/T.A in the academy.
+\item Are an undergraduate student.
+\item Teach in any sort of framework.  
+\item Take part in any private educational system outside the academy.
+\item Want to overcome your educational potential using the best platform in the world.
+\end{itemize}
+So how do we do this?\\
+\textbf{wizer}  allows teachers to upload relevat files, answer students' questions  and improve their teaching methods using \textbf{wizer}  feedback. With \textbf{wizer}  students can communicate with their classmates, share files and enjoy live video streaming, providing the option of live feedback. \textbf{wizer}  is the best way to gather statistical information for the use of both parties, students and teachers, as well as any department chosen. \textbf{wizer}  will drive both sides, students and teachers, to thrive using a scoring system. \textbf{wizer}  will make teaching and learning easier, faster and better.
+
+\section{Features}
+
+\begin{itemize}
+\item User Experience: 
+\begin{itemize}
+\item Live stream video
+\item Tracking course progress
+\item \textbf{wizer} annual extraordinary
+\end{itemize}
+\item User convenience
+\begin{itemize}
+\item Grades & Average calculator
+\item File system
+\item Q&A
+\item Student answer providing instead of teacher
+\item Android/IOS/Web UI
+\item Messaging system
+\end{itemize}
+\item Statistical collection
+\begin{itemize}
+\item Live feedback
+\item Fame system
+\item Scoring system
+\end{itemize}
+\item Security
+\begin{itemize}
+\item Spamming/Abusive user reporting system
+\item Anonymity option 
+\item General security
+\end{itemize}
+\item Accessibility 
+\begin{itemize}
+\item Multiple language support
+\end{itemize}
+\end{itemize}
+\end{document}
