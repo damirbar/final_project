@@ -1,5 +1,6 @@
 var express = require("express");
 var mongoose = require("mongoose");
+mongoose.Promise = require("bluebird");
 var path = require("path");
 var Student = require("./schemas/student")
 var Teacher = require("./schemas/teacher")
@@ -7,21 +8,24 @@ var Teacher = require("./schemas/teacher")
 var bodyParser = require("body-parser");
 
 
-var app =express();
+var app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
 
 var mongoDB = 'mongodb://127.0.0.1:27017/main_db';
-mongoose.connect(mongoDB)//, {
-    // useMongoClient: true})
-;
+mongoose.connect(mongoDB, {
+     useMongoClient: true}
+);
 
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error!'));
+db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 
-
+Student.findOne({'first_name':"eran"}, function(err,student){
+    if(err) return "error";
+    console.log("u got "+ student);
+});
 //var student = mongoose.model("Student", StudentSchema);
 
 app.post("/student", function(req,res){
@@ -29,9 +33,11 @@ app.post("/student", function(req,res){
     myData.save()
         .then(function (item){
             res.send("successfully saved item to db");
+            console.log("successfully added " +myData.first_name +  " to db");
     })
         .catch(function (error) {
             res.status(400).send("unable to save data");
+            console.log("unable to save data");
         });
 });
 
@@ -40,9 +46,11 @@ app.post("/teacher", function(req,res){
     myData.save()
         .then(function (item){
             res.send("successfully saved item to db");
+            console.log("successfully added " + myData.first_name +  " to db");
         })
         .catch(function (error) {
             res.status(400).send("unable to save data");
+            console.log("unable to save data");
         });
 });
 
@@ -51,12 +59,12 @@ app.get("/",function(req,res){
      res.sendFile(path.join(__dirname + "/index.html"));
 });
 
-app.get("/profile/:id",function(req,res){
+app.get("/users",function(req,res){
     console.log(req.headers["x-forwarded-for"] || req.connection.remoteAddress);
-    res.sendFile(path.join(__dirname + "/profile.html"));
+    //var start = path.join
+    //res.sendFile(path.join(__dirname + "/users.html"));
     console.log(req.params.id);
 });
-
 
 app.listen(3000, function(){
     console.log("listening...");
