@@ -1,0 +1,14 @@
+{
+  "name": "wizer",
+  "version": "1.0.0",
+  "description": "school project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "eran damir shay dima",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
