@@ -1,0 +1,7 @@
+//example uni object
+{
+    "name":"string",
+    "teachers":[],
+    "departments":[],
+    "phones":[]
+}

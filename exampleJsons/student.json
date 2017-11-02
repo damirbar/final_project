@@ -1,0 +1,26 @@
+//example student object
+{
+  "first_name":"eran",
+  "last_name":"sterman",
+  "display_name":"eranHagever",
+  "mail":"ste@gmail.com",
+  "about_me":"bla bla bla",
+  "facebook_id":"string",
+  "country":"string",
+  "city":"string",
+  "age":24,
+  "uni":{},
+  "gender":"male",
+  "courses":[],
+  "photos":[],
+  "fs":{},
+  "grades":[],
+  "cred":1,
+  "fame":10,
+  "msg":[],
+  "register_date":"2017-11-02T18:03:15.511Z",
+  "last_update":"2017-11-02T18:03:15.511Z",
+  "notifications":[]
+
+}
+

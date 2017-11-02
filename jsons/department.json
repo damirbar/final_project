@@ -1,9 +1,0 @@
-{
-  "department":{
-    "id":"int",
-    "name":"string",
-    "head":"obj",
-    "teachers":"obj arr",
-    "courses":"obj arr"
-  }
-}

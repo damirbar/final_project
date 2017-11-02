@@ -1,0 +1,18 @@
+//example course object
+{
+    "course_no":"int",
+    "name":"string",
+    "teacher":{},
+    "students":[],
+    "fs":{},
+    "location":{},
+    "qa":{},
+    "quiz":{},
+    "test":{},
+    "ex":{},
+    "naz":"long",
+    "msg":{},
+    "register_date":"date",
+    "last_update":"date",
+    "notifications":[]
+}

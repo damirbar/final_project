@@ -1,0 +1,24 @@
+//example teacher object
+{
+    "first_name":"string",
+    "last_name":"string",
+    "display_name":"string",
+    "age":5,
+    "about_me":"string",
+    "facebook_id":"string",
+    "country":"string",
+    "city":"string",
+    "mail":"string",
+    "gender":"string",
+    "unis":[],
+    "courses":[],
+    "photos":[],
+    "fs":{},
+    "grades":[],
+    "cred":12,
+    "fame":23,
+    "msg":[],
+    "register_date":"date",
+    "last_update":"date",
+    "notifications":[]
+}
