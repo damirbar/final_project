@@ -1,0 +1,22 @@
+{
+[
+    "name":"Linear Algebra",
+    "teacher":{},
+    "students":[],
+    "place":"101010",
+    "naz":"5"
+,
+    "name":"Assembler",
+    "teacher":{},
+    "students":[],
+    "place":"101014",
+    "naz":"2"
+,
+ "name":"Operating Systems",
+    "teacher":{},
+    "students":[],
+    "place":"101014",
+    "naz":"5"
+]
+
+}
