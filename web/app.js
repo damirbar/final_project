@@ -1,3 +1,13 @@
+var express = require("express");
 
-var a = 20;
-console.log("hello");
+var app =express();
+
+app.get("/",function(req,res){
+    console.log(req.headers["x-forwarded-for"] || req.connection.remoteAddress);
+    res.end("eran");
+});
+
+app.listen(3000, function(){
+    console.log("listening...");
+});
+
