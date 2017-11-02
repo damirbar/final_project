@@ -1,18 +1,20 @@
-{
 [
-    "name":"Computer Sciense",
-    "head":{},
-    "courses":[],
-    "teachers":[]
-,
-   "name":"Electrical Engineering",
-    "head":{},
-    "courses":[],
-    "teachers":[]
-,
-   "name":"Medicine",
-    "head":{},
-    "courses":[],
-    "teachers":[]
+  {
+    "name": "Computer Sciense",
+    "head": {},
+    "courses": [],
+    "teachers": []
+  },
+  {
+    "name": "Electrical Engineering",
+    "head": {},
+    "courses": [],
+    "teachers": []
+  },
+  {
+    "name": "Medicine",
+    "head": {},
+    "courses": [],
+    "teachers": []
+  }
 ]
-}
