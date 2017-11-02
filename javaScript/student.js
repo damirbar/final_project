@@ -1,3 +1,4 @@
+var mongoose = require('mongoose');
 var StudentSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
@@ -21,3 +22,4 @@ var StudentSchema = new mongoose.Schema({
     last_update: Date,
     notifications: Array
 });
+module.exports = mongoose.model('User', UserSchema);
