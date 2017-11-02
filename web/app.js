@@ -22,11 +22,11 @@ mongoose.connect(mongoDB, {
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 
+//query to dataBase
 Student.findOne({'first_name':"eran"}, function(err,student){
     if(err) return "error";
     console.log("u got "+ student);
 });
-//var student = mongoose.model("Student", StudentSchema);
 
 app.post("/student", function(req,res){
     var myData= new Student(req.body);
@@ -59,14 +59,9 @@ app.get("/",function(req,res){
      res.sendFile(path.join(__dirname + "/index.html"));
 });
 
-app.get("/users",function(req,res){
-    console.log(req.headers["x-forwarded-for"] || req.connection.remoteAddress);
-    //var start = path.join
-    //res.sendFile(path.join(__dirname + "/users.html"));
-    console.log(req.params.id);
-});
-
 app.listen(3000, function(){
     console.log("listening...");
 });
+
+
 
