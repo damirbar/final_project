@@ -22,6 +22,8 @@ var StudentSchema = new mongoose.Schema({
     register_date: Date,
     last_update: Date,
     notifications: Array
+
+
 });
 
 module.exports = mongoose.model('Student', StudentSchema);
