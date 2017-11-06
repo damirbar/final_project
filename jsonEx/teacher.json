@@ -3,7 +3,7 @@
     "first_name": "amit",
     "last_name": "dvir",
     "display_name": "amitd",
-    "age": "50"
+    "age": "50",
     "about_me": "blabla",
     "facebook_id": "https://he-il.facebook.com/public/Amit-Dvir",
     "country": "israel",
@@ -26,7 +26,7 @@
     "first_name": "anat",
     "last_name": "charnavsky",
     "display_name": "anatcha",
-    "age": "40"
+    "age": "40",
     "about_me": "blabla",
     "facebook_id": "https://he-il.facebook.com/public/Amit-Dvir",
     "country": "israel",
@@ -36,8 +36,7 @@
     "unis": [],
     "courses": [],
     "photos": [],
-    "fs": {
-    },
+    "fs": {},
     "grades": [],
     "cred": 12,
     "fame": 23,
@@ -50,7 +49,7 @@
     "first_name": "roman",
     "last_name": "yavitz",
     "display_name": "romanya",
-    "age": "60"
+    "age": "60",
     "about_me": "blabla",
     "facebook_id": "https://he-il.facebook.com/public/Amit-Dvir",
     "country": "israel",
@@ -73,7 +72,7 @@
     "first_name": "gavriel",
     "last_name": "nivash",
     "display_name": "davrielni",
-    "age": "50"
+    "age": "50",
     "about_me": "blabla",
     "facebook_id": "https://he-il.facebook.com/public/Amit-Dvir",
     "country": "israel",

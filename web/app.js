@@ -2,10 +2,12 @@ var express = require("express");
 var mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 var path = require("path");
-var Student = require("./schemas/student")
-var Teacher = require("./schemas/teacher")
-
 var bodyParser = require("body-parser");
+var Student = require("./schemas/student");
+var Teacher = require("./schemas/teacher");
+
+var feeder = require("./teacherStream");
+
 
 
 var app = express();
@@ -23,10 +25,10 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 
 //query to dataBase
-Student.findOne({'first_name':"eran"}, function(err,student){
-    if(err) return "error";
-    console.log("u got "+ student);
-});
+// Student.findOne({'first_name':"eran"}, function(err,student){
+//     if(err) return "error";
+//     console.log("u got "+ student);
+// });
 
 app.post("/student", function(req,res){
     var myData= new Student(req.body);
@@ -61,6 +63,11 @@ app.get("/",function(req,res){
 
 app.listen(3000, function(){
     console.log("listening...");
+});
+
+app.post("/teachers", function(req,res){
+        feeder.func(req.body,res);
+
 });
 
 
