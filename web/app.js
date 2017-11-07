@@ -67,7 +67,10 @@ app.listen(3000, function(){
 
 app.post("/teachers", function(req,res){
         feeder.func(req.body,res);
+});
 
+app.get("/teacher", function(req,res){
+    res.sendFile(path.join(__dirname + "/TestTeacherPage.html"));
 });
 
 
