@@ -1,11 +1,39 @@
-Application:
+Main targets:
 
-- 
+$ Calculator
+$ File System
+$ Q & A
+$ Chat Platform
 
 
-Web:
+Application: Dima, Shay
+
+- Android Studio
+- Java
+
+*targets for november:
+$ welcome page + button to calculator
+$ calculator screen + functions
+$ (optional) logIn + SignUp
 
 
+Web: Damir
 
-DataBase:
+- AngularJS
+- HTML/CSS
+
+* targets for november:
+$ welcome page + button to calculator
+$ calculator screen + functions
+$ (optional) logIn + SignUp
+
+Server: Eran, Sefi
+
+-MongoDB
+
+*targets for november:
+$ Get OnLine Server
+$ check about domain
+$ page routing
+$ HTML rendering
 
