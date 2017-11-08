@@ -1,19 +1,21 @@
 var express = require("express");
+var app = express();
+
 var mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
+
 var path = require("path");
+
 var bodyParser = require("body-parser");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+
+
+
 var Student = require("./schemas/student");
 var Teacher = require("./schemas/teacher");
 
 var feeder = require("./teacherStream");
-
-
-
-var app = express();
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
 
 
 var mongoDB = 'mongodb://127.0.0.1:27017/main_db';
@@ -38,7 +40,7 @@ app.post("/student", function(req,res){
             console.log("successfully added " +myData.first_name +  " to db");
     })
         .catch(function (error) {
-            res.status(400).send("unable to save data");
+            res.status(400).send("unable to save data. Error: " + error);
             console.log("unable to save data");
         });
 });
