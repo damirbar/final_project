@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Teacher</h2>
+
+<p>trying to call mongoDB query:</p>
+<p id="demo"></p>
+
+<script type="text/javascript" src="./app.js">
+    function query()
+    {
+        Student.find({}, {last_name: true, first_name: 1, _id: 0}, function (err, student) {
+            if (err) return "error";
+            return student.toString();
+        });
+    }
+    document.getElementById("demo").innerHTML = query();
+</script>
+
+</body>
+</html>
