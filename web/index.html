@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Wizer</title>
     <meta charset="UTF-8">
-    <title>First Try</title>
-</head>
-<body>
 
-<div>You Ar3 H@ck3d!!!! </div>
+    <script src="./public/js_srcs/angular.min.js"></script>
+</head>
+<body ng-app="wizerApp">
+
+<div ng-include="'/pages/components/nav.html'" ng-controller="navController"></div>
+
+<div ng-view></div>
+
 </body>
 </html> 
