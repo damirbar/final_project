@@ -6,9 +6,9 @@ var bodyParser = require("body-parser");
 var Student = require("./schemas/student");
 var Teacher = require("./schemas/teacher");
 
-<<<<<<< HEAD
+
 var requests = require('./routes/requests');
-=======
+
 var feeder = require("./teacherStream");
 
 
@@ -18,7 +18,7 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
->>>>>>> 1a11db5666e5349bd8f38a29e726928ba084ad23
+
 
 var mongoDB = 'mongodb://127.0.0.1:27017/main_db';
 mongoose.connect(mongoDB, {
