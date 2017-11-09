@@ -9,10 +9,6 @@ var Teacher = require("./schemas/teacher");
 
 var requests = require('./routes/requests');
 
-var feeder = require("./teacherStream");
-
-
-
 var app = express();
 
 app.use(bodyParser.json());
