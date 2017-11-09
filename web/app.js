@@ -30,6 +30,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 //     console.log("u got "+ student);
 // });
 
+<<<<<<< HEAD
 app.post("/student", function(req,res){
     var myData= new Student(req.body);
     myData.save()
@@ -72,3 +73,10 @@ app.post("/teachers", function(req,res){
 
 
 
+=======
+app.use('/', requests);
+
+app.listen(3000, function(){
+    console.log("listening...");
+});
+>>>>>>> origin/eran-work
