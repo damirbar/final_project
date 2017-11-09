@@ -14,7 +14,7 @@ var app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-
+app.use(express.static(__dirname + '/public'));
 
 var mongoDB = 'mongodb://127.0.0.1:27017/main_db';
 mongoose.connect(mongoDB, {

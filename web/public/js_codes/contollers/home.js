@@ -1,4 +1,4 @@
 
-wizerApp.module('homeController', ['$scope', function($scope) {
+wizerApp.controller('homeController', ['$scope', function($scope) {
 
 }]);

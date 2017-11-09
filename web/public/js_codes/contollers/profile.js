@@ -1,4 +1,4 @@
 
-wizerApp.module('profileController', ['$scope', function($scope) {
+wizerApp.controller('profileController', ['$scope', function($scope) {
 
 }]);
