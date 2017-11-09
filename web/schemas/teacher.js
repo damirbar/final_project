@@ -8,11 +8,8 @@ var TeacherSchema = new mongoose.Schema({
     facebook_id: String,
     country: String,
     city: String,
-<<<<<<< HEAD
-    mail: String,
-=======
     mail: { type: String, required: true, unique: false },
->>>>>>> origin/eran-work
+
     gender: String,
     unis: Array,
     courses: Array,
