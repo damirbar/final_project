@@ -1,11 +1,10 @@
 var mongoose = require('mongoose');
-
 var StudentSchema = new mongoose.Schema({
 
-    first_name: { type: String, required: true},
-    last_name: { type: String, required: true},
-    display_name: { type: String, default: this.first_name },
-    mail: { type: String, required: true, unique: true },
+    first_name: String,
+    last_name: String,
+    display_name: String,
+    mail: String,
     about_me: String,
     facebook_id: String,
     country: String,
@@ -20,8 +19,8 @@ var StudentSchema = new mongoose.Schema({
     cred: Number,
     fame: Number,
     msg: Array,
-    register_date: { type: Date, default: Date.now() },
-    last_update: { type: Date, default: Date.now() },
+    register_date: Date,
+    last_update: Date,
     notifications: Array
 
 

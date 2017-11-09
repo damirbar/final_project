@@ -1,14 +1,18 @@
 var mongoose = require('mongoose');
 var TeacherSchema = new mongoose.Schema({
-    first_name: { type: String, required: true},
-    last_name: { type: String, required: true},
-    display_name: { type: String, default: this.first_name },
+    first_name: String,
+    last_name: String,
+    display_name: String,
     age: Number,
     about_me: String,
     facebook_id: String,
     country: String,
     city: String,
+<<<<<<< HEAD
     mail: { type: String, required: true, unique: false },
+=======
+    mail: String,
+>>>>>>> origin/SefiWork
     gender: String,
     unis: Array,
     courses: Array,
