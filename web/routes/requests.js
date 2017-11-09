@@ -5,32 +5,56 @@ var path = require("path");
 var Student = require("../schemas/student");
 var Teacher = require("../schemas/teacher");
 
-var feeder = require("../teacherStream");
-
 
 router.post("/student", function (req, res) {
     var myData = new Student(req.body);
-    myData.save()
-        .then(function (item) {
-            res.send("successfully saved item to db");
-            console.log("successfully added " + myData.first_name + " to db");
-        })
-        .catch(function (error) {
-            res.status(400).send("unable to save data. Error: " + error);
-            console.log("unable to save data");
-        });
+    myData.save(function (err) {
+        if (err) {
+            if (err.name === 'MongoError' && err.code === 11000) {
+                // Duplicate username
+                console.log('User ' + myData.first_name + " cannot be added " + myData.mail + ' already exists!');
+                return res.status(500).send('User ' + myData.first_name + " cannot be added " + myData.mail + ' already exists!');
+            }
+            if (err.name === 'ValidationError' ) {
+                //ValidationError
+                var str="";
+                for (field in err.errors) {
+                    console.log("you must provide: "+ field + " field");
+                    str+="you must provide: "+ field + " field  ";
+                }
+                return res.status(500).send(str);
+            }
+            // Some other error
+            console.log(err);
+            return res.status(500).send(err);
+        }
+        res.send("successfully added " +myData.first_name+ " to db");
+        console.log("successfully added " + myData.first_name + " to db");
+    });
 });
 
 router.post("/teacher", function (req, res) {
     var myData = new Teacher(req.body);
-    myData.save()
-        .then(function (item) {
-            res.send("successfully saved item to db");
-            console.log("successfully added " + myData.first_name + " to db");
-        })
-        .catch(function (error) {
-            res.status(400).send("unable to save data");
-            console.log("unable to save data");
+    myData.save(function (err) {
+        if (err) {
+            if (err.name === 'MongoError' && err.code === 11000) {
+                // Duplicate username
+                console.log('User ' + myData.first_name + " cannot be added " + myData.mail + ' already exists!');
+                return res.status(500).send('User ' + myData.first_name + " cannot be added " + myData.mail + ' already exists!');
+            }
+            if (err.name === 'ValidationError' ) {
+                //ValidationError
+                for (field in err.errors) {
+                    console.log("you must provide: "+ field + "field");
+                    return res.status(500).send("you must provide: "+ field + "field");
+                }
+            }
+            // Some other error
+            console.log(err);
+            return res.status(500).send(err);
+        }
+        res.send("successfully added " +myData.first_name+ " to db");
+        console.log("successfully added " + myData.first_name + " to db");
         });
 });
 
@@ -39,13 +63,7 @@ router.get("/", function (req, res) {
     res.sendFile(path.join(__dirname + "/../index.html"));
 });
 
-router.post("/teachers", function (req, res) {
-    feeder.func(req.body, res);
-});
-
 router.get("/teacher", function (req, res) {
     res.sendFile(path.join(__dirname + "/../TestTeacherPage.html"));
 });
-
-
 module.exports = router;

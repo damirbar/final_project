@@ -18,9 +18,6 @@ var Teacher = require("./schemas/teacher");
 
 var requests = require('./routes/requests');
 
-var feeder = require("./teacherStream");
-
-
 var mongoDB = 'mongodb://127.0.0.1:27017/main_db';
 mongoose.connect(mongoDB, {
      useMongoClient: true}
@@ -29,11 +26,12 @@ mongoose.connect(mongoDB, {
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 
-//query to dataBase
-// Student.findOne({'first_name':"eran"}, function(err,student){
-//     if(err) return "error";
-//     console.log("u got "+ student);
-// });
+Student.find({},{last_name:true,first_name:1,_id:0}, function(err,student){
+    if(err) return "error";
+    console.log(student);
+});
+
+
 
 app.use('/', requests);
 
