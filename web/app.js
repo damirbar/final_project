@@ -16,7 +16,11 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-var mongoDB = 'mongodb://127.0.0.1:27017/main_db';
+var myLessCompiler = require("./less_compiler");
+myLessCompiler();
+
+
+    var mongoDB = 'mongodb://127.0.0.1:27017/main_db';
 mongoose.connect(mongoDB, {
      useMongoClient: true}
 );
