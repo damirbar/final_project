@@ -6,8 +6,12 @@ wizerApp.controller('profileController',
 
     ProfileService.getProfileByID($routeParams.id)
         .then(function(data) {
-            $scope.profile = data.data;
+            console.log("Looking for " + $routeParams.id);
+            $scope.profile = data;
+            console.log(data);
         });
+
+
 
 
 

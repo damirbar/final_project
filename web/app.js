@@ -35,6 +35,26 @@ Student.find({},{last_name:true,first_name:1,_id:0}, function(err,student){
 
 app.use('/', requests);
 
+
+
+var feedStudents = function(dataArr) {
+    for (var i = 0; i < dataArr.length; ++i) {
+        var dat = new Student(dataArr[i]);
+        dat.save()
+            .then(function(item) {
+                console.log("Saved the student " + dat.first_name + " to the DB");
+            })
+            .catch(function (err) {
+                console.log("Couldn't save " + dat.first_name + " to the DB");
+            })
+    }
+};
+
+var studentList = require('./studentsArr');
+
+feedStudents(studentList);
+
+
 app.listen(3000, function(){
     console.log("listening...");
 });

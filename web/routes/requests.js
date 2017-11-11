@@ -66,4 +66,17 @@ router.get("/", function (req, res) {
 router.get("/teacher", function (req, res) {
     res.sendFile(path.join(__dirname + "/../TestTeacherPage.html"));
 });
+
+
+router.get("/get-profile", function(req, res, next) {
+    var id = req.query.id;
+
+    Student.findOne({_id: id}, function(err, student) {
+        if (err) return next(err);
+        console.log(student);
+        res.json(student);
+    });
+});
+
+
 module.exports = router;
