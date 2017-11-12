@@ -15,16 +15,16 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
         })
 
         .when('/search-by-name/:fname/:lname', {
-            templateurl: '../pages/searchbyname.html',
+            templateUrl: '../pages/searchbyname.html',
             controller: 'getProfilesController'
         })
 
         .when('/search-by-name/:fname', {
-            templateurl: '../pages/searchbyname.html',
+            templateUrl: '../pages/searchbyname.html',
             controller: 'getProfilesController'
         })
 
-    .otherwise({ redirectTo: '/'});
+    // .otherwise({ redirectTo: '/'});
 
     // $locationProvider.html5Mode({
     //     enabled: true,

@@ -12,10 +12,16 @@ wizerApp.controller('getProfilesController',
         //         console.log(data);
         //     });
 
-        ProfileService.getProfileByName($routeParams.fname)
+        ProfileService.getProfileByName($routeParams.fname, $routeParams.lname)
             .then(function (data) {
-                console.log("Looking for " + $routeParams.first_name);
-                console.log(data);
+                console.log("Looking for " + $routeParams.fname);
+                $scope.userArr = data;
+                // console.log("data = " + data);
             });
+
+
+        setTimeout(function() {
+            console.log("users found = " + $scope.userArr);
+        }, 3000);
 
     });

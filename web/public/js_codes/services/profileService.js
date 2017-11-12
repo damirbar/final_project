@@ -21,10 +21,13 @@ wizerApp.service('ProfileService', function($http) {
 
         return $http.get('/get-by-name' + query)
             .then(function(data) {
-                return data;
+
+                console.log("This is a print from profileService.js.\nI got: " + data.data);
+
+                return data.data;
             },
                 function() {
-                    console.log("Error getting users with the name \"" + name + "\"");
+                    console.log("Error getting users with the name \"" + fname + " " + lname + "\"");
                 });
     };
 
