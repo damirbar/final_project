@@ -73,10 +73,16 @@ router.get("/get-profile", function(req, res, next) {
 
     Student.findOne({_id: id}, function(err, student) {
         if (err) return next(err);
-        console.log(student);
+
+        var ip = req.headers['x-forwarded-for'];
+        // ip = ipaddr.process(ip + "");
+        console.log("Got a " + req.method + " request from " + ip);
         res.json(student);
     });
 });
+
+
+
 
 
 module.exports = router;
