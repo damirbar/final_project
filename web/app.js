@@ -12,7 +12,7 @@ var requests = require('./routes/requests');
 var app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -20,9 +20,11 @@ var myLessCompiler = require("./less_compiler");
 myLessCompiler();
 
 
-    var mongoDB = 'mongodb://127.0.0.1:27017/main_db';
+// var mongoDB = 'mongodb://127.0.0.1:27017/main_db';
+var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
 mongoose.connect(mongoDB, {
-     useMongoClient: true}
+        useMongoClient: true
+    }
 );
 
 var db = mongoose.connection;
@@ -37,11 +39,11 @@ app.use('/', requests);
 
 
 
-var feedStudents = function(dataArr) {
+var feedStudents = function (dataArr) {
     for (var i = 0; i < dataArr.length; ++i) {
         var dat = new Student(dataArr[i]);
         dat.save()
-            .then(function(item) {
+            .then(function (item) {
                 console.log("Saved a student to the DB");
             })
             .catch(function (err) {
@@ -55,6 +57,6 @@ var studentList = require('./studentsArr');
 feedStudents(studentList);
 
 
-app.listen(3000, function(){
+app.listen(3000, function () {
     console.log("listening...");
 });

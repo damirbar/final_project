@@ -12,5 +12,7 @@ wizerApp.config(function($routeProvider, $locationProvider) {
         .when('/profile/:id', {
             templateUrl: '../pages/profile.html',
             controller: 'profileController'
-        });
+        })
+
+        .otherwise({ redirectTo: '/'});
 });
