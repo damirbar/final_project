@@ -15,12 +15,12 @@ router.post("/student", function (req, res) {
                 console.log('User ' + myData.first_name + " cannot be added " + myData.mail + ' already exists!');
                 return res.status(500).send('User ' + myData.first_name + " cannot be added " + myData.mail + ' already exists!');
             }
-            if (err.name === 'ValidationError' ) {
+            if (err.name === 'ValidationError') {
                 //ValidationError
-                var str="";
+                var str = "";
                 for (field in err.errors) {
-                    console.log("you must provide: "+ field + " field");
-                    str+="you must provide: "+ field + " field  ";
+                    console.log("you must provide: " + field + " field");
+                    str += "you must provide: " + field + " field  ";
                 }
                 return res.status(500).send(str);
             }
@@ -28,7 +28,7 @@ router.post("/student", function (req, res) {
             console.log(err);
             return res.status(500).send(err);
         }
-        res.send("successfully added " +myData.first_name+ " to db");
+        res.send("successfully added " + myData.first_name + " to db");
         console.log("successfully added " + myData.first_name + " to db");
     });
 });
@@ -42,20 +42,20 @@ router.post("/teacher", function (req, res) {
                 console.log('User ' + myData.first_name + " cannot be added " + myData.mail + ' already exists!');
                 return res.status(500).send('User ' + myData.first_name + " cannot be added " + myData.mail + ' already exists!');
             }
-            if (err.name === 'ValidationError' ) {
+            if (err.name === 'ValidationError') {
                 //ValidationError
                 for (field in err.errors) {
-                    console.log("you must provide: "+ field + "field");
-                    return res.status(500).send("you must provide: "+ field + "field");
+                    console.log("you must provide: " + field + "field");
+                    return res.status(500).send("you must provide: " + field + "field");
                 }
             }
             // Some other error
             console.log(err);
             return res.status(500).send(err);
         }
-        res.send("successfully added " +myData.first_name+ " to db");
+        res.send("successfully added " + myData.first_name + " to db");
         console.log("successfully added " + myData.first_name + " to db");
-        });
+    });
 });
 
 router.get("/", function (req, res) {
@@ -68,10 +68,10 @@ router.get("/teacher", function (req, res) {
 });
 
 
-router.get("/get-profile", function(req, res, next) {
+router.get("/get-profile", function (req, res, next) {
     var id = req.query.id;
 
-    Student.findOne({_id: id}, function(err, student) {
+    Student.findOne({_id: id}, function (err, student) {
         if (err) return next(err);
 
         var ip = req.headers['x-forwarded-for'];
@@ -79,10 +79,33 @@ router.get("/get-profile", function(req, res, next) {
         console.log("Got a " + req.method + " request from " + ip);
         res.json(student);
     });
+
 });
 
+router.get("/get-by-name", function (req, res, next) {
+    var fname = req.query.fname;
+    var lname = req.query.lname;
 
+    if (lname == "null")
+        Student.find({first_name: fname}, function (err, student) {
+            if (err) return next(err);
 
+            var ip = req.headers['x-forwarded-for'];
+            // ip = ipaddr.process(ip + "");
+            console.log("Got a " + req.method + " request from " + ip);
+            res.json(student);
+        });
+
+    else if(fname == "null")
+        Student.find({last_name: fname}, function (err, student) {
+            if (err) return next(err);
+
+            var ip = req.headers['x-forwarded-for'];
+            // ip = ipaddr.process(ip + "");
+            console.log("Got a " + req.method + " request from " + ip);
+            res.json(student);
+        });
+});
 
 
 module.exports = router;
