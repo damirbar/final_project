@@ -4,7 +4,7 @@ var StudentSchema = new mongoose.Schema({
     first_name: String,
     last_name: String,
     display_name: String,
-    mail: String,
+    mail: { type: String, unique: true },
     about_me: String,
     facebook_id: String,
     country: String,

@@ -28,10 +28,10 @@ mongoose.connect(mongoDB, {
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 
-Student.find({},{last_name:true,first_name:1,_id:0}, function(err,student){
-    if(err) return "error";
-    console.log(student);
-});
+// Student.find({},{last_name:true,first_name:1,_id:0}, function(err,student){
+//     if(err) return "error";
+//     console.log(student);
+// });
 
 app.use('/', requests);
 
@@ -42,10 +42,10 @@ var feedStudents = function(dataArr) {
         var dat = new Student(dataArr[i]);
         dat.save()
             .then(function(item) {
-                console.log("Saved the student " + dat.first_name + " to the DB");
+                console.log("Saved a student to the DB");
             })
             .catch(function (err) {
-                console.log("Couldn't save " + dat.first_name + " to the DB");
+                console.log("\nCouldn't save student to the DB\nError: " + err.errmsg + "\n");
             })
     }
 };
