@@ -11,9 +11,15 @@ wizerApp.service('ProfileService', function($http) {
     };
 
 
-    this.getProfileByName = function(name) {
-        var query = '?name=' + name;
-        return $http.get('/get-user-by-name' + query)
+    this.getProfileByName = function(fname, lname) {
+
+        var qfname = fname ? fname : "null";
+        var qlname = lname ? lname : "null";
+
+        var query = '?fname=' + qfname + '&lname=' + qlname;
+
+
+        return $http.get('/get-by-name' + query)
             .then(function(data) {
                 return data;
             },

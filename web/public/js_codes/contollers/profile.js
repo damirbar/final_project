@@ -13,6 +13,7 @@ wizerApp.controller('profileController',
 
 
 
+    ProfileService.
 
 
 });
