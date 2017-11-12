@@ -1,6 +1,6 @@
 var wizerApp = angular.module('wizerApp', ['ngRoute']);
 
-wizerApp.config(function($routeProvider, $locationProvider) {
+wizerApp.config(function ($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
     $routeProvider
 
@@ -14,7 +14,17 @@ wizerApp.config(function($routeProvider, $locationProvider) {
             controller: 'profileController'
         })
 
-        .otherwise({ redirectTo: '/'});
+        .when('/search-by-name/:fname/:lname', {
+            templateurl: '../pages/searchbyname.html',
+            controller: 'getProfilesController'
+        })
+
+        .when('/search-by-name/:fname', {
+            templateurl: '../pages/searchbyname.html',
+            controller: 'getProfilesController'
+        })
+
+    .otherwise({ redirectTo: '/'});
 
     // $locationProvider.html5Mode({
     //     enabled: true,

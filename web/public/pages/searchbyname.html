@@ -1,0 +1,25 @@
+<div class="search-by-name">
+    search page
+    <div class="results" ng-repeat="profile in userArr">
+
+        <div class="tmp-div">
+            <div class="tmp-header">
+                Welcome to {{profile.first_name}}'s profile page!
+            </div>
+            <div class="tmp-details">
+                <div class="tmp-details-title">Details:</div>
+                Last name: {{profile.last_name}}
+                <br>
+                Email: {{profile.mail}}
+                <br>
+                Age: {{profile.age}}
+                <br>
+                Register date: {{profile.register_date | date}}
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

@@ -2,6 +2,8 @@
 wizerApp.controller('profileController',
     function($scope, $routeParams, ProfileService) {
 
+    console.log("Hello from profileController");
+
     $scope.profile = {};
 
     ProfileService.getProfileByID($routeParams.id)
@@ -10,10 +12,6 @@ wizerApp.controller('profileController',
             $scope.profile = data;
             console.log(data);
         });
-
-
-
-    ProfileService.
 
 
 });
