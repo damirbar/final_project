@@ -57,6 +57,52 @@ var studentList = require('./studentsArr');
 // feedStudents(studentList);
 
 
+
+
+//erans work authentication session
+
+// var passport = require('passport');
+// var LocalStrategy = require('passport-local').Strategy;
+//
+// app.post('/login', passport.authenticate('local', { successRedirect: '/',
+//     failureRedirect: '/login' }));
+//
+// app.get('/login', function(req, res, next) {
+//     passport.authenticate('local', function(err, user, info) {
+//         if (err) { return next(err); }
+//         if (!user) { return res.redirect('/login'); }
+//         req.logIn(user, function(err) {
+//             if (err) { return next(err); }
+//             return res.redirect('/users/' + user.username);
+//         });
+//     })(req, res, next);
+// });
+//
+// passport.use(new LocalStrategy(
+//     function(username, password, done) {
+//         User.findOne({ username: username }, function (err, user) {
+//             if (err) { return done(err); }
+//             if (!user) {
+//                 return done(null, false, { message: 'Incorrect username.' });
+//             }
+//             if (!user.validPassword(password)) {
+//                 return done(null, false, { message: 'Incorrect password.' });
+//             }
+//             return done(null, user);
+//         });
+//     }
+// ));
+///////////////////////////
+
+
+
+
+
+
+
+
 app.listen(3000, function () {
     console.log("listening...");
 });
+
+
