@@ -24,3 +24,7 @@ var TeacherSchema = new mongoose.Schema({
     notifications: Array
 });
 module.exports = mongoose.model('Teacher', TeacherSchema);
+
+
+
+var shay = "shay";
