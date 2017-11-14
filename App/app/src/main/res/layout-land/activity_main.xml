@@ -58,7 +58,7 @@
         android:id="@+id/fbLogoImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
         app:layout_constraintTop_toTopOf="@+id/h_guideline3"
@@ -80,18 +80,19 @@
         app:layout_constraintTop_toTopOf="@+id/h_guideline3" />
 
     <EditText
+        android:id="@+id/pswEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/pswEditText"
-        app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-        app:layout_constraintTop_toBottomOf="@+id/emailEditText"
         android:layout_marginTop="4dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
-        android:hint="Password"/>
+        android:textColorLink="@android:color/background_light"
+        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+        app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
     <TextView
         android:id="@+id/langTextView"
@@ -134,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:background="@drawable/create_acc_button_background"
-        android:text="Sign In"
+        android:text="SIGN UP"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
@@ -144,6 +145,7 @@
         android:id="@+id/fbLogoStaticImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
         app:layout_constraintTop_toTopOf="@+id/h_guideline1"
