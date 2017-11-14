@@ -5,6 +5,7 @@ var path = require("path");
 var bodyParser = require("body-parser");
 var Student = require("./schemas/student");
 var Teacher = require("./schemas/teacher");
+var loger = require("./routes/login_requests");
 
 
 var requests = require('./routes/teacher_requests');
@@ -60,38 +61,48 @@ var studentList = require('./studentsArr');
 
 
 //erans work authentication session
-
+var userSchema=mongoose.Schema({
+    facebook:{
+        id :String,
+        token:String,
+        email:String,
+        name:String
+    }
+})
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var configAuth = require('./auth')
 
-
-app.use(passport.initialize());
-app.use(passport.session());
+app.use('/', loger);
 
 passport.use(new FacebookStrategy({
-        clientID: "360516777741015",
-        clientSecret: "d20dcda059d99e713c314b57cca79621",
-        callbackURL: "http://localhost:3000/login/facebook/return"
-    },
-    function(accessToken, refreshToken, profile, cb) {
-        User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-            return cb(err, user);
-        });
-    }));
-app.get('/login/facebook',
-    passport.authenticate('facebook'));
+        clientID: configAuth.facebookAuth.clientID,
+        clientSecret: configAuth.facebookAuth.clientSecret,
+        callbackURL: configAuth.facebookAuth.callbackURL
+    }, function(accessToken, refreshToken, profile, done) {
+        process.nextTick(function () {
+            user.findOne({"facebook.id":profile.id},function (err,user) {
+               if(err)
+                   return done(err);
+               if(user)
+                   return done(null,user);
+               else{
+                   var newStudent = new Student();
+                   newStudent.faceboo.id = profile.id;
+                   newStudent.faceboo.token = accessToken;
+                   newStudent.faceboo.name = profile.name.givenName + " " + profile.name.familyName;
+                   newStudent.faceboo.email = profile.emails[0].value;
 
-app.get('/login/facebook/return',
-    passport.authenticate('facebook', { failureRedirect: '/login' }),
-    function(req, res) {
-        res.redirect('/');
-    });
-
-app.get('/profile',
-    require('connect-ensure-login').ensureLoggedIn(),
-    function(req, res){
-        res.render('profile', { user: req.user });
-    });
+                   newStudent.save(function (err) {
+                      if(err)
+                          throw (err);
+                      return done(null,newStudent);
+                   });
+               }
+            });
+            });
+        }
+));
 /////////////////////////
 
 
