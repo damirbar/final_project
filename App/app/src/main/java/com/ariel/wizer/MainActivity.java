@@ -1,7 +1,8 @@
-package com.example.user.wizer;
+package com.ariel.wizer;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
 
 public class MainActivity extends AppCompatActivity {
 
