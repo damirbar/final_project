@@ -33,4 +33,4 @@ Rules:
 ------------------------    Done    ---------------------------
 
 - Build an initial RESTful API infrastructure (Eran)
-- Build
+- Build an inital AngularJS infrastructure (Damir)
