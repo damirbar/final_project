@@ -20,5 +20,4 @@ wizerApp.controller('profileController',
                 $scope.userArr = data.data;
             });
 
-
     });
