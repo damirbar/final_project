@@ -57,6 +57,52 @@ var studentList = require('./studentsArr');
 // feedStudents(studentList);
 
 
+
+
+//erans work authentication session
+
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new FacebookStrategy({
+        clientID: "360516777741015",
+        clientSecret: "d20dcda059d99e713c314b57cca79621",
+        callbackURL: "http://localhost:3000/login/facebook/return"
+    },
+    function(accessToken, refreshToken, profile, cb) {
+        User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+            return cb(err, user);
+        });
+    }));
+app.get('/login/facebook',
+    passport.authenticate('facebook'));
+
+app.get('/login/facebook/return',
+    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    function(req, res) {
+        res.redirect('/');
+    });
+
+app.get('/profile',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function(req, res){
+        res.render('profile', { user: req.user });
+    });
+/////////////////////////
+
+
+
+
+
+
+
+
 app.listen(3000, function () {
     console.log("listening...");
 });
+
+
