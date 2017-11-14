@@ -1,4 +1,4 @@
-package com.example.user.wizer;
+package com.ariel.wizer;
 
 import org.junit.Test;
 
