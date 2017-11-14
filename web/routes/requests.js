@@ -68,6 +68,9 @@ router.get("/teacher", function (req, res) {
     res.sendFile(path.join(__dirname + "/../TestTeacherPage.html"));
 });
 
+router.get('/login', function(req, res) {
+        res.sendFile(path.join(__dirname + "/../login.html"));
+});
 
 router.get("/get-profile", function (req, res, next) {
     var id = req.query.id;

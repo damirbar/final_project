@@ -61,38 +61,38 @@ var studentList = require('./studentsArr');
 
 //erans work authentication session
 
-// var passport = require('passport');
-// var LocalStrategy = require('passport-local').Strategy;
-//
-// app.post('/login', passport.authenticate('local', { successRedirect: '/',
-//     failureRedirect: '/login' }));
-//
-// app.get('/login', function(req, res, next) {
-//     passport.authenticate('local', function(err, user, info) {
-//         if (err) { return next(err); }
-//         if (!user) { return res.redirect('/login'); }
-//         req.logIn(user, function(err) {
-//             if (err) { return next(err); }
-//             return res.redirect('/users/' + user.username);
-//         });
-//     })(req, res, next);
-// });
-//
-// passport.use(new LocalStrategy(
-//     function(username, password, done) {
-//         User.findOne({ username: username }, function (err, user) {
-//             if (err) { return done(err); }
-//             if (!user) {
-//                 return done(null, false, { message: 'Incorrect username.' });
-//             }
-//             if (!user.validPassword(password)) {
-//                 return done(null, false, { message: 'Incorrect password.' });
-//             }
-//             return done(null, user);
-//         });
-//     }
-// ));
-///////////////////////////
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new FacebookStrategy({
+        clientID: "360516777741015",
+        clientSecret: "d20dcda059d99e713c314b57cca79621",
+        callbackURL: "http://localhost:3000/login/facebook/return"
+    },
+    function(accessToken, refreshToken, profile, cb) {
+        User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+            return cb(err, user);
+        });
+    }));
+app.get('/login/facebook',
+    passport.authenticate('facebook'));
+
+app.get('/login/facebook/return',
+    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    function(req, res) {
+        res.redirect('/');
+    });
+
+app.get('/profile',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function(req, res){
+        res.render('profile', { user: req.user });
+    });
+/////////////////////////
 
 
 
