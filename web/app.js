@@ -7,7 +7,7 @@ var Student = require("./schemas/student");
 var Teacher = require("./schemas/teacher");
 
 
-var requests = require('./routes/requests');
+var requests = require('./routes/teacher_requests');
 
 var app = express();
 
