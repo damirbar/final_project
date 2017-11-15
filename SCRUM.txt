@@ -16,8 +16,9 @@ Rules:
 - Create a full student object with courses and grades
 - Create a Mongo query which calculates the average of a student
 - Create a University at the DB
-- Perform any kind of server-side authentication
 - Learn HTML and CSS basics (Sefi)
+- Create a GET handler for fetching course by ID
+- Create a GET request to retrieve a student from the server in Android
 
 
 
@@ -25,8 +26,7 @@ Rules:
 
 - Create a proper homepage (Damir)
 - Create log-in screen for the app (Shay)
-- Learn how to handle Node.js (Sefi) (Almost done)
-
+- Perform any kind of server-side authentication (Eran)
 
 
 
@@ -34,3 +34,4 @@ Rules:
 
 - Build an initial RESTful API infrastructure (Eran)
 - Build an inital AngularJS infrastructure (Damir)
+- Learn how to handle the basics of Node.js (Sefi)
