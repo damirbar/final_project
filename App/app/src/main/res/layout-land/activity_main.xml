@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ariel.wizer.MainActivity"
+    tools:context="com.teamproblemsolver.facebookdemo.MainActivity"
     android:background="#355796">
 
     <android.support.constraint.Guideline
@@ -54,11 +54,17 @@
         tools:layout_editor_absoluteX="0dp"
         app:layout_constraintGuide_percent="0.33147633"/>
 
-    <ImageView
-        android:id="@+id/fbLogoImageView"
+    <android.support.constraint.Guideline
+        android:id="@+id/h_guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
         app:layout_constraintTop_toTopOf="@+id/h_guideline3"
@@ -67,10 +73,11 @@
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/white"
         android:ems="10"
         android:hint="Username or Email"
-        android:inputType="textPersonName"
+        android:inputType="textUri"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         android:textColorLink="@android:color/white"
@@ -80,18 +87,33 @@
         app:layout_constraintTop_toTopOf="@+id/h_guideline3" />
 
     <EditText
+        android:id="@+id/pswEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/pswEditText"
-        app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-        app:layout_constraintTop_toBottomOf="@+id/emailEditText"
         android:layout_marginTop="4dp"
+        android:backgroundTint="@android:color/white"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
-        android:hint="Password"/>
+        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+        app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+
+    <TextView
+        android:id="@+id/toggleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="8dp"
+        android:text="SHOW"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/loginButton"
+        app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+        app:layout_constraintRight_toLeftOf="@id/v_guideline2" />
 
     <TextView
         android:id="@+id/langTextView"
@@ -134,14 +156,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:background="@drawable/create_acc_button_background"
-        android:text="Sign In"
+        android:text="SIGN UP"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2" />
 
     <ImageView
-        android:id="@+id/fbLogoStaticImageView"
+        android:id="@+id/logoStaticImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
