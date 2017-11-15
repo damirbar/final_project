@@ -24,8 +24,15 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
             controller: 'getProfilesController'
         })
 
-        // .when(/courses,{
-        //     templateUrl:
+        .when('/courses',{
+            templateUrl:'../pages/courses.html',
+            controller:'courseController'
+        })
+
+        .when('/courses/search-by-name/:course_name', {
+            templateUrl: '../pages/courses.html',
+            controller: 'courseController'
+        })
 
     // .otherwise({ redirectTo: '/'});
 

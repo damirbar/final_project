@@ -19,7 +19,7 @@ wizerApp.service('ProfileService', function($http) {
         var query = '?fname=' + qfname + '&lname=' + qlname;
 
 
-        return $http.get('/get-by-name' + query)
+        return $http.get('students/search-by-name' + query)
             .then(function(data) {
 
                 console.log("This is a print from profileService.js.\nI got: " + data.data);
