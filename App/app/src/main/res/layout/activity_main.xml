@@ -1,77 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/mainConstraintLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ariel.wizer.MainActivity"
-    android:background="#355796">
+    android:background="#355796"
+    tools:context="com.teamproblemsolver.facebookdemo.MainActivity">
 
     <android.support.constraint.Guideline
+        android:id="@+id/v_guideline1"
         android:layout_width="wrap_content"
         android:layout_height="567dp"
-        android:id="@+id/v_guideline1"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.1015625"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="39dp"/>
+        tools:layout_editor_absoluteX="39dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <android.support.constraint.Guideline
+        android:id="@+id/v_guideline2"
         android:layout_width="wrap_content"
         android:layout_height="567dp"
-        android:id="@+id/v_guideline2"
         android:orientation="vertical"
-        tools:layout_editor_absoluteY="0dp"
+        app:layout_constraintGuide_percent="0.9088542"
         tools:layout_editor_absoluteX="349dp"
-        app:layout_constraintGuide_percent="0.9088542"/>
+        tools:layout_editor_absoluteY="0dp" />
 
     <android.support.constraint.Guideline
+        android:id="@+id/h_guideline1"
         android:layout_width="384dp"
         android:layout_height="0dp"
-        android:id="@+id/h_guideline1"
         android:orientation="horizontal"
-        tools:layout_editor_absoluteY="61dp"
+        app:layout_constraintGuide_percent="0.107583776"
         tools:layout_editor_absoluteX="0dp"
-        app:layout_constraintGuide_percent="0.107583776"/>
+        tools:layout_editor_absoluteY="61dp" />
 
     <android.support.constraint.Guideline
-        android:layout_width="384dp"
-        android:layout_height="wrap_content"
         android:id="@+id/h_guideline2"
-        android:orientation="horizontal"
-        tools:layout_editor_absoluteY="174dp"
-        tools:layout_editor_absoluteX="0dp"
-        app:layout_constraintGuide_percent="0.3068783"/>
-
-    <android.support.constraint.Guideline
         android:layout_width="384dp"
         android:layout_height="wrap_content"
-        android:id="@+id/h_guideline3"
         android:orientation="horizontal"
-        tools:layout_editor_absoluteY="228dp"
+        app:layout_constraintGuide_percent="0.3068783"
         tools:layout_editor_absoluteX="0dp"
-        app:layout_constraintGuide_percent="0.4021164"/>
+        tools:layout_editor_absoluteY="174dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/h_guideline3"
+        android:layout_width="384dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4021164"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="228dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/h_guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
 
     <ImageView
-        android:id="@+id/fbCoverImageView"
+        android:id="@+id/coverImageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/h_guideline2"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/university" />
 
     <ImageView
-        android:id="@+id/fbLogoImageView"
+        android:id="@+id/logoImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
         app:layout_constraintTop_toTopOf="@+id/h_guideline3"
@@ -81,9 +84,10 @@
         android:id="@+id/emailEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/white"
         android:ems="10"
         android:hint="Username or Email"
-        android:inputType="textPersonName"
+        android:inputType="textUri"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         android:textColorLink="@android:color/white"
@@ -97,15 +101,30 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:backgroundTint="@android:color/white"
         android:ems="10"
         android:hint="Password"
+        android:importantForAutofill="auto|yes"
         android:inputType="textPassword"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
-        android:textColorLink="@android:color/background_light"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
         app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+
+    <TextView
+        android:id="@+id/toggleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="8dp"
+        android:text="SHOW"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/loginButton"
+        app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+        app:layout_constraintRight_toLeftOf="@id/v_guideline2" />
 
     <TextView
         android:id="@+id/langTextView"
@@ -119,28 +138,28 @@
         app:layout_constraintTop_toTopOf="@+id/h_guideline2" />
 
     <TextView
-        android:text="Forgot Password?"
+        android:id="@+id/forgotPswTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/forgotPswTextView"
-        app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+        android:layout_marginTop="4dp"
+        android:text="Forgot Password?"
         android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-        android:layout_marginTop="4dp"/>
+        app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
     <Button
-        android:text="Log In"
+        android:id="@+id/loginButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/loginButton"
-        app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/pswEditText"
+        android:layout_marginTop="4dp"
         android:background="#4867a0"
+        android:enabled="false"
+        android:text="Log In"
         android:textColor="@android:color/darker_gray"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-        android:layout_marginTop="4dp"
-        android:enabled="false"/>
+        app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/pswEditText" />
 
     <Button
         android:id="@+id/newAccountButton"
@@ -155,10 +174,9 @@
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2" />
 
     <ImageView
-        android:id="@+id/fbLogoStaticImageViw"
+        android:id="@+id/logoStaticImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
         app:layout_constraintLeft_toRightOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
         app:layout_constraintTop_toBottomOf="@+id/h_guideline1"
