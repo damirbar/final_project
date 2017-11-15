@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var path = require("path");
 var passport = require('passport');
-
+var mongoose = require("mongoose");
 
 var cookieParser =require('cookie-parser');
 var session = require('express-session');
