@@ -30,6 +30,13 @@ router.post("/courses", function (req, res) {
     });
 });
 
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
 router.get('/courses', function(req,res,next){
     var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     Course.find({}, function(err,courses){
@@ -45,3 +52,36 @@ router.get('/courses', function(req,res,next){
         }
     });
 });
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+router.get('/courses/search-by-name', function(req,res,next){
+
+    var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+    var course_name = req.query.course_name;
+
+    console.log("Got a search for " + course_name);
+    console.log("Got a " + req.method + " request from " + ip);
+
+    Course.find({name: course_name}, function(err,courses){
+        if(err) {
+            console.log("Error while finding courses");
+            return next(err);
+        }else if(courses){
+            console.log(courses);
+            console.log("Found: " + courses);
+            return res.json(courses);
+        }else{
+            console.log("No Courses available");
+            return res.json("No courses available");
+        }
+    });
+});
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+module.exports = router;

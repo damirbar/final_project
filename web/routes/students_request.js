@@ -102,3 +102,5 @@ router.get("/get-by-name", function (req, res, next) {
         });
     }
 });
+
+module.exports = router;

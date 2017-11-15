@@ -5,7 +5,7 @@
     android:id="@+id/mainConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#355796"
+    android:background="@android:color/holo_purple"
     tools:context="com.ariel.wizer.MainActivity">
 
     <android.support.constraint.Guideline
@@ -64,7 +64,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/university" />
+        app:srcCompat="@drawable/test" />
 
     <ImageView
         android:id="@+id/fbLogoImageView"
@@ -132,7 +132,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:background="#4867a0"
+        android:background="@android:color/holo_blue_dark"
         android:enabled="false"
         android:text="Log In"
         android:textColor="@android:color/darker_gray"
@@ -152,13 +152,13 @@
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2" />
 
-    <ImageView
-        android:id="@+id/fbLogoStaticImageViw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@+id/v_guideline1"
-        app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/h_guideline1"
-        app:srcCompat="@mipmap/ic_launcher" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="58dp"
+        android:layout_height="40dp"
+        android:text="Wizer"
+        app:layout_constraintLeft_toRightOf="@id/v_guideline1"
+        app:layout_constraintRight_toLeftOf="@id/v_guideline2"
+        app:layout_constraintTop_toBottomOf="@id/h_guideline1" />
 
 </android.support.constraint.ConstraintLayout>

@@ -19,7 +19,11 @@ var Teacher = require("./schemas/teacher");
 var loger = require("./routes/login_requests");
 
 
-var requests = require('./routes/teacher_requests');
+var teacherRequests = require('./routes/teacher_requests');
+var studentRequests = require('./routes/students_request');
+var coursesRequests = require('./routes/courses_request');
+
+
 
 
 app.use(bodyParser.json());
@@ -46,8 +50,9 @@ db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 //     console.log(student);
 // });
 
-app.use('/', requests);
-
+app.use('/', teacherRequests);
+app.use('/',studentRequests);
+app.use('/',coursesRequests);
 
 
 var feedStudents = function (dataArr) {
