@@ -16,7 +16,16 @@ var path = require("path");
 var bodyParser = require("body-parser");
 var Student = require("./schemas/student");
 var Teacher = require("./schemas/teacher");
-var loger = require("./routes/login_requests");
+var eransLogger = require("./routes/login_requests");
+
+//shay
+// const router  = express.Router();
+// var logger = require('morgan');
+// app.use(logger('dev'));
+// require('./routes')(router);
+// app.use('/api/v1', router);
+// require('./routes')(router);
+// app.use('/api/v1', router);
 
 
 var teacherRequests = require('./routes/teacher_requests');
@@ -35,7 +44,6 @@ var myLessCompiler = require("./less_compiler");
 myLessCompiler();
 
 
-// var mongoDB = 'mongodb://127.0.0.1:27017/main_db';
 var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
 mongoose.connect(mongoDB, {
         useMongoClient: true
@@ -45,10 +53,6 @@ mongoose.connect(mongoDB, {
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 
-// Student.find({},{last_name:true,first_name:1,_id:0}, function(err,student){
-//     if(err) return "error";
-//     console.log(student);
-// });
 
 app.use('/', teacherRequests);
 app.use('/',studentRequests);
@@ -70,10 +74,6 @@ var feedStudents = function (dataArr) {
 
 var studentList = require('./studentsArr');
 
-// feedStudents(studentList);
-
-
-
 
 //erans work authentication session
 
@@ -81,21 +81,47 @@ var studentList = require('./studentsArr');
 var configAuth = require('./auth')
 
 
-app.use('/', loger);
+app.use('/', eransLogger);
 app.use(cookieParser());
-// app.use(session({
-//     secret: "1234567890",
-//     cookie: {maxAge:600000},
-//     resave : true,
-//     saveUninitialized:false}));
-passport.serializeUser(function (user,done) {
-    done(null,user.id);
+
+
+
+
+// passport.serializeUser(function (user,done) {
+//     done(null,user.id);
+// });
+// passport.deserializeUser(function (user,done) {
+//     Student.findById(id,function (err,user) {
+//         done(err,user);
+//     })
+// });
+
+passport.serializeUser(function(user, done) {
+    var CreateAccessToken = function() {
+        var token = "eran";
+        Student.findOne({accessToken: token}, function(err, existingUser) {
+            if (err) return done(err);
+            if (existingUser) {
+                CreateAccessToken();
+            } else {
+                user.set('accessToken', token);
+                user.save(function(err) {
+                    if (err) return done(err);
+                    return done(null, user.get('accessToken'));
+                })
+            }
+        });
+    };
+    if (user._id)
+        CreateAccessToken();
 });
-passport.deserializeUser(function (user,done) {
-    Student.findById(id,function (err,user) {
-        done(err,user);
-    })
-})
+passport.deserializeUser(function(token, done) {
+    Student.findOne({accessToken: token}, function(err, user) {
+        if (err) return done(err);
+        return done(err, user);
+    });
+});
+
 passport.use(new FacebookStrategy({
         clientID: configAuth.facebookAuth.clientID,
         clientSecret: configAuth.facebookAuth.clientSecret,
@@ -109,11 +135,11 @@ passport.use(new FacebookStrategy({
                    return done(null,user);
                else{
                    var newStudent = new Student({facebook: {}});
-                   profile.emails = profile.emails ? profile.emails : [];
+                  profile.emails = profile.emails ? profile.emails : [];
                    profile.emails[0] = profile.emails[0] ? profile.emails[0] : "mail@mail.mail";
                    newStudent.facebook.id = profile.id;
                    newStudent.facebook.token = accessToken;
-                   newStudent.facebook.name = profile.name.givenName + " " + profile.name.familyName;
+                   newStudent.facebook.name = profile.displayName;
                    newStudent.facebook.email = profile.emails[0].value;
 
                    newStudent.save(function (err) {

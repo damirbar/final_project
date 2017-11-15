@@ -27,7 +27,8 @@ var StudentSchema = new mongoose.Schema({
         token:String,
         email:String,
         name:String
-    }
+    },
+    accessToken:String
 });
 
 module.exports = mongoose.model('Student', StudentSchema);
