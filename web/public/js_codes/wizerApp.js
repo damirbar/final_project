@@ -14,14 +14,24 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
             controller: 'profileController'
         })
 
-        .when('/search-by-name/:fname/:lname', {
+        .when('/students/search-by-name/:fname/:lname', {
             templateUrl: '../pages/searchbyname.html',
             controller: 'getProfilesController'
         })
 
-        .when('/search-by-name/:fname', {
+        .when('/students/search-by-name/:fname', {
             templateUrl: '../pages/searchbyname.html',
             controller: 'getProfilesController'
+        })
+
+        .when('/courses',{
+            templateUrl:'../pages/courses.html',
+            controller:'courseController'
+        })
+
+        .when('/courses/search-by-name/:course_name', {
+            templateUrl: '../pages/courses.html',
+            controller: 'courseController'
         })
 
     // .otherwise({ redirectTo: '/'});

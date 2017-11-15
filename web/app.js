@@ -5,9 +5,14 @@ var path = require("path");
 var bodyParser = require("body-parser");
 var Student = require("./schemas/student");
 var Teacher = require("./schemas/teacher");
+var loger = require("./routes/login_requests");
 
 
-var requests = require('./routes/requests');
+var teacherRequests = require('./routes/teacher_requests');
+var studentRequests = require('./routes/students_request');
+var coursesRequests = require('./routes/courses_request');
+
+
 
 var app = express();
 
@@ -35,8 +40,9 @@ db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 //     console.log(student);
 // });
 
-app.use('/', requests);
-
+app.use('/', teacherRequests);
+app.use('/',studentRequests);
+app.use('/',coursesRequests);
 
 
 var feedStudents = function (dataArr) {
@@ -57,6 +63,62 @@ var studentList = require('./studentsArr');
 // feedStudents(studentList);
 
 
+
+
+//erans work authentication session
+var userSchema=mongoose.Schema({
+    facebook:{
+        id :String,
+        token:String,
+        email:String,
+        name:String
+    }
+})
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+var configAuth = require('./auth')
+
+app.use('/', loger);
+
+passport.use(new FacebookStrategy({
+        clientID: configAuth.facebookAuth.clientID,
+        clientSecret: configAuth.facebookAuth.clientSecret,
+        callbackURL: configAuth.facebookAuth.callbackURL
+    }, function(accessToken, refreshToken, profile, done) {
+        process.nextTick(function () {
+            user.findOne({"facebook.id":profile.id},function (err,user) {
+               if(err)
+                   return done(err);
+               if(user)
+                   return done(null,user);
+               else{
+                   var newStudent = new Student();
+                   newStudent.faceboo.id = profile.id;
+                   newStudent.faceboo.token = accessToken;
+                   newStudent.faceboo.name = profile.name.givenName + " " + profile.name.familyName;
+                   newStudent.faceboo.email = profile.emails[0].value;
+
+                   newStudent.save(function (err) {
+                      if(err)
+                          throw (err);
+                      return done(null,newStudent);
+                   });
+               }
+            });
+            });
+        }
+));
+/////////////////////////
+
+
+
+
+
+
+
+
 app.listen(3000, function () {
     console.log("listening...");
 });
+
+
