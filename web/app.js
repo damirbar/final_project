@@ -1,4 +1,15 @@
 var express = require("express");
+var app = express();
+
+
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+var cookieParser =require('cookie-parser');
+var session = require('express-session');
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 var mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 var path = require("path");
@@ -10,7 +21,6 @@ var loger = require("./routes/login_requests");
 
 var requests = require('./routes/teacher_requests');
 
-var app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -61,37 +71,45 @@ var studentList = require('./studentsArr');
 
 
 //erans work authentication session
-var userSchema=mongoose.Schema({
-    facebook:{
-        id :String,
-        token:String,
-        email:String,
-        name:String
-    }
-})
-var passport = require('passport');
-var FacebookStrategy = require('passport-facebook').Strategy;
+
+
 var configAuth = require('./auth')
 
-app.use('/', loger);
 
+app.use('/', loger);
+app.use(cookieParser());
+// app.use(session({
+//     secret: "1234567890",
+//     cookie: {maxAge:600000},
+//     resave : true,
+//     saveUninitialized:false}));
+passport.serializeUser(function (user,done) {
+    done(null,user.id);
+});
+passport.deserializeUser(function (user,done) {
+    Student.findById(id,function (err,user) {
+        done(err,user);
+    })
+})
 passport.use(new FacebookStrategy({
         clientID: configAuth.facebookAuth.clientID,
         clientSecret: configAuth.facebookAuth.clientSecret,
         callbackURL: configAuth.facebookAuth.callbackURL
     }, function(accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
-            user.findOne({"facebook.id":profile.id},function (err,user) {
+            Student.findOne({"facebook.id":profile.id},function (err,user) {
                if(err)
                    return done(err);
                if(user)
                    return done(null,user);
                else{
-                   var newStudent = new Student();
-                   newStudent.faceboo.id = profile.id;
-                   newStudent.faceboo.token = accessToken;
-                   newStudent.faceboo.name = profile.name.givenName + " " + profile.name.familyName;
-                   newStudent.faceboo.email = profile.emails[0].value;
+                   var newStudent = new Student({facebook: {}});
+                   profile.emails = profile.emails ? profile.emails : [];
+                   profile.emails[0] = profile.emails[0] ? profile.emails[0] : "mail@mail.mail";
+                   newStudent.facebook.id = profile.id;
+                   newStudent.facebook.token = accessToken;
+                   newStudent.facebook.name = profile.name.givenName + " " + profile.name.familyName;
+                   newStudent.facebook.email = profile.emails[0].value;
 
                    newStudent.save(function (err) {
                       if(err)
