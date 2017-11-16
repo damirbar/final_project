@@ -1,4 +1,5 @@
 var express = require("express");
+var app = express();
 var mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 var path = require("path");
@@ -7,13 +8,22 @@ var Student = require("./schemas/student");
 var Teacher = require("./schemas/teacher");
 
 
+//shay
+// const router  = express.Router();
+// var logger = require('morgan');
+// app.use(logger('dev'));
+// require('./routes')(router);
+// app.use('/api/v1', router);
+// require('./routes')(router);
+// app.use('/api/v1', router);
+
+
 var teacherRequests = require('./routes/teacher_requests');
 var studentRequests = require('./routes/students_request');
 var coursesRequests = require('./routes/courses_request');
 
 
 
-var app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -24,7 +34,6 @@ var myLessCompiler = require("./less_compiler");
 myLessCompiler();
 
 
-// var mongoDB = 'mongodb://127.0.0.1:27017/main_db';
 var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
 mongoose.connect(mongoDB, {
         useMongoClient: true
@@ -34,10 +43,6 @@ mongoose.connect(mongoDB, {
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 
-// Student.find({},{last_name:true,first_name:1,_id:0}, function(err,student){
-//     if(err) return "error";
-//     console.log(student);
-// });
 
 app.use('/', teacherRequests);
 app.use('/',studentRequests);
@@ -59,44 +64,29 @@ var feedStudents = function (dataArr) {
 
 var studentList = require('./studentsArr');
 
-// feedStudents(studentList);
-
-
-
 
 //erans work authentication session
 
-var passport = require('passport');
-var FacebookStrategy = require('passport-facebook').Strategy;
 
 
+var passportSetup = require('./config/passport-setup');
+var cookieSession = require('cookie-session');
+var keys = require('./config/auth');
+var authRouts = require("./routes/login_requests");
+var passport=require('passport');
+
+app.use(cookieSession({
+    maxAge: 24 * 60 * 60 * 1000, //one day
+    keys:[keys.session.cookieKey]
+
+}));
+
+// initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
+app.use('/auth',authRouts);
 
-passport.use(new FacebookStrategy({
-        clientID: "360516777741015",
-        clientSecret: "d20dcda059d99e713c314b57cca79621",
-        callbackURL: "http://localhost:3000/login/facebook/return"
-    },
-    function(accessToken, refreshToken, profile, cb) {
-        User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-            return cb(err, user);
-        });
-    }));
-app.get('/login/facebook',
-    passport.authenticate('facebook'));
 
-app.get('/login/facebook/return',
-    passport.authenticate('facebook', { failureRedirect: '/login' }),
-    function(req, res) {
-        res.redirect('/');
-    });
-
-app.get('/profile',
-    require('connect-ensure-login').ensureLoggedIn(),
-    function(req, res){
-        res.render('profile', { user: req.user });
-    });
 /////////////////////////
 
 
