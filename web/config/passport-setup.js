@@ -29,14 +29,45 @@ passport.use(
                     if(user)
                         return done(null,user);
                     else{
-                        var newStudent = new Student();
-                        newStudent.googleid = profile.id;
-                        newStudent.first_name = profile.name.givenName;
-                        newStudent.last_name = profile.name.familyName;
-                        newStudent.gender = profile.gender;
-                       // newStudent.facebook.token = accessToken;
-                        newStudent.display_name = profile.displayName;
-                        newStudent.mail = profile.emails[0].value;
+                        // var newStudent = new Student();
+                        var newStudent = new Student({
+
+                            first_name: profile.name.givenName,
+                            last_name: profile.name.familyName,
+                            display_name: profile.displayName,
+                            // mail: profile.emails ? profile.emails[0].value : '',
+                            mail: profile.emails[0].value,
+                            about_me: '',
+                            country: '',
+                            city: '',
+                            age: 0,
+                            uni: {},
+                            gender: profile.gender,
+                            courses: [],
+                            photos: [],
+                            // profile_img: profile._json.picture.data.url,
+                            fs: {},
+                            grades: [],
+                            cred: 0,
+                            fame: 0,
+                            msg: [],
+                            register_date: Date.now(),
+                            last_update: Date.now(),
+                            notifications: [],
+                            facebookid: '',
+                            accessToken: '',
+                            googleid: profile.id
+
+                        });
+                       //  newStudent.googleid = profile.id;
+                       //  newStudent.first_name = profile.name.givenName;
+                       //  newStudent.last_name = profile.name.familyName;
+                       //  newStudent.gender = profile.gender;
+                       // // newStudent.facebook.token = accessToken;
+                       //  newStudent.display_name = profile.displayName;
+                       //  newStudent.mail = profile.emails[0].value;
+
+
                         newStudent.save(function (err) {
                             if(err)
                                 throw (err);
@@ -64,14 +95,44 @@ passport.use(new FacebookStrategy({
                if(user)
                    return done(null,user);
                else{
-                   var newStudent = new Student();
-                   newStudent.facebookid = profile.id;
-                   newStudent.first_name = profile.name.givenName;
-                   newStudent.last_name = profile.name.familyName;
-                   // newStudent.facebook.token = accessToken;
-                   newStudent.display_name = profile.displayName;
-                   if(newStudent.mail = profile.emails)
-                   newStudent.mail = profile.emails[0].value;
+                   var newStudent = new Student({
+
+                       first_name: profile.name.givenName,
+                       last_name: profile.name.familyName,
+                       display_name: profile.displayName,
+                       // mail: profile.emails ? profile.emails[0].value : '',
+                       mail: profile._json.email,
+                       about_me: '',
+                       country: '',
+                       city: '',
+                       age: 0,
+                       uni: {},
+                       gender: profile.gender,
+                       courses: [],
+                       photos: [],
+                       // profile_img: profile._json.picture.data.url,
+                       fs: {},
+                       grades: [],
+                       cred: 0,
+                       fame: 0,
+                       msg: [],
+                       register_date: Date.now(),
+                       last_update: Date.now(),
+                       notifications: [],
+                       facebookid: profile.id,
+                       accessToken: '',
+                       googleid:''
+
+                   });
+                   // newStudent.facebookid = profile.id;
+                   // newStudent.first_name = profile.name.givenName;
+                   // newStudent.last_name = profile.name.familyName;
+                   // // newStudent.facebook.token = accessToken;
+                   // newStudent.display_name = profile.displayName;
+                   // if(newStudent.mail = profile.emails)
+                   //     newStudent.mail = profile.emails[0].value;
+
+
 
                    newStudent.save(function (err) {
                       if(err)

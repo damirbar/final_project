@@ -14,6 +14,7 @@ var StudentSchema = new mongoose.Schema({
     gender: String,
     courses: Array,
     photos: Array,
+    profile_img: String,
     fs: {},
     grades: Array,
     cred: Number,
