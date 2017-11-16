@@ -5,7 +5,13 @@ var path = require("path");
 
 var Student = require("../schemas/student");
 
-
+// var authCheck = function(req,res,next)
+// {
+//     if(!req.user)
+//         res.send("ererer");
+//     else
+//         next();
+// }
 
 router.post("/student", function (req, res) {
     var myData = new Student(req.body);
@@ -36,7 +42,7 @@ router.post("/student", function (req, res) {
 
 
 
-router.get("/get-profile", function (req, res, next) {
+router.get("/get-profile",function (req, res, next) {
     var id = req.query.id;
 
     Student.findOne({_id: id}, function (err, student) {

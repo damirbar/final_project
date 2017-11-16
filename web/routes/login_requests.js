@@ -1,47 +1,44 @@
-var express = require('express');
-var router = express.Router();
+var router = require('express').Router();
 var path = require("path");
 var passport = require('passport');
-var mongoose = require("mongoose");
 
-var cookieParser =require('cookie-parser');
-var session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
-
-var app = express();
-
-
-app.use(cookieParser());
-app.use(session({
-    secret: "cookie_secret",
-    name: "cookie_name",
-    store: new MongoStore({ mongooseConnection: mongoose.connection }), // connect-mongo session store
-    proxy: true,
-    resave: true,
-    saveUninitialized: true
-}));
-
-app.post("/login", passport.authenticate('facebook',
-    { failureRedirect: '/login',
-        failureFlash: true }), function(req, res) {
-    if (req.body.remember) {
-        req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Cookie expires after 30 days
-    } else {
-        req.session.cookie.expires = false; // Cookie expires at end of session
-    }
-    res.redirect('/');
-});
-
-router.get("/login", function (req, res) {
+router.get('/login',function (req,res) {
     res.sendFile(path.join(__dirname + "/../login.html"));
 });
 
-router.get('/auth/facebook',passport.authenticate("facebook", {scope: ['email']}));
 
-router.get('/auth/facebook/callback',passport.authenticate("facebook",
-    { failureRedirect: '/login', failureFlash: true , successRedirect: "/#/", successFlash: true }));
-    // , function(req, res) {
-    // res.redirect('/#/');
-// });
+router.get('/logout',function (req,res) {
+   req.logout();
+   res.redirect('/');
+});
 
-module.exports = router;
+
+//auth with google
+
+router.get('/google',passport.authenticate('google',{
+    scope: ['profile', 'email']
+}));
+
+//google callbackURL
+router.get('/google/callback',passport.authenticate('google'),function (req,res) {
+    //res.send('wellcome ' + req.user.display_name);
+    res.redirect('/#/profile/' + req.user.id);
+});
+
+
+//auth with facebook
+
+// router.get('/auth/facebook',passport.authenticate("facebook", {scope: ['email']}));
+//router.get('/facebook',passport.authorize('facebook',{ scope : ['email'] }));
+router.get('/facebook',
+    passport.authenticate('facebook', { scope:['user_about_me', 'email']}),
+    function(req, res){
+    });
+
+//facebook callbackURL
+router.get('/facebook/callback',passport.authenticate('facebook'),function (req,res) {
+    //res.send('wellcome ' + req.user.facebook.name);
+    res.redirect('/#/profile/' + req.user.id);
+});
+
+ module.exports = router;
