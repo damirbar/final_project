@@ -57,6 +57,18 @@ body {
   color: white !important;
   margin-right: 3%;
 }
+.modal .modal-dialog .modal-content .modal-container {
+  text-align: center;
+}
+.modal .modal-dialog .modal-content .modal-container .text {
+  text-align: left;
+}
+.modal .modal-dialog .modal-content .modal-container .facebook-signin .fb-btn {
+  display: block;
+  margin: auto;
+  margin-top: 2%;
+  margin-bottom: 4%;
+}
 .profile-page .tmp-div {
   margin-top: 5%;
   margin-left: 15%;

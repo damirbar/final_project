@@ -22,13 +22,9 @@ var StudentSchema = new mongoose.Schema({
     register_date: Date,
     last_update: Date,
     notifications: Array,
-    facebook : {
-        id :String,
-        token:String,
-        email:String,
-        name:String
-    },
-    accessToken:String
+    facebookid:String,
+    accessToken:String,
+    googleid:String
 });
 
 module.exports = mongoose.model('Student', StudentSchema);
