@@ -3,7 +3,6 @@ wizerApp.controller('courseController',
 
         console.log("Hello from profileController");
         $scope.courseArr = [];
-        // $scope.course = {};
 
         if($routeParams.course_name){
 
@@ -14,16 +13,11 @@ wizerApp.controller('courseController',
                     $scope.courseArr = data;
                 });
         }else {
-
             courseService.getCourses()
                 .then(function (data) {
                     console.log("Looking for all courses");
                     $scope.courseArr = data;
                     console.log(data);
                 });
-
         }
-
-
-
     });
