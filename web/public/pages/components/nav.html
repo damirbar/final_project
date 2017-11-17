@@ -30,7 +30,7 @@
     </div>
 </nav>
 
-<div id="loginModal" class="modal fade" role="dialog">
+<div id="loginModal" class="modal fade" role="dialog" ng-controller="navController">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -68,12 +68,13 @@
                 <div class="or-text">OR</div>
                 <br>
 
-                <div class="sign-up">Log in</div>
-                <br>
 
 
-                <form name="loginform">
+
+                <form name="loginform" ng-if="hasToken">
                     <!--<div class="row">-->
+                    <div class="sign-up">Log in</div>
+                    <br>
 
                     <div class="email-div row">
                         <div class="text col-3">Email:</div>
@@ -97,7 +98,12 @@
 
                     <!--</div>-->
                     <button ng-click="login()">LOG IN</button>
+
                 </form>
+
+                <div class="logout-btn-div">
+                    <button class="btn btn-default" ng-click="logout()">Log Out</button>
+                </div>
 
                 <div class="facebook-signin">
                     <button type="button fb-btn" class="btn btn-primary login-button"><i
