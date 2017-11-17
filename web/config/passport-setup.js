@@ -1,6 +1,7 @@
 var passport = require('passport');
-var GoogleStratgy = require('passport-google-oauth20');
-var FacebookStrategy = require('passport-facebook').Strategy;
+var GoogleStrategy = require('passport-google-oauth20');
+var FacebookStrategy = require('passport-facebook');//.Strategy;
+var LocalStrategy = require('passport-local');//.Strategy;
 var configAuth = require('./auth');
 var Student = require('../schemas/student');
 
@@ -16,7 +17,7 @@ passport.deserializeUser(function (id,done) {
 });
 
 passport.use(
-    new GoogleStratgy({
+    new GoogleStrategy({
         clientID:configAuth.googleAuth.clientID,
         clientSecret:configAuth.googleAuth.clientSecret,
         callbackURL:configAuth.googleAuth.callbackURL
@@ -35,7 +36,6 @@ passport.use(
                             first_name: profile.name.givenName,
                             last_name: profile.name.familyName,
                             display_name: profile.displayName,
-                            // mail: profile.emails ? profile.emails[0].value : '',
                             mail: profile.emails[0].value,
                             about_me: '',
                             country: '',
@@ -86,7 +86,7 @@ passport.use(new FacebookStrategy({
         clientID: configAuth.facebookAuth.clientID,
         clientSecret: configAuth.facebookAuth.clientSecret,
         callbackURL: configAuth.facebookAuth.callbackURL,
-        profileFields: ['id', 'name','gender', "displayName",'about','email']
+        profileFields: ["id", "birthday", "emails", "first_name", "gender", "last_name"]
     }, function(accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
             Student.findOne({"facebookid":profile.id},function (err,user) {
@@ -100,8 +100,9 @@ passport.use(new FacebookStrategy({
                        first_name: profile.name.givenName,
                        last_name: profile.name.familyName,
                        display_name: profile.displayName,
-                       // mail: profile.emails ? profile.emails[0].value : '',
-                       mail: profile._json.email,
+                       //temporary fix
+                       mail: profile.name.givenName + "@gmail.com//fix!",
+                       //mail: profile._json.email,
                        about_me: '',
                        country: '',
                        city: '',
@@ -146,3 +147,18 @@ passport.use(new FacebookStrategy({
             });
         }
 ));
+
+
+
+passport.use(new LocalStrategy(
+    function (email,password,done) {
+        Student.findOne({mail:email},function (err,user) {
+            if(err) throw err;//return done(err);
+            if(!user)return done(null,false,{'Message': "Incorect Email"});
+            Student.comparePasssword(password,user.password,function (err,isMatch) {
+                if(err) throw err;//return done(err);
+                if(isMatch)return done(null,user);
+                return done(null,false,{'Message': "Incorect Password"});
+            });
+        });
+    }));
