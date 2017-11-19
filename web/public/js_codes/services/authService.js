@@ -1,5 +1,6 @@
 wizerApp.service('AuthService', function($http, AuthToken) {
 
+    // "Login" function
     this.auth = function(email, password) {
         return $http.post('/auth-login-user-pass?email=' + email +
         '&password=' + password)
