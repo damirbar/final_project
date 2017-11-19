@@ -1,6 +1,6 @@
 
-wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$timeout', 'ProfileService',
-    function($scope, AuthService, $location, $timeout, ProfileService) {
+wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$timeout', 'ProfileService', '$rootScope', '$interval',
+    function($scope, AuthService, $location, $timeout, ProfileService, $rootScope, $interval) {
 
     $scope.user = {};
     $scope.hasToken = false;
@@ -18,6 +18,8 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
         AuthService.auth($scope.user.email, $scope.user.password)
             .then(function(data) {
                 console.log("Got " + data + " from login function");
+                $rootScope.user = data.student;
+                $location.path('/');
             }, function() {
                 console.log("An error occurred");
             });
@@ -47,6 +49,10 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
                 }
             });
 
-    }
+    };
+
+    $interval(function() {
+        console.log($rootScope.user);
+    }, 3000);
 
 }]);

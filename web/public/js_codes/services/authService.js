@@ -7,25 +7,38 @@ wizerApp.service('AuthService', function($http, AuthToken) {
                 console.log(data.data.msg);
 
                 AuthToken.setToken(data.data.token);
-                return data.data.success;
+                return data.data;
             }, function(){
                 console.log("Error Authenticating " + email);
             });
     };
 
     // Auth.isLoggedIn()
-    this.isLoggedIn = function() {
+    this.isLoggedIn = function(email) {
         if (AuthToken.getToken()) {
+            // $http.get('/get-user-by-email', email)
+            //     .then(function(data) {
+            //         return true;
+            //     }, function() {
+            //
+            //     });
             return true;
-        } else {
-            return false;
         }
+        return false;
     };
 
 
     this.logout = function() {
         AuthToken.setToken();
     };
+
+    // this.getUser = function() {
+    //     if (AuthToken.getToken()) {
+    //         return $http.post('');
+    //     } else {
+    //         $q.reject({message: "User has no token"});
+    //     }
+    // };
 
 
 })
@@ -49,6 +62,14 @@ wizerApp.service('AuthService', function($http, AuthToken) {
     authTokenFactory.getToken = function() {
         return $window.localStorage.getItem('token');
     };
+
+    // authTokenFactory.getUser = function() {
+    //     if (AuthToken.getToken()) {
+    //         return $http.post('');
+    //     } else {
+    //         $q.reject({ message: "User has no token"});
+    //     }
+    // };
 
     return authTokenFactory;
 });
