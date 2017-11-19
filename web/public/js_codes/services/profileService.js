@@ -40,7 +40,7 @@ wizerApp.service('ProfileService', function($http) {
 
         console.log("Signup function activated!");
 
-        return $http.post("/new-student" + query)
+        return $http.post("/new-student", student)
             .then(function(data) {
                 console.log("Successfully sent post with the query");
                 return data.data;

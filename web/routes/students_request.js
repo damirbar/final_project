@@ -42,14 +42,14 @@ var Student = require("../schemas/student");
 
 router.post("/new-student", function(req, res){
 
-    var first_name = req.query.first_name;
-    var last_name = req.query.last_name;
-    var mail = req.query.email;
-    var pass = req.query.pass;
-    // var first_name = req.body.first_name;
-    // var last_name = req.body.last_name;
-    // var mail = req.body.email;
-    // var pass = req.body.pass;
+    // var first_name = req.query.first_name;
+    // var last_name = req.query.last_name;
+    // var mail = req.query.email;
+    // var pass = req.query.pass;
+    var first_name = req.body.fname;
+    var last_name = req.body.lname;
+    var mail = req.body.email;
+    var pass = req.body.password;
 
     console.log("The query I got in new-student: " +
     first_name + ", " + last_name + ", " + mail
@@ -61,19 +61,19 @@ router.post("/new-student", function(req, res){
     // }
 
 
-    var newStudent = new Student({
-        "first_name": first_name,
-        "last_name": last_name,
-        "mail": mail,
-        "password": pass
+    var reg_student = new Student({
+        first_name: first_name,
+        last_name: last_name,
+        mail: mail,
+        password: pass
     });
 
-    newStudent.save(function (err, student) {
+    reg_student.save(function (err, student) {
         if (err) {
             if (err.name === 'MongoError' && err.code === 11000) {
                 // Duplicate username
-                console.log('User ' + newStudent.first_name + " cannot be added " + newStudent.mail + ' already exists!');
-                return res.status(500).send('User ' + newStudent.first_name + " cannot be added " + newStudent.mail + ' already exists!');
+                console.log('User ' + reg_student.first_name + " cannot be added " + reg_student.mail + ' already exists!');
+                return res.status(500).send('User ' + reg_student.first_name + " cannot be added " + reg_student.mail + ' already exists!');
             }
             if (err.name === 'ValidationError') {
                 //ValidationError
@@ -89,8 +89,8 @@ router.post("/new-student", function(req, res){
             return res.status(500).send(err);
             // console.log(err);
         }
-        res.send("successfully added " + newStudent.first_name + " to db");
-        console.log("successfully added " + newStudent.first_name + " to db");
+        res.send("successfully added " + reg_student.first_name + " to db");
+        console.log("successfully added " + reg_student.first_name + " to db");
     });
 
     res.send("some response");

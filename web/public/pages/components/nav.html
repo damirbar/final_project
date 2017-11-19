@@ -74,10 +74,10 @@
 
                         <div class="text col-3">Confirm password:</div>
                         <input class="col-5" type="password" name="password_cnfrm" ng-model="user.password_cnfrm" required>
-                        <div class="col-4" ng-show="signupform.password != signupform.password_cnfrm">
+                        <div class="col-4" ng-show="user.password != user.password_cnfrm">
                             Wrong password!
                         </div>
-                        <div class="col-4" ng-show="signupform.password == signupform.password_cnfrm"></div>
+                        <div class="col-4" ng-show="user.password == user.password_cnfrm"></div>
 
                     </div>
 
