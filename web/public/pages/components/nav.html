@@ -31,47 +31,67 @@
 </nav>
 
 <div id="loginModal" class="modal fade" role="dialog" ng-controller="navController">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-width">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="container modal-container">
 
-                <div class="sign-up">Sign up</div>
-                <br>
-                <form name="signupform">
+                <form name="signupform" ng-if="!hasToken">
+                    <div class="sign-up">Sign up</div>
+                    <br>
                     <!--<div class="row">-->
+                    <div class="name-div row">
+                        <div class="text col-3">First name:</div>
 
-                        <div class="email-div row">
-                            <div class="text col-3">Email:</div>
-                            <input class="col-5" type="email" name="email" ng-model="user.email" required>
-                            <div class="col-4" ng-show="!signupform.email.$error.required && !signupform.email.$error.email"></div>
-                            <div class="col-4" ng-show="signupform.email.$error.required">Required!</div>
-                            <div class="col-4" ng-show="signupform.email.$error.email">Invalid Email</div>
+                        <input class="col-5" type="text" name="fname" ng-model="user.fname" required>
+                        <div class="col-4" ng-show="signupform.fname.$error.required">Required!</div>
+                        <div class="col-4" ng-show="!signupform.fname.$error.required"></div>
+
+                        <div class="text col-3">Last name:</div>
+                        <input class="col-5" type="text" name="lname" ng-model="user.lname" required>
+                        <div class="col-4" ng-show="!signupform.lname.$error.required"></div>
+                        <div class="col-4" ng-show="signupform.lname.$error.required">Required!</div>
+
+
+                    </div>
+                    <div class="email-div row">
+                        <div class="text col-3">Email:</div>
+                        <input class="col-5" type="email" name="email" ng-model="user.email" required>
+                        <div class="col-4"
+                             ng-show="!signupform.email.$error.required && !signupform.email.$error.email"></div>
+                        <div class="col-4" ng-show="signupform.email.$error.required">Required!</div>
+                        <div class="col-4" ng-show="signupform.email.$error.email">Invalid Email</div>
+                    </div>
+
+                    <div class="pass-div row">
+                        <div class="text col-3">Password:</div>
+                        <input class="col-5" type="password" name="password" ng-model="user.password" required
+                               ng-minlength="6">
+                        <div class="col-4" ng-show="signupform.password.$error.required">Required!</div>
+                        <div class="col-4" ng-show="signupform.password.$error.minlength">At least 6 characters!</div>
+                        <div class="col-4"
+                             ng-show="!signupform.password.$error.required && !signupform.password.$error.email"></div>
+
+                        <div class="text col-3">Confirm password:</div>
+                        <input class="col-5" type="password" name="password_cnfrm" ng-model="user.password_cnfrm" required>
+                        <div class="col-4" ng-show="signupform.password != signupform.password_cnfrm">
+                            Wrong password!
                         </div>
+                        <div class="col-4" ng-show="signupform.password == signupform.password_cnfrm"></div>
 
-                        <div class="pass-div row">
-                            <div class="text col-3">Password:</div>
-                            <input class="col-5" type="password" name="password" ng-model="user.password" required
-                                   ng-minlength="6">
-                            <div class="col-4" ng-show="signupform.password.$error.required">Required!</div>
-                            <div class="col-4" ng-show="signupform.password.$error.minlength">At least 6 characters!</div>
-                            <div class="col-4" ng-show="!signupform.password.$error.required && !signupform.password.$error.email"></div>
+                    </div>
 
-                        </div>
-
+                    <button ng-click="signup()">SIGN UP</button>
 
                     <!--</div>-->
                 </form>
 
-
-                <br>
+                <br><br>
                 <div class="or-text">OR</div>
-                <br>
+                <br><br>
 
 
-
-
-                <form name="loginform" ng-if="hasToken">
+                <form name="loginform" ng-if="!hasToken">
                     <!--<div class="row">-->
                     <div class="sign-up">Log in</div>
                     <br>
@@ -79,7 +99,8 @@
                     <div class="email-div row">
                         <div class="text col-3">Email:</div>
                         <input class="col-5" type="email" name="email" ng-model="user.email" required>
-                        <div class="col-4" ng-show="!loginform.email.$error.required && !loginform.email.$error.email"></div>
+                        <div class="col-4"
+                             ng-show="!loginform.email.$error.required && !loginform.email.$error.email"></div>
                         <div class="col-4" ng-show="loginform.email.$error.required">Required!</div>
                         <div class="col-4" ng-show="loginform.email.$error.email">Invalid Email</div>
                     </div>
@@ -90,19 +111,19 @@
                                ng-minlength="6">
                         <div class="col-4" ng-show="loginform.password.$error.required">Required!</div>
                         <div class="col-4" ng-show="loginform.password.$error.minlength">At least 6 characters!</div>
-                        <div class="col-4" ng-show="!loginform.password.$error.required && !loginform.password.$error.email"></div>
+                        <div class="col-4"
+                             ng-show="!loginform.password.$error.required && !loginform.password.$error.email"></div>
                     </div>
 
 
-
-
                     <!--</div>-->
-                    <button ng-click="login()">LOG IN</button>
+                    <button class="btn btn-default" ng-click="login()">LOG IN</button>
+                    <br><br>
 
                 </form>
 
                 <div class="logout-btn-div">
-                    <button class="btn btn-default" ng-click="logout()">Log Out</button>
+                    <button ng-if="hasToken" class="btn btn-default" ng-click="logout()">Log Out</button>
                 </div>
 
                 <div class="facebook-signin">

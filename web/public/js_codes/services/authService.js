@@ -35,10 +35,12 @@ wizerApp.service('AuthService', function($http, AuthToken) {
 
     // AuthToken.setToken(token);
     authTokenFactory.setToken = function(token) {
-
+        console.log("Inside setToken");
         if (token) {
+            console.log("Token found in setToken");
             $window.localStorage.setItem('token', token);
         } else {
+            console.log("Token NOT found in setToken");
             $window.localStorage.removeItem('token');
         }
     };

@@ -31,4 +31,25 @@ wizerApp.service('ProfileService', function($http) {
                 });
     };
 
+
+    this.signupStudent = function(student) {
+        var query = "?first_name=" + student.fname +
+            "&last_name=" + student.lname +
+            "&email=" + student.email +
+            "&pass=" + student.password;
+
+        console.log("Signup function activated!");
+
+        return $http.post("/new-student" + query)
+            .then(function(data) {
+                console.log("Successfully sent post with the query");
+                return data.data;
+            })
+            .catch(function() {
+                console.log("An error occurred in singup function");
+                return {error: "Error"};
+            });
+
+    }
+
 });

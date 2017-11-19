@@ -1,6 +1,6 @@
 
-wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$timeout',
-    function($scope, AuthService, $location, $timeout) {
+wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$timeout', 'ProfileService',
+    function($scope, AuthService, $location, $timeout, ProfileService) {
 
     $scope.user = {};
     $scope.hasToken = false;
@@ -31,5 +31,17 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
             $scope.hasToken = false;
         }, 2000);
     };
+
+    $scope.signup = function() {
+
+        console.log("Activated ctrl's signup function!");
+
+        ProfileService.signupStudent($scope.user)
+            .then(function (data) {
+                // $scope.profile = data;
+                console.log(data);
+            });
+
+    }
 
 }]);
