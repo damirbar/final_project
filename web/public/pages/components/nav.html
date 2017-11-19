@@ -70,10 +70,11 @@
                         <div class="col-4" ng-show="signupform.password.$error.required">Required!</div>
                         <div class="col-4" ng-show="signupform.password.$error.minlength">At least 6 characters!</div>
                         <div class="col-4"
-                             ng-show="!signupform.password.$error.required && !signupform.password.$error.email"></div>
+                             ng-show="!signupform.password.$error.required && !signupform.password.$error.minlength"></div>
 
                         <div class="text col-3">Confirm password:</div>
                         <input class="col-5" type="password" name="password_cnfrm" ng-model="user.password_cnfrm" required>
+                        <div class="col-4" ng-show="signupform.password_cnfrm.$error.required">Required!</div>
                         <div class="col-4" ng-show="user.password != user.password_cnfrm">
                             Wrong password!
                         </div>
@@ -86,12 +87,15 @@
                     <!--</div>-->
                 </form>
 
-                <br><br>
-                <div class="or-text">OR</div>
-                <br><br>
+
 
 
                 <form name="loginform" ng-if="!hasToken">
+
+                    <br><br>
+                    <div class="or-text">OR</div>
+                    <br><br>
+
                     <!--<div class="row">-->
                     <div class="sign-up">Log in</div>
                     <br>

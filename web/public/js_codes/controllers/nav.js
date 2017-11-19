@@ -13,6 +13,7 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
         $scope.hasToken = false;
     }
 
+
     $scope.login = function() {
         AuthService.auth($scope.user.email, $scope.user.password)
             .then(function(data) {
@@ -21,6 +22,7 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
                 console.log("An error occurred");
             });
     };
+
 
     $scope.logout = function() {
         console.log("Activated logout function");
@@ -38,8 +40,11 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
 
         ProfileService.signupStudent($scope.user)
             .then(function (data) {
-                // $scope.profile = data;
-                console.log(data);
+                if (data.success) {
+                    $scope.login();
+                } else {
+                    console.log("An error occurred during sign up!");
+                }
             });
 
     }

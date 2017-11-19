@@ -33,14 +33,14 @@ var StudentSchema = new mongoose.Schema({
 
 
 ////////////////////////////// DAMIR'S AUTH:
-StudentSchema.pre('save', function(next) {
-    var user = this;
-    // bcrypt.hash(user.password, /*SALT*/null, null, function(err, hash) {
-    //     if (err) return next(err);
-    //     user.password = hash;
-    //     next();
-    // });
-});
+// StudentSchema.pre('save', function(next) {
+//     var user = this;
+//     // bcrypt.hash(user.password, /*SALT*/null, null, function(err, hash) {
+//     //     if (err) return next(err);
+//     //     user.password = hash;
+//     //     next();
+//     // });
+// });
 
 StudentSchema.methods.comparePassword = function(password) {
     // return bcrypt.compareSync(password, this.password);

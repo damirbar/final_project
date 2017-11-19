@@ -89,11 +89,11 @@ router.post("/new-student", function(req, res){
             return res.status(500).send(err);
             // console.log(err);
         }
-        res.send("successfully added " + reg_student.first_name + " to db");
+        res.status(200).send({success: true, msg: "successfully added " + reg_student.first_name + " to db"});
         console.log("successfully added " + reg_student.first_name + " to db");
     });
 
-    res.send("some response");
+    // res.send("some response");
 
 });
 
