@@ -1,4 +1,4 @@
-wizerApp.service('AuthService', function($http, AuthToken) {
+wizerApp.service('AuthService', function($http, AuthToken, $rootScope) {
 
     // "Login" function
     this.auth = function(email, password) {
@@ -15,14 +15,18 @@ wizerApp.service('AuthService', function($http, AuthToken) {
     };
 
     // Auth.isLoggedIn()
-    this.isLoggedIn = function(email) {
+    this.isLoggedIn = function() {
+        // console.log("Sending POST to /get-user-by-token");
         if (AuthToken.getToken()) {
-            // $http.get('/get-user-by-email', email)
-            //     .then(function(data) {
-            //         return true;
-            //     }, function() {
-            //
-            //     });
+            var token = AuthToken.getToken();
+            $http.post('/get-user-by-token', {token: token})
+                .then(function(data) {
+                    $rootScope.user = data.data.student;
+                    console.log(data.data);
+                    return true;
+                }, function() {
+
+                });
             return true;
         }
         return false;

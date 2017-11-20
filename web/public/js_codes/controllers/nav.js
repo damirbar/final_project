@@ -5,21 +5,28 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
     $scope.user = {};
     $scope.hasToken = false;
 
-    if (AuthService.isLoggedIn()) {
-        console.log("Success! User is logged in.");
-        $scope.hasToken = true;
-    } else {
-        console.log("Failure! User is NOT logged in.");
-        $scope.hasToken = false;
-    }
 
+    $scope.checkLogin = function() {
+        if (AuthService.isLoggedIn()) {
+            console.log("Success! User is logged in.");
+            $scope.hasToken = true;
+            // $('.profile-link').attr("href", "#/profile/" + $rootScope.user._id);
+        } else {
+            console.log("Failure! User is NOT logged in.");
+            $scope.hasToken = false;
+        }
+    };
+
+    $scope.checkLogin();
 
     $scope.login = function() {
         AuthService.auth($scope.user.email, $scope.user.password)
             .then(function(data) {
                 console.log("Got " + data + " from login function");
                 $rootScope.user = data.student;
+                $scope.user = data.student;
                 $location.path('/');
+                $scope.checkLogin();
             }, function() {
                 console.log("An error occurred");
             });
@@ -52,7 +59,8 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
     };
 
     $interval(function() {
-        console.log($rootScope.user);
+        // console.log($rootScope.user);
+        $('.profile-link').attr("href", "#/profile/" + $rootScope.user._id);
     }, 3000);
 
 }]);
