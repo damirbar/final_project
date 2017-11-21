@@ -26,7 +26,8 @@ var Teacher = require("./schemas/teacher");
 var teacherRequests = require('./routes/teacher_requests');
 var studentRequests = require('./routes/students_request');
 var coursesRequests = require('./routes/courses_request');
-
+var uniRequest = require('./routes/uni_requests');
+var departmentRequest = require('./routes/department_request');
 
 
 
@@ -52,7 +53,8 @@ db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 app.use('/', teacherRequests);
 app.use('/',studentRequests);
 app.use('/',coursesRequests);
-
+app.use('/',uniRequest);
+app.use('/',departmentRequest);
 
 var feedStudents = function (dataArr) {
     for (var i = 0; i < dataArr.length; ++i) {
