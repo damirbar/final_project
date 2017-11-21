@@ -32,6 +32,8 @@ public class student {
     private String last_update;
     private String notifications;
 
+
+
     public String getFirst_name() {
         return first_name;
     }

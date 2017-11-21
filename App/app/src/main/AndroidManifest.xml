@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ariel.wizer">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,13 +11,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/AppTheme.LoginRegister"
+            android:launchMode="singleTask">
+            //android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <data android:scheme="http"
+                    android:host="wizer" />
+
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ProfileActivity"
+            android:theme="@style/AppTheme.Profile"/>
     </application>
 
 </manifest>
