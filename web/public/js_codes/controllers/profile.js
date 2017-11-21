@@ -17,7 +17,7 @@ wizerApp.controller('profileController',
             .then(function (data) {
                 console.log("Looking for " + $routeParams.first_name);
                 console.log(data);
-                $scope.userArr = data.data;
+                $scope.userArr = data;
             });
 
     });
