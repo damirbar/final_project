@@ -41,6 +41,7 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/ti_name"
+                android:textColorHint="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/img_logo"
@@ -54,8 +55,8 @@
                     android:drawableRight="@drawable/ic_person"
                     android:hint="Name"
                     android:inputType="text"
+                    android:textColorHint="#FFFFFF"
                     android:textColor="@android:color/white"
-                    android:textColorHint="@android:color/white"
                     android:textColorLink="@android:color/white"
                     android:textStyle="normal" />
 
@@ -63,6 +64,7 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/ti_email"
+                android:textColorHint="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ti_name"
@@ -84,6 +86,7 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/ti_password"
+                android:textColorHint="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ti_email"
@@ -123,7 +126,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/btn_register"
-                android:paddingTop="@dimen/button_margin"
+                android:paddingTop="@dimen/card_items_margin"
                 android:text="Already Registered? "
                 android:textAlignment="center"
                 android:textColor="@android:color/white" />
@@ -134,8 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_login"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/button_margin"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
         </RelativeLayout>
     </LinearLayout>

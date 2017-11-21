@@ -44,8 +44,8 @@ public class LoginFragment extends Fragment {
     private Button mBtLogin;
     private Button mNewAccountButton;
     private TextView mTvForgotPassword;
-    //private TextInputLayout mTiEmail;
-    //private TextInputLayout mTiPassword;
+    private TextInputLayout mTiEmail;
+    private TextInputLayout mTiPassword;
     private ProgressBar mProgressBar;
 
     private CompositeSubscription mSubscriptions;
@@ -65,11 +65,11 @@ public class LoginFragment extends Fragment {
 
     private void initViews(View v) {
 
-        mEtEmail = (EditText) v.findViewById(R.id.emailEditText);
-        mEtPassword = (EditText) v.findViewById(R.id.pswEditText);
+        mEtEmail = (EditText) v.findViewById(R.id.et_email);
+        mEtPassword = (EditText) v.findViewById(R.id.et_password);
         mBtLogin = (Button) v.findViewById(R.id.loginButton);
-        //mTiEmail = (TextInputLayout) v.findViewById(R.id.ti_email);
-        //mTiPassword = (TextInputLayout) v.findViewById(R.id.ti_password);
+        mTiEmail = (TextInputLayout) v.findViewById(R.id.ti_email);
+        mTiPassword = (TextInputLayout) v.findViewById(R.id.ti_password);
         mProgressBar = (ProgressBar) v.findViewById(R.id.progress);
         mNewAccountButton = (Button) v.findViewById(R.id.newAccountButton);
         mTvForgotPassword = (TextView) v.findViewById(R.id.forgotPswTextView);
@@ -97,13 +97,13 @@ public class LoginFragment extends Fragment {
         if (!validateEmail(email)) {
 
             err++;
-            //mTiEmail.setError("Email should be valid !");
+            mTiEmail.setError("Email should be valid !");
         }
 
         if (!validateFields(password)) {
 
             err++;
-            //mTiPassword.setError("Password should not be empty !");
+            mTiPassword.setError("Password should not be empty !");
         }
 
         if (err == 0) {
@@ -119,8 +119,8 @@ public class LoginFragment extends Fragment {
 
     private void setError() {
 
-        //mTiEmail.setError(null);
-       // mTiPassword.setError(null);
+        mTiEmail.setError(null);
+        mTiPassword.setError(null);
     }
 
     private void loginProcess(String email, String password) {
