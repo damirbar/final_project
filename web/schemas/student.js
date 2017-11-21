@@ -3,6 +3,7 @@ var bcrypt = require('bcrypt-nodejs');
 
 var StudentSchema = new mongoose.Schema({
 
+    id_num: String,
     first_name: String,
     last_name: String,
     display_name: String,
@@ -13,7 +14,8 @@ var StudentSchema = new mongoose.Schema({
     country: String,
     city: String,
     age: Number,
-    uni: {},
+    uni: String,
+    department : String,
     gender: String,
     courses: Array,
     photos: Array,

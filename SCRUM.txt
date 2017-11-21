@@ -1,5 +1,5 @@
 
-Welcome to wizeStream's SCRUM page.
+Welcome to WizeStream's SCRUM page.
 
 Rules:
 
@@ -10,7 +10,7 @@ Rules:
 * If you've finished a task, you cut it and paste it under "Done".
 
 
-
+-
 ------------------------    Grab    ---------------------------
 
 

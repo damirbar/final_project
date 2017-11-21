@@ -4,6 +4,11 @@ var mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 var path = require("path");
 var bodyParser = require("body-parser");
+
+var cookieSession = require('cookie-session');
+var passport=require('passport');
+var passportSetup = require('./config/passport-setup');
+
 var Student = require("./schemas/student");
 var Teacher = require("./schemas/teacher");
 
@@ -21,7 +26,8 @@ var Teacher = require("./schemas/teacher");
 var teacherRequests = require('./routes/teacher_requests');
 var studentRequests = require('./routes/students_request');
 var coursesRequests = require('./routes/courses_request');
-
+var uniRequest = require('./routes/uni_requests');
+var departmentRequest = require('./routes/department_request');
 
 
 
@@ -30,7 +36,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-var myLessCompiler = require("./less_compiler");
+var myLessCompiler = require("./tools/less_compiler");
 myLessCompiler();
 
 
@@ -47,7 +53,8 @@ db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 app.use('/', teacherRequests);
 app.use('/',studentRequests);
 app.use('/',coursesRequests);
-
+app.use('/',uniRequest);
+app.use('/',departmentRequest);
 
 var feedStudents = function (dataArr) {
     for (var i = 0; i < dataArr.length; ++i) {
@@ -68,12 +75,12 @@ var studentList = require('./studentsArr');
 //erans work authentication session
 
 
+app.use(passport.initialize());
+app.use(passport.session());
 
-var passportSetup = require('./config/passport-setup');
-var cookieSession = require('cookie-session');
 var keys = require('./config/auth');
 var authRouts = require("./routes/login_requests");
-var passport=require('passport');
+
 
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000, //one day
@@ -82,8 +89,7 @@ app.use(cookieSession({
 }));
 
 // initialize passport
-app.use(passport.initialize());
-app.use(passport.session());
+
 app.use('/auth',authRouts);
 
 
