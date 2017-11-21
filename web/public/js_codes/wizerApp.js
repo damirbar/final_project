@@ -41,3 +41,7 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
     //     requireBase: false
     // });
 });
+
+// .config(function($httpProvider) {
+//     $httpProvider.interceptors.push('AuthInterceptors');
+// });
