@@ -7,12 +7,12 @@ var lessCompiler = function () {
 
     var buffer = "";
 
-    var files = fs.readdirSync(path.join(__dirname, "public/stylesheets/less"));
+    var files = fs.readdirSync(path.join(__dirname, "../public/stylesheets/less"));
 
     // console.log(files);
     files.forEach(function (file, index) {
-        buffer += fs.readFileSync(path.join(__dirname, "public/stylesheets/less/") + file);
-        console.log("Reading Less file to convert: " + path.join(__dirname, "public/stylesheets/less/") + file);
+        buffer += fs.readFileSync(path.join(__dirname, "../public/stylesheets/less/") + file);
+        console.log("Reading Less file to convert: " + path.join(__dirname, "../public/stylesheets/less/") + file);
     });
 
     // for (var i in files) {
@@ -21,7 +21,7 @@ var lessCompiler = function () {
     // }
     // console.log("The buffer: " + buffer);
 
-    fs.writeFile(path.join(__dirname, "/public/stylesheets/main.less"), buffer, function (err) {
+    fs.writeFile(path.join(__dirname, "../public/stylesheets/main.less"), buffer, function (err) {
         if (err) {
             return console.log("Error writing css! " + err);
         }

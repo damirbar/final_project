@@ -4,6 +4,11 @@ var mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 var path = require("path");
 var bodyParser = require("body-parser");
+
+var cookieSession = require('cookie-session');
+var passport=require('passport');
+var passportSetup = require('./config/passport-setup');
+
 var Student = require("./schemas/student");
 var Teacher = require("./schemas/teacher");
 
@@ -30,7 +35,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-var myLessCompiler = require("./less_compiler");
+var myLessCompiler = require("./tools/less_compiler");
 myLessCompiler();
 
 
@@ -68,12 +73,12 @@ var studentList = require('./studentsArr');
 //erans work authentication session
 
 
+app.use(passport.initialize());
+app.use(passport.session());
 
-var passportSetup = require('./config/passport-setup');
-var cookieSession = require('cookie-session');
 var keys = require('./config/auth');
 var authRouts = require("./routes/login_requests");
-var passport=require('passport');
+
 
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000, //one day
@@ -82,8 +87,7 @@ app.use(cookieSession({
 }));
 
 // initialize passport
-app.use(passport.initialize());
-app.use(passport.session());
+
 app.use('/auth',authRouts);
 
 
