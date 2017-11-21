@@ -9,7 +9,6 @@ var TeacherSchema = new mongoose.Schema({
     country: String,
     city: String,
     mail: { type: String, required: true, unique: false },
-
     gender: String,
     unis: Array,
     courses: Array,
