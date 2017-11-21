@@ -57,7 +57,11 @@ body {
   color: white !important;
   margin-right: 3%;
 }
+.modal .modal-dialog.modal-width {
+  max-width: 55%;
+}
 .modal .modal-dialog .modal-content .modal-container {
+  width: 100%;
   text-align: center;
 }
 .modal .modal-dialog .modal-content .modal-container .text {

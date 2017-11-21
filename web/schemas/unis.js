@@ -1,8 +1,11 @@
 var mongoose = require('mongoose');
 var UniSchema = new mongoose.Schema({
-    Name: String,
+    name: String,
+    address: String,
     teachers:Array,
     departments: Array,
-    phones: Array
+    phones: Array,
+    display_photo: String,
+    photos: Array
 });
 module.exports = mongoose.model('Unis', UniSchema);
