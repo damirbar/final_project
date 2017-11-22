@@ -34,6 +34,11 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
             controller: 'courseController'
         })
 
+        .when('/edit-profile', {
+            templateUrl: '../pages/edit_profile.html',
+            controller: 'editProfileController'
+        })
+
     // .otherwise({ redirectTo: '/'});
 
     // $locationProvider.html5Mode({

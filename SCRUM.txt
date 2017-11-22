@@ -18,8 +18,6 @@ Rules:
 - Create a University at the DB
 - Learn HTML and CSS basics (Sefi)
 - Create a GET handler for fetching course by ID
-- Create authentication for app login(Shay)
-
 
 
 ------------------------    On progress    ---------------------------
@@ -28,6 +26,7 @@ Rules:
 - Perform any kind of server-side authentication (Eran)
 - Create a GET request to retrieve a student from the server in Android(Dima)
 - Create a full student object with courses and grades(Sefi)
+- Create authentication for app login(Shay)
 
 
 ------------------------    Done    ---------------------------

@@ -1,269 +1,63 @@
 package com.ariel.wizer;
 
-import android.content.Context;
-import android.content.res.Configuration;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.util.Log;
 
-import static com.ariel.wizer.R.id.langTextView;
+import com.ariel.wizer.fragments.LoginFragment;
+import com.ariel.wizer.fragments.ResetPasswordDialog;
 
-public class MainActivity extends AppCompatActivity implements Animation.AnimationListener {
+public class MainActivity extends AppCompatActivity implements ResetPasswordDialog.Listener {
 
-    private ImageView mLogoImageView;
-    private ImageView mCoverImageView;
-    private EditText mEmailEditText;
-    private EditText mPswEditText;
-    private TextView mLangTextView;
-    private TextView mForgotPswTextView;
-    private Button mLoginButton;
-    private Button mNewAccountButton;
-    private ImageView mLogoStaticImageView;
-    private TextView mToggleTextView;
+    public static final String TAG = MainActivity.class.getSimpleName();
 
-    private Boolean ANIMATION_ENDED = false;
-    private Boolean START_ANIMATION = true;
+    private LoginFragment mLoginFragment;
+    private ResetPasswordDialog mResetPasswordDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(savedInstanceState != null) {
-            START_ANIMATION = savedInstanceState.getBoolean("START_ANIMATION");
+        if (savedInstanceState == null) {
+
+            loadFragment();
         }
+    }
 
-        mLogoImageView = (ImageView) findViewById(R.id.logoImageView);
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-            mCoverImageView = (ImageView) findViewById(R.id.coverImageView);
-        mEmailEditText = (EditText) findViewById(R.id.emailEditText);
-        mPswEditText = (EditText) findViewById(R.id.pswEditText);
-        mLangTextView = (TextView) findViewById(langTextView);
-        mForgotPswTextView = (TextView) findViewById(R.id.forgotPswTextView);
-        mLoginButton = (Button) findViewById(R.id.loginButton);
-        mNewAccountButton = (Button) findViewById(R.id.newAccountButton);
-        mLogoStaticImageView = (ImageView) findViewById(R.id.logoStaticImageView);
-        mToggleTextView = (TextView) findViewById(R.id.toggleTextView);
+    private void loadFragment(){
 
+        if (mLoginFragment == null) {
 
-        if(START_ANIMATION) {
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-                mCoverImageView.setVisibility(View.GONE);
-            mEmailEditText.setVisibility(View.GONE);
-            mPswEditText.setVisibility(View.GONE);
-            mLangTextView.setVisibility(View.GONE);
-            mForgotPswTextView.setVisibility(View.GONE);
-            mLoginButton.setVisibility(View.GONE);
-            mNewAccountButton.setVisibility(View.GONE);
-            mLogoStaticImageView.setVisibility(View.GONE);
-            mToggleTextView.setVisibility(View.GONE);
-            mPswEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-
-
-
-            Animation moveFBLogoAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move_logo);
-            moveFBLogoAnimation.setFillAfter(true);
-            moveFBLogoAnimation.setAnimationListener(this);
-            mLogoImageView.startAnimation(moveFBLogoAnimation);
+            mLoginFragment = new LoginFragment();
         }
-        else {
-            mLogoImageView.setVisibility(View.GONE);
-        }
-
-        final View activityRootView = findViewById(R.id.mainConstraintLayout);
-        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if(ANIMATION_ENDED || !START_ANIMATION) {
-                    int heightDiff = activityRootView.getRootView().getHeight() - activityRootView.getHeight();
-                    if (heightDiff > dpToPx(MainActivity.this, 200)) {
-                        //Soft keyboard is shown
-                        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-                            mCoverImageView.setVisibility(View.GONE);
-                        mLangTextView.setVisibility(View.GONE);
-                        mForgotPswTextView.setVisibility(View.GONE);
-                    } else {
-                        //Soft keyboard is hidden
-                        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-                            mCoverImageView.setVisibility(View.VISIBLE);
-                        mLangTextView.setVisibility(View.VISIBLE);
-                        mForgotPswTextView.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        });
-
-        mEmailEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(mEmailEditText.getText().toString().length() > 0 && mPswEditText.getText().toString().length() > 0) {
-                    mLoginButton.setTextColor(Color.parseColor("#ffffff"));
-                    mLoginButton.setEnabled(true);
-                }
-                else {
-                    mLoginButton.setTextColor(Color.parseColor("#aaaaaa"));
-                    mLoginButton.setEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        mPswEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(mEmailEditText.getText().toString().length() > 0 && mPswEditText.getText().toString().length() > 0) {
-                    mToggleTextView.setVisibility(View.VISIBLE);
-                    mLoginButton.setTextColor(Color.parseColor("#ffffff"));
-                    mLoginButton.setEnabled(true);
-                }
-                if(mPswEditText.getText().toString().length() > 0){
-                    mToggleTextView.setVisibility(View.VISIBLE);
-
-                }
-                else {
-                    mToggleTextView.setVisibility(View.GONE);
-                    mLoginButton.setTextColor(Color.parseColor("#aaaaaa"));
-                    mLoginButton.setEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        mToggleTextView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if(mToggleTextView.getText() == "SHOW"){
-                    mToggleTextView.setText("HIDE");
-                    mPswEditText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    mPswEditText.setSelection(mPswEditText.length());
-                }
-                else{
-                    mToggleTextView.setText("SHOW");
-                    mPswEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-
-                }
-
-            }
-        });
-
-
+        getFragmentManager().beginTransaction().replace(R.id.fragmentFrame,mLoginFragment,LoginFragment.TAG).commit();
     }
 
     @Override
-    public void onAnimationStart(Animation animation) {
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
 
+        String data = intent.getData().getLastPathSegment();
+        Log.d(TAG, "onNewIntent: "+data);
+
+        mResetPasswordDialog = (ResetPasswordDialog) getFragmentManager().findFragmentByTag(ResetPasswordDialog.TAG);
+
+        if (mResetPasswordDialog != null)
+            mResetPasswordDialog.setToken(data);
     }
 
     @Override
-    public void onAnimationEnd(Animation animation) {
-        mLogoStaticImageView.setVisibility(View.VISIBLE);
-        mLogoImageView.clearAnimation();
-        mLogoImageView.setVisibility(View.GONE);
+    public void onPasswordReset(String message) {
 
-        mEmailEditText.setAlpha(0f);
-        mEmailEditText.setVisibility(View.VISIBLE);
-        mPswEditText.setAlpha(0f);
-        mPswEditText.setVisibility(View.VISIBLE);
-        mLangTextView.setAlpha(0f);
-        mLangTextView.setVisibility(View.VISIBLE);
-        mForgotPswTextView.setAlpha(0f);
-        mForgotPswTextView.setVisibility(View.VISIBLE);
-        mLoginButton.setAlpha(0f);
-        mLoginButton.setVisibility(View.VISIBLE);
-        mNewAccountButton.setAlpha(0f);
-        mNewAccountButton.setVisibility(View.VISIBLE);
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            mCoverImageView.setAlpha(0f);
-            mCoverImageView.setVisibility(View.VISIBLE);
-        }
-
-        int mediumAnimationTime = getResources().getInteger(android.R.integer.config_mediumAnimTime);
-
-        mEmailEditText.animate()
-                .alpha(1f)
-                .setDuration(mediumAnimationTime)
-                .setListener(null);
-
-        mPswEditText.animate()
-                .alpha(1f)
-                .setDuration(mediumAnimationTime)
-                .setListener(null);
-
-        mLangTextView.animate()
-                .alpha(1f)
-                .setDuration(mediumAnimationTime)
-                .setListener(null);
-
-        mForgotPswTextView.animate()
-                .alpha(1f)
-                .setDuration(mediumAnimationTime)
-                .setListener(null);
-
-        mLoginButton.animate()
-                .alpha(1f)
-                .setDuration(mediumAnimationTime)
-                .setListener(null);
-
-        mNewAccountButton.animate()
-                .alpha(1f)
-                .setDuration(mediumAnimationTime)
-                .setListener(null);
-
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            mCoverImageView.animate()
-                    .alpha(1f)
-                    .setDuration(mediumAnimationTime)
-                    .setListener(null);
-        }
-
-        ANIMATION_ENDED = true;
+        showSnackBarMessage(message);
     }
 
-    @Override
-    public void onAnimationRepeat(Animation animation) {
+    private void showSnackBarMessage(String message) {
 
-    }
+        Snackbar.make(findViewById(R.id.activity_main),message, Snackbar.LENGTH_SHORT).show();
 
-    public static float dpToPx(Context context,float valueInDp) {
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putBoolean("START_ANIMATION", false);
     }
 }
