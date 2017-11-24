@@ -26,7 +26,6 @@ Rules:
 - Perform any kind of server-side authentication (Eran)
 - Create a GET request to retrieve a student from the server in Android(Dima)
 - Create a full student object with courses and grades(Sefi)
-- Create authentication for app login(Shay)
 
 
 ------------------------    Done    ---------------------------
@@ -35,3 +34,4 @@ Rules:
 - Build an inital AngularJS infrastructure (Damir)
 - Learn how to handle the basics of Node.js (Sefi)
 - Create log-in screen for the app (Shay)
+- Create authentication for app login(Shay)

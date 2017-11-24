@@ -72,7 +72,7 @@ public class ChangePasswordDialog extends DialogFragment {
         Bundle bundle = getArguments();
 
         mToken = bundle.getString(Constants.TOKEN);
-        mEmail = bundle.getString(Constants.EMAIL);
+        mEmail = bundle.getString(Constants.MAIL);
     }
 
     @Override

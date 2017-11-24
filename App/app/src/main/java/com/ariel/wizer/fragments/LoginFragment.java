@@ -137,7 +137,7 @@ public class LoginFragment extends Fragment {
 
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(Constants.TOKEN,response.getToken());
-        editor.putString(Constants.EMAIL,response.getMessage());
+        editor.putString(Constants.MAIL,response.getMessage());
         editor.apply();
 
         mEtEmail.setText(null);

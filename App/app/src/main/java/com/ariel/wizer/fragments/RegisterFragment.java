@@ -104,8 +104,8 @@ public class RegisterFragment extends Fragment {
         if (err == 0) {
 
             User user = new User();
-            user.setName(name);
-            user.setEmail(email);
+            user.setDisplayName(name);
+            user.setMail(email);
             user.setPassword(password);
 
             mProgressbar.setVisibility(View.VISIBLE);
