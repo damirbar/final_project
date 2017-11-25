@@ -4,10 +4,12 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#355796"
     tools:context="com.ariel.wizer.MainActivity">
 
     <FrameLayout
         android:id="@+id/fragmentFrame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="#355796" />
 </RelativeLayout>

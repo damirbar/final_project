@@ -26,6 +26,7 @@ Rules:
 - Perform any kind of server-side authentication (Eran)
 - Create a GET request to retrieve a student from the server in Android(Dima)
 - Create a full student object with courses and grades(Sefi)
+- Create Navigation Bar for app(Shay)
 
 
 ------------------------    Done    ---------------------------

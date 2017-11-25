@@ -13,18 +13,14 @@
         android:layout_width="wrap_content"
         android:layout_height="567dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1015625"
-        tools:layout_editor_absoluteX="39dp"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintGuide_begin="39dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/v_guideline2"
         android:layout_width="wrap_content"
         android:layout_height="567dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.9088542"
-        tools:layout_editor_absoluteX="349dp"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintGuide_begin="349dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/h_guideline1"
@@ -75,7 +71,6 @@
         android:id="@+id/logoImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
         app:layout_constraintTop_toTopOf="@+id/h_guideline3"
@@ -84,7 +79,7 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/ti_email"
         android:layout_width="0dp"
-        android:layout_height="63dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/ti_name"
         android:textColorHint="@android:color/white"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
@@ -110,8 +105,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ti_email"
+        android:layout_marginTop="8dp"
         android:textColorHint="@android:color/white"
-        android:layout_marginTop="16dp"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
         app:layout_constraintTop_toBottomOf="@+id/ti_email"
@@ -148,10 +143,9 @@
         android:id="@+id/forgotPswTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:text="Forgot Password?"
         android:textColor="@android:color/white"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
@@ -180,7 +174,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2" />
-
     <ImageView
         android:id="@+id/logoStaticImageView"
         android:layout_width="wrap_content"

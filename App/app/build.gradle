@@ -40,6 +40,10 @@ dependencies {
     compile 'io.reactivex:rxjava:1.2.0'
     compile 'io.reactivex:rxandroid:1.2.1'
 
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:support-v4:26.1.0'
+
     implementation 'com.google.code.gson:gson:2.7'
     compile 'org.mongodb:mongodb-driver:3.4.2'
 
