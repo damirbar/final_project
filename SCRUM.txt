@@ -10,7 +10,7 @@ Rules:
 * If you've finished a task, you cut it and paste it under "Done".
 
 
--
+
 ------------------------    Grab    ---------------------------
 
 
@@ -18,7 +18,7 @@ Rules:
 - Create a University at the DB
 - Learn HTML and CSS basics (Sefi)
 - Create a GET handler for fetching course by ID
-
+- Create a password recovery email using Google API (Eran)
 
 ------------------------    On progress    ---------------------------
 
