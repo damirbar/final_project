@@ -14,7 +14,7 @@ var StudentSchema = new mongoose.Schema({
     country: String,
     city: String,
     age: Number,
-    uni: String,
+    uni: {},
     department : String,
     gender: String,
     courses: Array,
