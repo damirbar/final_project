@@ -53,8 +53,8 @@ db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 app.use('/', teacherRequests);
 app.use('/',studentRequests);
 app.use('/',coursesRequests);
-app.use('/',uniRequest);
-app.use('/',departmentRequest);
+// app.use('/',uniRequest);
+// app.use('/',departmentRequest);
 
 var feedStudents = function (dataArr) {
     for (var i = 0; i < dataArr.length; ++i) {
