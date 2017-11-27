@@ -1,7 +1,7 @@
 var less = require('less');
 var fs = require('fs');
-// var lessc = require('less-compiler');
 var path = require('path');
+var minifier = require('minifier');
 
 var lessCompiler = function () {
 
@@ -9,17 +9,10 @@ var lessCompiler = function () {
 
     var files = fs.readdirSync(path.join(__dirname, "../public/stylesheets/less"));
 
-    // console.log(files);
     files.forEach(function (file, index) {
         buffer += fs.readFileSync(path.join(__dirname, "../public/stylesheets/less/") + file);
         console.log("Reading Less file to convert: " + path.join(__dirname, "../public/stylesheets/less/") + file);
     });
-
-    // for (var i in files) {
-    //     buffer += fs.readFileSync(path.join(__dirname, "public/stylesheets/less/") + files[i]);
-    //     console.log("Reading Less file to convert: " + path.join(__dirname, "public/stylesheets/less/") + files[i]);
-    // }
-    // console.log("The buffer: " + buffer);
 
     fs.writeFile(path.join(__dirname, "../public/stylesheets/main.less"), buffer, function (err) {
         if (err) {
@@ -44,27 +37,27 @@ var lessCompiler = function () {
                 function(err){
                     console.log("And error occurred during rendering less files. " + err);
                 });
-        // var opts = {
-        //     paths: ["./public/stylesheets/less"],
-        //     outputDir: "./public/stylesheets/css",
-        //     optimization: 1,
-        //     filename: "main.less",
-        //     compress: true,
-        //     sourceMap: true
-        // };
-        // less.render(data, function (err, css) {
-        //     fs.writeFile('./public/stylesheets/css/main.css', css, function (err) {
-        //         if (err) {
-        //             return console.log("Error writing main.css. " + err);
-        //         }
-        //         console.log("Done making main.css!");
-        //         console.log("css = " + css)
-        //
-        //     })
-        // })
+
     });
 
+    wizeupMinify();
 
+    removers();
+};
+
+var wizeupMinify = function() {
+    var input = path.join(__dirname, "../public/stylesheets/css/main.css");
+
+    minifier.on('error', function(err) {
+        console.log("Error minifying CSS!");
+    });
+    minifier.minify(input, null);
+
+};
+
+var removers = function() {
+    fs.unlinkSync(path.join(__dirname, "../public/stylesheets/main.less"));
+    fs.unlinkSync(path.join(__dirname, "../public/stylesheets/css/main.css"));
 };
 
 module.exports = lessCompiler;
