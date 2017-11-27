@@ -29,6 +29,9 @@
         <activity
             android:name=".ProfileActivity"
             android:theme="@style/AppTheme.Profile"/>
+        <activity
+            android:name=".MenuActivity"
+            android:theme="@style/AppTheme.MenuActivity"/>
     </application>
 
 </manifest>
