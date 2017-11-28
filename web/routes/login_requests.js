@@ -39,41 +39,46 @@ router.get('/facebook/callback', passport.authenticate('facebook'), function (re
     res.status(200).send(req.user);
 });
 
+router.post("/auth-login-user-pass",function (req,res){
+    Student.findOne({mail: req.query.email}, function (err, student) {
+        if (err) return next(err);
+        if(req.query.password==student.password || Student.comparePassword(req.query.password,student.password))res.status(200).send({message: "", token: "", student: student});
+        //if(Student.comparePassword(req.query.password,student.password)) res.send(student);
+    });
+});
 
 //local stratagy
 router.use(expressValidator());
 
-router.post("/student", function (req, res) {
-    var Fname = req.body.Fname;
-    var Lname = req.body.Lname;
+router.post("/new-student", function (req, res) {
+    var fname = req.body.fname;
+    var lname = req.body.lname;
     var email = req.body.email;
-    var userName = req.body.userName;
-    var pass1 = req.body.pass1;
-    var pass2 = req.body.pass2;
+    // var userName = req.body.userName;
+    var password = req.body.password;
+    var password_cnfrm = req.body.password_cnfrm;
 
-    req.checkBody("Fname", "First Name is required").notEmpty();
-    req.checkBody("Lname", "Last Name is required").notEmpty();
+    req.checkBody("fname", "First Name is required").notEmpty();
+    req.checkBody("lname", "Last Name is required").notEmpty();
     req.checkBody("email", "Email is required").notEmpty();
     req.checkBody("email", "Email is not valid").isEmail();
-    req.checkBody("userName", "UserName is required").notEmpty();
-    req.checkBody("pass1", "Password is required").notEmpty();
-    req.checkBody("pass2", "Bouth passwords are required").notEmpty();
-    req.checkBody("pass2", "Passwords do not match").equals(req.body.pass1);
+    //req.checkBody("userName", "UserName is required").notEmpty();
+    req.checkBody("password", "Password is required").notEmpty();
+    req.checkBody("password_cnfrm", "Bouth passwords are required").notEmpty();
+    req.checkBody("password_cnfrm", "Passwords do not match").equals(req.body.password);
 
 
     var errors = req.validationErrors();
 
     if (errors) {
-        res.render("/student", {
-            "errors": errors
-        });
+        res.status(400).send("erans error");
     }
     else {
         var newStudent = new Student({
 
-            first_name: Fname,
-            last_name: Lname,
-            display_name: Fname + " " + Lname,
+            first_name: fname,
+            last_name: lname,
+            display_name: fname + " " + lname,
             mail: email,
             about_me: '',
             country: '',
@@ -95,7 +100,7 @@ router.post("/student", function (req, res) {
             facebookid: '',
             accessToken: '',
             googleid: '',
-            password: pass1
+            password: password//encrypt
 
         });
         Student.createStudent(newStudent, function (err, user) {
@@ -121,7 +126,7 @@ router.post("/student", function (req, res) {
             console.log(user);
             Student.findOne({mail: email}, function (err, student) {
                 if (err) return next(err);
-                res.send('/#/auth/local/' + student._id);
+                res.send(student);
             });
 
         });

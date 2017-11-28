@@ -33,38 +33,22 @@ var StudentSchema = new mongoose.Schema({
     googleid:String
 });
 
-
-////////////////////////////// DAMIR'S AUTH:
-// StudentSchema.pre('save', function(next) {
-//     var user = this;
-//     // bcrypt.hash(user.password, /*SALT*/null, null, function(err, hash) {
-//     //     if (err) return next(err);
-//     //     user.password = hash;
-//     //     next();
-//     // });
-// });
-
-StudentSchema.methods.comparePassword = function(password) {
-    // return bcrypt.compareSync(password, this.password);
-    return password == this.password;
-};
-////////////////////////////// END DAMIR'S AUTH
-
-
 module.exports = mongoose.model('Student', StudentSchema);
 
 module.exports.createStudent = function(newStudent, callback) {
     bcrypt.genSalt(10, function(err, salt) {
-        bcrypt.hash(newStudent.password, salt, function(err, hash) {
+        bcrypt.hash(newStudent.password, salt, null, function(err, hash) {
             newStudent.password = hash;
             newStudent.save(callback);
         });
     });
 };
 
-module.exports.comparePassword = function(candidatePassword, hash, callback) {
+module.exports.comparePassword = function(candidatePassword, hash){// ,callback) {
     bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
         if (err) throw err;
-        callback(null, isMatch);
+        //callback(null, isMatch);
+        return true;
     });
 };
+

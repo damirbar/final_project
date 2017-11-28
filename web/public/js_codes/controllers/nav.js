@@ -33,12 +33,12 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
         };
 
         $scope.login = function () {
-            AuthService.auth($scope.user.email, $scope.user.password)
+            AuthService.auth($rootScope.user.mail, $rootScope.user.password)
                 .then(function (data) {
                     console.log("Got " + data + " from login function");
                     data = data.data;
-                    $rootScope.user = data;
-                    $scope.user = data;
+                    // $rootScope.user = data;
+                    // $scope.user = data;
                     console.log(data);
                     $scope.checkLogin();
 
@@ -69,8 +69,13 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
 
             ProfileService.signupStudent($scope.user)
                 .then(function (data) {
+                    console.log(JSON.stringify(data));
                     if (data.success) {
+
+                        $rootScope.user = data.data;
                         $scope.login();
+                        console.log(JSON.stringify(data.data));
+                        $scope.isLogged = true;
                     } else {
                         console.log("An error occurred during sign up!");
                     }
