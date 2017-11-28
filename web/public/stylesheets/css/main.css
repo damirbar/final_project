@@ -1,3 +1,6 @@
+.edit-profile .clickers {
+  cursor: default;
+}
 .home-page {
   background: rgba(255, 222, 143, 0.22);
   color: gray;
@@ -67,11 +70,29 @@ body {
 .modal .modal-dialog .modal-content .modal-container .text {
   text-align: left;
 }
-.modal .modal-dialog .modal-content .modal-container .facebook-signin .fb-btn {
+.modal .modal-dialog .modal-content .modal-container .google-btn {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px;
+  background: #ff5353;
   display: block;
-  margin: auto;
-  margin-top: 2%;
-  margin-bottom: 4%;
+  width: fit-content;
+  border-radius: 6%;
+  margin: 10px auto;
+  cursor: pointer;
+}
+.modal .modal-dialog .modal-content .modal-container .facebook-btn {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px;
+  background: #3018ff;
+  display: block;
+  width: fit-content;
+  border-radius: 6%;
+  margin: 10px auto;
+  cursor: pointer;
 }
 .profile-page .tmp-div {
   margin-top: 5%;

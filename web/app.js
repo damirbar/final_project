@@ -1,10 +1,15 @@
+
 var express = require("express");
 var app = express();
+
 var mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
+
 var path = require("path");
+
 var bodyParser = require("body-parser");
 
+//eran
 var cookieSession = require('cookie-session');
 var passport = require('passport');
 var passportSetup = require('./config/passport-setup');
@@ -12,22 +17,20 @@ var passportSetup = require('./config/passport-setup');
 var Student = require("./schemas/student");
 var Teacher = require("./schemas/teacher");
 
+//shay
+var logger = require('morgan');
 
 //shay
-// const router  = express.Router();
-// var logger = require('morgan');
-// app.use(logger('dev'));
-// require('./routes')(router);
-// app.use('/api/v1', router);
-// require('./routes')(router);
-// app.use('/api/v1', router);
+const router  = express.Router();
+app.use(logger('dev'));
+
 
 
 var teacherRequests = require('./routes/teacher_requests');
 var studentRequests = require('./routes/students_request');
 var coursesRequests = require('./routes/courses_request');
-var uniRequest = require('./routes/uni_requests');
-var departmentRequest = require('./routes/department_request');
+// var uniRequest = require('./routes/uni_requests');
+// var departmentRequest = require('./routes/department_request');
 
 
 app.use(bodyParser.json());
@@ -47,6 +50,11 @@ mongoose.connect(mongoDB, {
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
+
+//shay
+require('./routes/routes')(router);
+app.use('/api/v1', router);
+
 
 
 app.use('/', teacherRequests);

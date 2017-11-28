@@ -1,7 +1,7 @@
 var less = require('less');
 var fs = require('fs');
 var path = require('path');
-var minifier = require('minifier');
+// var minifier = require('minifier');
 
 var lessCompiler = function () {
 
@@ -40,9 +40,9 @@ var lessCompiler = function () {
 
     });
 
-    wizeupMinify();
+    // wizeupMinify();
 
-    removers();
+    // removers();
 };
 
 var wizeupMinify = function() {
