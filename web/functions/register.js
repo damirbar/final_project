@@ -1,38 +1,38 @@
 'use strict';
 
-const user = require('../models/user');
+const student = require('../schemas/student');
 const bcrypt = require('bcryptjs');
 
-exports.registerUser = (name, email, password) => 
+exports.registerUser = (display_name, mail, password) =>
 
-	new Promise((resolve,reject) => {
+new Promise((resolve,reject) => {
 
-	    const salt = bcrypt.genSaltSync(10);
-		const hash = bcrypt.hashSync(password, salt);
+    const salt = bcrypt.genSaltSync(10);
+const hash = bcrypt.hashSync(password, salt);
 
-		const newUser = new user({
+const newStudent = new student({
 
-			name: name,
-			email: email,
-			hashed_password: hash,
-			created_at: new Date()
-		});
+    display_name: display_name,
+    mail: mail,
+    password: hash,
+    register_date: new Date()
+});
 
-		newUser.save()
+newStudent.save()
 
-		.then(() => resolve({ status: 201, message: 'User Registered Sucessfully !' }))
+    .then(() => resolve({ status: 201, message: 'User Registered Sucessfully !' }))
 
-		.catch(err => {
+.catch(err => {
 
-			if (err.code == 11000) {
-						
-				reject({ status: 409, message: 'User Already Registered !' });
+    if (err.code == 11000) {
 
-			} else {
+    reject({ status: 409, message: 'User Already Registered !' });
 
-				reject({ status: 500, message: 'Internal Server Error !' });
-			}
-		});
-	});
+} else {
+
+    reject({ status: 500, message: 'Internal Server Error !' });
+}
+});
+});
 
 

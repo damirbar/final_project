@@ -1,43 +1,43 @@
 'use strict';
 
-const user = require('../models/user');
+const student = require('../schemas/student');
 const bcrypt = require('bcryptjs');
 
-exports.loginUser = (email, password) => 
+exports.loginUser = (mail, password) =>
 
-	new Promise((resolve,reject) => {
+new Promise((resolve,reject) => {
 
-		user.find({email: email})
+    student.find({mail: mail})
 
-		.then(users => {
+    .then(students => {
 
-			if (users.length == 0) {
+    if (students.length == 0) {
 
-				reject({ status: 404, message: 'User Not Found !' });
+    reject({ status: 404, message: 'User Not Found !' });
 
-			} else {
+} else {
 
-				return users[0];
-				
-			}
-		})
+    return students[0];
 
-		.then(user => {
+}
+})
 
-			const hashed_password = user.hashed_password;
+.then(student => {
 
-			if (bcrypt.compareSync(password, hashed_password)) {
+    const hashed_password = student.password;
 
-				resolve({ status: 200, message: email });
+if (bcrypt.compareSync(password, hashed_password)) {
 
-			} else {
+    resolve({ status: 200, message: mail });
 
-				reject({ status: 401, message: 'Invalid Credentials !' });
-			}
-		})
+} else {
 
-		.catch(err => reject({ status: 500, message: 'Internal Server Error !' }));
+    reject({ status: 401, message: 'Invalid Credentials !' });
+}
+})
 
-	});
+.catch(err => reject({ status: 500, message: 'Internal Server Error !' }));
+
+});
 
 	

@@ -6,7 +6,7 @@ var path = require("path");
 var bodyParser = require("body-parser");
 
 var cookieSession = require('cookie-session');
-var passport=require('passport');
+var passport = require('passport');
 var passportSetup = require('./config/passport-setup');
 
 var Student = require("./schemas/student");
@@ -30,7 +30,6 @@ var uniRequest = require('./routes/uni_requests');
 var departmentRequest = require('./routes/department_request');
 
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -51,10 +50,10 @@ db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 
 
 app.use('/', teacherRequests);
-app.use('/',studentRequests);
-app.use('/',coursesRequests);
-app.use('/',uniRequest);
-app.use('/',departmentRequest);
+app.use('/', studentRequests);
+app.use('/', coursesRequests);
+// app.use('/',uniRequest);
+// app.use('/',departmentRequest);
 
 var feedStudents = function (dataArr) {
     for (var i = 0; i < dataArr.length; ++i) {
@@ -84,22 +83,16 @@ var authRouts = require("./routes/login_requests");
 
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000, //one day
-    keys:[keys.session.cookieKey]
+    keys: [keys.session.cookieKey]
 
 }));
 
 // initialize passport
 
-app.use('/auth',authRouts);
+app.use('/auth', authRouts);
 
 
 /////////////////////////
-
-
-
-
-
-
 
 
 app.listen(3000, function () {

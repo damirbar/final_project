@@ -1,19 +1,10 @@
-package com.ariel.wizer;
+package com.ariel.wizer.model;
 
-import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by PC on 14-Nov-17.
- */
-
-public class student {
-
-    @SerializedName("oid")
+public class Student extends User {
 
     private String first_name;
     private String last_name;
-    private String display_name;
-    private String mail;
     private String about_me;
     private String facebook_id;
     private String country;
@@ -28,10 +19,8 @@ public class student {
     private double cred;
     private double fame;
     private String msg;
-    private String register_date;
     private String last_update;
     private String notifications;
-
 
 
     public String getFirst_name() {
@@ -48,22 +37,6 @@ public class student {
 
     public void setLast_name(String last_name) {
         this.last_name = last_name;
-    }
-
-    public String getDisplay_name() {
-        return display_name;
-    }
-
-    public void setDisplay_name(String display_name) {
-        this.display_name = display_name;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
     }
 
     public String getAbout_me() {
@@ -176,14 +149,6 @@ public class student {
 
     public void setMsg(String msg) {
         this.msg = msg;
-    }
-
-    public String getRegister_date() {
-        return register_date;
-    }
-
-    public void setRegister_date(String register_date) {
-        this.register_date = register_date;
     }
 
     public String getLast_update() {

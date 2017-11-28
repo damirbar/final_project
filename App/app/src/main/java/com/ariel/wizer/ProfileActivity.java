@@ -70,13 +70,13 @@ public class ProfileActivity extends AppCompatActivity implements ChangePassword
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mToken = mSharedPreferences.getString(Constants.TOKEN,"");
-        mEmail = mSharedPreferences.getString(Constants.EMAIL,"");
+        mEmail = mSharedPreferences.getString(Constants.MAIL,"");
     }
 
     private void logout() {
 
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(Constants.EMAIL,"");
+        editor.putString(Constants.MAIL,"");
         editor.putString(Constants.TOKEN,"");
         editor.apply();
         finish();
@@ -87,7 +87,7 @@ public class ProfileActivity extends AppCompatActivity implements ChangePassword
         ChangePasswordDialog fragment = new ChangePasswordDialog();
 
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.EMAIL, mEmail);
+        bundle.putString(Constants.MAIL, mEmail);
         bundle.putString(Constants.TOKEN,mToken);
         fragment.setArguments(bundle);
 
@@ -105,9 +105,9 @@ public class ProfileActivity extends AppCompatActivity implements ChangePassword
     private void handleResponse(User user) {
 
         mProgressbar.setVisibility(View.GONE);
-        mTvName.setText(user.getName());
-        mTvEmail.setText(user.getEmail());
-        mTvDate.setText(user.getCreated_at());
+        mTvName.setText(user.getDisplayName());
+        mTvEmail.setText(user.getMail());
+        mTvDate.setText(user.getRegisterDate());
     }
 
     private void handleError(Throwable error) {

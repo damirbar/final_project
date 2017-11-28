@@ -1,5 +1,14 @@
 wizerApp.service('AuthService', function($http, AuthToken, $rootScope) {
 
+
+    this.googleLogin = function() {
+        return $http.get("/auth/google");
+    };
+
+    this.facebookLogin = function() {
+        return $http.get("/auth/facebook");
+    };
+
     // "Login" function
     this.auth = function(email, password) {
         return $http.post('/auth-login-user-pass?email=' + email +

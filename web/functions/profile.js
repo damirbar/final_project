@@ -1,15 +1,15 @@
 'use strict';
 
-const user = require('../models/user');
+const student = require('../schemas/student');
 
-exports.getProfile = email => 
-	
-	new Promise((resolve,reject) => {
+exports.getProfile = mail =>
 
-		user.find({ email: email }, { name: 1, email: 1, created_at: 1, _id: 0 })
+new Promise((resolve,reject) => {
 
-		.then(users => resolve(users[0]))
+    student.find({ mail: mail }, { display_name: 1, mail: 1, register_date: 1, _id: 0 })
 
-		.catch(err => reject({ status: 500, message: 'Internal Server Error !' }))
+    .then(students => resolve(students[0]))
 
-	});
+.catch(err => reject({ status: 500, message: 'Internal Server Error !' }))
+
+});

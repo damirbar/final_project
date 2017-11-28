@@ -1,18 +1,11 @@
 package com.ariel.wizer;
 
-import com.mongodb.BasicDBObject;
+import com.ariel.wizer.model.Student;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.mongodb.WriteConcern;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+
 import static com.mongodb.client.model.Filters.eq;
-
-import org.bson.Document;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by PC on 14-Nov-17.
@@ -51,7 +44,7 @@ public class common {
         return mongo;
     }
 
-    public void getStudent(student student) {
+    public void getStudent(Student student) {
 
         DB db;
         //MongoCollection<Document> coll = db.getCollection("students");
@@ -64,8 +57,8 @@ public class common {
     }
 
     public static void main(String args[]) {
-        student s = new student();
+        Student s = new Student();
         System.out.println("test");
-        System.out.println(s.);
+        //System.out.println(s.);
     }
 }

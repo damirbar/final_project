@@ -1,151 +1,151 @@
 'use strict';
 
-const user = require('../models/user');
+const student = require('../schemas/student');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const randomstring = require("randomstring");
 const config = require('../config/config.json');
 
-exports.changePassword = (email, password, newPassword) => 
+exports.changePassword = (mail, password, newPassword) =>
 
-	new Promise((resolve, reject) => {
+new Promise((resolve, reject) => {
 
-		user.find({ email: email })
+    student.find({ mail: mail })
 
-		.then(users => {
+    .then(students => {
 
-			let user = users[0];
-			const hashed_password = user.hashed_password;
+    let student = students[0];
+const hashed_password = student.password;
 
-			if (bcrypt.compareSync(password, hashed_password)) {
+if (bcrypt.compareSync(password, hashed_password)) {
 
-				const salt = bcrypt.genSaltSync(10);
-				const hash = bcrypt.hashSync(newPassword, salt);
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(newPassword, salt);
 
-				user.hashed_password = hash;
+    student.password = hash;
 
-				return user.save();
+    return student.save();
 
-			} else {
+} else {
 
-				reject({ status: 401, message: 'Invalid Old Password !' });
-			}
-		})
+    reject({ status: 401, message: 'Invalid Old Password !' });
+}
+})
 
-		.then(user => resolve({ status: 200, message: 'Password Updated Sucessfully !' }))
+.then(student => resolve({ status: 200, message: 'Password Updated Sucessfully !' }))
 
-		.catch(err => reject({ status: 500, message: 'Internal Server Error !' }));
+.catch(err => reject({ status: 500, message: 'Internal Server Error !' }));
 
-	});
+});
 
-exports.resetPasswordInit = email =>
+exports.resetPasswordInit = mail =>
 
-	new Promise((resolve, reject) => {
+new Promise((resolve, reject) => {
 
-		const random = randomstring.generate(8);
+    const random = randomstring.generate(8);
 
-		user.find({ email: email })
+student.find({ mail: mail })
 
-		.then(users => {
+    .then(students => {
 
-			if (users.length == 0) {
+    if (students.length == 0) {
 
-				reject({ status: 404, message: 'User Not Found !' });
+    reject({ status: 404, message: 'User Not Found !' });
 
-			} else {
+} else {
 
-				let user = users[0];
+    let student = students[0];
 
-				const salt = bcrypt.genSaltSync(10);
-				const hash = bcrypt.hashSync(random, salt);
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(random, salt);
 
-				user.temp_password = hash;
-				user.temp_password_time = new Date();
+    student.country = hash;
+    student.last_update = new Date();
 
-				return user.save();
-			}
-		})
+    return student.save();
+}
+})
 
-		.then(user => {
+.then(student => {
 
-			const transporter = nodemailer.createTransport(`smtps://${config.email}:${config.password}@smtp.gmail.com`);
- 
-			const mailOptions = {
+    const transporter = nodemailer.createTransport(`smtps://${config.email}:${config.password}@smtp.gmail.com`);
 
-    			from: `"${config.name}" <${config.email}>`,
-    			to: email,  
-    			subject: 'Reset Password Request ', 
-    			html: `Hello ${user.name},<br><br>
+const mailOptions = {
+
+    from: `"${config.name}" <${config.email}>`,
+    to: mail,
+    subject: 'Reset Password Request ',
+    html: `Hello ${student.display_name},<br><br>
     			&nbsp;&nbsp;&nbsp;&nbsp; Your reset password token is <b>${random}</b>. 
-    			If you are viewing this mail from a Android Device click this <a href = "http://learn2crack/${random}">link</a>. 
+    			If you are viewing this mail from a Android Device click this <a href = "http://wizer/${random}">link</a>. 
     			The token is valid for only 2 minutes.<br><br>
     			Thanks,<br>
-    			Learn2Crack.`
-    		
-			};
+    			wizer.`
 
-			return transporter.sendMail(mailOptions);
+};
 
-		})
+return transporter.sendMail(mailOptions);
 
-		.then(info => {
+})
 
-			console.log(info);
-			resolve({ status: 200, message: 'Check mail for instructions' })
-		})
+.then(info => {
 
-		.catch(err => {
+    console.log(info);
+resolve({ status: 200, message: 'Check mail for instructions' })
+})
 
-			console.log(err);
-			reject({ status: 500, message: 'Internal Server Error !' });
+.catch(err => {
 
-		});
-	});
+    console.log(err);
+reject({ status: 500, message: 'Internal Server Error !' });
 
-exports.resetPasswordFinish = (email, token, password) => 
+});
+});
 
-	new Promise((resolve, reject) => {
+exports.resetPasswordFinish = (mail, token, password) =>
 
-		user.find({ email: email })
+new Promise((resolve, reject) => {
 
-		.then(users => {
+    student.find({ mail: mail })
 
-			let user = users[0];
+    .then(students => {
 
-			const diff = new Date() - new Date(user.temp_password_time); 
-			const seconds = Math.floor(diff / 1000);
-			console.log(`Seconds : ${seconds}`);
+    let student = students[0];
 
-			if (seconds < 120) {
+const diff = new Date() - new Date(student.last_update);
+const seconds = Math.floor(diff / 1000);
+console.log(`Seconds : ${seconds}`);
 
-				return user;
+if (seconds < 120) {
 
-			} else {
+    return student;
 
-				reject({ status: 401, message: 'Time Out ! Try again' });
-			}
-		})
+} else {
 
-		.then(user => {
+    reject({ status: 401, message: 'Time Out ! Try again' });
+}
+})
 
-			if (bcrypt.compareSync(token, user.temp_password)) {
+.then(student => {
 
-				const salt = bcrypt.genSaltSync(10);
-				const hash = bcrypt.hashSync(password, salt);
-				user.hashed_password = hash;
-				user.temp_password = undefined;
-				user.temp_password_time = undefined;
+    if (bcrypt.compareSync(token, student.country)) {
 
-				return user.save();
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+    student.password = hash;
+    student.country = undefined;
+    student.last_update = undefined;
 
-			} else {
+    return student.save();
 
-				reject({ status: 401, message: 'Invalid Token !' });
-			}
-		})
+} else {
 
-		.then(user => resolve({ status: 200, message: 'Password Changed Sucessfully !' }))
+    reject({ status: 401, message: 'Invalid Token !' });
+}
+})
 
-		.catch(err => reject({ status: 500, message: 'Internal Server Error !' }));
+.then(student => resolve({ status: 200, message: 'Password Changed Sucessfully !' }))
 
-	});
+.catch(err => reject({ status: 500, message: 'Internal Server Error !' }));
+
+});

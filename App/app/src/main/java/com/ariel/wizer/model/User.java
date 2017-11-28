@@ -3,35 +3,35 @@ package com.ariel.wizer.model;
 
 public class User {
 
-    private String name;
-    private String email;
+    private String display_name;
+    private String mail;
     private String password;
-    private String created_at;
+    private String register_date;
     private String newPassword;
     private String token;
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDisplayName(String name) {
+        this.display_name = name;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setMail(String email) {
+        this.mail = email;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getDisplayName() {
+        return display_name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getMail() {
+        return mail;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getRegisterDate() {
+        return register_date;
     }
 
     public void setNewPassword(String newPassword) {
