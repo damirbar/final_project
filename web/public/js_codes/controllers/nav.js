@@ -79,25 +79,29 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
         };
 
         $scope.googleLogin = function () {
-            // AuthService.googleLogin()
-            //     .then(function (data) {
-            //         if (data.data.user) {
-            //             console.log("Login succeeded with Google! The user is: " + JSON.stringify(data.data.user));
-            //             $rootScope.user = data.data.user;
-            //             $scope.isLogged = true;
-            //         } else {
-            //             console.log("Error logging in with Google! " + JSON.stringify(data));
-            //             $scope.isLogged = false;
-            //         }
-            //
-            //     });
             console.log("Clicked google login");
-            $http.get("/auth/google")
-                .then(function(data) {
-                    console.log("Successsssssssssssssss");
-                }, function(err) {
-                    console.log("An error occurred in googleLogin()! " + JSON.stringify(err));
-                });
+            AuthService.googleLogin();
+                // .then(function (data) {
+                //     if (data.data.user) {
+                //         console.log("Login succeeded with Google! The user is: " + JSON.stringify(data.data.user));
+                //         $rootScope.user = data.data.user;
+                //         $scope.isLogged = true;
+                //     } else {
+                //         console.log("Error logging in with Google! " + JSON.stringify(data));
+                //         $scope.isLogged = false;
+                //     }
+                //
+                // })
+                // .catch(function(err) {
+                //     console.log("An error occurred! " + JSON.stringify(err));
+                // });
+            // console.log("Clicked google login");
+            // $http.get("/auth/google")
+            //     .then(function(data) {
+            //         console.log("Successsssssssssssssss");
+            //     }, function(err) {
+            //         console.log("An error occurred in googleLogin()! " + JSON.stringify(err));
+            //     });
 
         };
         $scope.onSignIn = function(googleUser) {

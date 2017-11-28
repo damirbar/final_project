@@ -2,7 +2,8 @@ wizerApp.service('AuthService', function($http, AuthToken, $rootScope) {
 
 
     this.googleLogin = function() {
-        return $http.get("/auth/google");
+        //return $http.get("http://localhost:3000/auth/google");
+        $http.get("/auth/google");
     };
 
     this.facebookLogin = function() {
