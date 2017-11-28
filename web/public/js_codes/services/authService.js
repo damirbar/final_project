@@ -12,7 +12,7 @@ wizerApp.service('AuthService', function($http, AuthToken, $rootScope) {
 
     // "Login" function
     this.auth = function(email, password) {
-        return $http.post('/auth-login-user-pass?email=' + email +
+        return $http.post('/auth/auth-login-user-pass?email=' + email +
         '&password=' + password)
             .then(function(data) {
                 console.log(data.data.msg);
