@@ -26,10 +26,10 @@ wizerApp.service('AuthService', function($http, AuthToken, $rootScope) {
 
     // Auth.isLoggedIn()
     this.isLoggedIn = function() {
-        // console.log("Sending POST to /get-user-by-token");
+        // console.log("Sending POST to /auth/get-user-by-token");
         if (AuthToken.getToken()) {
             // var token = AuthToken.getToken();
-            // return $http.get('/get-user-by-token?token=' + token);
+            // return $http.get('/auth/get-user-by-token?token=' + token);
                 // .then(function(data) {
                 //     $rootScope.user = data.data.student;
                 //     console.log(data.data);
@@ -44,7 +44,7 @@ wizerApp.service('AuthService', function($http, AuthToken, $rootScope) {
 
     this.getUserByToken = function() {
         var token = AuthToken.getToken();
-        return $http.get('/get-user-by-token?token=' + token);
+        return $http.get('/auth/get-user-by-token?token=' + token);
     };
 
 
