@@ -42,7 +42,9 @@ router.get('/facebook/callback', passport.authenticate('facebook'), function (re
 router.post("/auth-login-user-pass",function (req,res){
     Student.findOne({mail: req.query.email}, function (err, student) {
         if (err) return next(err);
-        if(req.query.password==student.password || Student.comparePassword(req.query.password,student.password))res.status(200).send({message: "", token: "", student: student});
+        if(req.query.password==student.password || Student.comparePassword(req.query.password,student.password)) {
+            res.status(200).send({message: "", token: "", student: student});
+        }
         //if(Student.comparePassword(req.query.password,student.password)) res.send(student);
     });
 });
@@ -107,8 +109,8 @@ router.post("/new-student", function (req, res) {
             if (err) {
                 if (err.name === 'MongoError' && err.code === 11000) {
                     // Duplicate username
-                    console.log('User ' + Fname + " cannot be added " + email + ' already exists!');
-                    return res.status(500).send('User ' + Fname + " cannot be added " + email + ' already exists!');
+                    console.log(email + ' already exists!');
+                    return res.status(500).send(email + ' already exists!');
                 }
                 if (err.name === 'ValidationError') {
                     //ValidationError
