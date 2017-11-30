@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var path = require("path");
 
-var SystemFile = require("../schemas/system_file");
+var SystemFile = require("../schemas/file");
 
 router.post("/file", function (req, res) {
     var file = new SystemFile(req.body);

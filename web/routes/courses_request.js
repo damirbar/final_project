@@ -82,6 +82,22 @@ router.get('/courses/search-by-name', function(req,res,next){
 });
 
 
+
+router.get('/courses/get-fs', function(req,res){
+        var course_id = req.query.id;
+        console.log("Got " + course_id);
+        Course.findOne({course_no: course_id},function(err,course){
+            console.log("here");
+           if(err) throw err;
+           console.log(course);
+           res.status(200).send(course);
+        });
+
+
+
+});
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 module.exports = router;
