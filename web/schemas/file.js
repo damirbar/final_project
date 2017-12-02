@@ -1,12 +1,14 @@
 var mongoose = require('mongoose');
 
 var fileSchema = new mongoose.Schema({
-
-   id:{type: String,required:true},
+   external_id:{type: String,required:true},
+    course_id:{type: String,required:true},
    url: {type: String,required: true},
    type: String,
-   name: String
-
+   name: String,
+    date_uploaded: Date,
+    date_modified: Date,
+    hidden: Number
 });
 
-module.export = mongoose.model('File',fileSchema);
+module.exports = mongoose.model('File',fileSchema);
