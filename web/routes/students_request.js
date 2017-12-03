@@ -40,62 +40,62 @@ var Student = require("../schemas/student");
 //     });
 // });
 
-router.post("/new-student", function(req, res){
-
-    // var first_name = req.query.first_name;
-    // var last_name = req.query.last_name;
-    // var mail = req.query.email;
-    // var pass = req.query.pass;
-    var first_name = req.body.fname;
-    var last_name = req.body.lname;
-    var mail = req.body.email;
-    var pass = req.body.password;
-
-    console.log("The query I got in new-student: " +
-    first_name + ", " + last_name + ", " + mail
-    + ", " + pass);
-
-    // if (! ( first_name && last_name && mail && pass ) ) {
-    //     console.log("Error posting to \"/new-student\"! Fields missing");
-    //     return;
-    // }
-
-
-    var reg_student = new Student({
-        first_name: first_name,
-        last_name: last_name,
-        mail: mail,
-        password: pass
-    });
-
-    reg_student.save(function (err, student) {
-        if (err) {
-            if (err.name === 'MongoError' && err.code === 11000) {
-                // Duplicate username
-                console.log('User ' + reg_student.first_name + " cannot be added " + reg_student.mail + ' already exists!');
-                return res.status(500).send('User ' + reg_student.first_name + " cannot be added " + reg_student.mail + ' already exists!');
-            }
-            if (err.name === 'ValidationError') {
-                //ValidationError
-                var str = "";
-                for (field in err.errors) {
-                    console.log("you must provide: " + field + " field");
-                    str += "you must provide: " + field + " field  ";
-                }
-                return res.status(500).send(str);
-            }
-            // Some other error
-            console.log(err);
-            return res.status(500).send(err);
-            // console.log(err);
-        }
-        res.status(200).send({success: true, msg: "successfully added " + reg_student.first_name + " to db"});
-        console.log("successfully added " + reg_student.first_name + " to db");
-    });
-
-    // res.send("some response");
-
-});
+// router.post("/new-student", function(req, res){
+//
+//     // var first_name = req.query.first_name;
+//     // var last_name = req.query.last_name;
+//     // var mail = req.query.email;
+//     // var pass = req.query.pass;
+//     var first_name = req.body.fname;
+//     var last_name = req.body.lname;
+//     var mail = req.body.email;
+//     var pass = req.body.password;
+//
+//     console.log("The query I got in new-student: " +
+//     first_name + ", " + last_name + ", " + mail
+//     + ", " + pass);
+//
+//     // if (! ( first_name && last_name && mail && pass ) ) {
+//     //     console.log("Error posting to \"/new-student\"! Fields missing");
+//     //     return;
+//     // }
+//
+//
+//     var reg_student = new Student({
+//         first_name: first_name,
+//         last_name: last_name,
+//         mail: mail,
+//         password: pass
+//     });
+//
+//     reg_student.save(function (err, student) {
+//         if (err) {
+//             if (err.name === 'MongoError' && err.code === 11000) {
+//                 // Duplicate username
+//                 console.log('User ' + reg_student.first_name + " cannot be added " + reg_student.mail + ' already exists!');
+//                 return res.status(500).send('User ' + reg_student.first_name + " cannot be added " + reg_student.mail + ' already exists!');
+//             }
+//             if (err.name === 'ValidationError') {
+//                 //ValidationError
+//                 var str = "";
+//                 for (field in err.errors) {
+//                     console.log("you must provide: " + field + " field");
+//                     str += "you must provide: " + field + " field  ";
+//                 }
+//                 return res.status(500).send(str);
+//             }
+//             // Some other error
+//             console.log(err);
+//             return res.status(500).send(err);
+//             // console.log(err);
+//         }
+//         res.status(200).send({success: true, msg: "successfully added " + reg_student.first_name + " to db"});
+//         console.log("successfully added " + reg_student.first_name + " to db");
+//     });
+//
+//     // res.send("some response");
+//
+// });
 
 
 

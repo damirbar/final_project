@@ -31,6 +31,7 @@ var studentRequests = require('./routes/students_request');
 var coursesRequests = require('./routes/courses_request');
 // var uniRequest = require('./routes/uni_requests');
 // var departmentRequest = require('./routes/department_request');
+var fileRequests = require('./routes/file_requests');
 
 
 app.use(bodyParser.json());
@@ -56,12 +57,13 @@ require('./routes/routes')(router);
 app.use('/api/v1', router);
 
 
-
 app.use('/', teacherRequests);
 app.use('/', studentRequests);
 app.use('/', coursesRequests);
+app.use('/', fileRequests);
 // app.use('/',uniRequest);
 // app.use('/',departmentRequest);
+
 
 var feedStudents = function (dataArr) {
     for (var i = 0; i < dataArr.length; ++i) {

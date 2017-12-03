@@ -3,7 +3,7 @@ var router = express.Router();
 var path = require("path");
 
 var Course = require("../schemas/course");
-
+var File = require("../schemas/file");
 
 router.post("/courses", function (req, res) {
     var course = new Course(req.body);
@@ -79,6 +79,27 @@ router.get('/courses/search-by-name', function(req,res,next){
             return res.json("No courses available");
         }
     });
+});
+
+
+
+router.get('/courses/get-file-system', function(req,res){
+        var id = req.query.id;
+        console.log("Got " + id);
+        Course.findOne({_id: id},function(err,course){
+            console.log("finding one");
+           if(err) throw err;
+           File.find({},function(err,filesys){
+               console.log("finding");
+               if(err) throw err;
+               console.log("filtering");
+                var ans = filesys.filter(function(file){
+                    return file.course_id === id;
+                });
+               console.log(ans);
+               res.status(200).send(ans);
+           });
+        });
 });
 
 

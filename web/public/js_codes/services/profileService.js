@@ -40,18 +40,19 @@ wizerApp.service('ProfileService', function($http) {
 
         console.log("Signup function activated!");
 
-        return $http.post("/new-student", student)
+        return $http.post("/auth/new-student", student)
             .then(function(data) {
                 console.log("Successfully sent post with the query");
-                if (data.data.success) {
+                if (data.data) {
                     return {success: true, data: data.data};
                 } else {
                     return {success: false, data: data.data};
                 }
                 // return data.data;
             })
-            .catch(function() {
-                console.log("An error occurred in singup function");
+            .catch(function(err) {
+                console.log("An error occurred in singup function :" + JSON.stringify(err));
+
                 return {error: "Error"};
             });
 
