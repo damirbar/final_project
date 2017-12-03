@@ -8,8 +8,8 @@ var CourseSchema = new mongoose.Schema({
     naz: Number,
     creation_date: Date,
     last_update: Date,
-    file_system:Array,
-    students:Array,
+    file_system: Array,
+    students: Array,
     notifications: Array,
     msg: Array,
     hidden: Number
