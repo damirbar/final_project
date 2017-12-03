@@ -36,7 +36,6 @@ router.post("/courses", function (req, res) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-
 router.get('/courses', function(req,res,next){
     var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     Course.find({}, function(err,courses){
@@ -52,8 +51,6 @@ router.get('/courses', function(req,res,next){
         }
     });
 });
-
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -83,7 +80,7 @@ router.get('/courses/search-by-name', function(req,res,next){
 
 
 
-router.get('/courses/get-file-system', function(req,res){
+router.get('/courses/file-system', function(req,res){
         var id = req.query.id;
         console.log("Got " + id);
         Course.findOne({_id: id},function(err,course){
@@ -102,6 +99,40 @@ router.get('/courses/get-file-system', function(req,res){
         });
 });
 
+router.post('/courses/upload-file',function(req,res){
+    var course_id = req.query.course_id;
+    var file = new File(req.body);
+    file.course_id = course_id;
+    file.save(function (err){
+        if (err) {
+            if (err.name === 'MongoError' && err.code === 11000) {
+                // Duplicate username
+                console.log('Failed adding file Error 11000 ' + file.name);
+                return res.status(500).send('Failed adding course Error 11000 ' + file.name);
+            }
+
+            if (err.name === 'ValidationError') {
+                //ValidationError
+                for (field in err.errors) {
+                    console.log("Validation Error!");
+                    return res.status(500).send("validation Error!");
+                }
+            }
+            // Some other error
+            console.log(err);
+            return res.status(500).send(err);
+        }
+        res.send("successfully added " + file.name + " to db");
+        console.log("successfully added " + file.name + " to db");
+    });
+});
+
+
+router.get('/courses/file-system/download-file',function(req,res){
+        var file_id = req.query.f_id;
+        var course_id
+
+});
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
