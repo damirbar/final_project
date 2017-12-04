@@ -39,7 +39,7 @@ module.exports = router => {
 
     router.post('/users', (req, res) => {
 
-        const name = req.body.displayName;
+        const name = req.body.display_name;
     const mail = req.body.mail;
     const password = req.body.password;
 

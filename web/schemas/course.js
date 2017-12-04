@@ -1,19 +1,17 @@
 var mongoose = require('mongoose');
 var CourseSchema = new mongoose.Schema({
-    course_no:Number,
+    internal_id: Number,
     name: String,
-    teacher: {},
-    students: Array,
-    fs: {},
-    location: {},
-    qa: {},
-    quiz: {},
-    test: {},
-    ex: {},
+    department_id: String,
+    teacher_id:String,
+    location: String,
     naz: Number,
-    msg: {},
-    register_date: Date,
+    creation_date: Date,
     last_update: Date,
-    notifications: Array
+    file_system:Array,
+    students:Array,
+    notifications: Array,
+    msg: Array,
+    hidden: Number
 });
 module.exports = mongoose.model('Course', CourseSchema);
