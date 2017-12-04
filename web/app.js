@@ -62,7 +62,7 @@ app.use('/', studentRequests);
 app.use('/', coursesRequests);
 app.use('/', fileRequests);
 // app.use('/',uniRequest);
-app.use('/',departmentRequest);
+//app.use('/',departmentRequest);
 
 
 var feedStudents = function (dataArr) {
@@ -108,5 +108,9 @@ app.use('/auth', authRouts);
 app.listen(3000, function () {
     console.log("listening...");
 });
+
+
+
+//eran!!!
 
 
