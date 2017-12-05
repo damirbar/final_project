@@ -129,9 +129,14 @@ router.post('/courses/upload-file',function(req,res){
 
 
 router.get('/courses/file-system/download-file',function(req,res){
-        var file_id = req.query.f_id;
-        var course_id
+        var file_id = req.query.file_id;
+        var course_id = req.query.course_id;
 
+        File.findOne({_id:file_id,course_id:course_id},function (err,file) {
+                    if(err) throw err;
+                    console.log("found " + file.url);
+                    res.status(200).send(file.url);
+        });
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////////
