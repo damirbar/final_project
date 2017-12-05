@@ -5,7 +5,7 @@ var path = require("path");
 var Course = require("../schemas/course");
 var File = require("../schemas/file");
 
-router.post("/courses", function (req, res) {
+router.post("/add-course", function (req, res) {
     var course = new Course(req.body);
     course.save(function (err) {
         if (err) {
@@ -36,7 +36,7 @@ router.post("/courses", function (req, res) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-router.get('/courses', function(req,res,next){
+router.get('/get-all-courses', function(req,res,next){
     var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     Course.find({}, function(err,courses){
         if(err) {
@@ -55,7 +55,7 @@ router.get('/courses', function(req,res,next){
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 
-router.get('/courses/search-by-name', function(req,res,next){
+router.get('/search-by-name', function(req,res,next){
 
     var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     var course_name = req.query.course_name;
@@ -80,7 +80,7 @@ router.get('/courses/search-by-name', function(req,res,next){
 
 
 
-router.get('/courses/file-system', function(req,res){
+router.get('/file-system', function(req,res){
         var id = req.query.id;
         console.log("Got " + id);
         Course.findOne({_id: id},function(err,course){
@@ -99,7 +99,7 @@ router.get('/courses/file-system', function(req,res){
         });
 });
 
-router.post('/courses/upload-file',function(req,res){
+router.post('/upload-file',function(req,res){
     var course_id = req.query.course_id;
     var file = new File(req.body);
     file.course_id = course_id;
@@ -128,7 +128,7 @@ router.post('/courses/upload-file',function(req,res){
 });
 
 
-router.get('/courses/file-system/download-file',function(req,res){
+router.get('/file-system/download-file',function(req,res){
         var file_id = req.query.file_id;
         var course_id = req.query.course_id;
 

@@ -34,15 +34,4 @@ router.post("/teacher", function (req, res) {
 
 
 
-router.get("/", function (req, res) {
-    console.log(req.headers["x-forwarded-for"] || req.connection.remoteAddress);
-    res.sendFile(path.join(__dirname + "/../index.html"));
-});
-
-router.get("/teacher", function (req, res) {
-    res.sendFile(path.join(__dirname + "/../TestTeacherPage.html"));
-});
-
-
-
 module.exports = router;
