@@ -40,16 +40,22 @@ router.get('/facebook/callback', passport.authenticate('facebook'), function (re
 });
 
 router.post("/auth-login-user-pass",function (req,res){
+    console.log("Got a login request from " + req.query.email);
     Student.findOne({mail: req.query.email}, function (err, student) {
         if (err) return next(err);
         if(req.query.password==student.password || Student.comparePassword(req.query.password,student.password))
         {
+            console.log("Found the user " + req.query.email);
             var token = jwt.sign(req.query.email, "eranSecret", {
                // expiresInMinutes: 1440 // expires in 24 hours
             });
             console.log(token);
             //student.token=token;
             res.status(200).send({message: "new student", token: token, student: student});
+        } else {
+            console.log("An error occurred!");
+            console.log("Your pass: " + req.query.password
+            + ",\nThe expected encrypted pass: " + student.password);
         }
         //if(Student.comparePassword(req.query.password,student.password)) res.send(student);
     });
