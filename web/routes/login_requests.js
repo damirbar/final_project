@@ -5,6 +5,8 @@ var expressValidator = require('express-validator');
 var Student = require("../schemas/student");
 var jwt =require('jsonwebtoken');
 
+var bcrypt = require('bcrypt-nodejs');
+
 router.get('/login', function (req, res) {
     res.sendFile(path.join(__dirname + "/../login.html"));
 });
@@ -43,6 +45,7 @@ router.post("/auth-login-user-pass",function (req,res){
     console.log("Got a login request from " + req.query.email);
     Student.findOne({mail: req.query.email}, function (err, student) {
         if (err) return next(err);
+       // if(req.query.password==student.password || Student.comparePassword(req.query.password,student.password))
         if(req.query.password==student.password || Student.comparePassword(req.query.password,student.password))
         {
             console.log("Found the user " + req.query.email);
