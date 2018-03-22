@@ -9,7 +9,7 @@ var Session = require("../schemas/session");
 router.get("/get-students-count",function (req, res, next) {
     var id = req.query.id;
 
-    Session.findOne({_id: id}, function (err, sess) {
+    Session.findOne({internal_id: id}, function (err, sess) {
         if (err) return next(err);
 
         res.json(sess.students.length);
@@ -25,7 +25,7 @@ router.get("/change-val",function (req, res, next) { // Expect 0 or 1
     // Need to check what is the student's rating value!
     // We can't allow the user to change the rating more than one up or one down.
 
-    Session.findOne({_id: id}, function (err, sess) {
+    Session.findOne({internal_id: id}, function (err, sess) {
         if (err) return next(err);
 
         sess.curr_rating = (val == 1 ? (sess.curr_rating + 1) : (sess.curr_rating - 1));
