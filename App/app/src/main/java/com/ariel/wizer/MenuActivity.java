@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import com.ariel.wizer.fragments.ConnectSessionFragment;
 import com.ariel.wizer.utils.Constants;
 
 import com.ariel.wizer.model.Response;
@@ -18,31 +20,6 @@ import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.NetworkUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.io.IOException;
-
-import retrofit2.adapter.rxjava.HttpException;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
-
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.ariel.wizer.fragments.ChangePasswordDialog;
-import com.ariel.wizer.model.Response;
-import com.ariel.wizer.model.User;
-import com.ariel.wizer.network.NetworkUtil;
-import com.ariel.wizer.utils.Constants;
 
 import java.io.IOException;
 
@@ -83,7 +60,7 @@ public class MenuActivity extends AppCompatActivity  {
                         Fragment selectedFragment = null;
                         switch (item.getItemId()) {
                             case R.id.action_item1:
-                                selectedFragment = ItemOneFragment.newInstance();
+                                selectedFragment = ConnectSessionFragment.newInstance();
                                 break;
                             case R.id.action_item2:
                                 selectedFragment = ItemTwoFragment.newInstance();
@@ -101,7 +78,7 @@ public class MenuActivity extends AppCompatActivity  {
 
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, ItemOneFragment.newInstance());
+        transaction.replace(R.id.frame_layout, ConnectSessionFragment.newInstance());
         transaction.commit();
 
         //Used to select an item programmatically

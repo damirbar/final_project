@@ -5,6 +5,25 @@ var mongoose = require("mongoose");
 
 var Session = require("../schemas/session");
 
+router.post("/connect-session",function (req, res) {
+
+    const id = req.body.internal_id;
+
+    if (!id || !id.trim()) {
+
+        res.status(500).json({message: 'Invalid Request !'});
+
+    } else {
+
+        Session.findOne({internal_id: id}, function (err, sess) {
+            if (sess) {
+                return res.status(200).json({message: 'Welcome to Class !'});
+            }
+            res.status(500).json({message: 'Session Not Found !'});
+
+        });
+    }
+});
 
 router.get("/get-students-count",function (req, res, next) {
     var id = req.query.id;
@@ -12,9 +31,8 @@ router.get("/get-students-count",function (req, res, next) {
     Session.findOne({internal_id: id}, function (err, sess) {
         if (err) return next(err);
 
-        res.json(sess.students.length);
+        res.status(200).json({message: sess.curr_rating});
     });
-
 });
 
 router.get("/change-val",function (req, res, next) { // Expect 0 or 1

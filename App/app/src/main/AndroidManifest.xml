@@ -10,28 +10,33 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:theme="@style/AppTheme.LoginRegister"
-            android:launchMode="singleTask">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.LoginRegister">
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="http"
-                    android:host="wizer" />
-
+                <data
+                    android:host="wizer"
+                    android:scheme="http" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ProfileActivity"
-            android:theme="@style/AppTheme.Profile"/>
+            android:theme="@style/AppTheme.Profile" />
         <activity
             android:name=".MenuActivity"
-            android:theme="@style/AppTheme.MenuActivity"/>
+            android:theme="@style/AppTheme.MenuActivity" />
+        <activity android:name=".SessionActivity"></activity>
     </application>
 
 </manifest>
