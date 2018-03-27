@@ -113,7 +113,7 @@ module.exports = router => {
 
         password.resetPasswordInit(mail)
 
-            .then(result => res.status(result.status).json({ message: result.message }))
+    .then(result => res.status(result.status).json({ message: result.message }))
 
     .catch(err => res.status(err.status).json({ message: err.message }));
 

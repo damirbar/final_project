@@ -1,5 +1,5 @@
 
-package com.ariel.wizer;
+package com.ariel.wizer.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.ariel.wizer.fragments.ChangePasswordDialog;
+import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.NetworkUtil;
@@ -27,9 +27,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-public class ItemThreeFragment extends Fragment implements ChangePasswordDialog.Listener {
+public class ProfileFragment extends Fragment  {
 
-    public static final String TAG = ItemThreeFragment.class.getSimpleName();
+    public static final String TAG = ProfileFragment.class.getSimpleName();
 
     private TextView mTvName;
     private TextView mTvEmail;
@@ -45,8 +45,8 @@ public class ItemThreeFragment extends Fragment implements ChangePasswordDialog.
     private CompositeSubscription mSubscriptions;
 
 
-    public static ItemThreeFragment newInstance() {
-        ItemThreeFragment fragment = new ItemThreeFragment();
+    public static ProfileFragment newInstance() {
+        ProfileFragment fragment = new ProfileFragment();
         return fragment;
     }
 
@@ -92,6 +92,7 @@ public class ItemThreeFragment extends Fragment implements ChangePasswordDialog.
 
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(Constants.MAIL,"");
+        editor.putString(Constants.PASS,"");
         editor.putString(Constants.TOKEN,"");
         editor.apply();
         getActivity().finish();
@@ -162,11 +163,11 @@ public class ItemThreeFragment extends Fragment implements ChangePasswordDialog.
         mSubscriptions.unsubscribe();
     }
 
-    @Override
-    public void onPasswordChanged() {
-
-        showSnackBarMessage("Password Changed Successfully !");
-    }
+//    @Override
+//    public void onPasswordChanged() {
+//
+//        showSnackBarMessage("Password Changed Successfully !");
+//    }
 }
 
 
