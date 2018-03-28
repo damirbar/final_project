@@ -41,6 +41,8 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.ariel.wizer.R.id.langTextView;
+import static com.ariel.wizer.utils.Constants.MAIL;
+import static com.ariel.wizer.utils.Constants.PASS;
 import static com.ariel.wizer.utils.Validation.validateEmail;
 import static com.ariel.wizer.utils.Validation.validateFields;
 
@@ -62,6 +64,9 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     private ProgressBar mProgressBar;
     private CompositeSubscription mSubscriptions;
     private SharedPreferences mSharedPreferences;
+    private String mEmail;
+    private String mPass;
+
 
     private static Boolean START_ANIMATION = true;
 
@@ -75,6 +80,12 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
 
         initViews(view);
         initSharedPreferences();
+        mEmail = mSharedPreferences.getString(Constants.MAIL,"");
+        mPass = mSharedPreferences.getString(Constants.PASS,"");
+        if(!mEmail.isEmpty()&&!mPass.isEmpty()){
+            loginProcess(mEmail,mPass);
+        }
+
         return view;
     }
 
@@ -183,7 +194,7 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
         setError();
 
         String email = mEtEmail.getText().toString();
-        String password = mEtPassword.getText().toString();
+        mPass = mEtPassword.getText().toString();
 
         int err = 0;
 
@@ -193,7 +204,7 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
             mTiEmail.setError("Email should be valid !");
         }
 
-        if (!validateFields(password)) {
+        if (!validateFields(mPass)) {
 
             err++;
             mTiPassword.setError("Password should not be empty !");
@@ -201,7 +212,7 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
 
         if (err == 0) {
 
-            loginProcess(email,password);
+            loginProcess(email,mPass);
             mProgressBar.setVisibility(View.VISIBLE);
 
         } else {
@@ -230,7 +241,9 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
 
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(Constants.TOKEN,response.getToken());
-        editor.putString(Constants.MAIL,response.getMessage());
+        editor.putString(MAIL,response.getMessage());
+        editor.putString(PASS,mPass);
+
         editor.apply();
 
         mEtEmail.setText(null);

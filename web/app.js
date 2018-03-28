@@ -1,4 +1,3 @@
-
 var express = require("express");
 var app = express();
 
@@ -16,14 +15,14 @@ var passportSetup = require('./config/passport-setup');
 
 var Student = require("./schemas/student");
 var Teacher = require("./schemas/teacher");
+const Session = require("./schemas/session");
 
 //shay
 var logger = require('morgan');
 
 //shay
-const router  = express.Router();
+const router = express.Router();
 app.use(logger('dev'));
-
 
 
 var teacherRequests = require('./routes/teacher_requests');
@@ -33,6 +32,7 @@ var coursesRequests = require('./routes/courses_request');
 var departmentRequest = require('./routes/department_request');
 var fileRequests = require('./routes/file_requests');
 var mainRequests = require('./routes/main_route');
+var sessionRequests = require('./routes/session_requests');
 
 
 app.use(bodyParser.json());
@@ -58,12 +58,12 @@ require('./routes/routes')(router);
 app.use('/api/v1', router);
 
 
-
 app.use('/', mainRequests);
 app.use('/teachers', teacherRequests);
 app.use('/students', studentRequests);
 app.use('/courses', coursesRequests);
 app.use('/files', fileRequests);
+app.use('/api/v1/sessions', sessionRequests);
 // app.use('/',uniRequest);
 //app.use('/',departmentRequest);
 
@@ -113,7 +113,57 @@ app.listen(3000, function () {
 });
 
 
+// For session testing:
 
-//eran!!!
+var addSession = function () {
+    var session = new Session(
+        {
+            internal_id: 1234,
+            name: "Test Session",
+            teacher_id: "WizeGuy1234",
+            location: "10.4.2",
+            creation_date: Date.now(),
+            students: [
+                {
+                    id_num: "d1234",
+                    display_name: "Damir",
+                    mail: "damir@wizeup.com",
+                    rating_val: 1
+                },
+                {
+                    id_num: "sh1234",
+                    display_name: "Shay",
+                    mail: "shay@wizeup.com",
+                    rating_val: 1
+                },
+                {
+                    id_num: "se1234",
+                    display_name: "Sefi",
+                    mail: "sefi@wizeup.com",
+                    rating_val: 1
+                },
+                {
+                    id_num: "e1234",
+                    display_name: "Eran",
+                    mail: "eran@wizeup.com",
+                    rating_val: 1
+                }
+            ],
+            curr_rating: 0
+        }
+    );
+    session.save()
+        .then(function (item) {
+            console.log("Saved a session to the DB");
+        })
+        .catch(function (err) {
+            console.log("\nCouldn't save the session to the DB\nError: " + err + "\n");
+        })
 
 
+    // Session.findOne({internal_id: 1234}).then(function(sess) {
+
+    // });
+};
+
+// addSession();

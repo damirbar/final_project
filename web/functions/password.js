@@ -59,15 +59,15 @@ student.find({ mail: mail })
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(random, salt);
 
-    student.country = hash;
-    student.last_update = new Date();
+    student.temp_password = hash;
+    student.temp_password_time = new Date();
 
     return student.save();
 }
 })
 
 .then(student => {
-
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     const transporter = nodemailer.createTransport(`smtps://${config.email}:${config.password}@smtp.gmail.com`);
 
 const mailOptions = {
@@ -75,9 +75,10 @@ const mailOptions = {
     from: `"${config.name}" <${config.email}>`,
     to: mail,
     subject: 'Reset Password Request ',
-    html: `Hello ${student.display_name},<br><br>
+    html: `Hello ${student.display_name},
+                <br><br>
     			&nbsp;&nbsp;&nbsp;&nbsp; Your reset password token is <b>${random}</b>. 
-    			If you are viewing this mail from a Android Device click this <a href = "http://wizer/${random}">link</a>. 
+    			If you are viewing this mail from a Android Device click this <a href = "http://localhost:3000/${random}">link</a>. 
     			The token is valid for only 2 minutes.<br><br>
     			Thanks,<br>
     			wizer.`
@@ -112,7 +113,7 @@ new Promise((resolve, reject) => {
 
     let student = students[0];
 
-const diff = new Date() - new Date(student.last_update);
+const diff = new Date() - new Date(student.temp_password_time);
 const seconds = Math.floor(diff / 1000);
 console.log(`Seconds : ${seconds}`);
 
@@ -128,13 +129,14 @@ if (seconds < 120) {
 
 .then(student => {
 
-    if (bcrypt.compareSync(token, student.country)) {
+    if (bcrypt.compareSync(token, student.temp_password)) {
 
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
+
     student.password = hash;
-    student.country = undefined;
-    student.last_update = undefined;
+    student.temp_password  = undefined;
+    student.temp_password_time  = undefined;
 
     return student.save();
 

@@ -30,7 +30,9 @@ var StudentSchema = new mongoose.Schema({
     notifications: Array,
     facebookid:String,
     accessToken:String,
-    googleid:String
+    googleid:String,
+    temp_password	: String,
+    temp_password_time: String
 });
 
 module.exports = mongoose.model('Student', StudentSchema);

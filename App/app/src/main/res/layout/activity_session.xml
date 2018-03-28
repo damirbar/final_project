@@ -1,0 +1,115 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sesConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBack"
+    tools:context="com.ariel.wizer.fragments.ConnectSessionFragment">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/v_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="567dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="39dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/v_guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="567dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="349dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/h_guideline"
+        android:layout_width="384dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/h_guideline5"
+        android:layout_width="384dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3068783"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="174dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/h_guideline6"
+        android:layout_width="384dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4021164"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="228dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/h_guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <TextView
+        android:id="@+id/class_titel_text"
+        android:layout_width="wrap_content"
+        android:layout_height="57dp"
+        android:layout_marginBottom="28dp"
+        android:text="Rate the Professor"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/h_guideline"
+        app:layout_constraintHorizontal_bias="0.468"
+        app:layout_constraintLeft_toRightOf="@+id/v_guideline"
+        app:layout_constraintRight_toLeftOf="@+id/v_guideline3" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#4867a0"
+        android:text="Submit"
+        android:textColor="?android:attr/colorControlActivated"
+        app:layout_constraintLeft_toRightOf="@+id/v_guideline"
+        app:layout_constraintRight_toLeftOf="@+id/v_guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/h_guideline6" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:numStars="1"
+        android:stepSize="1"
+        app:layout_constraintBottom_toTopOf="@+id/h_guideline5"
+        app:layout_constraintLeft_toRightOf="@+id/v_guideline"
+        app:layout_constraintRight_toLeftOf="@+id/v_guideline3" />
+
+    <TextView
+        android:id="@+id/tVclassAvg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rating:"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/v_guideline"
+        app:layout_constraintRight_toLeftOf="@+id/v_guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/h_guideline7" />
+
+    <TextView
+        android:id="@+id/tVclassPin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Class Pin:"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/v_guideline"
+        app:layout_constraintRight_toLeftOf="@+id/v_guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/class_titel_text" />
+
+</android.support.constraint.ConstraintLayout>

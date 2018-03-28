@@ -2,7 +2,9 @@ package com.ariel.wizer.fragments;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
@@ -13,9 +15,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.ariel.wizer.MenuActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ariel.wizer.ItemThreeFragment;
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
@@ -29,14 +31,15 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.ariel.wizer.utils.Constants.PASS;
 import static com.ariel.wizer.utils.Validation.validateFields;
 
 public class ChangePasswordDialog extends DialogFragment {
 
-    public interface Listener {
-
-        void onPasswordChanged();
-    }
+//    public interface Listener {
+//
+//        void onPasswordChanged();
+//    }
 
     public static final String TAG = ChangePasswordDialog.class.getSimpleName();
 
@@ -48,13 +51,14 @@ public class ChangePasswordDialog extends DialogFragment {
     private TextInputLayout mTiOldPassword;
     private TextInputLayout mTiNewPassword;
     private ProgressBar mProgressBar;
-
+    private SharedPreferences mSharedPreferences;
     private CompositeSubscription mSubscriptions;
 
     private String mToken;
     private String mEmail;
+    private String mPass;
 
-    private Listener mListener;
+//    private Listener mListener;
 
     @Nullable
     @Override
@@ -62,23 +66,24 @@ public class ChangePasswordDialog extends DialogFragment {
 
         View view = inflater.inflate(R.layout.dialog_change_password,container,false);
         mSubscriptions = new CompositeSubscription();
-        getData();
+        initSharedPreferences();
+//        getData();
         initViews(view);
         return view;
     }
 
-    private void getData() {
-
-        Bundle bundle = getArguments();
-
-        mToken = bundle.getString(Constants.TOKEN);
-        mEmail = bundle.getString(Constants.MAIL);
-    }
+//    private void getData() {
+//
+//        Bundle bundle = getArguments();
+//
+//        mToken = bundle.getString(Constants.TOKEN);
+//        mEmail = bundle.getString(Constants.MAIL);
+//    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //mListener = (ItemThreeFragment)context;
+//        mListener = (MenuActivity)context;
     }
 
     private void initViews(View v) {
@@ -91,10 +96,19 @@ public class ChangePasswordDialog extends DialogFragment {
         mBtChangePassword = (Button) v.findViewById(R.id.btn_change_password);
         mBtCancel = (Button) v.findViewById(R.id.btn_cancel);
         mProgressBar = (ProgressBar) v.findViewById(R.id.progress);
-
+        mPass = mSharedPreferences.getString(Constants.PASS,"");
         mBtChangePassword.setOnClickListener(view -> changePassword());
         mBtCancel.setOnClickListener(view -> dismiss());
     }
+
+    private void initSharedPreferences() {
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mToken = mSharedPreferences.getString(Constants.TOKEN,"");
+        mEmail = mSharedPreferences.getString(Constants.MAIL,"");
+
+    }
+
 
     private void changePassword() {
 
@@ -118,7 +132,7 @@ public class ChangePasswordDialog extends DialogFragment {
         }
 
         if (err == 0) {
-
+            mPass = newPassword;
             User user = new User();
             user.setPassword(oldPassword);
             user.setNewPassword(newPassword);
@@ -145,7 +159,12 @@ public class ChangePasswordDialog extends DialogFragment {
     private void handleResponse(Response response) {
 
         mProgressBar.setVisibility(View.GONE);
-        mListener.onPasswordChanged();
+//        mListener.onPasswordChanged();
+
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(PASS,mPass);
+        editor.apply();
+
         dismiss();
     }
 

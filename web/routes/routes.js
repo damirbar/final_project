@@ -14,7 +14,7 @@ module.exports = router => {
     router.get('/', (req, res) => res.end('Welcome to Wizer !'));
 
     router.post('/authenticate', (req, res) => {
-
+        console.log("GOT REQUESTTTTTTTTT " + JSON.stringify(req.body));
         const credentials = auth(req);
 
     if (!credentials) {
@@ -27,7 +27,7 @@ module.exports = router => {
 
             .then(result => {
 
-            const token = jwt.sign(result, config.secret, { expiresIn: 1440 });
+            const token = jwt.sign(result, config.secret, { expiresIn: '1d' });
 
         res.status(result.status).json({ message: result.message, token: token });
 
@@ -113,7 +113,7 @@ module.exports = router => {
 
         password.resetPasswordInit(mail)
 
-            .then(result => res.status(result.status).json({ message: result.message }))
+    .then(result => res.status(result.status).json({ message: result.message }))
 
     .catch(err => res.status(err.status).json({ message: err.message }));
 
