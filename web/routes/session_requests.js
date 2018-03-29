@@ -3,7 +3,10 @@ var router = express.Router();
 var path = require("path");
 var mongoose = require("mongoose");
 
+const auth = require('basic-auth');
+
 var Session = require("../schemas/session");
+var Student = require("../schemas/student");
 
 router.post("/connect-session",function (req, res) {
 
@@ -42,6 +45,28 @@ router.get("/change-val",function (req, res, next) { // Expect 0 or 1
     // TODO
     // Need to check what is the student's rating value!
     // We can't allow the user to change the rating more than one up or one down.
+
+    const token = req.headers['x-access-token'];
+
+    console.log("token = " + token);
+    // console.log("cred.user = " + cred.user);
+    Student.find({accessToken: token}, function(err, student) {
+        if (err) next(err);
+
+        console.log("The student is: " + JSON.stringify(student));
+
+        Session.find({internal_id: id}, function(err, sess) {
+            if (err) next(err);
+
+            var studs = sess.students;
+            for(var i = 0; i < studs.length; ++i) {
+                if (studs[i].mail == student.mail && studs[i].rating_val != val) {
+                    sess.students[i].rating_val = val;
+                }
+            }
+        });
+    });
+
 
     Session.findOne({internal_id: id}, function (err, sess) {
         if (err) return next(err);

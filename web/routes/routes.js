@@ -9,6 +9,9 @@ const profile = require('../functions/profile');
 const password = require('../functions/password');
 const config = require('../config/config.json');
 
+var Student = require("../schemas/student");
+
+
 module.exports = router => {
 
     router.get('/', (req, res) => res.end('Welcome to Wizer !'));
@@ -28,6 +31,19 @@ module.exports = router => {
             .then(result => {
 
             const token = jwt.sign(result, config.secret, { expiresIn: '1d' });
+            Student.findOne({mail: credentials.name}, function (err, student) {
+                if (err) return next(err);
+                student.accessToken = token;
+                student.save()
+                    .then(function (item) {
+                        console.log("Saved a token to the student " + credentials.name);
+                    })
+                    .catch(function (err) {
+                        console.log("\nCouldn't save student with token to the DB\nError: " + err.errmsg + "\n");
+                    });
+
+            });
+
 
         res.status(result.status).json({ message: result.message, token: token });
 
@@ -63,6 +79,15 @@ module.exports = router => {
 
     router.get('/users/:id', (req,res) => {
 
+        const token = req.headers['x-access-token'];
+        console.log("Token from header is: " + token);
+
+    Student.find({accessToken: token}, function(err, student) {
+        if (err) next(err);
+
+        console.log("The student is: " + JSON.stringify(student));
+    });
+
         if (checkToken(req)) {
 
         profile.getProfile(req.params.id)
@@ -90,11 +115,18 @@ module.exports = router => {
 
         } else {
 
-            password.changePassword(req.params.id, oldPassword, newPassword)
+            const token = req.headers['x-access-token'];
+            Student.findOne({accessToken: token}, function(err, stud) {
+                if (err) next(err);
 
-                .then(result => res.status(result.status).json({ message: result.message }))
+                password.changePassword(stud.mail, oldPassword, newPassword)
 
-        .catch(err => res.status(err.status).json({ message: err.message }));
+                    .then(result => res.status(result.status).json({ message: result.message }))
+
+            .catch(err => res.status(err.status).json({ message: err.message }));
+            });
+
+
 
         }
     } else {
