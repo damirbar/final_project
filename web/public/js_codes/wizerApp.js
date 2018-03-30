@@ -76,3 +76,5 @@ wizerApp.config(function ($httpProvider) {
     $httpProvider.interceptors.push('AuthInterceptor');
 });
 
+
+
