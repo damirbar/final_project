@@ -5,12 +5,14 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
         $scope.isLogged = false;
 
         $scope.checkLogin = function () {
-
+            if ($scope.isLogged)
+                return true;
             console.log("CALLED CHECKLOGIN!");
             if (AuthService.isLoggedIn()) {
                 AuthService.getUserByToken()
                     .then(function (data) {
                         $rootScope.user = data.data;
+                        $scope.user = $rootScope.user;
                         console.log(JSON.stringify(data.data));
                         $scope.isLogged = true;
                         if ($rootScope.user) $('.profile-link').attr("href", "#/profile/" + $rootScope.user._id);
@@ -36,10 +38,13 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
                     // $scope.user = data;
                     console.log(data);
                     $scope.checkLogin();
-
+                    // $scope.$apply();
                     $timeout(function () {
-                        $location.path('/');
-                        $scope.isLogged = false;
+                    //     $location.path('/');
+                    //     $scope.isLogged = false;
+                    //     $scope.$apply();
+
+
                     }, 2000);
                 }, function () {
                     console.log("An error occurred");
@@ -143,11 +148,11 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
         };
 
 
-        var bool = $scope.checkLogin();
+        var ctr = 0;
+        $scope.isLoggedIn = function() {
+            return $scope.isLogged;
+        };
 
-        // $interval(function() {
-        //     // console.log($rootScope.user);
-        //     if($rootScope.user) $('.profile-link').attr("href", "#/profile/" + $rootScope.user._id);
-        // }, 3000);
+        $scope.checkLogin();
 
     }]);

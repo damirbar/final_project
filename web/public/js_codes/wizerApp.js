@@ -56,7 +56,7 @@ wizerApp.factory('AuthInterceptor', function ($window, $q) {
         request: function(config) {
             config.headers = config.headers || {};
             if ($window.localStorage.getItem('token')) {
-                config.headers['x-access-token'] = 'Bearer ' + $window.localStorage.getItem('token');
+                config.headers['x-access-token'] = $window.localStorage.getItem('token');
             }
             return config || $q.when(config);
         },
