@@ -2,33 +2,87 @@ var express = require('express');
 var router = express.Router();
 var path = require("path");
 var mongoose = require("mongoose");
+const jwt = require('jsonwebtoken');
 
 const auth = require('basic-auth');
 
 var Session = require("../schemas/session");
 var Student = require("../schemas/student");
 
-router.post("/connect-session",function (req, res) {
+router.post("/connect-session", function (req, res) {
 
-    const id = req.body.internal_id;
+    var token = req.headers["x-access-token"];
+    var id = req.body.internal_id;
 
-    if (!id || !id.trim()) {
+    if (!token) {
+        res.status(401).json({message: 'Unauthorized!'});
+    }
+    else {
+        var decoded = jwt.verify(token, "Wizer", function (err, decoded) {
+            if (err) {
+                return res.json({success: false, message: 'Failed to authenticate token.'});
+            } else {
 
-        res.status(500).json({message: 'Invalid Request !'});
+                if (!id || !id.trim()) {
 
-    } else {
+                    res.status(500).json({message: 'Invalid Request !'});
 
-        Session.findOne({internal_id: id}, function (err, sess) {
-            if (sess) {
-                return res.status(200).json({message: 'Welcome to Class !'});
+                } else {
+
+
+                    Session.findOne({internal_id: id}, function (err, sess) {
+                        if (err) throw err;
+
+                        if (sess) {
+
+                            Student.findOne({mail: decoded}, function (err, student) {
+                                if (err) throw err;
+
+                                var exists = false;
+                                for (var i = 0; i < sess.students.length; ++i) {
+                                    if (sess.students[i].id_num == student.id) {
+                                        exists = true;
+                                        res.status(409).json({message: 'Conflict!'});
+                                        break;
+                                    }
+
+                                }
+
+                                if (!exists) {
+                                    sess.students.push({
+                                        rating_val: 1,
+                                        mail: student.mail,
+                                        display_name: student.display_name,
+                                        id_num: student._id
+                                    });
+                                    sess.save()
+                                        .then(function (item) {
+                                            console.log("Saved a the session with the new student " + student.display_name);
+                                            return res.status(200).json({message: 'Welcome to Class !'});
+                                        })
+                                        .catch(function (err) {
+                                            console.log("Unable to save the session with the new student " + student.display_name);
+                                        });
+                                }
+
+                            });
+
+
+                        }
+                    });
+                }
             }
-            res.status(500).json({message: 'Session Not Found !'});
-
         });
+
+        // console.log("The token is: " + token);
+
+
+
+
     }
 });
 
-router.get("/get-students-count",function (req, res, next) {
+router.get("/get-students-count", function (req, res, next) {
     var id = req.query.id;
 
     Session.findOne({internal_id: id}, function (err, sess) {
@@ -38,7 +92,7 @@ router.get("/get-students-count",function (req, res, next) {
     });
 });
 
-router.get("/change-val",function (req, res, next) { // Expect 0 or 1
+router.get("/change-val", function (req, res, next) { // Expect 0 or 1
     const id = req.query.id;
     const val = req.query.val;
 
@@ -50,16 +104,16 @@ router.get("/change-val",function (req, res, next) { // Expect 0 or 1
 
     console.log("token = " + token);
     // console.log("cred.user = " + cred.user);
-    Student.find({accessToken: token}, function(err, student) {
+    Student.find({accessToken: token}, function (err, student) {
         if (err) next(err);
 
         console.log("The student is: " + JSON.stringify(student));
 
-        Session.find({internal_id: id}, function(err, sess) {
+        Session.find({internal_id: id}, function (err, sess) {
             if (err) next(err);
 
             var studs = sess.students;
-            for(var i = 0; i < studs.length; ++i) {
+            for (var i = 0; i < studs.length; ++i) {
                 if (studs[i].mail == student.mail && studs[i].rating_val != val) {
                     sess.students[i].rating_val = val;
                 }
@@ -82,7 +136,6 @@ router.get("/change-val",function (req, res, next) { // Expect 0 or 1
     });
 
 });
-
 
 
 router.post("/create-session", function (req, res) {
@@ -109,8 +162,6 @@ router.post("/create-session", function (req, res) {
         console.log("successfully added session " + myData.name + " to db");
     });
 });
-
-
 
 
 module.exports = router;

@@ -17,7 +17,8 @@ new Promise((resolve,reject) => {
 
 } else {
 
-    return students[0];
+    // return students[0];
+        return students[0].mail;
 
 }
 })

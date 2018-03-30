@@ -3,7 +3,7 @@ var path = require("path");
 var passport = require('passport');
 var expressValidator = require('express-validator');
 var Student = require("../schemas/student");
-var jwt =require('jsonwebtoken');
+var jwt = require('jsonwebtoken');
 
 var bcrypt = require('bcrypt-nodejs');
 
@@ -41,37 +41,41 @@ router.get('/facebook/callback', passport.authenticate('facebook'), function (re
     res.status(200).send(req.user);
 });
 
-router.post("/auth-login-user-pass",function (req,res){
+router.post("/auth-login-user-pass", function (req, res) {
     console.log("Got a login request from " + req.query.email);
     Student.findOne({mail: req.query.email}, function (err, student) {
         if (err) return next(err);
-       // if(req.query.password==student.password || Student.comparePassword(req.query.password,student.password))
-        if(req.query.password==student.password || Student.comparePassword(req.query.password,student.password))
-        {
+        // if(req.query.password==student.password || Student.comparePassword(req.query.password,student.password))
+        if (req.query.password == student.password || Student.comparePassword(req.query.password, student.password)) {
             console.log("Found the user " + req.query.email);
-            var token = jwt.sign(req.query.email, "eranSecret", {
-               // expiresInMinutes: 1440 // expires in 24 hours
-            });
+            // var token = jwt.sign(req.query.email, "Wizer", {
+            //     // expiresInMinutes: 1440 // expires in 24 hours
+            //     expiresIn: '1d'
+            // });
+            const token = jwt.sign(req.query.email, "Wizer");
+
+            student.accessToken = token;
+            student.save();
             console.log(token);
             //student.token=token;
             res.status(200).send({message: "new student", token: token, student: student});
         } else {
             console.log("An error occurred!");
             console.log("Your pass: " + req.query.password
-            + ",\nThe expected encrypted pass: " + student.password);
+                + ",\nThe expected encrypted pass: " + student.password);
         }
         //if(Student.comparePassword(req.query.password,student.password)) res.send(student);
     });
 });
 
-router.get("/get-user-by-token",function (req,res) {
+router.get("/get-user-by-token", function (req, res) {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
     // decode token
     if (token) {
         // verifies secret and checks exp
-        jwt.verify(token, "eranSecret", function(err, decoded) {
+        jwt.verify(token, "Wizer", function (err, decoded) {
             if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
+                return res.json({success: false, message: 'Failed to authenticate token.'});
             } else {
                 // if everything is good, save to request for use in other routes
                 Student.findOne({mail: decoded}, function (err, student) {
@@ -80,7 +84,7 @@ router.get("/get-user-by-token",function (req,res) {
                 });
                 //return res.status(200).send()
                 //req.decoded = decoded;
-               // next();
+                // next();
             }
         });
     } else {
