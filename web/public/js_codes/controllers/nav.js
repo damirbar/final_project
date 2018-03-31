@@ -15,7 +15,7 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
                         $scope.user = $rootScope.user;
                         console.log(JSON.stringify(data.data));
                         $scope.isLogged = true;
-                        if ($rootScope.user) $('.profile-link').attr("href", "#/profile/" + $rootScope.user._id);
+                        if ($rootScope.user) $('.profile-link').attr("href", "/profile/" + $rootScope.user._id);
                         else console.log("$rootScope.user is null");
                         return true;
                     }, function () {

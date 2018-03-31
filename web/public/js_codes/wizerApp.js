@@ -42,7 +42,7 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
         .when('/sessions/:id', {
             templateUrl: '../pages/session.html',
             controller: 'sessionController'
-        })
+        });
 
     // .otherwise({ redirectTo: '/'});
 
@@ -50,6 +50,8 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
     //     enabled: true,
     //     requireBase: false
     // });
+
+    $locationProvider.html5Mode(true);
 });
 
 
