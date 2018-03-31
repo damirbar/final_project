@@ -16,7 +16,6 @@ exports.loginUser = (mail, password) =>
                     reject({status: 404, message: 'User Not Found !'});
 
                 } else {
-                    console.log("19");
                     // return students[0];
                     return students[0].mail;
 
@@ -26,13 +25,11 @@ exports.loginUser = (mail, password) =>
             .then(student => {
 
                 const hashed_password = student.password;
-                console.log("29");
+                // Web crashes within compareSync for some reason...
                 if (bcrypt.compareSync(password, hashed_password)) {
-                    console.log("pass success");
                     resolve({status: 200, message: mail});
 
                 } else {
-                    console.log("35");
                     reject({status: 401, message: 'Invalid Credentials !'});
                 }
             })
