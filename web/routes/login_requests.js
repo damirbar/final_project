@@ -6,6 +6,7 @@ var Student = require("../schemas/student");
 var jwt = require('jsonwebtoken');
 
 var bcrypt = require('bcrypt-nodejs');
+const auth = require('basic-auth');
 
 router.get('/login', function (req, res) {
     res.sendFile(path.join(__dirname + "/../login.html"));
@@ -42,27 +43,27 @@ router.get('/facebook/callback', passport.authenticate('facebook'), function (re
 });
 
 router.post("/auth-login-user-pass", function (req, res) {
-    console.log("Got a login request from " + req.query.email);
-    Student.findOne({mail: req.query.email}, function (err, student) {
+
+    var credentials = auth(req);
+    console.log(credentials);
+
+    Student.findOne({mail: credentials.name}, function (err, student) {
         if (err) return next(err);
-        // if(req.query.password==student.password || Student.comparePassword(req.query.password,student.password))
-        if (req.query.password == student.password || Student.comparePassword(req.query.password, student.password)) {
-            console.log("Found the user " + req.query.email);
-            // var token = jwt.sign(req.query.email, "Wizer", {
-            //     // expiresInMinutes: 1440 // expires in 24 hours
-            //     expiresIn: '1d'
-            // });
-            const token = jwt.sign(req.query.email, "Wizer");
+
+        if (bcrypt.compareSync(credentials.pass, student.password)) {
+            console.log("Found the user " + credentials.name);
+
+            const token = jwt.sign(credentials.name, "Wizer");
 
             student.accessToken = token;
             student.save();
-            console.log(token);
-            //student.token=token;
-            res.status(200).send({message: "new student", token: token, student: student});
+
+            res.status(200).send({message: "Welcome to WizeUp!", token: token, student: student});
         } else {
             console.log("An error occurred!");
-            console.log("Your pass: " + req.query.password
+            console.log("Your pass: " + credentials.pass
                 + ",\nThe expected encrypted pass: " + student.password);
+            res.status(401).send({message: 'Invalid Credentials!'})
         }
         //if(Student.comparePassword(req.query.password,student.password)) res.send(student);
     });
