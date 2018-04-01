@@ -1,12 +1,12 @@
 var router = require('express').Router();
-// var path = require("path");
+var path = require("path");
+var passport = require('passport');
 var expressValidator = require('express-validator');
 var Student = require("../schemas/student");
 var jwt = require('jsonwebtoken');
 
 var bcrypt = require('bcrypt-nodejs');
 const auth = require('basic-auth');
-
 
 router.post("/auth-login-user-pass", function (req, res) {
 
@@ -65,22 +65,18 @@ router.get("/get-user-by-token", function (req, res) {
     }
 });
 
-//local stratagy
 router.use(expressValidator());
 
 router.post("/new-student", function (req, res) {
     var fname = req.body.fname;
     var lname = req.body.lname;
     var email = req.body.email;
-    // var userName = req.body.userName;
     var password = req.body.password;
-    var password_cnfrm = req.body.password_cnfrm;
 
     req.checkBody("fname", "First Name is required").notEmpty();
     req.checkBody("lname", "Last Name is required").notEmpty();
     req.checkBody("email", "Email is required").notEmpty();
     req.checkBody("email", "Email is not valid").isEmail();
-    //req.checkBody("userName", "UserName is required").notEmpty();
     req.checkBody("password", "Password is required").notEmpty();
     req.checkBody("password_cnfrm", "Bouth passwords are required").notEmpty();
     req.checkBody("password_cnfrm", "Passwords do not match").equals(req.body.password);
@@ -96,28 +92,9 @@ router.post("/new-student", function (req, res) {
 
             first_name: fname,
             last_name: lname,
-            display_name: fname + " " + lname,
             mail: email,
-            about_me: '',
-            country: '',
-            city: '',
-            age: 0,
-            uni: {},
-            gender: '',
-            courses: [],
-            photos: [],
-            // profile_img: profile._json.picture.data.url,
-            fs: {},
-            grades: [],
-            cred: 0,
-            fame: 0,
-            msg: [],
             register_date: Date.now(),
             last_update: Date.now(),
-            notifications: [],
-            facebookid: '',
-            accessToken: '',
-            googleid: '',
             password: password//encrypt
 
         });
