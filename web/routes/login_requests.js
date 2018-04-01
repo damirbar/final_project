@@ -202,7 +202,7 @@ router.post("/reset-pass-init", function (req, res) {
 });
 
 router.post("/reset-pass-finish", function (req, res) {
-    Student.findOne({temp_password: req.body.token}, function (err, student) {
+    Student.findOne({mail: req.body.mail}, function (err, student) {
         const diff = new Date() - new Date(student.temp_password_time);
         const seconds = Math.floor(diff / 1000);
         console.log("Seconds :" + seconds);
