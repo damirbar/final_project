@@ -31,7 +31,6 @@ router.post("/auth-login-user-pass", function (req, res) {
                 + ",\nThe expected encrypted pass: " + student.password);
             res.status(401).send({message: 'Invalid Credentials!'})
         }
-        //if(Student.comparePassword(req.query.password,student.password)) res.send(student);
     });
 });
 
@@ -95,7 +94,7 @@ router.post("/new-student", function (req, res) {
             mail: email,
             register_date: Date.now(),
             last_update: Date.now(),
-            password: password//encrypt
+            password: password
 
         });
         Student.createStudent(newStudent, function (err, user) {
@@ -128,5 +127,107 @@ router.post("/new-student", function (req, res) {
     }
 });
 
+router.put("/switch_password", function (req, res) {
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    if (token) {
+        // verifies secret and checks exp
+        jwt.verify(token, "Wizer", function (err, decoded) {
+            if (err) {
+                return res.json({success: false, message: 'Failed to authenticate token.'});
+            } else {
+                Student.findOne({accessToken: token}, function (err, student) {
+                    if (err) return next(err);
+
+                    var oldPass = req.body.oldPassword;
+                    var newPass = req.body.newPassword;
+                    if (bcrypt.compareSync(oldPass, student.password)) {
+                        student.password = newPass;
+                        Student.createStudent(newStudent, function (err, user) {
+                            if (err) return next(err);
+                            res.status(200).send(student);
+                        });
+                    }
+                    else {
+                        console.log("An error occurred!");
+                        console.log("Your pass: " + credentials.pass
+                            + ",\nThe expected encrypted pass: " + student.password);
+                        res.status(401).send({message: 'Invalid Credentials!'})
+                    }
+                });
+            }
+        });
+    } else {
+        // if there is no token
+        // return an error
+        return res.status(403).send({
+            success: false,
+            message: 'No token provided.'
+        })
+    }
+});
+
+router.post("/reset-pass-init", function (req, res) {
+
+    Student.findOne({mail: req.body.mail}, function (err, student) {
+        if (err) return next(err);
+
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(random, salt);
+
+        student.temp_password = hash;
+        student.temp_password_time = new Date();
+    }).save().then(function (student) {
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+        const transporter = nodemailer.createTransport(`smtps://${config.email}:${config.password}@smtp.gmail.com`);
+        const mailOptions = {
+            from: `"${config.name}" <${config.email}>`,
+            to: mail,
+            subject: 'Reset Password Request ',
+            html: `Hello ${student.display_name},
+                <br><br>
+    			&nbsp;&nbsp;&nbsp;&nbsp; Your reset password token is <b>${random}</b>. 
+    			If you are viewing this mail from a Android Device click this <a href = "http://localhost:3000/${random}">link</a>. 
+    			The token is valid for only 2 minutes.<br><br>
+    			Thanks,<br>
+    			wizer.`
+        };
+        return transporter.sendMail(mailOptions);
+    }).then(function (info) {
+        console.log(info);
+        resolve({status: 200, message: 'Check mail for instructions'})
+    }).catch(function (err) {
+        console.log(err);
+        reject({status: 500, message: 'Internal Server Error !'});
+    })
+});
+
+router.post("/reset-pass-finish", function (req, res) {
+    Student.findOne({mail: req.body.mail}, function (err, student) {
+        const diff = new Date() - new Date(student.temp_password_time);
+        const seconds = Math.floor(diff / 1000);
+        console.log("Seconds :" + seconds);
+        if (seconds < 600) {
+            return student;
+        } else {
+            reject({ status: 401, message: 'Time Out ! Try again' });
+        }
+    }).then(function(student){
+        if (bcrypt.compareSync(token, student.temp_password)) {
+
+            const salt = bcrypt.genSaltSync(10);
+            const hash = bcrypt.hashSync(password, salt);
+
+            student.password = hash;
+            student.temp_password = undefined;
+            student.temp_password_time = undefined;
+
+            return student.save();
+        } else {
+            reject({status: 401, message: 'Invalid Token !'});
+        }
+    }).then(function(student){resolve({ status: 200, message: 'Password Changed Sucessfully !'
+    })
+    })
+});
 
 module.exports = router;
