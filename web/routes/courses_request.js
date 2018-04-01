@@ -52,6 +52,35 @@ router.get('/get-all-courses', function(req,res,next){
     });
 });
 
+
+router.post('/get-all-courses-by-id', function(req,res,next){ // You get: Array of IDs
+
+    var ObjectID     = require('mongodb').ObjectID;
+
+    var coursesIds = req.body.courses;
+
+    var ids = coursesIds.map(function(crs) {
+        return ObjectID(String(crs));
+    });
+
+    var courses = [];
+
+    function addToCourses(coursesToAdd) {
+        courses = coursesToAdd;
+        res.json({courses: courses});
+    }
+
+    Course.find({ '_id': { $in: ids } }, function(err, crses) {
+        if(err) {
+            console.log("Error in get-courses-by-id. error = " + err);
+            error.message = err;
+        } else {
+            addToCourses(crses);
+        }
+    });
+
+});
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 

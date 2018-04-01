@@ -1,5 +1,5 @@
 
-wizerApp.service('courseService', function($http) {
+wizerApp.service('CourseService', function($http) {
 
     this.getCourses = function() {
         return $http.get('/courses')
@@ -7,6 +7,15 @@ wizerApp.service('courseService', function($http) {
                 return data.data;
             }, function(){
                 console.log("Error getting courses");
+            });
+    };
+
+    this.getCoursesById = function(arr) {
+        return $http.post('/courses/get-all-courses-by-id', {courses: arr})
+            .then(function(data) {
+                return data.data;
+            }, function() {
+                console.log("Error getting courses by ids");
             });
     };
 

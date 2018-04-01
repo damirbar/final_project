@@ -44,15 +44,24 @@
                             class="profile-city" ng-show="profile.country">{{profile.country}}</span>
                     </div>
                     <div class="message-me row">
-                        <button class="btn-info">Message</button>
+                        <button class="btn btn-info" data-placement="right" data-toggle="tooltip" title="Temporarily unavailable">Message</button>
                     </div>
 
                     <div class="about-me" ng-show="profile.about_me != ''">
                         <h3 class="about-me-header">About me:</h3>
-                        <div class="about-me-text read-more-activation">{{profile.about_me}}</div>
+                        <!--<div class="about-me-text read-more-activation"></div>-->
 
+                        <div class="read-more-cut" ng-show="!readMore">
+                            {{profile.about_me.substring(0, 40) + "..."}}
+                        </div>
+                        <div id="about-me-text" class="collapse read-more-uncut" ng-show="readMore">
+                            {{profile.about_me}}
+                        </div>
+                        <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#about-me-text" ng-click="readMoreButton()">Read {{readMore ? "less" : "more"}}</button>
 
                     </div>
+
+
                 </div>
             </div>
 
@@ -69,19 +78,19 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" target="_self" href="#hats" role="tab" id="hats-tab" data-toggle="tab" aria-controls="hats">Hats</a>
+                    <a class="nav-link" target="_self" href="#courses" role="tab" id="courses-tab" data-toggle="tab" aria-controls="courses">Courses</a>
                 </li>
 
                 <!-- Dropdown -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" target="_self" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                        Footwear
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" target="_self" href="#dropdown-shoes" role="tab" id="dropdown-shoes-tab" data-toggle="tab" aria-controls="dropdownShoes">Shoes</a>
-                        <a class="dropdown-item" target="_self" href="#dropdown-boots" role="tab" id="dropdown-boots-tab" data-toggle="tab" aria-controls="dropdownBoots">Boots</a>
-                    </div>
-                </li>
+                <!--<li class="nav-item dropdown">-->
+                    <!--<a class="nav-link dropdown-toggle" data-toggle="dropdown" target="_self" href="#" role="button" aria-haspopup="true" aria-expanded="false">-->
+                        <!--Footwear-->
+                    <!--</a>-->
+                    <!--<div class="dropdown-menu">-->
+                        <!--<a class="dropdown-item" target="_self" href="#dropdown-shoes" role="tab" id="dropdown-shoes-tab" data-toggle="tab" aria-controls="dropdownShoes">Shoes</a>-->
+                        <!--<a class="dropdown-item" target="_self" href="#dropdown-boots" role="tab" id="dropdown-boots-tab" data-toggle="tab" aria-controls="dropdownBoots">Boots</a>-->
+                    <!--</div>-->
+                <!--</li>-->
 
             </ul>
 
@@ -89,11 +98,39 @@
             <div id="clothing-nav-content" class="tab-content">
 
                 <div role="tabpanel" class="tab-pane fade show active" id="home" aria-labelledby="home-tab">
-                    <p>Welcome home! Click on the tabs to see the content change.</p>
+                    <p>We need to put some activity information here.</p>
                 </div>
 
-                <div role="tabpanel" class="tab-pane fade" id="hats" aria-labelledby="hats-tab">
-                    <p>A hat is a head covering. It can be worn for protection against the elements, ceremonial reasons, religious reasons, safety, or as a fashion accessory.</p>
+                <div role="tabpanel" class="tab-pane fade" id="courses" aria-labelledby="courses-tab">
+
+                    <div class="course-list row">
+                        <div class="single-course col-5 container" ng-repeat="course in courses">
+                            <!--{{course}} <br><br> {{courses}}-->
+                            <div class="course-header">{{course.name}}</div>
+                            <div class="course-no row">
+                                <div class="col-6 courses-right-side">Course #:</div>
+                                <div class="col-6 course-left-side">{{course.course_no}}</div>
+                            </div>
+
+                            <div class="course-dep row">
+                                <div class="col-6 courses-right-side">Department:</div>
+                                <div class="col-6 course-left-side">{{course.department}}</div>
+                            </div>
+
+                            <div class="course-points row">
+                                <div class="col-6 courses-right-side">Points:</div>
+                                <div class="col-6 course-left-side">{{course.naz}}</div>
+                            </div>
+
+                            <div class="course-class-room row">
+                                <div class="col-6 courses-right-side">Room:</div>
+                                <div class="col-6 course-left-side">{{course.location}}</div>
+                            </div>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+
+
                 </div>
 
                 <div role="tabpanel" class="tab-pane fade" id="dropdown-shoes" aria-labelledby="dropdown-shoes-tab">

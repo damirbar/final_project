@@ -40,7 +40,7 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
             controller: 'editProfileController'
         })
 
-        .when('/sessions/:id', {
+        .when('/sessions/', {
             templateUrl: '../pages/session.html',
             controller: 'sessionController'
         })
