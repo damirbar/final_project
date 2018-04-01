@@ -9,8 +9,7 @@ var path = require("path");
 var bodyParser = require("body-parser");
 
 
-var Student = require("./schemas/student");
-var Teacher = require("./schemas/teacher");
+const Student = require("./schemas/student");
 const Session = require("./schemas/session");
 
 //shay
@@ -24,10 +23,7 @@ app.use(logger('dev'));
 var teacherRequests = require('./routes/teacher_requests');
 var studentRequests = require('./routes/students_request');
 var coursesRequests = require('./routes/courses_request');
-// var uniRequest = require('./routes/uni_requests');
-var departmentRequest = require('./routes/department_request');
-var fileRequests = require('./routes/file_requests');
-var mainRequests = require('./routes/main_route');
+var mainRequests    = require('./routes/main_route');
 var sessionRequests = require('./routes/session_requests');
 
 
@@ -58,26 +54,7 @@ app.use('/', mainRequests);
 app.use('/teachers', teacherRequests);
 app.use('/students', studentRequests);
 app.use('/courses', coursesRequests);
-app.use('/files', fileRequests);
 app.use('/api/v1/sessions', sessionRequests);
-// app.use('/',uniRequest);
-//app.use('/',departmentRequest);
-
-
-var feedStudents = function (dataArr) {
-    for (var i = 0; i < dataArr.length; ++i) {
-        var dat = new Student(dataArr[i]);
-        dat.save()
-            .then(function (item) {
-                console.log("Saved a student to the DB");
-            })
-            .catch(function (err) {
-                console.log("\nCouldn't save student to the DB\nError: " + err.errmsg + "\n");
-            })
-    }
-};
-
-var studentList = require('./studentsArr');
 
 
 var authRouts = require("./routes/login_requests");
@@ -144,5 +121,21 @@ var addSession = function () {
 
     // });
 };
-
 // addSession();
+
+//can delete?
+
+// var feedStudents = function (dataArr) {
+//     for (var i = 0; i < dataArr.length; ++i) {
+//         var dat = new Student(dataArr[i]);
+//         dat.save()
+//             .then(function (item) {
+//                 console.log("Saved a student to the DB");
+//             })
+//             .catch(function (err) {
+//                 console.log("\nCouldn't save student to the DB\nError: " + err.errmsg + "\n");
+//             })
+//     }
+// };
+
+//var studentList = require('./studentsArr');

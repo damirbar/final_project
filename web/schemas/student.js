@@ -10,7 +10,7 @@ var StudentSchema = new mongoose.Schema({
     mail: { type: String, unique: true },
     password: String,
     about_me: String,
-    facebook_id: String,
+    // facebook_id: String,
     country: String,
     city: String,
     age: Number,
@@ -28,9 +28,9 @@ var StudentSchema = new mongoose.Schema({
     register_date: Date,
     last_update: Date,
     notifications: Array,
-    facebookid:String,
+    // facebookid:String,
     accessToken:String,
-    googleid:String,
+    // googleid:String,
     temp_password	: String,
     temp_password_time: String
 });

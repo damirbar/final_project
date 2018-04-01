@@ -1,10 +1,11 @@
 var router = require('express').Router();
+// var path = require("path");
+var expressValidator = require('express-validator');
 var Student = require("../schemas/student");
 var jwt = require('jsonwebtoken');
 
 var bcrypt = require('bcrypt-nodejs');
 const auth = require('basic-auth');
-
 
 
 router.post("/auth-login-user-pass", function (req, res) {
@@ -64,6 +65,8 @@ router.get("/get-user-by-token", function (req, res) {
     }
 });
 
+//local stratagy
+router.use(expressValidator());
 
 router.post("/new-student", function (req, res) {
     var fname = req.body.fname;
