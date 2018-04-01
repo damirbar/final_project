@@ -2,7 +2,7 @@
 wizerApp.service('ProfileService', function($http) {
 
     this.getProfileByID = function(id) {
-        return $http.get('/get-profile?id=' + id)
+        return $http.get('/students/get-profile?id=' + id)
             .then(function(data) {
                 return data.data;
             }, function(){

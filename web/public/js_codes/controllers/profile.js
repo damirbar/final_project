@@ -13,11 +13,11 @@ wizerApp.controller('profileController',
             });
 
 
-        ProfileService.getProfileByName("eran")
-            .then(function (data) {
-                console.log("Looking for " + $routeParams.first_name);
-                console.log(data);
-                $scope.userArr = data;
-            });
+        // ProfileService.getProfileByName("eran")
+        //     .then(function (data) {
+        //         console.log("Looking for " + $routeParams.first_name);
+        //         console.log(data);
+        //         $scope.userArr = data;
+        //     });
 
     });

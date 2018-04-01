@@ -9,6 +9,9 @@ const profile = require('../functions/profile');
 const password = require('../functions/password');
 const config = require('../config/config.json');
 
+var Student = require("../schemas/student");
+
+
 module.exports = router => {
 
     router.get('/', (req, res) => res.end('Welcome to Wizer !'));
@@ -17,115 +20,143 @@ module.exports = router => {
         console.log("GOT REQUESTTTTTTTTT " + JSON.stringify(req.body));
         const credentials = auth(req);
 
-    if (!credentials) {
+        if (!credentials) {
 
-        res.status(400).json({ message: 'Invalid Request !' });
+            res.status(400).json({message: 'Invalid Request !'});
 
-    } else {
+        } else {
 
-        login.loginUser(credentials.name, credentials.pass)
+            login.loginUser(credentials.name, credentials.pass)
 
-            .then(result => {
+                .then(result => {
 
-            const token = jwt.sign(result, config.secret, { expiresIn: '1d' });
+                    const token = jwt.sign(result, config.secret, {expiresIn: '1d'});
+                    Student.findOne({mail: credentials.name}, function (err, student) {
+                        if (err) return next(err);
+                        student.accessToken = token;
+                        student.save()
+                            .then(function (item) {
+                                console.log("Saved a token to the student " + credentials.name);
+                            })
+                            .catch(function (err) {
+                                console.log("\nCouldn't save student with token to the DB\nError: " + err.errmsg + "\n");
+                            });
 
-        res.status(result.status).json({ message: result.message, token: token });
+                    });
 
-    })
 
-    .catch(err => res.status(err.status).json({ message: err.message }));
-    }
-});
+                    res.status(result.status).json({message: result.message, token: token});
+
+                })
+
+                .catch(err => res.status(err.status).json({message: err.message}));
+        }
+    });
 
     router.post('/users', (req, res) => {
 
         const name = req.body.display_name;
-    const mail = req.body.mail;
-    const password = req.body.password;
+        const mail = req.body.mail;
+        const password = req.body.password;
 
-    if (!name || !mail || !password || !name.trim() || !mail.trim() || !password.trim()) {
+        if (!name || !mail || !password || !name.trim() || !mail.trim() || !password.trim()) {
 
-        res.status(400).json({message: 'Invalid Request !'});
-
-    } else {
-
-        register.registerUser(name, mail, password)
-
-            .then(result => {
-
-            res.setHeader('Location', '/users/'+mail);
-        res.status(result.status).json({ message: result.message })
-    })
-
-    .catch(err => res.status(err.status).json({ message: err.message }));
-    }
-});
-
-    router.get('/users/:id', (req,res) => {
-
-        if (checkToken(req)) {
-
-        profile.getProfile(req.params.id)
-
-            .then(result => res.json(result))
-
-    .catch(err => res.status(err.status).json({ message: err.message }));
-
-    } else {
-
-        res.status(401).json({ message: 'Invalid Token !' });
-    }
-});
-
-    router.put('/users/:id', (req,res) => {
-
-        if (checkToken(req)) {
-
-        const oldPassword = req.body.password;
-        const newPassword = req.body.newPassword;
-
-        if (!oldPassword || !newPassword || !oldPassword.trim() || !newPassword.trim()) {
-
-            res.status(400).json({ message: 'Invalid Request !' });
+            res.status(400).json({message: 'Invalid Request !'});
 
         } else {
 
-            password.changePassword(req.params.id, oldPassword, newPassword)
+            register.registerUser(name, mail, password)
 
-                .then(result => res.status(result.status).json({ message: result.message }))
+                .then(result => {
 
-        .catch(err => res.status(err.status).json({ message: err.message }));
+                    res.setHeader('Location', '/users/' + mail);
+                    res.status(result.status).json({message: result.message})
+                })
 
+                .catch(err => res.status(err.status).json({message: err.message}));
         }
-    } else {
+    });
 
-        res.status(401).json({ message: 'Invalid Token !' });
-    }
-});
+    router.get('/users/:id', (req, res) => {
 
-    router.post('/users/:id/password', (req,res) => {
+        const token = req.headers['x-access-token'];
+        console.log("Token from header is: " + token);
+
+        Student.find({accessToken: token}, function (err, student) {
+            if (err) next(err);
+
+            console.log("The student is: " + JSON.stringify(student));
+        });
+
+        if (checkToken(req)) {
+
+            profile.getProfile(req.params.id)
+
+                .then(result => res.json(result))
+
+                .catch(err => res.status(err.status).json({message: err.message}));
+
+        } else {
+
+            res.status(401).json({message: 'Invalid Token !'});
+        }
+    });
+
+    router.put('/users/:id', (req, res) => {
+
+        if (checkToken(req)) {
+
+            const oldPassword = req.body.password;
+            const newPassword = req.body.newPassword;
+
+            if (!oldPassword || !newPassword || !oldPassword.trim() || !newPassword.trim()) {
+
+                res.status(400).json({message: 'Invalid Request !'});
+
+            } else {
+
+                const token = req.headers['x-access-token'];
+                Student.findOne({accessToken: token}, function (err, stud) {
+                    if (err) next(err);
+
+                    password.changePassword(stud.mail, oldPassword, newPassword)
+
+                        .then(result => res.status(result.status).json({message: result.message}))
+
+                        .catch(err => res.status(err.status).json({message: err.message}));
+                });
+
+
+            }
+        } else {
+
+            res.status(401).json({message: 'Invalid Token !'});
+        }
+    });
+
+    router.post('/users/:id/password', (req, res) => {
 
         const mail = req.params.id;
-    const token = req.body.token;
-    const newPassword = req.body.password;
+        const token = req.body.token;
+        const newPassword = req.body.password;
 
-    if (!token || !newPassword || !token.trim() || !newPassword.trim()) {
+        if (!token || !newPassword || !token.trim() || !newPassword.trim()) {
 
-        password.resetPasswordInit(mail)
+            password.resetPasswordInit(mail)
 
-    .then(result => res.status(result.status).json({ message: result.message }))
+                .then(result => res.status(result.status).json({message: result.message}))
 
-    .catch(err => res.status(err.status).json({ message: err.message }));
+                .catch(err => res.status(err.status).json({message: err.message}));
 
-    } else {
+        } else {
 
-        password.resetPasswordFinish(mail, token, newPassword)
+            password.resetPasswordFinish(mail, token, newPassword)
 
-            .then(result => res.status(result.status).json({ message: result.message }))
+                .then(result => res.status(result.status).json({message: result.message}))
 
-    .catch(err => res.status(err.status).json({ message: err.message }));
-    }
-});
+                .catch(err => res.status(err.status).json({message: err.message}));
+        }
+    });
 
     function checkToken(req) {
 
@@ -139,7 +170,7 @@ module.exports = router => {
 
                 return decoded.message === req.params.id;
 
-            } catch(err) {
+            } catch (err) {
 
                 return false;
             }

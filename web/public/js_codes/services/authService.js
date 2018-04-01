@@ -12,8 +12,10 @@ wizerApp.service('AuthService', function($http, AuthToken, $rootScope) {
 
     // "Login" function
     this.auth = function(email, password) {
-        return $http.post('/auth/auth-login-user-pass?email=' + email +
-        '&password=' + password)
+
+        var stringToSend = "Basic " + btoa(email + ':' + password);
+        return $http({method: 'POST', url: '/auth/auth-login-user-pass?email=' + email +'&password=' + password,
+            headers: {'Authorization': stringToSend}})
             .then(function(data) {
                 console.log(data.data.msg);
 
@@ -22,21 +24,26 @@ wizerApp.service('AuthService', function($http, AuthToken, $rootScope) {
             }, function(){
                 console.log("Error Authenticating " + email);
             });
+
+
+        // var stringToSend = "Basic " + btoa(email + ':' + password);
+        // return $http({method: 'POST', url: '/api/v1/authenticate',
+        //     headers: {'Authorization': stringToSend}})
+        //     .then(function(data) {
+        //         console.log(data.data.msg);
+        //
+        //         AuthToken.setToken(data.data.token);
+        //         return data.data;
+        //     }, function(err){
+        //         console.log("Error Authenticating " + email);
+        //         console.log("Error: " + JSON.stringify(err));
+        //     });
+
     };
 
     // Auth.isLoggedIn()
     this.isLoggedIn = function() {
-        // console.log("Sending POST to /auth/get-user-by-token");
         if (AuthToken.getToken()) {
-            // var token = AuthToken.getToken();
-            // return $http.get('/auth/get-user-by-token?token=' + token);
-                // .then(function(data) {
-                //     $rootScope.user = data.data.student;
-                //     console.log(data.data);
-                //     return true;
-                // }, function() {
-                //
-                // });
             return true;
         }
         return false;

@@ -39,14 +39,49 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
             controller: 'editProfileController'
         })
 
+        .when('/sessions/:id', {
+            templateUrl: '../pages/session.html',
+            controller: 'sessionController'
+        });
+
     // .otherwise({ redirectTo: '/'});
 
     // $locationProvider.html5Mode({
     //     enabled: true,
     //     requireBase: false
     // });
+
+    $locationProvider.html5Mode(true);
 });
 
-// .config(function($httpProvider) {
-//     $httpProvider.interceptors.push('AuthInterceptors');
-// });
+
+
+
+
+wizerApp.factory('AuthInterceptor', function ($window, $q) {
+    return {
+        request: function(config) {
+            config.headers = config.headers || {};
+            if ($window.localStorage.getItem('token')) {
+                config.headers['x-access-token'] = $window.localStorage.getItem('token');
+            }
+            return config || $q.when(config);
+        },
+        response: function(response) {
+            if (response.status === 401) {
+                //  Redirect user to login page / signup Page.
+            }
+            return response || $q.when(response);
+        }
+    };
+
+
+});
+
+
+wizerApp.config(function ($httpProvider) {
+    $httpProvider.interceptors.push('AuthInterceptor');
+});
+
+
+

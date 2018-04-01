@@ -1,21 +1,227 @@
-<div class="profile-page">
+<!--<div class="profile-page">-->
 
-    <div class="tmp-div">
-        <div class="tmp-header">
-            Welcome to {{profile.first_name}}'s profile page!
-        </div>
-        <div class="tmp-details">
-            <div class="tmp-details-title">Details:</div>
-            Last name: {{profile.last_name}}
-            <br>
-            Email: {{profile.mail}}
-            <br>
-            Age: {{profile.age}}
-            <br>
-            Register date: {{profile.register_date | date}}
+    <!--<div class="tmp-div">-->
+        <!--<div class="tmp-header">-->
+            <!--Welcome to {{profile.first_name}}'s profile page!-->
+        <!--</div>-->
+        <!--<div class="tmp-details">-->
+            <!--<div class="tmp-details-title">Details:</div>-->
+            <!--Last name: {{profile.last_name}}-->
+            <!--<br>-->
+            <!--Email: {{profile.mail}}-->
+            <!--<br>-->
+            <!--Age: {{profile.age}}-->
+            <!--<br>-->
+            <!--Register date: {{profile.register_date | date}}-->
+        <!--</div>-->
+
+
+    <!--</div>-->
+
+<!--</div>-->
+
+
+
+
+
+<div class="profile-page container-fluid">
+
+    <div class="row">
+
+        <div class="col-5 left-hand-side picture-and-details">
+
+            <div class="container basic-details-and-picture">
+                <div class="profile-picture-and-name">
+                    <img class="profile-picture" src="https://www.w3schools.com/w3images/avatar_hat.jpg" style="width:100%" alt="Avatar">
+                    <h2>{{profile.display_name}}</h2>
+                </div>
+                <div class="basic-details container">
+                    <div class="first-and-last-name" ng-show="profile.display_name != profile.first_name + ' ' + profile.last_name">{{profile.first_name}} {{profile.last_name}}</div>
+                    <div class="city-and-country">
+                        <span class="profile-city" ng-show="profile.city">{{profile.city}}</span> | <span class="profile-city" ng-show="profile.country">{{profile.country}}</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
+        <div class="col-7 right-hand-side">
+
+            <div class="about-me" ng-show="profile.about_me != ''">
+                <h3>About me:</h3>
+                <div class="about-me-text">{{profile.about_me}}</div>
+
+
+
+                <ul id="clothing-nav" class="nav nav-tabs" role="tablist">
+
+                    <li class="nav-item">
+                        <a class="nav-link active" target="_self" href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" target="_self" href="#hats" role="tab" id="hats-tab" data-toggle="tab" aria-controls="hats">Hats</a>
+                    </li>
+
+                    <!-- Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" target="_self" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            Footwear
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" target="_self" href="#dropdown-shoes" role="tab" id="dropdown-shoes-tab" data-toggle="tab" aria-controls="dropdownShoes">Shoes</a>
+                            <a class="dropdown-item" target="_self" href="#dropdown-boots" role="tab" id="dropdown-boots-tab" data-toggle="tab" aria-controls="dropdownBoots">Boots</a>
+                        </div>
+                    </li>
+
+                </ul>
+
+                <!-- Content Panel -->
+                <div id="clothing-nav-content" class="tab-content">
+
+                    <div role="tabpanel" class="tab-pane fade show active" id="home" aria-labelledby="home-tab">
+                        <p>Welcome home! Click on the tabs to see the content change.</p>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane fade" id="hats" aria-labelledby="hats-tab">
+                        <p>A hat is a head covering. It can be worn for protection against the elements, ceremonial reasons, religious reasons, safety, or as a fashion accessory.</p>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane fade" id="dropdown-shoes" aria-labelledby="dropdown-shoes-tab">
+                        <p>A shoe is an item of footwear intended to protect and comfort the human foot while doing various activities. Shoes are also used as an item of decoration.</p>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane fade" id="dropdown-boots" aria-labelledby="dropdown-boots-tab">
+                        <p>A boot is a type of footwear and a specific type of shoe. Most boots mainly cover the foot and the ankle, while some also cover some part of the lower calf. Some boots extend up the leg, sometimes as far as the knee or even the hip.</p>
+                    </div>
+
+
+
+            </div>
+        </div>
 
     </div>
 
 </div>
+
+
+
+
+
+<!--&lt;!&ndash; Page Container &ndash;&gt;-->
+<!--<div class="profile-page w3-content w3-margin-top" style="max-width:1400px;">-->
+
+    <!--&lt;!&ndash; The Grid &ndash;&gt;-->
+    <!--<div class="w3-row-padding">-->
+
+        <!--&lt;!&ndash; Left Column &ndash;&gt;-->
+        <!--<div class="w3-third">-->
+
+            <!--<div class="w3-white w3-text-grey w3-card-4">-->
+                <!--<div class="w3-display-container">-->
+                    <!--<img src="https://www.w3schools.com/w3images/avatar_hat.jpg" style="width:100%" alt="Avatar">-->
+                    <!--<div class="w3-display-bottomleft w3-container w3-text-black">-->
+                        <!--<h2>{{profile.display_name}}</h2>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="w3-container">-->
+                    <!--<p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>Designer</p>-->
+                    <!--<p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>London, UK</p>-->
+                    <!--<p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>ex@mail.com</p>-->
+                    <!--<p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>1224435534</p>-->
+                    <!--<hr>-->
+
+                    <!--<p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>-->
+                    <!--<p>Adobe Photoshop</p>-->
+                    <!--<div class="w3-light-grey w3-round-xlarge w3-small">-->
+                        <!--<div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:90%">90%</div>-->
+                    <!--</div>-->
+                    <!--<p>Photography</p>-->
+                    <!--<div class="w3-light-grey w3-round-xlarge w3-small">-->
+                        <!--<div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:80%">-->
+                            <!--<div class="w3-center w3-text-white">80%</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<p>Illustrator</p>-->
+                    <!--<div class="w3-light-grey w3-round-xlarge w3-small">-->
+                        <!--<div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:75%">75%</div>-->
+                    <!--</div>-->
+                    <!--<p>Media</p>-->
+                    <!--<div class="w3-light-grey w3-round-xlarge w3-small">-->
+                        <!--<div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:50%">50%</div>-->
+                    <!--</div>-->
+                    <!--<br>-->
+
+                    <!--<p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>-->
+                    <!--<p>English</p>-->
+                    <!--<div class="w3-light-grey w3-round-xlarge">-->
+                        <!--<div class="w3-round-xlarge w3-teal" style="height:24px;width:100%"></div>-->
+                    <!--</div>-->
+                    <!--<p>Spanish</p>-->
+                    <!--<div class="w3-light-grey w3-round-xlarge">-->
+                        <!--<div class="w3-round-xlarge w3-teal" style="height:24px;width:55%"></div>-->
+                    <!--</div>-->
+                    <!--<p>German</p>-->
+                    <!--<div class="w3-light-grey w3-round-xlarge">-->
+                        <!--<div class="w3-round-xlarge w3-teal" style="height:24px;width:25%"></div>-->
+                    <!--</div>-->
+                    <!--<br>-->
+                <!--</div>-->
+            <!--</div><br>-->
+
+            <!--&lt;!&ndash; End Left Column &ndash;&gt;-->
+        <!--</div>-->
+
+        <!--&lt;!&ndash; Right Column &ndash;&gt;-->
+        <!--<div class="w3-twothird">-->
+
+            <!--<div class="w3-container w3-card w3-white w3-margin-bottom">-->
+                <!--<h2 class="w3-text-grey w3-padding-16"><i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Work Experience</h2>-->
+                <!--<div class="w3-container">-->
+                    <!--<h5 class="w3-opacity"><b>Front End Developer / w3schools.com</b></h5>-->
+                    <!--<h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Jan 2015 - <span class="w3-tag w3-teal w3-round">Current</span></h6>-->
+                    <!--<p>Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>-->
+                    <!--<hr>-->
+                <!--</div>-->
+                <!--<div class="w3-container">-->
+                    <!--<h5 class="w3-opacity"><b>Web Developer / something.com</b></h5>-->
+                    <!--<h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Mar 2012 - Dec 2014</h6>-->
+                    <!--<p>Consectetur adipisicing elit. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>-->
+                    <!--<hr>-->
+                <!--</div>-->
+                <!--<div class="w3-container">-->
+                    <!--<h5 class="w3-opacity"><b>Graphic Designer / designsomething.com</b></h5>-->
+                    <!--<h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Jun 2010 - Mar 2012</h6>-->
+                    <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p><br>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="w3-container w3-card w3-white">-->
+                <!--<h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Education</h2>-->
+                <!--<div class="w3-container">-->
+                    <!--<h5 class="w3-opacity"><b>W3Schools.com</b></h5>-->
+                    <!--<h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Forever</h6>-->
+                    <!--<p>Web Development! All I need to know in one place</p>-->
+                    <!--<hr>-->
+                <!--</div>-->
+                <!--<div class="w3-container">-->
+                    <!--<h5 class="w3-opacity"><b>London Business School</b></h5>-->
+                    <!--<h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2013 - 2015</h6>-->
+                    <!--<p>Master Degree</p>-->
+                    <!--<hr>-->
+                <!--</div>-->
+                <!--<div class="w3-container">-->
+                    <!--<h5 class="w3-opacity"><b>School of Coding</b></h5>-->
+                    <!--<h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2010 - 2013</h6>-->
+                    <!--<p>Bachelor Degree</p><br>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--&lt;!&ndash; End Right Column &ndash;&gt;-->
+        <!--</div>-->
+
+        <!--&lt;!&ndash; End Grid &ndash;&gt;-->
+    <!--</div>-->
+
+    <!--&lt;!&ndash; End Page Container &ndash;&gt;-->
+<!--</div>-->

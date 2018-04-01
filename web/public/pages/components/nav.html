@@ -1,30 +1,30 @@
-<nav class="wizer-nav navbar navbar-toggleable-md navbar-light bg-faded" ng-controller="navController">
+<nav class="wizer-nav navbar navbar-toggleable-md navbar-light bg-faded">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand wizer-logo" href="#/">Wizer</a>
+    <a class="navbar-brand wizer-logo" href="/">Wizer</a>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#/">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <!--<a class="nav-link" href="#/">Profile</a>-->
                 <!--<a class="nav-link profile-link" ng-href="#/profile/{{$rootScope.user._id}}" ng-if="isLogged">Profile</a>-->
-                <a class="nav-link profile-link" ng-if="isLogged">Profile</a>
+                <a class="nav-link profile-link" ng-show="isLoggedIn()">Profile</a>
             </li>
 
         </ul>
         <div class="nav-link login" data-toggle="modal" data-target="#loginModal"
-             style="cursor: pointer" ng-if="!isLogged">
+             style="cursor: pointer" ng-show="!isLoggedIn()">
             Log In
             <div class="underlined"></div>
         </div>
         <div class="nav-link login" data-toggle="modal"
-             style="cursor: pointer" ng-if="isLogged">
+             style="cursor: pointer" ng-show="isLoggedIn()">
             <div class="logout-activator" ng-click="logout()">Log Out</div>
             <div class="underlined"></div>
         </div>
@@ -35,7 +35,8 @@
     </div>
 </nav>
 
-<div id="loginModal" class="modal fade" role="dialog" ng-controller="navController">
+<!--<div id="loginModal" class="modal fade" role="dialog" ng-controller="navController">-->
+<div id="loginModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-width">
         <!-- Modal content-->
         <div class="modal-content">
@@ -46,14 +47,14 @@
                 <!--<a class="facebook-btn" href="/auth/facebook">facebook</a>-->
 
                 <!--<a class="google-btn" ng-click="googleLogin()">Google</a>-->
-                <a class="google-btn" ng-href="/auth/google">Google</a>
+                <!--<a class="google-btn" ng-href="/auth/google">Google</a>-->
                 <!--<a class="facebook-btn" ng-click="facebookLogin()">Facebook</a>-->
-                <a class="facebook-btn" ng-href="/auth/facebook">Facebook</a>
+                <!--<a class="facebook-btn" ng-href="/auth/facebook">Facebook</a>-->
 
-                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <!--<div class="g-signin2" data-onsuccess="onSignIn"></div>-->
 
 
-                <form class="form-horizontal" role="form" name="signupform" ng-if="!isLogged">
+                <form class="form-horizontal" role="form" name="signupform" ng-show="!isLoggedIn()">
                     <div class="sign-up">Sign up</div>
                     <br>
                     <!--<div class="row">-->
@@ -106,7 +107,7 @@
                 </form>
 
 
-                <form name="loginform" ng-if="!isLogged">
+                <form name="loginform" ng-show="!isLoggedIn()">
 
                     <br><br>
                     <div class="or-text">OR</div>
@@ -142,9 +143,9 @@
 
                 </form>
 
-                <div class="logout-btn-div">
-                    <button ng-if="isLogged" class="btn btn-default" ng-click="logout()">Log Out</button>
-                </div>
+                <!--<div class="logout-btn-div">-->
+                    <!--<button ng-if="isLogged" class="btn btn-default" ng-click="logout()">Log Out</button>-->
+                <!--</div>-->
 
 
                 <!--<div class="facebook-signin" ng-if="!isLogged">-->

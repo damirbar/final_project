@@ -1,34 +1,31 @@
 wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$timeout', 'ProfileService', '$rootScope', '$interval',
-    '$http',
-    function ($scope, AuthService, $location, $timeout, ProfileService, $rootScope, $interval, $http) {
+    '$http', function ($scope, AuthService, $location, $timeout, ProfileService, $rootScope, $interval, $http) {
 
         $scope.user = {};
         $scope.isLogged = false;
 
-
         $scope.checkLogin = function () {
-            // if (AuthService.isLoggedIn()) {
-            //     console.log("Success! User is logged in.");
-            //     $scope.isLogged = true;
-            //
-            //     // $('.profile-link').attr("href", "#/profile/" + $rootScope.user._id);
-            // } else {
-            //     console.log("Failure! User is NOT logged in.");
-            //     $scope.isLogged = false;
-            // }
+            if ($scope.isLogged)
+                return true;
+            console.log("CALLED CHECKLOGIN!");
             if (AuthService.isLoggedIn()) {
                 AuthService.getUserByToken()
                     .then(function (data) {
-                        $rootScope.user = data.data.student;
-                        console.log(JSON.stringify(data.data.student));
+                        $rootScope.user = data.data;
+                        $scope.user = $rootScope.user;
+                        console.log(JSON.stringify(data.data));
                         $scope.isLogged = true;
-                        if ($rootScope.user) $('.profile-link').attr("href", "#/profile/" + $rootScope.user._id);
+                        if ($rootScope.user) $('.profile-link').attr("href", "/profile/" + $rootScope.user._id);
+                        else console.log("$rootScope.user is null");
                         return true;
                     }, function () {
                         console.log("Encountered an error!");
                         $scope.isLogged = false;
                         return false;
                     });
+            }
+            else {
+                console.log("User is not logged in");
             }
         };
 
@@ -41,10 +38,13 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
                     // $scope.user = data;
                     console.log(data);
                     $scope.checkLogin();
-
+                    // $scope.$apply();
                     $timeout(function () {
-                        $location.path('/');
-                        $scope.isLogged = false;
+                    //     $location.path('/');
+                    //     $scope.isLogged = false;
+                    //     $scope.$apply();
+
+
                     }, 2000);
                 }, function () {
                     console.log("An error occurred");
@@ -86,20 +86,20 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
         $scope.googleLogin = function () {
             console.log("Clicked google login");
             AuthService.googleLogin();
-                // .then(function (data) {
-                //     if (data.data.user) {
-                //         console.log("Login succeeded with Google! The user is: " + JSON.stringify(data.data.user));
-                //         $rootScope.user = data.data.user;
-                //         $scope.isLogged = true;
-                //     } else {
-                //         console.log("Error logging in with Google! " + JSON.stringify(data));
-                //         $scope.isLogged = false;
-                //     }
-                //
-                // })
-                // .catch(function(err) {
-                //     console.log("An error occurred! " + JSON.stringify(err));
-                // });
+            // .then(function (data) {
+            //     if (data.data.user) {
+            //         console.log("Login succeeded with Google! The user is: " + JSON.stringify(data.data.user));
+            //         $rootScope.user = data.data.user;
+            //         $scope.isLogged = true;
+            //     } else {
+            //         console.log("Error logging in with Google! " + JSON.stringify(data));
+            //         $scope.isLogged = false;
+            //     }
+            //
+            // })
+            // .catch(function(err) {
+            //     console.log("An error occurred! " + JSON.stringify(err));
+            // });
             // console.log("Clicked google login");
             // $http.get("/auth/google")
             //     .then(function(data) {
@@ -109,7 +109,7 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
             //     });
 
         };
-        $scope.onSignIn = function(googleUser) {
+        $scope.onSignIn = function (googleUser) {
             var profile = googleUser.getBasicProfile();
             console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
             console.log('Name: ' + profile.getName());
@@ -117,13 +117,13 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
             console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
         };
 
-        function onSignIn(googleUser) {
-            var profile = googleUser.getBasicProfile();
-            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-            console.log('Name: ' + profile.getName());
-            console.log('Image URL: ' + profile.getImageUrl());
-            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-        }
+        // function onSignIn(googleUser) {
+        //     var profile = googleUser.getBasicProfile();
+        //     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        //     console.log('Name: ' + profile.getName());
+        //     console.log('Image URL: ' + profile.getImageUrl());
+        //     console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        // }
 
         $scope.facebookLogin = function () {
             // AuthService.facebookLogin()
@@ -140,19 +140,19 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
             //     });
             console.log("Clicked facebook login");
             $http.get("/auth/facebook")
-                .then(function(data) {
+                .then(function (data) {
                     console.log("Successsssssssssssssss");
-                }, function(err) {
+                }, function (err) {
                     console.log("An error occurred in facebookLogin()! " + JSON.stringify(err));
                 });
         };
 
 
-        $scope.checkLogin();
+        var ctr = 0;
+        $scope.isLoggedIn = function() {
+            return $scope.isLogged;
+        };
 
-        // $interval(function() {
-        //     // console.log($rootScope.user);
-        //     if($rootScope.user) $('.profile-link').attr("href", "#/profile/" + $rootScope.user._id);
-        // }, 3000);
+        $scope.checkLogin();
 
     }]);
