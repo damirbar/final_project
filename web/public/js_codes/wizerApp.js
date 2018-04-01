@@ -1,7 +1,8 @@
 var wizerApp = angular.module('wizerApp', ['ngRoute']);
 
 wizerApp.config(function ($routeProvider, $locationProvider) {
-    $locationProvider.hashPrefix('');
+    $locationProvider.html5Mode({ enabled: true, requireBase: false }).hashPrefix('!');
+
     $routeProvider
 
         .when('/', {
@@ -42,16 +43,11 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
         .when('/sessions/:id', {
             templateUrl: '../pages/session.html',
             controller: 'sessionController'
-        });
+        })
 
-    // .otherwise({ redirectTo: '/'});
+    .otherwise({ redirectTo: '/'});
 
-    // $locationProvider.html5Mode({
-    //     enabled: true,
-    //     requireBase: false
-    // });
 
-    $locationProvider.html5Mode(true);
 });
 
 
