@@ -69,6 +69,12 @@ app.listen(3000, function () {
 });
 
 
+//The 404 Route (ALWAYS Keep this as the last route)
+app.get('*', function(req, res){
+    res.sendFile(path.join(__dirname + "/index.html"));
+});
+
+
 // For session testing:
 
 var addSession = function () {
