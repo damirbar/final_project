@@ -8,10 +8,6 @@ var path = require("path");
 
 var bodyParser = require("body-parser");
 
-//eran
-var cookieSession = require('cookie-session');
-var passport = require('passport');
-var passportSetup = require('./config/passport-setup');
 
 var Student = require("./schemas/student");
 var Teacher = require("./schemas/teacher");
@@ -84,24 +80,7 @@ var feedStudents = function (dataArr) {
 var studentList = require('./studentsArr');
 
 
-//erans work authentication session
-
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-var keys = require('./config/auth');
 var authRouts = require("./routes/login_requests");
-
-
-app.use(cookieSession({
-    maxAge: 24 * 60 * 60 * 1000, //one day
-    keys: [keys.session.cookieKey]
-
-}));
-
-// initialize passport
-
 app.use('/auth', authRouts);
 
 

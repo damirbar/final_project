@@ -94,6 +94,9 @@ body {
   margin: 10px auto;
   cursor: pointer;
 }
+.profile-page {
+  color: #c2200d;
+}
 .profile-page .tmp-div {
   margin-top: 5%;
   margin-left: 15%;
@@ -103,4 +106,17 @@ body {
 }
 .profile-page .tmp-div .tmp-details .tmp-details-title {
   font-size: 130%;
+}
+.profile-page .left-hand-side .basic-details-and-picture {
+  padding: 7%;
+}
+.profile-page .left-hand-side .basic-details-and-picture .profile-picture-and-name {
+  text-align: center;
+}
+.profile-page .left-hand-side .basic-details-and-picture .profile-picture-and-name .profile-picture {
+  box-shadow: -3px -3px 18px 0px;
+  color: #9f392d;
+}
+.profile-page .right-hand-side .about-me {
+  padding: 7%;
 }
