@@ -1,46 +1,11 @@
 var router = require('express').Router();
-var path = require("path");
-var passport = require('passport');
-var expressValidator = require('express-validator');
 var Student = require("../schemas/student");
 var jwt = require('jsonwebtoken');
 
 var bcrypt = require('bcrypt-nodejs');
 const auth = require('basic-auth');
 
-router.get('/login', function (req, res) {
-    res.sendFile(path.join(__dirname + "/../login.html"));
-});
 
-
-router.get('/logout', function (req, res) {
-    req.logout();
-    res.redirect('/');
-});
-
-
-//auth with google
-
-router.get('/google', passport.authenticate('google', {
-    scope: ['profile', 'email']
-}));
-
-//google callbackURL
-router.get('/google/callback', passport.authenticate('google'), function (req, res) {
-    //res.redirect('/#/profile/' + req.user.id);
-    res.status(200).send(req.user);
-});
-
-
-//auth with facebook
-
-router.get('/facebook', passport.authenticate('facebook', {scope: ['email']}));
-
-//facebook callbackURL
-router.get('/facebook/callback', passport.authenticate('facebook'), function (req, res) {
-    //res.redirect('/#/profile/' + req.user.id);
-    res.status(200).send(req.user);
-});
 
 router.post("/auth-login-user-pass", function (req, res) {
 
@@ -99,8 +64,6 @@ router.get("/get-user-by-token", function (req, res) {
     }
 });
 
-//local stratagy
-router.use(expressValidator());
 
 router.post("/new-student", function (req, res) {
     var fname = req.body.fname;
