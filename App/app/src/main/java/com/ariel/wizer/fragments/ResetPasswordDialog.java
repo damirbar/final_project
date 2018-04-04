@@ -3,7 +3,9 @@ package com.ariel.wizer.fragments;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.ariel.wizer.utils.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ariel.wizer.MainActivity;
@@ -29,6 +32,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.ariel.wizer.utils.Constants.PASS;
 import static com.ariel.wizer.utils.Validation.validateEmail;
 import static com.ariel.wizer.utils.Validation.validateFields;
 
@@ -44,16 +48,21 @@ public class ResetPasswordDialog extends DialogFragment {
     private EditText mEtEmail;
     private EditText mEtToken;
     private EditText mEtPassword;
+    private EditText mEtPassword2;
     private Button mBtResetPassword;
     private TextView mTvMessage;
     private TextInputLayout mTiEmail;
     private TextInputLayout mTiToken;
     private TextInputLayout mTiPassword;
+    private TextInputLayout mTiPassword2;
     private ProgressBar mProgressBar;
 
+    private SharedPreferences mSharedPreferences;
     private CompositeSubscription mSubscriptions;
 
     private String mEmail;
+    private String mPass;
+
 
     private boolean isInit = true;
 
@@ -64,6 +73,7 @@ public class ResetPasswordDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_reset_password,container,false);
         mSubscriptions = new CompositeSubscription();
+        initSharedPreferences();
         initViews(view);
         return view;
     }
@@ -73,12 +83,15 @@ public class ResetPasswordDialog extends DialogFragment {
         mEtEmail = (EditText) v.findViewById(R.id.et_email);
         mEtToken = (EditText) v.findViewById(R.id.et_token);
         mEtPassword = (EditText) v.findViewById(R.id.et_password);
+        mEtPassword2 = (EditText) v.findViewById(R.id.et_password2);
         mBtResetPassword = (Button) v.findViewById(R.id.btn_reset_password);
         mProgressBar = (ProgressBar) v.findViewById(R.id.progress);
         mTvMessage = (TextView) v.findViewById(R.id.tv_message);
         mTiEmail = (TextInputLayout) v.findViewById(R.id.ti_email);
         mTiToken = (TextInputLayout) v.findViewById(R.id.ti_token);
         mTiPassword = (TextInputLayout) v.findViewById(R.id.ti_password);
+        mTiPassword2 = (TextInputLayout) v.findViewById(R.id.ti_password2);
+
 
         mBtResetPassword.setOnClickListener(view -> {
             if (isInit) resetPasswordInit();
@@ -92,18 +105,24 @@ public class ResetPasswordDialog extends DialogFragment {
         mListner = (MainActivity)context;
     }
 
+    private void initSharedPreferences() {
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+    }
+
+
     private void setEmptyFields() {
 
         mTiEmail.setError(null);
         mTiToken.setError(null);
         mTiPassword.setError(null);
+        mTiPassword2.setError(null);
         mTvMessage.setText(null);
     }
 
-    public void setToken(String token) {
-
-        mEtToken.setText(token);
-    }
+//    public void setToken(String token) {
+//
+//        mEtToken.setText(token);
+//    }
 
     private void resetPasswordInit() {
 
@@ -132,8 +151,29 @@ public class ResetPasswordDialog extends DialogFragment {
 
         String token = mEtToken.getText().toString();
         String password = mEtPassword.getText().toString();
+        String password2 = mEtPassword2.getText().toString();
 
         int err = 0;
+
+        if (!validateFields(password)) {
+
+            err++;
+            mTiPassword.setError("Password Should not be empty !");
+        }
+
+        if (!validateFields(password2)) {
+
+            err++;
+            mTiPassword2.setError("Password Should not be empty !");
+        }
+
+        if (!password.equals(password2) && err == 0) {
+
+            err++;
+            mTiPassword.setError("Passwords don't match !");
+            mTiPassword2.setError("Passwords don't match !");
+        }
+
 
         if (!validateFields(token)) {
 
@@ -141,17 +181,12 @@ public class ResetPasswordDialog extends DialogFragment {
             mTiToken.setError("Token Should not be empty !");
         }
 
-        if (!validateFields(password)) {
-
-            err++;
-            mTiEmail.setError("Password Should not be empty !");
-        }
-
         if (err == 0) {
 
             mProgressBar.setVisibility(View.VISIBLE);
-
+            mPass = password;
             User user = new User();
+            user.setEmail(mEmail);
             user.setPassword(password);
             user.setToken(token);
             resetPasswordFinishProgress(user);
@@ -168,7 +203,7 @@ public class ResetPasswordDialog extends DialogFragment {
 
     private void resetPasswordFinishProgress(User user) {
 
-        mSubscriptions.add(NetworkUtil.getRetrofit().resetPasswordFinish(mEmail,user)
+        mSubscriptions.add(NetworkUtil.getRetrofit().resetPasswordFinish(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse,this::handleError));
@@ -185,8 +220,14 @@ public class ResetPasswordDialog extends DialogFragment {
             mTiEmail.setVisibility(View.GONE);
             mTiToken.setVisibility(View.VISIBLE);
             mTiPassword.setVisibility(View.VISIBLE);
+            mTiPassword2.setVisibility(View.VISIBLE);
+
 
         } else {
+
+            SharedPreferences.Editor editor = mSharedPreferences.edit();
+            editor.putString(PASS,mPass);
+            editor.apply();
 
             mListner.onPasswordReset(response.getMessage());
             dismiss();

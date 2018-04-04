@@ -13,14 +13,14 @@
         android:layout_width="wrap_content"
         android:layout_height="567dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="39dp" />
+        app:layout_constraintGuide_percent="0.1015625" />
 
     <android.support.constraint.Guideline
         android:id="@+id/v_guideline2"
         android:layout_width="wrap_content"
         android:layout_height="567dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="349dp" />
+        app:layout_constraintGuide_percent="0.9088542" />
 
     <android.support.constraint.Guideline
         android:id="@+id/h_guideline1"
@@ -80,7 +80,7 @@
         android:id="@+id/ti_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ti_name"
+        android:layout_below="@+id/ti_first_name"
         android:textColorHint="@android:color/white"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"

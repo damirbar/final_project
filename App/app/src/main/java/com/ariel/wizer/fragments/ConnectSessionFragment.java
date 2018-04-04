@@ -19,6 +19,7 @@ import com.ariel.wizer.SessionActivity;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.Session;
 import com.ariel.wizer.network.NetworkUtil;
+import com.ariel.wizer.utils.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -39,6 +40,10 @@ public class ConnectSessionFragment extends Fragment {
     private TextInputLayout mTcalssPin;
 
     private CompositeSubscription mSubscriptions;
+    private SharedPreferences mSharedPreferences;
+    private String mToken;
+
+
 
     public static ConnectSessionFragment newInstance() {
         ConnectSessionFragment fragment = new ConnectSessionFragment();
@@ -50,7 +55,7 @@ public class ConnectSessionFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_connect_session,container,false);
         mSubscriptions = new CompositeSubscription();
-
+        initSharedPreferences();
         initViews(view);
         return view;
     }
@@ -60,12 +65,15 @@ public class ConnectSessionFragment extends Fragment {
         etClasPin = (EditText) v.findViewById(R.id.etClas_Pin);
         mTcalssPin = (TextInputLayout) v.findViewById(R.id.tiClasPin);
         mBtLogin.setOnClickListener(view -> login());
-
-
     }
 
-    private void setError() {
+    private void initSharedPreferences() {
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        mToken = mSharedPreferences.getString(Constants.TOKEN,"");
+    }
 
+
+    private void setError() {
         mTcalssPin.setError(null);
     }
 
@@ -89,40 +97,22 @@ public class ConnectSessionFragment extends Fragment {
 
             err++;
             mTcalssPin.setError("Pin should be valid !");
+
         }
 
         if (err == 0) {
-
-            Session session = new Session();
-            session.setInternal_id(pin);
-
-            loginProcess(session);
-
-        } else {
-
-            showSnackBarMessage("Enter Valid Details !");
+            loginProcess(pin);
         }
     }
 
-    private void loginProcess(Session session) {
-        mSubscriptions.add(NetworkUtil.getRetrofit().connectSession(session)
+    private void loginProcess(String id) {
+        mSubscriptions.add(NetworkUtil.getRetrofit(mToken).connectSession(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse,this::handleError));
     }
 
     private void handleResponse(Response response) {
-
-//        SharedPreferences.Editor editor = mSharedPreferences.edit();
-//        editor.putString(Constants.TOKEN,response.getToken());////////////???
-//        editor.putString(Constants.MAIL,response.getMessage());////////////???
-//        editor.apply();
-//
-//        etClasPin.setText(null);
-//
-//        Intent intent = new Intent(getActivity(), MenuActivity.class);
-//        startActivity(intent);
-
         showSnackBarMessage(response.getMessage());
         Intent intent = new Intent(getActivity(), SessionActivity.class);
         intent.putExtra("pin",pin);

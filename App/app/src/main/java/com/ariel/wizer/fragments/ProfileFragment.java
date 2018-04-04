@@ -1,6 +1,7 @@
 
 package com.ariel.wizer.fragments;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -12,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ariel.wizer.MainActivity;
+import com.ariel.wizer.NavBarActivity;
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
@@ -29,18 +32,13 @@ import rx.subscriptions.CompositeSubscription;
 
 public class ProfileFragment extends Fragment  {
 
-    public static final String TAG = ProfileFragment.class.getSimpleName();
-
     private TextView mTvName;
     private TextView mTvEmail;
-    private TextView mTvDate;
     private Button mBtChangePassword;
     private Button mBtLogout;
 
-
     private SharedPreferences mSharedPreferences;
     private String mToken;
-    private String mEmail;
 
     private CompositeSubscription mSubscriptions;
 
@@ -51,17 +49,9 @@ public class ProfileFragment extends Fragment  {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mEmail = getArguments().getString("params");
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_item_three, container, false);
+        View view = inflater.inflate(R.layout.fragment_pofile, container, false);
         mSubscriptions = new CompositeSubscription();
         initViews(view);
         initSharedPreferences();
@@ -72,7 +62,6 @@ public class ProfileFragment extends Fragment  {
 
         mTvName = (TextView) v.findViewById(R.id.tv_name);
         mTvEmail = (TextView) v.findViewById(R.id.tv_email);
-        mTvDate = (TextView) v.findViewById(R.id.tv_date);
         mBtChangePassword = (Button) v.findViewById(R.id.btn_change_password);
         mBtLogout = (Button) v.findViewById(R.id.btn_logout);
 
@@ -81,51 +70,40 @@ public class ProfileFragment extends Fragment  {
     }
 
     private void initSharedPreferences() {
-
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
         mToken = mSharedPreferences.getString(Constants.TOKEN,"");
-        mEmail = mSharedPreferences.getString(Constants.MAIL,"");
     }
 
 
     private void logout() {
-
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(Constants.MAIL,"");
+        editor.putString(Constants.EMAIL,"");
         editor.putString(Constants.PASS,"");
         editor.putString(Constants.TOKEN,"");
         editor.apply();
+
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+
         getActivity().finish();
     }
 
     private void showDialog(){
 
         ChangePasswordDialog fragment = new ChangePasswordDialog();
-
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.MAIL, mEmail);
-        bundle.putString(Constants.TOKEN,mToken);
-        fragment.setArguments(bundle);
-
-
         fragment.show(getActivity().getFragmentManager(), ChangePasswordDialog.TAG);
     }
 
     private void loadProfile() {
-
-        mTvEmail.setText(mEmail);
-
-        mSubscriptions.add(NetworkUtil.getRetrofit(mToken).getProfile(mEmail)
+        mSubscriptions.add(NetworkUtil.getRetrofit(mToken).getProfile()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse,this::handleError));
     }
 
     private void handleResponse(User user) {
-
-        mTvName.setText(user.getDisplayName());
-        mTvEmail.setText(user.getMail());
-        mTvDate.setText(user.getRegisterDate());
+        mTvName.setText(user.getFname());
+        mTvEmail.setText(user.getEmail());
     }
 
     private void handleError(Throwable error) {
@@ -162,12 +140,6 @@ public class ProfileFragment extends Fragment  {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
-
-//    @Override
-//    public void onPasswordChanged() {
-//
-//        showSnackBarMessage("Password Changed Successfully !");
-//    }
 }
 
 

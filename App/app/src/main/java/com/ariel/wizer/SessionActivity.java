@@ -1,7 +1,9 @@
 package com.ariel.wizer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.Session;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.NetworkUtil;
+import com.ariel.wizer.utils.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -26,7 +29,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.ariel.wizer.utils.Constants.MAIL;
+import static com.ariel.wizer.utils.Constants.EMAIL;
 import static com.ariel.wizer.utils.Validation.validateFields;
 
 public class SessionActivity extends AppCompatActivity {
@@ -37,19 +40,22 @@ public class SessionActivity extends AppCompatActivity {
     private TextView mTvClassAvg;
     private TextView mTvClassPin;
 
+    private SharedPreferences mSharedPreferences;
+    private String mToken;
 
     private String pin = "";
-    private int delay = 5000; //milliseconds
+    private final int delay = 5000; //milliseconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session);
         mSubscriptions = new CompositeSubscription();
-        Intent intent = getIntent();
-        pin = intent.getExtras().getString("pin");
+        initSharedPreferences();
+        getPin();
         initViews();
         classAvgProcess();
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable(){
             public void run(){
@@ -68,17 +74,26 @@ public class SessionActivity extends AppCompatActivity {
         submitButton.setOnClickListener(view -> rateClass());
     }
 
+    private void initSharedPreferences() {
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mToken = mSharedPreferences.getString(Constants.TOKEN,"");
+    }
+
+    private void getPin() {
+        Intent intent = getIntent();
+        pin = intent.getExtras().getString("pin");
+    }
+
     private void classAvgProcess() {
-        mSubscriptions.add(NetworkUtil.getRetrofit().getStudentsCount(pin)
+        mSubscriptions.add(NetworkUtil.getRetrofit(mToken).getStudentsCount(pin)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseAvg,this::handleError));
     }
 
     private void handleResponseAvg(Response response) {
-
         mTvClassAvg.setText("Rating:" + response.getMessage());
-
     }
 
 
@@ -91,19 +106,18 @@ public class SessionActivity extends AppCompatActivity {
     }
 
     private void showSnackBarMessage(String message) {
-//        Snackbar.make(findViewById(R.id.activity_main),message, Snackbar.LENGTH_SHORT).show();///////////?
+        Snackbar.make(findViewById(R.id.activity_main),message, Snackbar.LENGTH_SHORT).show();
 
     }
 
     private void rateProcess(String rate) {
-        mSubscriptions.add(NetworkUtil.getRetrofit().changeVal(pin,rate)
+        mSubscriptions.add(NetworkUtil.getRetrofit(mToken).changeVal(pin,rate)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse,this::handleError));
     }
 
     private void handleResponse(Response response) {
-
         showSnackBarMessage(response.getMessage());
     }
 

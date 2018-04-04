@@ -5,6 +5,7 @@ public class Student extends User {
 
     private String first_name;
     private String last_name;
+    private String mail;
     private String about_me;
     private String facebook_id;
     private String country;
@@ -22,6 +23,13 @@ public class Student extends User {
     private String last_update;
     private String notifications;
 
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
 
     public String getFirst_name() {
         return first_name;

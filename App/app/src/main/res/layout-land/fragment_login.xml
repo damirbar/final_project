@@ -74,7 +74,7 @@
         android:id="@+id/ti_email"
         android:layout_width="0dp"
         android:layout_height="64dp"
-        android:layout_below="@+id/ti_name"
+        android:layout_below="@+id/ti_first_name"
         android:textColorHint="@android:color/white"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"

@@ -36,18 +36,18 @@ public class MainActivity extends AppCompatActivity implements ResetPasswordDial
         getFragmentManager().beginTransaction().replace(R.id.fragmentFrame,mLoginFragment,LoginFragment.TAG).commit();
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-
-        String data = intent.getData().getLastPathSegment();
-        Log.d(TAG, "onNewIntent: "+data);
-
-        mResetPasswordDialog = (ResetPasswordDialog) getFragmentManager().findFragmentByTag(ResetPasswordDialog.TAG);
-
-        if (mResetPasswordDialog != null)
-            mResetPasswordDialog.setToken(data);
-    }
+//    @Override
+////    protected void onNewIntent(Intent intent) {
+////        super.onNewIntent(intent);
+////
+////        String data = intent.getData().getLastPathSegment();
+////        Log.d(TAG, "onNewIntent: "+data);
+////
+////        mResetPasswordDialog = (ResetPasswordDialog) getFragmentManager().findFragmentByTag(ResetPasswordDialog.TAG);
+////
+////        if (mResetPasswordDialog != null)
+////            mResetPasswordDialog.setToken(data);
+////    }
 
     @Override
     public void onPasswordReset(String message) {

@@ -30,13 +30,14 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ProfileActivity"
-            android:theme="@style/AppTheme.Profile" />
+        android:name=".NavBarActivity"
+        android:theme="@style/AppTheme.MenuActivity" />
+        <activity android:name=".SessionActivity" />
+        <activity android:name=".NavBarActivity" />
         <activity
             android:name=".MenuActivity"
-            android:theme="@style/AppTheme.MenuActivity" />
-        <activity android:name=".SessionActivity"></activity>
+            android:label="@string/title_activity_menu"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

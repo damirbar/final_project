@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.ariel.wizer.MenuActivity;
+import com.ariel.wizer.NavBarActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ariel.wizer.R;
@@ -36,29 +36,30 @@ import static com.ariel.wizer.utils.Validation.validateFields;
 
 public class ChangePasswordDialog extends DialogFragment {
 
-//    public interface Listener {
-//
-//        void onPasswordChanged();
-//    }
+    public interface Listener {
+
+        void onPasswordChanged();
+    }
 
     public static final String TAG = ChangePasswordDialog.class.getSimpleName();
 
     private EditText mEtOldPassword;
     private EditText mEtNewPassword;
+    private EditText mEtNewPassword2;
     private Button mBtChangePassword;
     private Button mBtCancel;
     private TextView mTvMessage;
     private TextInputLayout mTiOldPassword;
     private TextInputLayout mTiNewPassword;
+    private TextInputLayout mTiNewPassword2;
     private ProgressBar mProgressBar;
     private SharedPreferences mSharedPreferences;
     private CompositeSubscription mSubscriptions;
 
     private String mToken;
-    private String mEmail;
     private String mPass;
 
-//    private Listener mListener;
+    private Listener mListener;
 
     @Nullable
     @Override
@@ -67,31 +68,24 @@ public class ChangePasswordDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_change_password,container,false);
         mSubscriptions = new CompositeSubscription();
         initSharedPreferences();
-//        getData();
         initViews(view);
         return view;
     }
 
-//    private void getData() {
-//
-//        Bundle bundle = getArguments();
-//
-//        mToken = bundle.getString(Constants.TOKEN);
-//        mEmail = bundle.getString(Constants.MAIL);
-//    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        mListener = (MenuActivity)context;
+        mListener = (NavBarActivity)context;
     }
 
     private void initViews(View v) {
 
         mEtOldPassword = (EditText) v.findViewById(R.id.et_old_password);
         mEtNewPassword = (EditText) v.findViewById(R.id.et_new_password);
+        mEtNewPassword2 = (EditText) v.findViewById(R.id.et_new_password2);
         mTiOldPassword = (TextInputLayout) v.findViewById(R.id.ti_old_password);
         mTiNewPassword = (TextInputLayout) v.findViewById(R.id.ti_new_password);
+        mTiNewPassword2 = (TextInputLayout) v.findViewById(R.id.ti_new_password2);
         mTvMessage = (TextView) v.findViewById(R.id.tv_message);
         mBtChangePassword = (Button) v.findViewById(R.id.btn_change_password);
         mBtCancel = (Button) v.findViewById(R.id.btn_cancel);
@@ -102,11 +96,8 @@ public class ChangePasswordDialog extends DialogFragment {
     }
 
     private void initSharedPreferences() {
-
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mToken = mSharedPreferences.getString(Constants.TOKEN,"");
-        mEmail = mSharedPreferences.getString(Constants.MAIL,"");
-
     }
 
 
@@ -116,19 +107,33 @@ public class ChangePasswordDialog extends DialogFragment {
 
         String oldPassword = mEtOldPassword.getText().toString();
         String newPassword = mEtNewPassword.getText().toString();
+        String newPassword2 = mEtNewPassword2.getText().toString();
 
         int err = 0;
-
-        if (!validateFields(oldPassword)) {
-
-            err++;
-            mTiOldPassword.setError("Password should not be empty !");
-        }
 
         if (!validateFields(newPassword)) {
 
             err++;
             mTiNewPassword.setError("Password should not be empty !");
+        }
+
+        if (!validateFields(newPassword2)) {
+
+            err++;
+            mTiNewPassword2.setError("Password should not be empty !");
+        }
+
+        if (!newPassword.equals(newPassword2) && err == 0) {
+
+            err++;
+            mTiNewPassword.setError("Passwords don't match !");
+            mTiNewPassword2.setError("Passwords don't match !");
+        }
+
+        if (!validateFields(oldPassword)) {
+
+            err++;
+            mTiOldPassword.setError("Password should not be empty !");
         }
 
         if (err == 0) {
@@ -138,7 +143,6 @@ public class ChangePasswordDialog extends DialogFragment {
             user.setNewPassword(newPassword);
             changePasswordProgress(user);
             mProgressBar.setVisibility(View.VISIBLE);
-
         }
     }
 
@@ -146,11 +150,12 @@ public class ChangePasswordDialog extends DialogFragment {
 
         mTiOldPassword.setError(null);
         mTiNewPassword.setError(null);
+        mTiNewPassword2.setError(null);
     }
 
     private void changePasswordProgress(User user) {
 
-        mSubscriptions.add(NetworkUtil.getRetrofit(mToken).changePassword(mEmail,user)
+        mSubscriptions.add(NetworkUtil.getRetrofit(mToken).changePassword(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse,this::handleError));
@@ -159,7 +164,7 @@ public class ChangePasswordDialog extends DialogFragment {
     private void handleResponse(Response response) {
 
         mProgressBar.setVisibility(View.GONE);
-//        mListener.onPasswordChanged();
+        mListener.onPasswordChanged();
 
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(PASS,mPass);

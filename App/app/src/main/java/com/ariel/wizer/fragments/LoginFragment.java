@@ -25,9 +25,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.ariel.wizer.NavBarActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ariel.wizer.MenuActivity;
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.network.NetworkUtil;
@@ -41,7 +41,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.ariel.wizer.R.id.langTextView;
-import static com.ariel.wizer.utils.Constants.MAIL;
+import static com.ariel.wizer.utils.Constants.EMAIL;
 import static com.ariel.wizer.utils.Constants.PASS;
 import static com.ariel.wizer.utils.Validation.validateEmail;
 import static com.ariel.wizer.utils.Validation.validateFields;
@@ -77,15 +77,9 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
         super.onCreate(savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         mSubscriptions = new CompositeSubscription();
-
-        initViews(view);
         initSharedPreferences();
-        mEmail = mSharedPreferences.getString(Constants.MAIL,"");
-        mPass = mSharedPreferences.getString(Constants.PASS,"");
-        if(!mEmail.isEmpty()&&!mPass.isEmpty()){
-            loginProcess(mEmail,mPass);
-        }
-
+        autoLogin();
+        initViews(view);
         return view;
     }
 
@@ -184,21 +178,28 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
         });
     }
 
-    private void initSharedPreferences() {
-
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+    private void autoLogin() {
+        if(!mEmail.isEmpty()&&!mPass.isEmpty()){
+            loginProcess(mEmail,mPass);
+        }
     }
+
+    private void initSharedPreferences() {
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mEmail = mSharedPreferences.getString(Constants.EMAIL,"");
+        mPass = mSharedPreferences.getString(Constants.PASS,"");
+        }
 
     private void login() {
 
         setError();
 
-        String email = mEtEmail.getText().toString();
+        mEmail = mEtEmail.getText().toString();
         mPass = mEtPassword.getText().toString();
 
         int err = 0;
 
-        if (!validateEmail(email)) {
+        if (!validateEmail(mEmail)) {
 
             err++;
             mTiEmail.setError("Email should be valid !");
@@ -212,7 +213,7 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
 
         if (err == 0) {
 
-            loginProcess(email,mPass);
+            loginProcess(mEmail,mPass);
             mProgressBar.setVisibility(View.VISIBLE);
 
         } else {
@@ -236,22 +237,20 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     }
 
     private void handleResponse(Response response) {
-
         mProgressBar.setVisibility(View.GONE);
 
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(Constants.TOKEN,response.getToken());
-        editor.putString(MAIL,response.getMessage());
+        editor.putString(EMAIL,mEmail);
         editor.putString(PASS,mPass);
 
         editor.apply();
-
         mEtEmail.setText(null);
         mEtPassword.setText(null);
 
-        Intent intent = new Intent(getActivity(), MenuActivity.class);
+        Intent intent = new Intent(getActivity(), NavBarActivity.class);
         startActivity(intent);
-
+        getActivity().finish();
     }
 
     private void handleError(Throwable error) {
@@ -263,8 +262,9 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
             Gson gson = new GsonBuilder().create();
 
             try {
-
                 String errorBody = ((HttpException) error).response().errorBody().string();
+                showSnackBarMessage(errorBody);
+
                 Response response = gson.fromJson(errorBody,Response.class);
                 showSnackBarMessage(response.getMessage());
 

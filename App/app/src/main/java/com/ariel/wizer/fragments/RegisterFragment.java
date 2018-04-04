@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,14 +36,18 @@ public class RegisterFragment extends Fragment {
 
     public static final String TAG = RegisterFragment.class.getSimpleName();
 
-    private EditText mEtName;
+    private EditText mEtFName;
+    private EditText mEtLName;
     private EditText mEtEmail;
     private EditText mEtPassword;
+    private EditText mEtPassword2;
     private Button mBtRegister;
     private TextView mTvLogin;
-    private TextInputLayout mTiName;
+    private TextInputLayout mTiFName;
+    private TextInputLayout mTiLName;
     private TextInputLayout mTiEmail;
     private TextInputLayout mTiPassword;
+    private TextInputLayout mTiPassword2;
     private ProgressBar mProgressbar;
 
     private CompositeSubscription mSubscriptions;
@@ -50,7 +55,6 @@ public class RegisterFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_register,container,false);
         mSubscriptions = new CompositeSubscription();
         initViews(view);
@@ -59,14 +63,19 @@ public class RegisterFragment extends Fragment {
 
     private void initViews(View v) {
 
-        mEtName = (EditText) v.findViewById(R.id.et_name);
+        mEtFName = (EditText) v.findViewById(R.id.et_first_name);
+        mEtLName = (EditText) v.findViewById(R.id.et_last_name);
         mEtEmail = (EditText) v.findViewById(R.id.et_email);
         mEtPassword = (EditText) v.findViewById(R.id.et_password);
+        mEtPassword2 = (EditText) v.findViewById(R.id.et_password2);
         mBtRegister = (Button) v.findViewById(R.id.btn_register);
         mTvLogin = (TextView) v.findViewById(R.id.tv_login);
-        mTiName = (TextInputLayout) v.findViewById(R.id.ti_name);
+        mTiFName = (TextInputLayout) v.findViewById(R.id.ti_first_name);
+        mTiLName = (TextInputLayout) v.findViewById(R.id.ti_last_name);
         mTiEmail = (TextInputLayout) v.findViewById(R.id.ti_email);
         mTiPassword = (TextInputLayout) v.findViewById(R.id.ti_password);
+        mTiPassword2 = (TextInputLayout) v.findViewById(R.id.ti_password2);
+
         mProgressbar = (ProgressBar) v.findViewById(R.id.progress);
 
         mBtRegister.setOnClickListener(view -> register());
@@ -77,16 +86,43 @@ public class RegisterFragment extends Fragment {
 
         setError();
 
-        String name = mEtName.getText().toString();
+        String first_name = mEtFName.getText().toString();
+        String last_name = mEtLName.getText().toString();
         String email = mEtEmail.getText().toString();
         String password = mEtPassword.getText().toString();
+        String password2 = mEtPassword2.getText().toString();
 
         int err = 0;
 
-        if (!validateFields(name)) {
+        if (!validateFields(password)) {
 
             err++;
-            mTiName.setError("Name should not be empty !");
+            mTiPassword.setError("Password should not be empty !");
+        }
+
+        if (!validateFields(password2)) {
+
+            err++;
+            mTiPassword2.setError("Password should not be empty !");
+        }
+
+        if (!password.equals(password2) && err == 0) {
+
+            err++;
+            mTiPassword.setError("Passwords don't match !");
+            mTiPassword2.setError("Passwords don't match !");
+        }
+
+        if (!validateFields(first_name)) {
+
+            err++;
+            mTiFName.setError("First Name should not be empty !");
+        }
+
+        if (!validateFields(last_name)) {
+
+            err++;
+            mTiLName.setError("Last Name should not be empty !");
         }
 
         if (!validateEmail(email)) {
@@ -95,17 +131,13 @@ public class RegisterFragment extends Fragment {
             mTiEmail.setError("Email should be valid !");
         }
 
-        if (!validateFields(password)) {
-
-            err++;
-            mTiPassword.setError("Password should not be empty !");
-        }
 
         if (err == 0) {
 
             User user = new User();
-            user.setDisplayName(name);
-            user.setMail(email);
+            user.setFname(first_name);
+            user.setLname(last_name);
+            user.setEmail(email);
             user.setPassword(password);
 
             mProgressbar.setVisibility(View.VISIBLE);
@@ -119,13 +151,14 @@ public class RegisterFragment extends Fragment {
 
     private void setError() {
 
-        mTiName.setError(null);
+        mTiFName.setError(null);
+        mTiLName.setError(null);
         mTiEmail.setError(null);
         mTiPassword.setError(null);
+        mTiPassword2.setError(null);
     }
 
     private void registerProcess(User user) {
-
         mSubscriptions.add(NetworkUtil.getRetrofit().register(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -136,22 +169,19 @@ public class RegisterFragment extends Fragment {
 
         mProgressbar.setVisibility(View.GONE);
         showSnackBarMessage(response.getMessage());
+        goToLogin();
     }
 
     private void handleError(Throwable error) {
-
         mProgressbar.setVisibility(View.GONE);
 
         if (error instanceof HttpException) {
 
             Gson gson = new GsonBuilder().create();
-
             try {
-
                 String errorBody = ((HttpException) error).response().errorBody().string();
                 Response response = gson.fromJson(errorBody,Response.class);
                 showSnackBarMessage(response.getMessage());
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -167,6 +197,7 @@ public class RegisterFragment extends Fragment {
 
             Snackbar.make(getView(),message, Snackbar.LENGTH_SHORT).show();
         }
+
     }
 
     private void goToLogin(){
