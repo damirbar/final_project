@@ -4,10 +4,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_item1"
-        android:icon="@drawable/ic_assignment_ind_black_24dp"
         android:enabled="true"
-        app:showAsAction="ifRoom"
-        android:title="" />
+        android:icon="@drawable/ic_assignment_ind_black_24dp"
+        android:title=""
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_item2"
         android:icon="@drawable/ic_account_circle_black_24dp"

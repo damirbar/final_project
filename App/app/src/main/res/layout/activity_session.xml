@@ -1,10 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_session"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBack"
-    tools:context="com.ariel.wizer.ItemTwoFragment">
+    tools:context="com.ariel.wizer.fragments.SideMenuFragment">
 
     <TextView
         android:id="@+id/class_titel_text"

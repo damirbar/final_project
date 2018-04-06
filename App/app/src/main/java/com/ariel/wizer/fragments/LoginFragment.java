@@ -73,6 +73,12 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        Intent intent = new Intent(getActivity(), NavBarActivity.class);//remove
+        startActivity(intent);//remove
+
+
+
         View view = inflater.inflate(R.layout.fragment_login,container,false);
         super.onCreate(savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
@@ -229,7 +235,6 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     }
 
     private void loginProcess(String email, String password) {
-
         mSubscriptions.add(NetworkUtil.getRetrofit(email, password).login()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

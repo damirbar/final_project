@@ -10,6 +10,24 @@ public class User {
     private String register_date;
     private String newPassword;
     private String token;
+    private String age;
+    private String gender;
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
 
     public String getPassword() {
         return password;

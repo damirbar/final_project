@@ -20,6 +20,9 @@ public interface RetrofitInterface {
     @GET("students/get-profile")
     Observable<User> getProfile();
 
+    @POST("auth/updateProfile")
+    Observable<Response> updateProfile(@Body User user);
+
     @PUT("auth/switch_password")
     Observable<Response> changePassword(@Body User user);
 

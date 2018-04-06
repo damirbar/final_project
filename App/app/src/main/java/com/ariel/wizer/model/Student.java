@@ -10,7 +10,7 @@ public class Student extends User {
     private String facebook_id;
     private String country;
     private String city;
-    private double age;
+    private String age;
     private Object uni;
     private String gender;
     private Object courses;
@@ -79,11 +79,11 @@ public class Student extends User {
         this.city = city;
     }
 
-    public double getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(double age) {
+    public void setAge(String age) {
         this.age = age;
     }
 

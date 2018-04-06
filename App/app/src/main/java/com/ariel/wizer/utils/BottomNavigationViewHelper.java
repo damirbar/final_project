@@ -1,4 +1,4 @@
-package com.ariel.wizer;
+package com.ariel.wizer.utils;
 
 import android.annotation.SuppressLint;
 import android.support.design.internal.BottomNavigationItemView;

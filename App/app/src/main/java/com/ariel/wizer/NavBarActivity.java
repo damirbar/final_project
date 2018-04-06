@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import com.ariel.wizer.fragments.ChangePasswordDialog;
 import com.ariel.wizer.fragments.ConnectSessionFragment;
 import com.ariel.wizer.fragments.ProfileFragment;
+import com.ariel.wizer.fragments.SideMenuFragment;
+import com.ariel.wizer.utils.BottomNavigationViewHelper;
 
 
 public class NavBarActivity extends AppCompatActivity implements ChangePasswordDialog.Listener  {
@@ -32,7 +34,7 @@ public class NavBarActivity extends AppCompatActivity implements ChangePasswordD
                         Fragment selectedFragment = null;
                         switch (item.getItemId()) {
                             case R.id.action_item1:
-                                selectedFragment = ItemTwoFragment.newInstance();
+                                selectedFragment = SideMenuFragment.newInstance();
                                 break;
                             case R.id.action_item2:
                                 selectedFragment = ConnectSessionFragment.newInstance();
@@ -41,7 +43,7 @@ public class NavBarActivity extends AppCompatActivity implements ChangePasswordD
                                 selectedFragment = ProfileFragment.newInstance();
                                 break;
                             case R.id.action_item4:
-                                selectedFragment = ItemTwoFragment.newInstance();
+                                selectedFragment = SideMenuFragment.newInstance();
                                 break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -53,7 +55,7 @@ public class NavBarActivity extends AppCompatActivity implements ChangePasswordD
 
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, ItemTwoFragment.newInstance());
+        transaction.replace(R.id.frame_layout, SideMenuFragment.newInstance());
         transaction.commit();
 
         //Used to select an item programmatically

@@ -172,6 +172,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/btn_register"
+                android:gravity="center"
                 android:paddingTop="@dimen/card_items_margin"
                 android:text="Already Registered? "
                 android:textAlignment="center"

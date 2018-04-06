@@ -1,4 +1,5 @@
 
+
 package com.ariel.wizer.fragments;
 
 import android.content.Intent;
@@ -13,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ariel.wizer.EditProfileActivity;
 import com.ariel.wizer.MainActivity;
-import com.ariel.wizer.NavBarActivity;
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
@@ -30,43 +31,41 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-public class ProfileFragment extends Fragment  {
+public class SideMenuFragment extends Fragment {
 
-    private TextView mTvName;
     private TextView mTvEmail;
-    private Button mBtChangePassword;
-    //private Button mBtLogout;
-
+    private TextView mEditProfile;
+    private Button mBtLogout;
     private SharedPreferences mSharedPreferences;
-    private String mToken;
-
     private CompositeSubscription mSubscriptions;
 
+    private String mToken;
 
-    public static ProfileFragment newInstance() {
-        ProfileFragment fragment = new ProfileFragment();
+    public static SideMenuFragment newInstance() {
+        SideMenuFragment fragment = new SideMenuFragment();
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pofile, container, false);
+        View view = inflater.inflate(R.layout.fragment_side_menu,container,false);
         mSubscriptions = new CompositeSubscription();
         initViews(view);
         initSharedPreferences();
         loadProfile();
         return view;
     }
+
+
     private void initViews(View v) {
+        mEditProfile = (TextView) v.findViewById(R.id.edit_profile);
+        mBtLogout = (Button) v.findViewById(R.id.btn_logout);
+        mTvEmail = (TextView) v.findViewById(R.id.user_profile_email);
 
-        mTvName = (TextView) v.findViewById(R.id.tv_name);
-        mTvEmail = (TextView) v.findViewById(R.id.tv_email);
-        mBtChangePassword = (Button) v.findViewById(R.id.btn_change_password);
-        //mBtLogout = (Button) v.findViewById(R.id.btn_logout);
 
-        mBtChangePassword.setOnClickListener(view -> showDialog());
-       // mBtLogout.setOnClickListener(view -> logout());
+        mBtLogout.setOnClickListener(view -> logout());
+        mEditProfile.setOnClickListener(view -> edit());
     }
 
     private void initSharedPreferences() {
@@ -75,23 +74,12 @@ public class ProfileFragment extends Fragment  {
     }
 
 
-//    private void logout() {
-//        SharedPreferences.Editor editor = mSharedPreferences.edit();
-//        editor.putString(Constants.EMAIL,"");
-//        editor.putString(Constants.PASS,"");
-//        editor.putString(Constants.TOKEN,"");
-//        editor.apply();
-//
-//        Intent intent = new Intent(getActivity(), MainActivity.class);
-//        startActivity(intent);
-//
-//        getActivity().finish();
-//    }
+    private void edit() {
+        Intent intent = new Intent(this.getActivity(), EditProfileActivity.class);
+        startActivity(intent);
 
-    private void showDialog(){
+        getActivity().finish();
 
-        ChangePasswordDialog fragment = new ChangePasswordDialog();
-        fragment.show(getActivity().getFragmentManager(), ChangePasswordDialog.TAG);
     }
 
     private void loadProfile() {
@@ -102,7 +90,6 @@ public class ProfileFragment extends Fragment  {
     }
 
     private void handleResponse(User user) {
-        mTvName.setText(user.getFname());
         mTvEmail.setText(user.getEmail());
     }
 
@@ -135,11 +122,24 @@ public class ProfileFragment extends Fragment  {
         }
     }
 
+
+
+    private void logout() {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(Constants.EMAIL,"");
+        editor.putString(Constants.PASS,"");
+        editor.putString(Constants.TOKEN,"");
+        editor.apply();
+
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+
+        getActivity().finish();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
 }
-
-

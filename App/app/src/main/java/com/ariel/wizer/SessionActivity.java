@@ -106,7 +106,7 @@ public class SessionActivity extends AppCompatActivity {
     }
 
     private void showSnackBarMessage(String message) {
-        Snackbar.make(findViewById(R.id.activity_main),message, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(R.id.activity_session),message, Snackbar.LENGTH_SHORT).show();
 
     }
 
