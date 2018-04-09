@@ -2,7 +2,9 @@ var router = require('express').Router();
 var path = require("path");
 var passport = require('passport');
 var expressValidator = require('express-validator');
+var User = require("../schemas/user");
 var Student = require("../schemas/student");
+var Teacher = require("../schemas/teacher");
 var jwt = require('jsonwebtoken');
 
 var bcrypt = require('bcrypt-nodejs');
@@ -10,28 +12,127 @@ const auth = require('basic-auth');
 
 router.post("/auth-login-user-pass", function (req, res) {
 
+    var role = req.role;
     var credentials = auth(req);
     console.log(credentials);
 
-    Student.findOne({mail: credentials.name}, function (err, student) {
-        if (err) return next(err);
+    if(role === 'teacher'){
+        User.aggregate([{
+                $lookup: {
+                    from: "teachers",
+                    localField: "_id",
+                    foreignField: "user_id",
+                    as: "teacher"
+                }
+            },{
+                $match: {
+                    "email": credentials.name
+                }
+            },{
+                $project: {
+                    "temp_password": 0,
+                    "temp_password_time": 0,
+                    "last_modified": 0,
+                    "accessToken": 0
+                }
+            }
+            ],
+            function (err, list) {
+                if (err) {
+                    console.log("Error while finding models");
+                    console.log("The error: " + err);
+                    return err;
+                } else {
+                    console.log(list);
+                    console.log("Found the user " + credentials.name);
 
-        if (bcrypt.compareSync(credentials.pass, student.password)) {
-            console.log("Found the user " + credentials.name);
+                    const token = jwt.sign(credentials.name, "Wizer");
 
-            const token = jwt.sign(credentials.name, "Wizer");
+                    // list[0].accessToken = token;
+                    // list[0].save();
 
-            student.accessToken = token;
-            student.save();
+                    Object.assign(list[0], list[0].student[0]);
+                    delete list[0].teacher;
 
-            res.status(200).send({message: "Welcome to WizeUp!", token: token, student: student});
-        } else {
-            console.log("An error occurred!");
-            console.log("Your pass: " + credentials.pass
-                + ",\nThe expected encrypted pass: " + student.password);
-            res.status(401).send({message: 'Invalid Credentials!'})
-        }
-    });
+                    return res.status(200).json({message: "Welcome to WizeUp!", token: token, teacher: list[0]});
+                }
+            }
+        );
+    }
+    else {
+        User.aggregate([{
+                $lookup: {
+                    from: "students",
+                    localField: "_id",
+                    foreignField: "user_id",
+                    as: "student"
+                }
+            },{
+                $match: {
+                    "email": credentials.name
+                }
+            },{
+                    $project: {
+                        "temp_password": 0,
+                        "temp_password_time": 0,
+                        "last_modified": 0,
+                        "accessToken": 0
+                    }
+                }
+            ],
+            function (err, list) {
+                if (err) {
+                    console.log("Error while finding models");
+                    console.log("The error: " + err);
+                    return err;
+                } else {
+                    console.log(list);
+                    console.log("Found the user " + credentials.name);
+
+                    if (bcrypt.compareSync(credentials.pass, list[0].password)) {
+                        console.log("Found the user " + credentials.name);
+
+
+                        //TODO find one student and set his token and save
+
+                        // list[0].accessToken = token;
+                        // list[0].save();
+
+                        const token = jwt.sign(credentials.name, "Wizer");
+                        Object.assign(list[0], list[0].student[0]);
+                        delete list[0].student;
+                        return res.status(200).json({message: "Welcome to WizeUp!", token: token, student: list[0]});
+
+                    } else {
+                        console.log("An error occurred!");
+                        console.log("Your pass: " + credentials.pass
+                            + ",\nThe expected encrypted pass: " + list[0].password);
+                        res.status(401).send({message: 'Invalid Credentials!'})
+                    }
+                }
+            }
+        );
+
+        // Student.findOne({mail: credentials.name}, function (err, student) {
+        //     if (err) return next(err);
+        //
+        //     if (bcrypt.compareSync(credentials.pass, student.password)) {
+        //         console.log("Found the user " + credentials.name);
+        //
+        //         const token = jwt.sign(credentials.name, "Wizer");
+        //
+        //         student.accessToken = token;
+        //         student.save();
+        //
+        //         res.status(200).send({message: "Welcome to WizeUp!", token: token, student: student});
+        //     } else {
+        //         console.log("An error occurred!");
+        //         console.log("Your pass: " + credentials.pass
+        //             + ",\nThe expected encrypted pass: " + student.password);
+        //         res.status(401).send({message: 'Invalid Credentials!'})
+        //     }
+        // });
+    }
 });
 
 router.get("/get-user-by-token", function (req, res) {
@@ -44,7 +145,7 @@ router.get("/get-user-by-token", function (req, res) {
                 return res.json({success: false, message: 'Failed to authenticate token.'});
             } else {
                 // if everything is good, save to request for use in other routes
-                Student.findOne({mail: decoded}, function (err, student) {
+                Student.findOne({email: decoded}, function (err, student) {
                     if (err) return next(err);
                     res.status(200).send(student);
                 });
@@ -60,7 +161,6 @@ router.get("/get-user-by-token", function (req, res) {
             success: false,
             message: 'No token provided.'
         });
-
     }
 });
 
@@ -71,7 +171,6 @@ router.post("/new-student", function (req, res) {
     var lname = req.body.lname;
     var email = req.body.email;
     var password = req.body.password;
-
     req.checkBody("fname", "First Name is required").notEmpty();
     req.checkBody("lname", "Last Name is required").notEmpty();
     req.checkBody("email", "Email is required").notEmpty();
@@ -87,42 +186,49 @@ router.post("/new-student", function (req, res) {
         res.status(400).send("erans error");
     }
     else {
-        var newStudent = new Student({
+        //TODO var user = ...
 
+        var newUser = new User({
             first_name: fname,
             last_name: lname,
-            mail: email,
+            email: email,
             register_date: Date.now(),
             last_update: Date.now(),
             password: password
-
         });
-        Student.createStudent(newStudent, function (err, user) {
-            if (err) {
-                if (err.name === 'MongoError' && err.code === 11000) {
-                    // Duplicate username
-                    console.log(email + ' already exists!');
-                    return res.status(500).send(email + ' already exists!');
-                }
-                if (err.name === 'ValidationError') {
-                    //ValidationError
-                    var str = "";
-                    for (field in err.errors) {
-                        console.log("you must provide: " + field + " field");
-                        str += "you must provide: " + field + " field  ";
-                    }
-                    return res.status(500).send(str);
-                }
-                // Some other error
-                console.log(err);
-                return res.status(500).send(err);
-            }
-            console.log(user);
-            Student.findOne({mail: email}, function (err, student) {
-                if (err) return next(err);
-                res.send(student);
-            });
 
+        bcrypt.genSalt(10, function(err, salt) {
+            bcrypt.hash(newUser.password, salt, null, function(err, hash) {
+                newUser.password = hash;
+                newUser.save(function (err, user) {
+                    if (err) {
+                        console.log(err);
+                        if (err.name === 'MongoError' && err.code === 11000) {
+                            // Duplicate username
+                            console.log(email + ' already exists!');
+                            return res.status(500).send(email + ' already exists!');
+                        }
+                        if (err.name === 'ValidationError') {
+                            //ValidationError
+                            var str = "";
+                            for (field in err.errors) {
+                                console.log("you must provide: " + field + " field");
+                                str += "you must provide: " + field + " field  ";
+                            }
+                            return res.status(500).send(str);
+                        }
+                        // Some other error
+                        console.log(err);
+                        return res.status(500).send(err);
+                    }
+                    console.log(user);
+                    var newStudent = new Student({
+                        user_id: user._id
+                    });
+                    newStudent.save();
+                    res.status(200).send(user);
+                });
+            });
         });
     }
 });
@@ -168,7 +274,7 @@ router.put("/switch_password", function (req, res) {
 
 router.post("/reset-pass-init", function (req, res) {
 
-    Student.findOne({mail: req.body.mail}, function (err, student) {
+    Student.findOne({email: req.body.email}, function (err, student) {
         if (err) return next(err);
 
         const salt = bcrypt.genSaltSync(10);
@@ -179,22 +285,22 @@ router.post("/reset-pass-init", function (req, res) {
     }).save().then(function (student) {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         const transporter = nodemailer.createTransport(`smtps://${config.email}:${config.password}@smtp.gmail.com`);
-        const mailOptions = {
+        const emailOptions = {
             from: `"${config.name}" <${config.email}>`,
-            to: mail,
+            to: email,
             subject: 'Reset Password Request ',
             html: `Hello ${student.display_name},
                 <br><br>
     			&nbsp;&nbsp;&nbsp;&nbsp; Your reset password token is <b>${random}</b>. 
-    			If you are viewing this mail from a Android Device click this <a href = "http://localhost:3000/${random}">link</a>. 
+    			If you are viewing this email from a Android Device click this <a href = "http://localhost:3000/${random}">link</a>. 
     			The token is valid for only 2 minutes.<br><br>
     			Thanks,<br>
     			wizer.`
         };
-        return transporter.sendMail(mailOptions);
+        return transporter.sendEmail(emailOptions);
     }).then(function (info) {
         console.log(info);
-        resolve({status: 200, message: 'Check mail for instructions'})
+        resolve({status: 200, message: 'Check email for instructions'})
     }).catch(function (err) {
         console.log(err);
         reject({status: 500, message: 'Internal Server Error !'});
@@ -202,7 +308,7 @@ router.post("/reset-pass-init", function (req, res) {
 });
 
 router.post("/reset-pass-finish", function (req, res) {
-    Student.findOne({mail: req.body.mail}, function (err, student) {
+    Student.findOne({email: req.body.email}, function (err, student) {
         const diff = new Date() - new Date(student.temp_password_time);
         const seconds = Math.floor(diff / 1000);
         console.log("Seconds :" + seconds);

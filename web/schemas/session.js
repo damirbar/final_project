@@ -5,8 +5,9 @@ var SessionSchema = new mongoose.Schema({
     teacher_id:String,
     location: String,
     creation_date: Date,
-    students: {type: Array, required: true},
-    curr_rating: {type: Number, default: 0}
+    students: Array,
+    curr_rating: {type: Number, default: 0},
+    hidden: Boolean
     // msg: Array
 });
 module.exports = mongoose.model('Session', SessionSchema);

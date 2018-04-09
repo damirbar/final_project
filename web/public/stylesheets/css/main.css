@@ -120,13 +120,22 @@ body {
 .profile-page .left-hand-side .basic-details-and-picture .about-me .about-me-header {
   text-align: center;
 }
-.profile-page .left-hand-side .basic-details-and-picture .about-me .read-more-activation {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
 .profile-page .right-hand-side .about-me {
   padding: 7%;
+}
+.profile-page .right-hand-side #courses .course-list .single-course {
+  display: block;
+  background-color: #ff66540d;
+  padding: 1%;
+  border-radius: 3%;
+  margin-right: 6%;
+}
+.profile-page .right-hand-side #courses .course-list .single-course .course-header {
+  text-align: center;
+  font-weight: 600;
+  font-size: 7vh;
+}
+.session-page .session-header {
+  text-align: center;
+  margin: 6% 0;
 }

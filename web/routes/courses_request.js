@@ -52,7 +52,6 @@ router.get('/get-all-courses', function(req,res,next){
     });
 });
 
-
 router.post('/get-all-courses-by-id', function(req,res,next){ // You get: Array of IDs
 
     var ObjectID     = require('mongodb').ObjectID;

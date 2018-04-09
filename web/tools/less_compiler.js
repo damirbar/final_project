@@ -24,7 +24,7 @@ var lessCompiler = function () {
 
 
 
-    fs.readFile('./public/stylesheets/main.less', function (err, data) {
+    fs.readFile('./web/public/stylesheets/main.less', function (err, data) {
         if (err) {
             return console.log("Error reading main.less. " + err);
         }
@@ -32,7 +32,7 @@ var lessCompiler = function () {
         less.render(buffer)
             .then(function(output) {
                     // console.log(output.css);
-                    fs.writeFileSync('./public/stylesheets/css/main.css', output.css);
+                    fs.writeFileSync('./web/public/stylesheets/css/main.css', output.css);
                 },
                 function(err){
                     console.log("And error occurred during rendering less files. " + err);
