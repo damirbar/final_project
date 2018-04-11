@@ -19,7 +19,7 @@ var UserSchema = new mongoose.Schema({
     fame: Number,
     register_date: Date,
     last_modified: Date,
-    accessToken:String,
+    accessToken: String,
     temp_password: String,
     temp_password_time: String
 });

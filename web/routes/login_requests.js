@@ -82,7 +82,7 @@ router.post("/auth-login-user-pass", function (req, res) {
             ],
             function (err, list) {
                 if (err) {
-                    console.log("Error while finding models");
+                    console.log("Error while finding student");
                     console.log("The error: " + err);
                     return err;
                 } else {
@@ -92,13 +92,24 @@ router.post("/auth-login-user-pass", function (req, res) {
                     if (bcrypt.compareSync(credentials.pass, list[0].password)) {
                         console.log("Found the user " + credentials.name);
 
+                        const token = jwt.sign(credentials.name, "Wizer");
+                        //  const token = jwt.sign({name: credentials.name}, "Wizer", {expiresIn: '1d'});
 
                         //TODO find one student and set his token and save
+
+                        User.update({email: credentials.name}, {accessToken: token}, function(err){
+                            if(err){
+                                console.log(err);
+                            }else{
+                                console.log("access token was successfully updated");
+                            }
+                        });
+
 
                         // list[0].accessToken = token;
                         // list[0].save();
 
-                        const token = jwt.sign(credentials.name, "Wizer");
+
                         Object.assign(list[0], list[0].student[0]);
                         delete list[0].student;
                         return res.status(200).json({message: "Welcome to WizeUp!", token: token, student: list[0]});
