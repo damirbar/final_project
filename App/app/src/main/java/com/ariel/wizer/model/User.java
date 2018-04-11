@@ -3,9 +3,9 @@ package com.ariel.wizer.model;
 
 public class User {
 
-    private String first_name;
-    private String last_name;
-    private String mail;
+    private String fname;
+    private String lname;
+    private String email;
     private String password;
     private String register_date;
     private String newPassword;
@@ -38,27 +38,27 @@ public class User {
     }
 
     public String getFname() {
-        return first_name;
+        return fname;
     }
 
     public void setFname(String fname) {
-        this.first_name = fname;
+        this.fname = fname;
     }
 
     public String getLname() {
-        return last_name;
+        return lname;
     }
 
     public void setLname(String lname) {
-        this.last_name = lname;
+        this.lname = lname;
     }
 
     public String getEmail() {
-        return mail;
+        return email;
     }
 
     public void setEmail(String email) {
-        this.mail = email;
+        this.email = email;
     }
 
     public String getRegisterDate() {

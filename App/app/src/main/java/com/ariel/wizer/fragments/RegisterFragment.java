@@ -2,7 +2,9 @@ package com.ariel.wizer.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.ariel.wizer.utils.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ariel.wizer.R;
@@ -29,6 +32,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.ariel.wizer.utils.Constants.EMAIL;
+import static com.ariel.wizer.utils.Constants.PASS;
 import static com.ariel.wizer.utils.Validation.validateEmail;
 import static com.ariel.wizer.utils.Validation.validateFields;
 
@@ -50,6 +55,11 @@ public class RegisterFragment extends Fragment {
     private TextInputLayout mTiPassword2;
     private ProgressBar mProgressbar;
 
+    private String mEmail;
+    private String mPass;
+
+
+    private SharedPreferences mSharedPreferences;
     private CompositeSubscription mSubscriptions;
 
     @Nullable
@@ -57,6 +67,7 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register,container,false);
         mSubscriptions = new CompositeSubscription();
+        initSharedPreferences();
         initViews(view);
         return view;
     }
@@ -81,6 +92,11 @@ public class RegisterFragment extends Fragment {
         mBtRegister.setOnClickListener(view -> register());
         mTvLogin.setOnClickListener(view -> goToLogin());
     }
+
+    private void initSharedPreferences() {
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+    }
+
 
     private void register() {
 
@@ -134,6 +150,9 @@ public class RegisterFragment extends Fragment {
 
         if (err == 0) {
 
+            mPass = password;
+            mEmail = email;
+
             User user = new User();
             user.setFname(first_name);
             user.setLname(last_name);
@@ -158,7 +177,8 @@ public class RegisterFragment extends Fragment {
         mTiPassword2.setError(null);
     }
 
-    private void registerProcess(User user) {
+    private void
+    registerProcess(User user) {
         mSubscriptions.add(NetworkUtil.getRetrofit().register(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -169,6 +189,13 @@ public class RegisterFragment extends Fragment {
 
         mProgressbar.setVisibility(View.GONE);
         showSnackBarMessage(response.getMessage());
+
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(Constants.TOKEN,response.getToken());
+        editor.putString(EMAIL,mEmail);
+        editor.putString(PASS,mPass);
+        editor.apply();
+
         goToLogin();
     }
 

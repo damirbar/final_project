@@ -74,8 +74,8 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Intent intent = new Intent(getActivity(), NavBarActivity.class);//remove
-        startActivity(intent);//remove
+        //Intent intent = new Intent(getActivity(), NavBarActivity.class);//remove
+        //startActivity(intent);//remove
 
 
 
@@ -248,8 +248,8 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
         editor.putString(Constants.TOKEN,response.getToken());
         editor.putString(EMAIL,mEmail);
         editor.putString(PASS,mPass);
-
         editor.apply();
+
         mEtEmail.setText(null);
         mEtPassword.setText(null);
 

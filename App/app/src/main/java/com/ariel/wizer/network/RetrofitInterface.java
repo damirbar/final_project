@@ -11,7 +11,7 @@ import rx.Observable;
 
 public interface RetrofitInterface {
 
-    @POST("auth/new-Student")
+    @POST("auth/new-student")
     Observable<Response> register(@Body User user);
 
     @POST("auth/auth-login-user-pass")
@@ -23,7 +23,7 @@ public interface RetrofitInterface {
     @POST("auth/updateProfile")
     Observable<Response> updateProfile(@Body User user);
 
-    @PUT("auth/switch_password")
+    @PUT("auth/change-password")
     Observable<Response> changePassword(@Body User user);
 
     @POST("auth/reset-pass-init")

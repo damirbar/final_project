@@ -34,7 +34,7 @@
         android:theme="@style/AppTheme.MenuActivity" />
         <activity android:name=".SessionActivity" />
         <activity android:name=".NavBarActivity" />
-        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".EditProfileActivity" />
     </application>
 
 </manifest>
