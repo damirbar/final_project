@@ -147,6 +147,7 @@ router.post("/auth-login-user-pass", function (req, res) {
 });
 
 router.get("/get-user-by-token", function (req, res) {
+
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
     // decode token
     if (token) {
@@ -187,13 +188,14 @@ router.post("/new-student", function (req, res) {
     req.checkBody("email", "Email is required").notEmpty();
     req.checkBody("email", "Email is not valid").isEmail();
     req.checkBody("password", "Password is required").notEmpty();
-    req.checkBody("password_cnfrm", "Bouth passwords are required").notEmpty();
-    req.checkBody("password_cnfrm", "Passwords do not match").equals(req.body.password);
+    // req.checkBody("password_cnfrm", "Bouth passwords are required").notEmpty();
+    // req.checkBody("password_cnfrm", "Passwords do not match").equals(req.body.password);
 
 
     var errors = req.validationErrors();
 
     if (errors) {
+        console.log(error);
         res.status(400).send("erans error");
     }
     else {
@@ -244,31 +246,44 @@ router.post("/new-student", function (req, res) {
     }
 });
 
-router.put("/switch_password", function (req, res) {
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+router.put("/change-password", function (req, res) {
+
+    var token = req.headers['x-access-token'];
+
     if (token) {
         // verifies secret and checks exp
         jwt.verify(token, "Wizer", function (err, decoded) {
             if (err) {
                 return res.json({success: false, message: 'Failed to authenticate token.'});
             } else {
-                Student.findOne({accessToken: token}, function (err, student) {
+                User.findOne({accessToken: token}, function (err, user) {
                     if (err) return next(err);
+                    if (user !== {}) {
+                        var oldPass = req.body.password;
+                        var newPass = req.body.newPassword;
+                        if (bcrypt.compareSync(oldPass, user.password)) {
+                            bcrypt.genSalt(10, function(err, salt) {
+                                bcrypt.hash(user.password, salt, null, function (err, hash) {
+                                    if (err) next(err);
 
-                    var oldPass = req.body.oldPassword;
-                    var newPass = req.body.newPassword;
-                    if (bcrypt.compareSync(oldPass, student.password)) {
-                        student.password = newPass;
-                        Student.createStudent(newStudent, function (err, user) {
-                            if (err) return next(err);
-                            res.status(200).send(student);
-                        });
-                    }
-                    else {
-                        console.log("An error occurred!");
-                        console.log("Your pass: " + credentials.pass
-                            + ",\nThe expected encrypted pass: " + student.password);
-                        res.status(401).send({message: 'Invalid Credentials!'})
+                                    User.update({accessToken: token}, {password: hash}, function (err) {
+                                        if (err) {
+                                            console.log(err);
+                                            return res.json({success: false, message: "DB connection error"});
+                                        } else {
+                                            console.log("password was successfully updated");
+                                            return res.status(200).json({
+                                                success: true,
+                                                message: "password was successfully updated"
+                                            });
+                                        }
+                                    });
+                                });
+                            });
+                        }else {
+                            console.log("An error occurred!");
+                            res.status(401).send({message: "Wrong password"});
+                        }
                     }
                 });
             }
@@ -279,9 +294,10 @@ router.put("/switch_password", function (req, res) {
         return res.status(403).send({
             success: false,
             message: 'No token provided.'
-        })
+        });
     }
 });
+
 
 router.post("/reset-pass-init", function (req, res) {
 
