@@ -12,138 +12,57 @@ const auth = require('basic-auth');
 
 router.post("/auth-login-user-pass", function (req, res) {
 
-    var role = req.role;
     var credentials = auth(req);
     console.log(credentials);
 
-    if(role === 'teacher'){
-        User.aggregate([{
-                $lookup: {
-                    from: "teachers",
-                    localField: "_id",
-                    foreignField: "user_id",
-                    as: "teacher"
-                }
-            },{
-                $match: {
-                    "email": credentials.name
-                }
-            },{
-                $project: {
-                    "temp_password": 0,
-                    "temp_password_time": 0,
-                    "last_modified": 0,
-                    "accessToken": 0
-                }
-            }
-            ],
-            function (err, list) {
-                if (err) {
-                    console.log("Error while finding models");
-                    console.log("The error: " + err);
-                    return err;
-                } else {
-                    console.log(list);
-                    console.log("Found the user " + credentials.name);
-
-                    const token = jwt.sign(credentials.name, "Wizer");
-
-                    // list[0].accessToken = token;
-                    // list[0].save();
-
-                    Object.assign(list[0], list[0].student[0]);
-                    delete list[0].teacher;
-
-                    return res.status(200).json({message: "Welcome to WizeUp!", token: token, teacher: list[0]});
-                }
-            }
-        );
+    var projection = {
+        "temp_password": 0,
+        "temp_password_time": 0,
+        "last_modified": 0,
+        "accessToken": 0
     }
-    else {
-        User.aggregate([{
-                $lookup: {
-                    from: "students",
-                    localField: "_id",
-                    foreignField: "user_id",
-                    as: "student"
-                }
-            },{
-                $match: {
-                    "email": credentials.name
-                }
-            },{
-                    $project: {
-                        "temp_password": 0,
-                        "temp_password_time": 0,
-                        "last_modified": 0,
-                        "accessToken": 0
-                    }
-                }
-            ],
-            function (err, list) {
-                if (err) {
-                    console.log("Error while finding student");
+
+    User.findOne({email: credentials.name},projection, function (err, user) {
+        if (err) {
+            console.log("Error while finding student");
+            console.log("The error: " + err);
+            return err;
+        } else {
+            console.log(user);
+            console.log("Found the user " + credentials.name);
+
+            if (bcrypt.compareSync(credentials.pass, user.password)) {
+                console.log("Found the user " + credentials.name);
+                const token = jwt.sign(credentials.name, "Wizer");
+
+                var collection = user.role === "teacher" ? Teacher : Student;
+
+                collection.findOne({user_id: user._id}, function (err, role) {
+                    if(err){
+                    console.log("Error while finding user's role");
                     console.log("The error: " + err);
                     return err;
-                } else {
-                    console.log(list);
-                    console.log("Found the user " + credentials.name);
-
-                    if (bcrypt.compareSync(credentials.pass, list[0].password)) {
-                        console.log("Found the user " + credentials.name);
-
-                        const token = jwt.sign(credentials.name, "Wizer");
-                        //  const token = jwt.sign({name: credentials.name}, "Wizer", {expiresIn: '1d'});
-
-                        //TODO find one student and set his token and save
-
-                        User.update({email: credentials.name}, {accessToken: token}, function(err){
-                            if(err){
-                                console.log(err);
-                            }else{
-                                console.log("access token was successfully updated");
-                            }
-                        });
-
-
-                        // list[0].accessToken = token;
-                        // list[0].save();
-
-
-                        Object.assign(list[0], list[0].student[0]);
-                        delete list[0].student;
-                        return res.status(200).json({message: "Welcome to WizeUp!", token: token, student: list[0]});
-
+                    }else{
+                        Object.assign(user, role);
+                        console.log(user);
+                        return res.status(200).json({message: "Welcome to WizeUp!", token: token, student: user});
+                    }
+                });
+                User.update({email: credentials.name}, {accessToken: token}, function (err) {
+                    if (err) {
+                        console.log(err);
                     } else {
-                        console.log("An error occurred!");
-                        console.log("Your pass: " + credentials.pass
-                            + ",\nThe expected encrypted pass: " + list[0].password);
-                        res.status(401).send({message: 'Invalid Credentials!'})
+                        console.log("access token was successfully updated");
                     }
-                }
+                });
+            } else {
+                console.log("An error occurred!");
+                console.log("Your pass: " + credentials.pass
+                    + ",\nThe expected encrypted pass: " + user.password);
+                res.status(401).send({message: 'Invalid Credentials!'})
             }
-        );
-
-        // Student.findOne({mail: credentials.name}, function (err, student) {
-        //     if (err) return next(err);
-        //
-        //     if (bcrypt.compareSync(credentials.pass, student.password)) {
-        //         console.log("Found the user " + credentials.name);
-        //
-        //         const token = jwt.sign(credentials.name, "Wizer");
-        //
-        //         student.accessToken = token;
-        //         student.save();
-        //
-        //         res.status(200).send({message: "Welcome to WizeUp!", token: token, student: student});
-        //     } else {
-        //         console.log("An error occurred!");
-        //         console.log("Your pass: " + credentials.pass
-        //             + ",\nThe expected encrypted pass: " + student.password);
-        //         res.status(401).send({message: 'Invalid Credentials!'})
-        //     }
-        // });
-    }
+        }
+    });
 });
 
 router.get("/get-user-by-token", function (req, res) {
@@ -157,7 +76,7 @@ router.get("/get-user-by-token", function (req, res) {
                 return res.json({success: false, message: 'Failed to authenticate token.'});
             } else {
                 // if everything is good, save to request for use in other routes
-                Student.findOne({email: decoded}, function (err, student) {
+                User.findOne({email: decoded}, function (err, student) {
                     if (err) return next(err);
                     res.status(200).send(student);
                 });
@@ -178,7 +97,7 @@ router.get("/get-user-by-token", function (req, res) {
 
 router.use(expressValidator());
 
-router.post("/new-student", function (req, res) {
+router.post("/new-user", function (req, res) {
     var fname = req.body.fname;
     var lname = req.body.lname;
     var email = req.body.email;
@@ -190,7 +109,6 @@ router.post("/new-student", function (req, res) {
     req.checkBody("password", "Password is required").notEmpty();
     // req.checkBody("password_cnfrm", "Bouth passwords are required").notEmpty();
     // req.checkBody("password_cnfrm", "Passwords do not match").equals(req.body.password);
-
 
     var errors = req.validationErrors();
 
@@ -210,8 +128,8 @@ router.post("/new-student", function (req, res) {
             password: password
         });
 
-        bcrypt.genSalt(10, function(err, salt) {
-            bcrypt.hash(newUser.password, salt, null, function(err, hash) {
+        bcrypt.genSalt(10, function (err, salt) {
+            bcrypt.hash(newUser.password, salt, null, function (err, hash) {
                 newUser.password = hash;
                 newUser.save(function (err, user) {
                     if (err) {
@@ -262,7 +180,7 @@ router.put("/change-password", function (req, res) {
                         var oldPass = req.body.password;
                         var newPass = req.body.newPassword;
                         if (bcrypt.compareSync(oldPass, user.password)) {
-                            bcrypt.genSalt(10, function(err, salt) {
+                            bcrypt.genSalt(10, function (err, salt) {
                                 bcrypt.hash(user.password, salt, null, function (err, hash) {
                                     if (err) next(err);
 
@@ -280,7 +198,7 @@ router.put("/change-password", function (req, res) {
                                     });
                                 });
                             });
-                        }else {
+                        } else {
                             console.log("An error occurred!");
                             res.status(401).send({message: "Wrong password"});
                         }
@@ -342,9 +260,9 @@ router.post("/reset-pass-finish", function (req, res) {
         if (seconds < 600) {
             return student;
         } else {
-            reject({ status: 401, message: 'Time Out ! Try again' });
+            reject({status: 401, message: 'Time Out ! Try again'});
         }
-    }).then(function(student){
+    }).then(function (student) {
         if (bcrypt.compareSync(token, student.temp_password)) {
 
             const salt = bcrypt.genSaltSync(10);
@@ -358,8 +276,10 @@ router.post("/reset-pass-finish", function (req, res) {
         } else {
             reject({status: 401, message: 'Invalid Token !'});
         }
-    }).then(function(student){resolve({ status: 200, message: 'Password Changed Sucessfully !'
-    })
+    }).then(function (student) {
+        resolve({
+            status: 200, message: 'Password Changed Sucessfully !'
+        })
     })
 });
 
