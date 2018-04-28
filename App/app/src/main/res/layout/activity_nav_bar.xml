@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context="com.ariel.wizer.NavBarActivity">
 
+
     <FrameLayout
         android:id="@+id/frame_layout"
         android:layout_width="match_parent"
@@ -17,10 +18,10 @@
 
     </FrameLayout>
 
-    <android.support.design.widget.BottomNavigationView
+    <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
         android:id="@+id/navigation"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:paddingTop="5dp"

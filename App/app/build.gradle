@@ -48,4 +48,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.7'
     implementation 'org.mongodb:mongodb-driver:3.4.2'
 
+    implementation 'com.github.arimorty:floatingsearchview:2.1.1'
+
+    implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
+    implementation "com.android.support:design:26.+"
+    implementation 'com.albinmathew:photo-crop-library:1.0.3'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
 }

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.preference.PreferenceManager;
@@ -12,11 +13,14 @@ import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
@@ -36,7 +40,7 @@ import rx.subscriptions.CompositeSubscription;
 import static com.ariel.wizer.utils.Constants.EMAIL;
 import static com.ariel.wizer.utils.Validation.validateEmail;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity implements PicModeSelectDialogFragment.IPicModeSelectListener {
 
     private EditText mETFirstName;
     private EditText mETLastName;
@@ -48,13 +52,14 @@ public class EditProfileActivity extends AppCompatActivity {
     private String mToken;
     private String mEmail;
 
-    private ImageView image;
+    public static final String TAG = "ImageViewActivity";
+    public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
+    public static final int REQUEST_CODE_UPDATE_PIC = 0x1;
 
+
+    private ImageView image;
     private Button mBSave;
     private Button mBcancel;
-
-    // Image loading result to pass to startActivityForResult method.
-    private static int LOAD_IMAGE_RESULTS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,20 +89,82 @@ public class EditProfileActivity extends AppCompatActivity {
         mETEmail = (EditText) findViewById(R.id.eTEmail);
         mETGender = (EditText) findViewById(R.id.eTGender);
         mProfileChange = (TextView) findViewById(R.id.user_profile_change);
-
-
         image = (ImageView)findViewById(R.id.user_profile_photo);
-
         mBSave = (Button) findViewById(R.id.save_button);
         mBcancel = (Button) findViewById(R.id.cancel_button);
 
         mBSave.setOnClickListener(view -> saveB());
         mBcancel.setOnClickListener(view -> cancelB());
         mETGender.setOnClickListener(view -> genderViewClick());
-        mProfileChange.setOnClickListener(view -> gallery());
 
+        mProfileChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddProfilePicDialog();
+            }
+        });
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent result) {
+        if (requestCode == REQUEST_CODE_UPDATE_PIC) {
+            if (resultCode == RESULT_OK) {
+                String imagePath = result.getStringExtra(Constants.IntentExtras.IMAGE_PATH);
+                showCroppedImage(imagePath);
+            } else if (resultCode == RESULT_CANCELED) {
+
+            } else {
+                String errorMsg = result.getStringExtra(ImageCropActivity.ERROR_MSG);
+                Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void showCroppedImage(String mImagePath) {
+
+
+        if (mImagePath != null) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(mImagePath);
+            image.setImageBitmap(myBitmap);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void showAddProfilePicDialog() {
+        PicModeSelectDialogFragment dialogFragment = new PicModeSelectDialogFragment();
+        dialogFragment.setiPicModeSelectListener(this);
+        dialogFragment.show(getFragmentManager(), "picModeSelector");
+    }
+
+    private void actionProfilePic(String action) {
+        Intent intent = new Intent(this, ImageCropActivity.class);
+        intent.putExtra("ACTION", action);
+        startActivityForResult(intent, REQUEST_CODE_UPDATE_PIC);
+    }
+
+
+    @Override
+    public void onPicModeSelected(String mode) {
+        String action = mode.equalsIgnoreCase(Constants.PicModes.CAMERA) ? Constants.IntentExtras.ACTION_CAMERA : Constants.IntentExtras.ACTION_GALLERY;
+        actionProfilePic(action);
+    }
+
+
+
+
+
+
 
     public void genderViewClick() {
         final String[] items = { "Male", "Female", "Not Specified" };
@@ -120,40 +187,6 @@ public class EditProfileActivity extends AppCompatActivity {
         });
         builder.show();
     }
-
-    private void gallery() {
-        // Create the Intent for Image Gallery.
-        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        // Start new activity with the LOAD_IMAGE_RESULTS to handle back the results when image is picked from the Image Gallery.
-        startActivityForResult(i, LOAD_IMAGE_RESULTS);
-
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Here we need to check if the activity that was triggers was the Image Gallery.
-        // If it is the requestCode will match the LOAD_IMAGE_RESULTS value.
-        // If the resultCode is RESULT_OK and there is some data we know that an image was picked.
-        if (requestCode == LOAD_IMAGE_RESULTS && resultCode == RESULT_OK && data != null) {
-            // Let's read picked image data - its URI
-            Uri pickedImage = data.getData();
-            // Let's read picked image path using content resolver
-            String[] filePath = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getContentResolver().query(pickedImage, filePath, null, null, null);
-            cursor.moveToFirst();
-            String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
-
-            // Now we need to set the GUI ImageView data with data read from the picked file.
-            image.setImageBitmap(BitmapFactory.decodeFile(imagePath));
-
-            // At the end remember to close the cursor or you will end with the RuntimeException!
-            cursor.close();
-        }
-    }
-
 
     private void saveB(){
 

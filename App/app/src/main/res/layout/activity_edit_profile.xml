@@ -39,19 +39,16 @@
             android:scaleType="centerCrop"
             android:src="@android:color/background_light" />
 
-
-        <ImageButton
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/user_profile_photo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="135dp"
+            android:layout_height="126dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="58dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/profile_circular_border_imageview"
-            android:elevation="5dp"
-            android:padding="20dp"
-            android:scaleType="centerInside" />
+            android:layout_marginTop="54dp"
+            android:paddingBottom="3dp"
+            android:src="@drawable/profile2" />
 
 
 
@@ -59,11 +56,9 @@
             android:id="@+id/user_profile_change"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/user_profile_photo"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp"
-            android:text="Change Profile Photo"
+            android:layout_centerInParent="true"
             android:adjustViewBounds="true"
+            android:text="Change Profile Photo"
             android:textColor="@android:color/black"
             android:textSize="14sp" />
 

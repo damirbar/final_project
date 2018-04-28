@@ -75,7 +75,7 @@ public class ChangePasswordDialog extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mListener = (NavBarActivity)context;
+        //mListener = (NavBarActivity)context;
     }
 
     private void initViews(View v) {

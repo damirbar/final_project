@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.ariel.wizer.utils.Constants;
 import com.google.gson.Gson;
@@ -54,6 +55,8 @@ public class RegisterFragment extends Fragment {
     private TextInputLayout mTiPassword;
     private TextInputLayout mTiPassword2;
     private ProgressBar mProgressbar;
+    private ToggleButton typeTg;
+
 
     private String mEmail;
     private String mPass;
@@ -86,6 +89,8 @@ public class RegisterFragment extends Fragment {
         mTiEmail = (TextInputLayout) v.findViewById(R.id.ti_email);
         mTiPassword = (TextInputLayout) v.findViewById(R.id.ti_password);
         mTiPassword2 = (TextInputLayout) v.findViewById(R.id.ti_password2);
+        typeTg = (ToggleButton) v.findViewById(R.id.type);
+
 
         mProgressbar = (ProgressBar) v.findViewById(R.id.progress);
 

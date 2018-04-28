@@ -8,4 +8,15 @@ public class Constants {
     public static final String EMAIL = "email";
     public static final String PASS = "pass";
 
+    public interface PicModes {
+        String CAMERA = "Camera";
+        String GALLERY = "Gallery";
+    }
+
+    public interface IntentExtras {
+        String ACTION_CAMERA = "action-camera";
+        String ACTION_GALLERY = "action-gallery";
+        String IMAGE_PATH = "image-path";
+    }
+
 }
