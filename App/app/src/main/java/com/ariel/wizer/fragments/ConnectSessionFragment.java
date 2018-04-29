@@ -54,7 +54,7 @@ public class ConnectSessionFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_connect_session,container,false);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
-        mServerResponse = new ServerResponse(getView());
+        mServerResponse = new ServerResponse(getActivity().findViewById(R.id.activity_nav));
 
         initViews(view);
         return view;

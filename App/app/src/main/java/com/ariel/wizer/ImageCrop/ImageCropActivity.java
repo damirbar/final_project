@@ -1,4 +1,4 @@
-package com.ariel.wizer;
+package com.ariel.wizer.ImageCrop;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
@@ -35,6 +35,7 @@ import com.albinmathew.photocrop.cropoverlay.edge.Edge;
 import com.albinmathew.photocrop.cropoverlay.utils.ImageViewUtil;
 import com.albinmathew.photocrop.photoview.PhotoView;
 import com.albinmathew.photocrop.photoview.PhotoViewAttacher;
+import com.ariel.wizer.R;
 import com.ariel.wizer.utils.Constants;
 
 import java.io.Closeable;
@@ -155,11 +156,11 @@ public class ImageCropActivity extends AppCompatActivity {
             String action = getIntent().getStringExtra("ACTION");
             if (null != action) {
                 switch (action) {
-                    case Constants.IntentExtras.ACTION_CAMERA:
+                    case IntentExtras.ACTION_CAMERA:
                         getIntent().removeExtra("ACTION");
                         takePic();
                         return;
-                    case Constants.IntentExtras.ACTION_GALLERY:
+                    case IntentExtras.ACTION_GALLERY:
                         getIntent().removeExtra("ACTION");
                         pickImage();
                         return;
@@ -167,8 +168,8 @@ public class ImageCropActivity extends AppCompatActivity {
             }
         }
         mImagePath = mFileTemp.getPath();
-        mSaveUri = Utils.getImageUri(mImagePath);
-        mImageUri = Utils.getImageUri(mImagePath);
+        mSaveUri = ImageUri.getImageUri(mImagePath);
+        mImageUri = ImageUri.getImageUri(mImagePath);
         init();
     }
 
@@ -203,7 +204,7 @@ public class ImageCropActivity extends AppCompatActivity {
         if (saved) {
             //USUALLY Upload image to server here
             Intent intent = new Intent();
-            intent.putExtra(Constants.IntentExtras.IMAGE_PATH, mImagePath);
+            intent.putExtra(IntentExtras.IMAGE_PATH, mImagePath);
             setResult(RESULT_OK, intent);
             finish();
         } else {
@@ -277,8 +278,8 @@ public class ImageCropActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_TAKE_PICTURE) {
             if (resultCode == RESULT_OK) {
                 mImagePath = mFileTemp.getPath();
-                mSaveUri = Utils.getImageUri(mImagePath);
-                mImageUri = Utils.getImageUri(mImagePath);
+                mSaveUri = ImageUri.getImageUri(mImagePath);
+                mImageUri = ImageUri.getImageUri(mImagePath);
                 init();
             } else if (resultCode == RESULT_CANCELED) {
                 userCancelled();
@@ -298,8 +299,8 @@ public class ImageCropActivity extends AppCompatActivity {
                     fileOutputStream.close();
                     inputStream.close();
                     mImagePath = mFileTemp.getPath();
-                    mSaveUri = Utils.getImageUri(mImagePath);
-                    mImageUri = Utils.getImageUri(mImagePath);
+                    mSaveUri = ImageUri.getImageUri(mImagePath);
+                    mImageUri = ImageUri.getImageUri(mImagePath);
                     init();
                 } catch (Exception e) {
                     errored();

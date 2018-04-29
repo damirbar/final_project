@@ -54,5 +54,5 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.4.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-
+    implementation 'com.androidadvance:topsnackbar:1.1.1'
 }

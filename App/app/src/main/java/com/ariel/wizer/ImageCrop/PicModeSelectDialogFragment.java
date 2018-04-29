@@ -1,4 +1,4 @@
-package com.ariel.wizer;
+package com.ariel.wizer.ImageCrop;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,7 +10,7 @@ import com.ariel.wizer.utils.Constants;
 
 public class PicModeSelectDialogFragment extends DialogFragment {
 
-    private String[] picMode = {Constants.PicModes.CAMERA, Constants.PicModes.GALLERY};
+    private String[] picMode = {PicModes.CAMERA, PicModes.GALLERY};
 
     private IPicModeSelectListener iPicModeSelectListener;
 

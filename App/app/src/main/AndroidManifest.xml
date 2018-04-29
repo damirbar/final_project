@@ -36,8 +36,7 @@
         <activity android:name=".ChatActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".chat.ChatChannelsActivity" />
-        <activity android:name=".ImageCropActivity" />
-
+        <activity android:name=".ImageCrop.ImageCropActivity" />
     </application>
 
 </manifest>

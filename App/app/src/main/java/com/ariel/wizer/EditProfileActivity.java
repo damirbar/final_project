@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ariel.wizer.ImageCrop.ImageCropActivity;
+import com.ariel.wizer.ImageCrop.IntentExtras;
+import com.ariel.wizer.ImageCrop.PicModeSelectDialogFragment;
+import com.ariel.wizer.ImageCrop.PicModes;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
@@ -42,7 +45,6 @@ public class EditProfileActivity extends AppCompatActivity implements PicModeSel
     private ServerResponse mServerResponse;
     private String mEmail;
 
-//    public static final String TAG = "ImageViewActivity";
     public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
     public static final int REQUEST_CODE_UPDATE_PIC = 0x1;
 
@@ -68,9 +70,7 @@ public class EditProfileActivity extends AppCompatActivity implements PicModeSel
         mEmail = mRetrofitRequests.getmSharedPreferences().getString(Constants.EMAIL,"");
     }
 
-
     private void initViews() {
-
         mETFirstName = (EditText) findViewById(R.id.eTFirstName);
         mETLastName = (EditText) findViewById(R.id.eTLastName);
         mETEmail = (EditText) findViewById(R.id.eTEmail);
@@ -79,27 +79,17 @@ public class EditProfileActivity extends AppCompatActivity implements PicModeSel
         image = (ImageView)findViewById(R.id.user_profile_photo);
         mBSave = (Button) findViewById(R.id.save_button);
         mBcancel = (Button) findViewById(R.id.cancel_button);
-
         mBSave.setOnClickListener(view -> saveButton());
         mBcancel.setOnClickListener(view -> cancelButton());
         mETGender.setOnClickListener(view -> genderViewClick());
         mProfileChange.setOnClickListener(view -> showAddProfilePicDialog());
-
-
-//        mProfileChange.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showAddProfilePicDialog();
-//            }
-//        });
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
         if (requestCode == REQUEST_CODE_UPDATE_PIC) {
             if (resultCode == RESULT_OK) {
-                String imagePath = result.getStringExtra(Constants.IntentExtras.IMAGE_PATH);
+                String imagePath = result.getStringExtra(IntentExtras.IMAGE_PATH);
                 showCroppedImage(imagePath);
             } else if (resultCode == RESULT_CANCELED) {
 
@@ -140,18 +130,11 @@ public class EditProfileActivity extends AppCompatActivity implements PicModeSel
         startActivityForResult(intent, REQUEST_CODE_UPDATE_PIC);
     }
 
-
     @Override
     public void onPicModeSelected(String mode) {
-        String action = mode.equalsIgnoreCase(Constants.PicModes.CAMERA) ? Constants.IntentExtras.ACTION_CAMERA : Constants.IntentExtras.ACTION_GALLERY;
+        String action = mode.equalsIgnoreCase(PicModes.CAMERA) ? IntentExtras.ACTION_CAMERA : IntentExtras.ACTION_GALLERY;
         actionProfilePic(action);
     }
-
-
-
-///////////////////////////////////////////////////////////////////
-
-
 
     public void genderViewClick() {
         final String[] items = { "Male", "Female", "Not Specified" };
@@ -176,7 +159,6 @@ public class EditProfileActivity extends AppCompatActivity implements PicModeSel
     }
 
     private void saveButton(){
-
         setError();
         String first_name = mETFirstName.getText().toString();
         String last_name = mETLastName.getText().toString();

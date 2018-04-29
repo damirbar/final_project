@@ -1,8 +1,10 @@
 package com.ariel.wizer.network;
 
+import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
+import com.androidadvance.topsnackbar.TSnackbar;
 import com.ariel.wizer.model.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,7 +32,10 @@ public class ServerResponse {
 
 
     public void showSnackBarMessage(String message) {
-        Snackbar.make(layout,message, Snackbar.LENGTH_SHORT).show();
+        TSnackbar snackbar = TSnackbar.make(layout,message,TSnackbar.LENGTH_LONG);
+        View snackbarView = snackbar.getView();
+        snackbarView.setBackgroundColor(Color.parseColor("#ffffff"));
+        snackbar.show();
     }
 
         public void handleError(Throwable error) {

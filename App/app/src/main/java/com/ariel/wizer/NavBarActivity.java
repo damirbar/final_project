@@ -64,12 +64,4 @@ public class NavBarActivity extends AppCompatActivity  {
         //Used to select an item programmatically
         bottomNavigationView.getMenu().getItem(0).setChecked(true);
     }
-
-
-
-    private void showSnackBarMessage(String message) {
-
-        Snackbar.make(findViewById(R.id.activity_profile),message, Snackbar.LENGTH_SHORT).show();
-
-    }
 }
