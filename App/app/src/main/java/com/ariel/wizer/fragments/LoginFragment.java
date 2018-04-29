@@ -24,12 +24,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.ariel.wizer.LoginActivity;
 import com.ariel.wizer.NavBarActivity;
+import com.ariel.wizer.network.ServerResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
-import com.ariel.wizer.network.NetworkUtil;
+import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.utils.Constants;
 
 import java.io.IOException;
@@ -63,17 +66,16 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     private ProgressBar mProgressBar;
     private CompositeSubscription mSubscriptions;
     private SharedPreferences mSharedPreferences;
+    private ServerResponse mServerResponse;
     private String mEmail;
     private String mPass;
-
-
     private static Boolean START_ANIMATION = true;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Intent intent = new Intent(getActivity(), NavBarActivity.class);//remove
+        Intent intent = new Intent(getActivity(),NavBarActivity.class);//remove
         startActivity(intent);//remove
 
 
@@ -82,6 +84,8 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
         super.onCreate(savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         mSubscriptions = new CompositeSubscription();
+        mServerResponse = new ServerResponse(getActivity().findViewById(R.id.activity_main));
+
         initSharedPreferences();
         autoLogin();
         initViews(view);
@@ -103,7 +107,6 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
         mProgressBar = (ProgressBar) v.findViewById(R.id.progress);
         mTvForgotPassword = (TextView) v.findViewById(R.id.forgotPswTextView);
         mLogoStaticImageView = (ImageView) v.findViewById(R.id.logoStaticImageView);
-
         mNewAccountButton.setOnClickListener(view -> goToRegister());
         mBtLogin.setOnClickListener(view -> login());
         mTvForgotPassword.setOnClickListener(view -> showDialog());
@@ -223,7 +226,7 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
 
         } else {
 
-            showSnackBarMessage("Enter Valid Details !");
+            showMessage("Enter Valid Details !");
         }
     }
 
@@ -234,10 +237,10 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     }
 
     private void loginProcess(String email, String password) {
-        mSubscriptions.add(NetworkUtil.getRetrofit(email, password).login()
+        mSubscriptions.add(RetrofitRequests.getRetrofit(email, password).login()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse,this::handleError));
+                .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
     }
 
     private void handleResponse(Response response) {
@@ -257,35 +260,10 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
         getActivity().finish();
     }
 
-    private void handleError(Throwable error) {
-
-        mProgressBar.setVisibility(View.GONE);
-
-        if (error instanceof HttpException) {
-
-            Gson gson = new GsonBuilder().create();
-
-            try {
-                String errorBody = ((HttpException) error).response().errorBody().string();
-                showSnackBarMessage(errorBody);
-
-                Response response = gson.fromJson(errorBody,Response.class);
-                showSnackBarMessage(response.getMessage());
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-
-            showSnackBarMessage("Network Error !");
-        }
-    }
-
-    private void showSnackBarMessage(String message) {
+    private void showMessage(String message) {
 
         if (getView() != null) {
-
-            Snackbar.make(getView(),message,Snackbar.LENGTH_SHORT).show();
+            mServerResponse.showSnackBarMessage(message);
         }
     }
 
@@ -298,9 +276,7 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     }
 
     private void showDialog(){
-
         ResetPasswordDialog fragment = new ResetPasswordDialog();
-
         fragment.show(getFragmentManager(), ResetPasswordDialog.TAG);
     }
 
@@ -311,10 +287,7 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     }
 
     @Override
-    public void onAnimationStart(Animation animation) {
-
-
-    }
+    public void onAnimationStart(Animation animation) {}
 
     @Override
     public void onAnimationEnd(Animation animation) {
@@ -392,7 +365,5 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     }
 
     @Override
-    public void onAnimationRepeat(Animation animation) {
-
-    }
+    public void onAnimationRepeat(Animation animation) {}
 }

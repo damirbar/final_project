@@ -17,8 +17,8 @@ import android.widget.EditText;
 import com.ariel.wizer.R;
 import com.ariel.wizer.SessionActivity;
 import com.ariel.wizer.model.Response;
-import com.ariel.wizer.model.Session;
-import com.ariel.wizer.network.NetworkUtil;
+import com.ariel.wizer.network.RetrofitRequests;
+import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.utils.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -38,11 +38,9 @@ public class ConnectSessionFragment extends Fragment {
     private EditText etClasPin;
     private Button mBtLogin;
     private TextInputLayout mTcalssPin;
-
     private CompositeSubscription mSubscriptions;
-    private SharedPreferences mSharedPreferences;
-    private String mToken;
-
+    private RetrofitRequests mRetrofitRequests;
+    private ServerResponse mServerResponse;
 
 
     public static ConnectSessionFragment newInstance() {
@@ -55,7 +53,9 @@ public class ConnectSessionFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_connect_session,container,false);
         mSubscriptions = new CompositeSubscription();
-        initSharedPreferences();
+        mRetrofitRequests = new RetrofitRequests(this.getActivity());
+        mServerResponse = new ServerResponse(getView());
+
         initViews(view);
         return view;
     }
@@ -67,23 +67,10 @@ public class ConnectSessionFragment extends Fragment {
         mBtLogin.setOnClickListener(view -> login());
     }
 
-    private void initSharedPreferences() {
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-        mToken = mSharedPreferences.getString(Constants.TOKEN,"");
-    }
-
-
     private void setError() {
         mTcalssPin.setError(null);
     }
 
-    private void showSnackBarMessage(String message) {
-
-        if (getView() != null) {
-
-            Snackbar.make(getView(),message,Snackbar.LENGTH_SHORT).show();
-        }
-    }
 
     private void login() {
 
@@ -106,38 +93,16 @@ public class ConnectSessionFragment extends Fragment {
     }
 
     private void loginProcess(String id) {
-        mSubscriptions.add(NetworkUtil.getRetrofit(mToken).connectSession(id)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().connectSession(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse,this::handleError));
+                .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
     }
 
     private void handleResponse(Response response) {
-        showSnackBarMessage(response.getMessage());
         Intent intent = new Intent(getActivity(), SessionActivity.class);
         intent.putExtra("pin",pin);
         startActivity(intent);
-    }
-
-    private void handleError(Throwable error) {
-
-        if (error instanceof HttpException) {
-
-            Gson gson = new GsonBuilder().create();
-
-            try {
-
-                String errorBody = ((HttpException) error).response().errorBody().string();
-                Response response = gson.fromJson(errorBody,Response.class);
-                showSnackBarMessage(response.getMessage());
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-
-            showSnackBarMessage("Network Error !");
-        }
     }
 
     @Override

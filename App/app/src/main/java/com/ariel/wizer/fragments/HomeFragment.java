@@ -96,7 +96,7 @@ public class HomeFragment extends Fragment {
 //    }
 
 //    private void loginProcess(String id) {
-//        mSubscriptions.add(NetworkUtil.getRetrofit(mToken).connectSession(id)
+//        mSubscriptions.add(RetrofitRequests.getRetrofit(mToken).connectSession(id)
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .subscribeOn(Schedulers.io())
 //                .subscribe(this::handleResponse,this::handleError));

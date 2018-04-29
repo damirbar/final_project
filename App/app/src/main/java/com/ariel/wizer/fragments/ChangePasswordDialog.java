@@ -4,7 +4,6 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
@@ -15,13 +14,12 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.ariel.wizer.NavBarActivity;
+import com.ariel.wizer.network.RetrofitRequests;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
-import com.ariel.wizer.network.NetworkUtil;
 import com.ariel.wizer.utils.Constants;
 
 import java.io.IOException;
@@ -36,11 +34,6 @@ import static com.ariel.wizer.utils.Validation.validateFields;
 
 public class ChangePasswordDialog extends DialogFragment {
 
-    public interface Listener {
-
-        void onPasswordChanged();
-    }
-
     public static final String TAG = ChangePasswordDialog.class.getSimpleName();
 
     private EditText mEtOldPassword;
@@ -53,13 +46,9 @@ public class ChangePasswordDialog extends DialogFragment {
     private TextInputLayout mTiNewPassword;
     private TextInputLayout mTiNewPassword2;
     private ProgressBar mProgressBar;
-    private SharedPreferences mSharedPreferences;
     private CompositeSubscription mSubscriptions;
-
-    private String mToken;
+    private RetrofitRequests mRetrofitRequests;
     private String mPass;
-
-    private Listener mListener;
 
     @Nullable
     @Override
@@ -67,6 +56,8 @@ public class ChangePasswordDialog extends DialogFragment {
 
         View view = inflater.inflate(R.layout.dialog_change_password,container,false);
         mSubscriptions = new CompositeSubscription();
+        mRetrofitRequests = new RetrofitRequests(this.getActivity());
+
         initSharedPreferences();
         initViews(view);
         return view;
@@ -75,7 +66,6 @@ public class ChangePasswordDialog extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //mListener = (NavBarActivity)context;
     }
 
     private void initViews(View v) {
@@ -90,14 +80,12 @@ public class ChangePasswordDialog extends DialogFragment {
         mBtChangePassword = (Button) v.findViewById(R.id.btn_change_password);
         mBtCancel = (Button) v.findViewById(R.id.btn_cancel);
         mProgressBar = (ProgressBar) v.findViewById(R.id.progress);
-        mPass = mSharedPreferences.getString(Constants.PASS,"");
         mBtChangePassword.setOnClickListener(view -> changePassword());
         mBtCancel.setOnClickListener(view -> dismiss());
     }
 
     private void initSharedPreferences() {
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mToken = mSharedPreferences.getString(Constants.TOKEN,"");
+        mPass = mRetrofitRequests.getmSharedPreferences().getString(Constants.PASS,"");
     }
 
 
@@ -155,7 +143,7 @@ public class ChangePasswordDialog extends DialogFragment {
 
     private void changePasswordProgress(User user) {
 
-        mSubscriptions.add(NetworkUtil.getRetrofit(mToken).changePassword(user)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().changePassword(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse,this::handleError));
@@ -164,9 +152,8 @@ public class ChangePasswordDialog extends DialogFragment {
     private void handleResponse(Response response) {
 
         mProgressBar.setVisibility(View.GONE);
-        mListener.onPasswordChanged();
 
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        SharedPreferences.Editor editor = mRetrofitRequests.getmSharedPreferences().edit();
         editor.putString(PASS,mPass);
         editor.apply();
 
