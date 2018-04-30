@@ -91,7 +91,7 @@ public class SideMenuFragment extends Fragment {
 
     private void logout() {
         SharedPreferences.Editor editor = mRetrofitRequests.getmSharedPreferences().edit();
-        editor.putString(Constants.EMAIL,"");
+//        editor.putString(Constants.EMAIL,"");
         editor.putString(Constants.PASS,"");
         editor.putString(Constants.TOKEN,"");
         editor.apply();

@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,16 +27,11 @@ import android.widget.TextView;
 import com.ariel.wizer.LoginActivity;
 import com.ariel.wizer.NavBarActivity;
 import com.ariel.wizer.network.ServerResponse;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.utils.Constants;
 
-import java.io.IOException;
-
-import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -75,7 +69,7 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Intent intent = new Intent(getActivity(),NavBarActivity.class);//remove
+        Intent intent = new Intent(getActivity(),LoginActivity.class);//remove
         startActivity(intent);//remove
 
 
@@ -85,10 +79,10 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         mSubscriptions = new CompositeSubscription();
         mServerResponse = new ServerResponse(getActivity().findViewById(R.id.activity_main));
-
         initSharedPreferences();
         autoLogin();
         initViews(view);
+        rememberEmail();
         return view;
     }
 
@@ -191,6 +185,13 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
             loginProcess(mEmail,mPass);
         }
     }
+
+    private void rememberEmail() {
+        if(!mEmail.isEmpty()){
+            mEtEmail.setText(mEmail);
+        }
+    }
+
 
     private void initSharedPreferences() {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -361,7 +362,6 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
         }
 
         START_ANIMATION = false;
-
     }
 
     @Override

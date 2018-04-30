@@ -1,8 +1,8 @@
 package com.ariel.wizer.network;
 
 import android.graphics.Color;
-import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.ariel.wizer.model.Response;
@@ -26,19 +26,18 @@ public class ServerResponse {
         return layout;
     }
 
-    public void setLayout(View layout) {
-        this.layout = layout;
-    }
-
+    public void setLayout(View layout) { this.layout = layout; }
 
     public void showSnackBarMessage(String message) {
         TSnackbar snackbar = TSnackbar.make(layout,message,TSnackbar.LENGTH_LONG);
         View snackbarView = snackbar.getView();
         snackbarView.setBackgroundColor(Color.parseColor("#ffffff"));
+        TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
+        textView.setTextColor(Color.BLACK);
         snackbar.show();
     }
 
-        public void handleError(Throwable error) {
+    public void handleError(Throwable error) {
 
         if (error instanceof HttpException) {
 
@@ -58,6 +57,4 @@ public class ServerResponse {
             showSnackBarMessage("Network Error !");
         }
     }
-
-
 }
