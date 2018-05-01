@@ -1,0 +1,132 @@
+////From login_requsts
+ // if(role === 'teacher'){
+    //     User.aggregate([{
+    //             $lookup: {
+    //                 from: "teachers",
+    //                 localField: "_id",
+    //                 foreignField: "user_id",
+    //                 as: "teacher"
+    //             }
+    //         },{
+    //             $match: {
+    //                 "email": credentials.name
+    //             }
+    //         },{
+    //             $project: {
+    //                 "temp_password": 0,
+    //                 "temp_password_time": 0,
+    //                 "last_modified": 0,
+    //                 "accessToken": 0
+    //             }
+    //         }
+    //         ],
+    //         function (err, list) {
+    //             if (err) {
+    //                 console.log("Error while finding models");
+    //                 console.log("The error: " + err);
+    //                 return err;
+    //             } else {
+    //                 console.log(list);
+    //                 console.log("Found the user " + credentials.name);
+    //
+    //                 const token = jwt.sign(credentials.name, "Wizer");
+    //
+    //                 // list[0].accessToken = token;
+    //                 // list[0].save();
+    //
+    //                 Object.assign(list[0], list[0].student[0]);
+    //                 delete list[0].teacher;
+    //
+    //                 return res.status(200).json({message: "Welcome to WizeUp!", token: token, teacher: list[0]});
+    //             }
+    //         }
+    //     );
+    // }
+    // else {
+    //     User.aggregate([{
+    //             $lookup: {
+    //                 from: "students",
+    //                 localField: "_id",
+    //                 foreignField: "user_id",
+    //                 as: "student"
+    //             }
+    //         },{
+    //             $match: {
+    //                 "email": credentials.name
+    //             }
+    //         },{
+    //                 $project: {
+    //                     "temp_password": 0,
+    //                     "temp_password_time": 0,
+    //                     "last_modified": 0,
+    //                     "accessToken": 0
+    //                 }
+    //             }
+    //         ],
+    //         function (err, list) {
+    //             if (err) {
+    //                 console.log("Error while finding student");
+    //                 console.log("The error: " + err);
+    //                 return err;
+    //             } else {
+    //                 console.log(list);
+    //                 console.log("Found the user " + credentials.name);
+    //
+    //                 if (bcrypt.compareSync(credentials.pass, list[0].password)) {
+    //                     console.log("Found the user " + credentials.name);
+    //
+    //                     const token = jwt.sign(credentials.name, "Wizer");
+    //                     //  const token = jwt.sign({name: credentials.name}, "Wizer", {expiresIn: '1d'});
+    //
+    //                     //TODO find one student and set his token and save
+    //
+    //                     User.update({email: credentials.name}, {accessToken: token}, function(err){
+    //                         if(err){
+    //                             console.log(err);
+    //                         }else{
+    //                             console.log("access token was successfully updated");
+    //                         }
+    //                     });
+    //
+    //
+    //                     // list[0].accessToken = token;
+    //                     // list[0].save();
+    //
+    //
+    //                     Object.assign(list[0], list[0].student[0]);
+    //                     delete list[0].student;
+    //                     return res.status(200).json({message: "Welcome to WizeUp!", token: token, student: list[0]});
+    //
+    //                 } else {
+    //                     console.log("An error occurred!");
+    //                     console.log("Your pass: " + credentials.pass
+    //                         + ",\nThe expected encrypted pass: " + list[0].password);
+    //                     res.status(401).send({message: 'Invalid Credentials!'})
+    //                 }
+    //             }
+    //         }
+    //     );
+    // Student.findOne({mail: credentials.name}, function (err, student) {
+    //     if (err) return next(err);
+    //
+    //     if (bcrypt.compareSync(credentials.pass, student.password)) {
+    //         console.log("Found the user " + credentials.name);
+    //
+    //         const token = jwt.sign(credentials.name, "Wizer");
+    //
+    //         student.accessToken = token;
+    //         student.save();
+    //
+    //         res.status(200).send({message: "Welcome to WizeUp!", token: token, student: student});
+    //     } else {
+    //         console.log("An error occurred!");
+    //         console.log("Your pass: " + credentials.pass
+    //             + ",\nThe expected encrypted pass: " + student.password);
+    //         res.status(401).send({message: 'Invalid Credentials!'})
+    //     }
+    // });
+    // }
+
+
+
+
