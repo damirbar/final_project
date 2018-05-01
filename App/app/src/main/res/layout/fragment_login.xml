@@ -82,6 +82,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ti_first_name"
         android:textColorHint="@android:color/white"
+        app:hintAnimationEnabled="false"
+        app:hintEnabled="false"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
         app:layout_constraintTop_toTopOf="@+id/h_guideline3">
@@ -107,6 +109,8 @@
         android:layout_below="@+id/ti_email"
         android:layout_marginTop="8dp"
         android:textColorHint="@android:color/white"
+        app:hintAnimationEnabled="false"
+        app:hintEnabled="false"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
         app:layout_constraintTop_toBottomOf="@+id/ti_email"

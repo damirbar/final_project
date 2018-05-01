@@ -1,6 +1,7 @@
 package com.ariel.wizer.fragments;
 
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,19 +12,19 @@ import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.ariel.wizer.utils.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ariel.wizer.MainActivity;
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
-import com.ariel.wizer.network.NetworkUtil;
+import com.ariel.wizer.network.RetrofitRequests;
 
 import java.io.IOException;
 
@@ -62,8 +63,6 @@ public class ResetPasswordDialog extends DialogFragment {
 
     private String mEmail;
     private String mPass;
-
-
     private boolean isInit = true;
 
     private Listener mListner;
@@ -73,7 +72,8 @@ public class ResetPasswordDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_reset_password,container,false);
         mSubscriptions = new CompositeSubscription();
-        initSharedPreferences();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
         initViews(view);
         return view;
     }
@@ -100,15 +100,20 @@ public class ResetPasswordDialog extends DialogFragment {
     }
 
     @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+
+        // request a window without the title
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
+    }
+
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mListner = (MainActivity)context;
     }
-
-    private void initSharedPreferences() {
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-    }
-
 
     private void setEmptyFields() {
 
@@ -195,7 +200,7 @@ public class ResetPasswordDialog extends DialogFragment {
 
     private void resetPasswordInitProgress(String email) {
 
-        mSubscriptions.add(NetworkUtil.getRetrofit().resetPasswordInit(email)
+        mSubscriptions.add(RetrofitRequests.getRetrofit().resetPasswordInit(email)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse,this::handleError));
@@ -203,7 +208,7 @@ public class ResetPasswordDialog extends DialogFragment {
 
     private void resetPasswordFinishProgress(User user) {
 
-        mSubscriptions.add(NetworkUtil.getRetrofit().resetPasswordFinish(user)
+        mSubscriptions.add(RetrofitRequests.getRetrofit().resetPasswordFinish(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse,this::handleError));
