@@ -13,7 +13,7 @@
             </li>
             <li class="nav-item">
                 <!--<a class="nav-link" href="#/">Profile</a>-->
-                <!--<a class="nav-link profile-link" ng-href="#/profile/{{$rootScope.user._id}}" ng-if="isLogged">Profile</a>-->
+                <!--<a class="nav-link profile-link" ng-href="#/profile/{{$rootScope.loggedUser._id}}" ng-if="isLogged">Profile</a>-->
                 <a class="nav-link profile-link" ng-show="isLoggedIn()">Profile</a>
             </li>
 
@@ -85,25 +85,43 @@
                         <div class="col-4" ng-show="signupform.email.$error.email">Invalid Email</div>
                     </div>
 
-                    <div class="pass-div row">
-                        <div class="text col-3">Password:</div>
-                        <input class="col-5" type="password" name="password" ng-model="user.password" required
-                               ng-minlength="6">
-                        <div class="col-4" ng-show="signupform.password.$error.required">Required!</div>
-                        <div class="col-4" ng-show="signupform.password.$error.minlength">At least 6 characters!</div>
-                        <div class="col-4"
-                             ng-show="!signupform.password.$error.required && !signupform.password.$error.minlength"></div>
-
-                        <div class="text col-3">Confirm password:</div>
-                        <input class="col-5" type="password" name="password_cnfrm" ng-model="user.password_cnfrm"
-                               required>
-                        <div class="col-4" ng-show="signupform.password_cnfrm.$error.required">Required!</div>
-                        <div class="col-4" ng-show="user.password != user.password_cnfrm">
-                            Wrong password!
+                    <div class="pass-div">
+                        <div class="pass-first row">
+                            <div class="text col-3">Password:</div>
+                            <input class="col-5" type="password" name="password" ng-model="user.password" required
+                                   ng-minlength="6">
+                            <div class="col-4" ng-show="signupform.password.$error.required">Required!</div>
+                            <div class="col-4" ng-show="signupform.password.$error.minlength">At least 6 characters!</div>
+                            <div class="col-4"
+                                 ng-show="!signupform.password.$error.minlength && !signupform.password.$error.required"></div>
                         </div>
-                        <div class="col-4" ng-show="user.password == user.password_cnfrm"></div>
+
+                        <div class="confrm-pass row">
+                            <div class="text col-3">Confirm password:</div>
+                            <input class="col-5" type="password" name="password_cnfrm" ng-model="user.password_cnfrm"
+                                   required>
+                            <div class="col-4" ng-show="signupform.password_cnfrm.$error.required">Required!</div>
+                            <div class="col-4" ng-show="!signupform.password_cnfrm.$error.required && user.password != user.password_cnfrm">
+                                Wrong password!
+                            </div>
+                            <div class="col-4" ng-show="user.password == user.password_cnfrm"></div>
+
+                        </div>
 
                     </div>
+
+                    <div class="dropdown btn-group">
+                        <button class="btn btn-secondary dropdown-toggle dropdown-header"
+                                type="button" id="dropdownMenu1" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            Role
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <div class="dropdown-item" ng-click="roleChoose('student')">Student</div>
+                            <div class="dropdown-item" ng-click="roleChoose('teacher')">Teacher</div>
+                        </div>
+                    </div>
+                    <br>
 
                     <button ng-click="signup()">SIGN UP</button>
 

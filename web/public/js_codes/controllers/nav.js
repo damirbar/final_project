@@ -1,6 +1,7 @@
 wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$timeout', 'ProfileService', '$rootScope', '$interval',
     '$http', function ($scope, AuthService, $location, $timeout, ProfileService, $rootScope, $interval, $http) {
 
+        $scope.loggedUser = {};
         $scope.user = {};
         $scope.isLogged = false;
 
@@ -11,12 +12,13 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
             if (AuthService.isLoggedIn()) {
                 AuthService.getUserByToken()
                     .then(function (data) {
-                        $rootScope.user = data.data;
-                        $scope.user = $rootScope.user;
+                        console.log("DATA = " + JSON.stringify(data))
+                        $rootScope.loggedUser = data.data;
+                        $scope.loggedUser = $rootScope.loggedUser;
                         console.log(JSON.stringify(data.data));
                         $scope.isLogged = true;
-                        if ($rootScope.user) $('.profile-link').attr("href", "/profile/" + $rootScope.user._id);
-                        else console.log("$rootScope.user is null");
+                        if ($rootScope.loggedUser) $('.profile-link').attr("href", "/profile/" + $rootScope.loggedUser._id);
+                        else console.log("$rootScope.loggedUser is null");
                         return true;
                     }, function () {
                         console.log("Encountered an error!");
@@ -34,8 +36,8 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
                 .then(function (data) {
                     console.log("Got " + data + " from login function");
                     data = data.data;
-                    // $rootScope.user = data;
-                    // $scope.user = data;
+                    // $rootScope.loggedUser = data;
+                    // $scope.loggedUser = data;
                     console.log(data);
                     $scope.checkLogin();
                     // $scope.$apply();
@@ -72,7 +74,7 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
                     console.log(JSON.stringify(data));
                     if (data.success) {
 
-                        $rootScope.user = data.data;
+                        $rootScope.loggedUser = data.data;
                         $scope.login();
                         console.log(JSON.stringify(data.data));
                         $scope.isLogged = true;
@@ -87,9 +89,9 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
             console.log("Clicked google login");
             AuthService.googleLogin();
             // .then(function (data) {
-            //     if (data.data.user) {
-            //         console.log("Login succeeded with Google! The user is: " + JSON.stringify(data.data.user));
-            //         $rootScope.user = data.data.user;
+            //     if (data.data.loggedUser) {
+            //         console.log("Login succeeded with Google! The loggedUser is: " + JSON.stringify(data.data.loggedUser));
+            //         $rootScope.loggedUser = data.data.loggedUser;
             //         $scope.isLogged = true;
             //     } else {
             //         console.log("Error logging in with Google! " + JSON.stringify(data));
@@ -128,9 +130,9 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
         $scope.facebookLogin = function () {
             // AuthService.facebookLogin()
             //     .then(function (data) {
-            //         if (data.data.user) {
-            //             console.log("Login succeeded with Facebook! The user is: " + JSON.stringify(data.data.user));
-            //             $rootScope.user = data.data.user;
+            //         if (data.data.loggedUser) {
+            //             console.log("Login succeeded with Facebook! The loggedUser is: " + JSON.stringify(data.data.loggedUser));
+            //             $rootScope.loggedUser = data.data.loggedUser;
             //             $scope.isLogged = true;
             //         } else {
             //             console.log("Error logging in with Facebook! " + JSON.stringify(data));
@@ -145,6 +147,13 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
                 }, function (err) {
                     console.log("An error occurred in facebookLogin()! " + JSON.stringify(err));
                 });
+        };
+
+
+        $scope.roleChoose = function(role) {
+            console.log("Called role choose");
+            $('.dropdown-header').text(role.charAt(0).toUpperCase() + role.slice(1));
+            $scope.user.role = role;
         };
 
 
