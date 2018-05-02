@@ -58,7 +58,7 @@ public class ChatActivity extends AppCompatActivity  {
     private String uid;
     private String name;
 
-    ChatMessage[] messages;
+//    ChatMessage[] messages;
 
 
 
