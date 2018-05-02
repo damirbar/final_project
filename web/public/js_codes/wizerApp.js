@@ -65,7 +65,7 @@ wizerApp.factory('AuthInterceptor', function ($window, $q) {
         },
         response: function(response) {
             if (response.status === 401) {
-                //  Redirect user to login page / signup Page.
+                //  Redirect loggedUser to login page / signup Page.
             }
             return response || $q.when(response);
         }

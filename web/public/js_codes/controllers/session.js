@@ -3,14 +3,14 @@ wizerApp.controller('sessionController',
 
         console.log("Hello from sessionController");
         $scope.sessionID = "";
-        $scope.user = {};
+        $scope.loggedUser = {};
 
         var ensureLogged = function() {
             if (!AuthService.isLoggedIn()) {
                 $location.path('/');
             }
             else {
-                $scope.user = $rootScope.user;
+                $scope.loggedUser = $rootScope.loggedUser;
             }
         };
 
