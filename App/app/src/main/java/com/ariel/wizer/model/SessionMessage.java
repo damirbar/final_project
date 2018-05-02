@@ -2,49 +2,49 @@ package com.ariel.wizer.model;
 
 public class SessionMessage {
 
-    String guid;
-    String channel_guid;
-    String user_guid;
-    long timestamp;
-    String content;
+    private String sid;
+    private String name;
+    private String type;
+    private int rating;
+    private String body[];
 
-    public String getGuid() {
-        return guid;
+    public String getType() {
+        return type;
     }
 
-    public void setGuid(String guid) {
-        this.guid = guid;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getChannelGuid() {
-        return channel_guid;
+    public int getRating() {
+        return rating;
     }
 
-    public void setChannelGuid(String channelGuid) {
-        this.channel_guid = channelGuid;
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
-    public String getUserGuid() {
-        return user_guid;
+    public String[] getBody() {
+        return body;
     }
 
-    public void setUserGuid(String userGuid) {
-        this.user_guid = userGuid;
+    public void setBody(String[] body) {
+        this.body = body;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public String getInternal_id() {
+        return sid;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public void setInternal_id(String internal_id) {
+        this.sid = internal_id;
     }
 
-    public String getContent() {
-        return content;
+    public String getName() {
+        return name;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setName(String name) {
+        this.name = name;
     }
 }
