@@ -1,10 +1,9 @@
 var mongoose = require('mongoose');
 var SessionMessageSchema = new mongoose.Schema({
+    email: String,    // mail of sender
     sid: String ,   // session ID
     type: String,  // question or answer
-    qaid: String, // question/answer ID
-    uid:String,  // user ID
-    rating: Number,// like/dislike on this message
+    rating: {type: Number, default:0}, // like/dislike on this message
     body: Array
 });
 module.exports = mongoose.model('Session_Message', SessionMessageSchema);

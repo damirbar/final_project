@@ -3,6 +3,7 @@ package com.ariel.wizer.network;
 import com.ariel.wizer.model.ChatChannel;
 import com.ariel.wizer.model.ChatMessage;
 import com.ariel.wizer.model.Response;
+import com.ariel.wizer.model.Session;
 import com.ariel.wizer.model.User;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -35,7 +36,7 @@ public interface RetrofitInterface {
     Observable<Response> resetPasswordFinish(@Body User user);
 
     @POST("sessions/connect-session")
-    Observable<Response> connectSession(@Body String internal_id);
+    Observable<Response> connectSession(@Body Session session);
 
     @GET("sessions/change-val")
     Observable<Response> changeVal(@Query("id") String id, @Query("val") String val);
