@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const auth = require('basic-auth');
 
 var Session = require("../schemas/session");
+var Session_Message = require("../schemas/session_message");
 var Student = require("../schemas/student");
 var User    = require("../schemas/user");
 
@@ -59,7 +60,7 @@ router.post("/connect-session", function (req, res) {
                                     sess.save()
                                         .then(function (item) {
                                             console.log("Saved a the session with the new student " + user.display_name);
-                                            return res.status(200).json({message: 'Welcome to Class !'});
+                                            return res.status(200).json({message: 'Welcome to Class !', session: sess});
                                         })
                                         .catch(function (err) {
                                             console.log("Unable to save the session with the new student " + user.display_name);
@@ -175,5 +176,24 @@ router.post("/create-session", function (req, res) {
     });
 });
 
+
+
+//erans work receiving messages (Q/A) in session
+router.post("/messages", function (req, res){
+
+   var msg = new Session_Message(
+       
+   );
+
+    msg.save(function (err) {
+        if (err) {
+            console.log(err);
+            return res.status(500).send(err);
+        }
+        res.send("successfully added session " + myData.name + " to db");
+        console.log("successfully added session " + myData.name + " to db");
+    });
+
+})
 
 module.exports = router;
