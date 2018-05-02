@@ -7,7 +7,7 @@ var SessionSchema = new mongoose.Schema({
     creation_date: Date,
     students: Array,
     curr_rating: {type: Number, default: 0},
-    hidden: Boolean
-    // msg: Array
+    hidden: Boolean,
+    msg: Array
 });
 module.exports = mongoose.model('Session', SessionSchema);

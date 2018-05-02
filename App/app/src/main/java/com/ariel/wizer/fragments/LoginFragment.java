@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.ariel.wizer.LoginActivity;
 import com.ariel.wizer.NavBarActivity;
 import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.R;
@@ -69,10 +68,8 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Intent intent = new Intent(getActivity(),LoginActivity.class);//remove
-        startActivity(intent);//remove
-
-
+//        Intent intent = new Intent(getActivity(),LoginActivity.class);//remove
+//        startActivity(intent);//remove
 
         View view = inflater.inflate(R.layout.fragment_login,container,false);
         super.onCreate(savedInstanceState);
@@ -253,8 +250,8 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
         editor.putString(PASS,mPass);
         editor.apply();
 
-        mEtEmail.setText(null);
-        mEtPassword.setText(null);
+        //mEtEmail.setText(null);
+        //mEtPassword.setText(null);
 
         Intent intent = new Intent(getActivity(), NavBarActivity.class);
         startActivity(intent);

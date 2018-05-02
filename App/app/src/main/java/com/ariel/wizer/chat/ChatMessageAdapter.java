@@ -5,86 +5,43 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.ariel.wizer.R;
-import com.squareup.picasso.*;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import com.ariel.wizer.model.ChatMessage;
-import com.ariel.wizer.chat.ChatClient;
 
-import com.github.siyamed.shapeimageview.CircularImageView;
+public class ChatMessageAdapter extends ArrayAdapter<ChatMessage> {
+    private Context mContext;
+    private String userGuid;
+    private List<ChatMessage> messagesList = new ArrayList<>();
 
-
-public class ChatMessageAdapter extends BaseAdapter {
-
-    private List<ChatMessage> msgs;
-    private LayoutInflater inflater;
-    private Context context;
-    private String imageBaseUrl;
-    private final String AVATAR_IMAGE_FORMAT = ".png";
-
-    public ChatMessageAdapter(Context context) {
-        this.context = context;
-        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.msgs = new ArrayList<ChatMessage>();
-        this.imageBaseUrl = ChatClient.getInstance().getImageUrl();
+    public ChatMessageAdapter( Context context, ArrayList<ChatMessage> list, String _userGuid) {
+        super(context, 0 , list);
+        mContext = context;
+        messagesList = list;
+        userGuid = _userGuid;
     }
 
+    @NonNull
     @Override
-    public int getCount() {
-        return msgs.size();
-    }
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        ChatMessage currentMessage = messagesList.get(position);
+        View listItem = convertView;
+        if(currentMessage.getUserGuid().equalsIgnoreCase(userGuid))
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.chat_row_right,parent,false);
+        else{
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.chat_row_left,parent,false);
+            //          ImageView image = (ImageView)listItem.findViewById(R.id.avatarImageView);
+//          image.setImageResource();
 
-    @Override
-    public Object getItem(int position) {
-        return msgs.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View view, ViewGroup parent) {
-
-        ChatMessage msg = msgs.get(position);
-        ViewHolder holder;
-        if (view != null) {
-            holder = (ViewHolder) view.getTag();
-        } else {
-            view = inflater.inflate(R.layout.chat_row, parent, false);
-            holder = new ViewHolder(view);
-            view.setTag(holder);
         }
-
-        String avatarPictureUrl = imageBaseUrl + msg.getUserGuid() + AVATAR_IMAGE_FORMAT;
-        Picasso.with(context).load(avatarPictureUrl).into(holder.avatarImageView);
-        holder.contentEditText.setText(msg.getContent());
-
-        return view;
+        TextView message = (TextView) listItem.findViewById(R.id.chatContentTextView);
+        message.setText(currentMessage.getContent());
+        return listItem;
     }
-
-    public void updateMessages(@NonNull List<ChatMessage> msgs) {
-        this.msgs = msgs;
-        this.notifyDataSetChanged();
-    }
-
-    static class ViewHolder {
-        @BindView(R.id.avatarImageView) CircularImageView avatarImageView;
-        @BindView(R.id.chatContentTextView)  TextView contentEditText;
-
-        public ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
-
 }
