@@ -33,7 +33,7 @@ wizerApp.controller('sessionController',
             SessionService.connectSession($scope.sessionID)
                 .then(function(data) {
                     $scope.session = data;
-                    console.log("Connected to session " + JSON.stringify(data));
+                    console.log("Connected to session " + JSON.stringify(data.session));
                     $scope.isConnectedToSession = true;
                     $scope.session = data.sess
                 })
@@ -41,6 +41,12 @@ wizerApp.controller('sessionController',
                     console.log("Error connection to session");
                 });
         }
+
+
+
+
+
+
 
 
 

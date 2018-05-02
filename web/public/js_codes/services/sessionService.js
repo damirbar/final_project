@@ -1,7 +1,7 @@
 wizerApp.service('SessionService', function ($http) {
 
     this.getSessionByID = function (id) {
-        return $http.post('/api/v1/sessions/connect-session', {internal_id: id})
+        return $http.post('/sessions/connect-session', {internal_id: id})
             .then(function (data) {
                 return data.data;
             }, function () {
@@ -10,7 +10,7 @@ wizerApp.service('SessionService', function ($http) {
     };
 
     this.connectSession = function (id) {
-        return $http.post('/api/v1/sessions/connect-session', {internal_id: id})
+        return $http.post('/sessions/connect-session', {internal_id: id})
             .then(function (data) {
                 return data.data;
             }, function () {
