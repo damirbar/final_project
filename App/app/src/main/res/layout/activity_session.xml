@@ -4,29 +4,31 @@
     android:id="@+id/activity_session"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBack"
+    android:background="@color/divider"
     tools:context="com.ariel.wizer.fragments.SideMenuFragment">
 
     <TextView
         android:id="@+id/class_titel_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/button_margin"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="25dp"
         android:text="Rate the Professor"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        android:textColor="@android:color/black"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintHorizontal_bias="0.468" />
 
     <Button
         android:id="@+id/submitButton"
-        android:layout_width="match_parent"
+        android:layout_width="197dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ratingBar"
-        android:background="#4867a0"
+        android:layout_centerInParent="true"
+        android:background="@android:color/black"
         android:text="Submit"
-        android:textColor="?android:attr/colorControlActivated" />
+        android:textColor="@android:color/white" />
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -43,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/submitButton"
         android:text="Rating:"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textStyle="bold" />
 
     <TextView
@@ -55,7 +57,7 @@
         android:layout_centerInParent="false"
         android:layout_centerVertical="false"
         android:text="Class Pin:"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/class_titel_text" />
 </RelativeLayout>
