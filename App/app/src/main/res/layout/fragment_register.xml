@@ -157,13 +157,14 @@
                 android:id="@+id/btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/type"
+                android:layout_below="@+id/type_spinner"
                 android:layout_marginTop="@dimen/button_margin"
                 android:background="#4867a0"
                 android:drawableRight="@drawable/ic_arrow_forward"
                 android:paddingLeft="@dimen/button_padding"
                 android:text="Register"
                 android:textColor="@android:color/white" />
+
 
             <TextView
                 android:id="@+id/tv_login"
@@ -178,20 +179,18 @@
                 android:textAlignment="center"
                 android:textColor="@android:color/white" />
 
-            <ToggleButton
-                android:id="@+id/type"
+            <Spinner
+
+                android:id="@+id/type_spinner"
+                style="@style/mySpinnerItemStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ti_password2"
-                android:layout_marginTop="@dimen/button_margin"
-                android:background="#4867a0"
-
-                android:text="ToggleButton"
-                android:textColor="@android:color/background_light"
-                android:textOff="Student"
-                android:textOn="Teacher"
-                tools:ignore="HardcodedText"
-                tools:text="Student" />
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="15dp"
+                android:entries="@array/User_Type"
+                android:prompt="@string/Type" />
 
             <ProgressBar
                 android:id="@+id/progress"

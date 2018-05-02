@@ -3,6 +3,7 @@ package com.ariel.wizer.fragments;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -10,9 +11,11 @@ import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -42,6 +45,8 @@ public class RegisterFragment extends Fragment {
     private EditText mEtPassword;
     private EditText mEtPassword2;
     private Button mBtRegister;
+    private Spinner mTypeSpinner;
+
     private TextView mTvLogin;
     private TextInputLayout mTiFName;
     private TextInputLayout mTiLName;
@@ -49,7 +54,6 @@ public class RegisterFragment extends Fragment {
     private TextInputLayout mTiPassword;
     private TextInputLayout mTiPassword2;
     private ProgressBar mProgressbar;
-    private ToggleButton typeTg;
     private ServerResponse mServerResponse;
     private String mEmail;
     private String mPass;
@@ -69,6 +73,7 @@ public class RegisterFragment extends Fragment {
 
     private void initViews(View v) {
 
+        mTypeSpinner = (Spinner) v.findViewById(R.id.type_spinner);
         mEtFName = (EditText) v.findViewById(R.id.et_first_name);
         mEtLName = (EditText) v.findViewById(R.id.et_last_name);
         mEtEmail = (EditText) v.findViewById(R.id.et_email);
@@ -81,8 +86,8 @@ public class RegisterFragment extends Fragment {
         mTiEmail = (TextInputLayout) v.findViewById(R.id.ti_email);
         mTiPassword = (TextInputLayout) v.findViewById(R.id.ti_password);
         mTiPassword2 = (TextInputLayout) v.findViewById(R.id.ti_password2);
-        typeTg = (ToggleButton) v.findViewById(R.id.type);
         mProgressbar = (ProgressBar) v.findViewById(R.id.progress);
+
         mBtRegister.setOnClickListener(view -> register());
         mTvLogin.setOnClickListener(view -> goToLogin());
     }

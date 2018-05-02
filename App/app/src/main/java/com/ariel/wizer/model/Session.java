@@ -5,17 +5,33 @@ public class Session {
 
     private String sid;
     private String name;
-
-    private String type;
+    private String teacher_id;
+    private String location;
     private int rating;
-    private String body[];
+    private SessionMessage messages[];
 
-    public String getType() {
-        return type;
+    public String getTeacher_id() {
+        return teacher_id;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTeacher_id(String teacher_id) {
+        this.teacher_id = teacher_id;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public SessionMessage[] getMessages() {
+        return messages;
+    }
+
+    public void setMessages(SessionMessage[] messages) {
+        this.messages = messages;
     }
 
     public int getRating() {
@@ -26,13 +42,6 @@ public class Session {
         this.rating = rating;
     }
 
-    public String[] getBody() {
-        return body;
-    }
-
-    public void setBody(String[] body) {
-        this.body = body;
-    }
 
     public String getInternal_id() {
         return sid;
