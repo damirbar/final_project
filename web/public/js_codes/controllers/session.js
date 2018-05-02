@@ -5,7 +5,8 @@ wizerApp.controller('sessionController',
         $scope.sessionID = "";
         $scope.loggedUser = {};
         $scope.isConnectedToSession = false;
-        $scope.session = {}
+        $scope.session = {};
+        $scope.message = "";
 
         var ensureLogged = function() {
             if (!AuthService.isLoggedIn()) {
@@ -30,6 +31,7 @@ wizerApp.controller('sessionController',
 
 
         $scope.connectSession = function() {
+            console.log("SESSION ID = " + $scope.sessionID);
             SessionService.connectSession($scope.sessionID)
                 .then(function(data) {
                     $scope.session = data;
@@ -39,6 +41,17 @@ wizerApp.controller('sessionController',
                 })
                 .catch(function(err) {
                     console.log("Error connection to session");
+                });
+        }
+
+        $scope.sendMessage = function() {
+
+            SessionService.sendMessage($scope.sessionID, "question", ["Q: blahblah", "A: " + $scope.message])
+                .then(function(data) {
+                    console.log("Sent message");
+                })
+                .catch(function(err) {
+                    console.log("Error with sending message");
                 });
         }
 
