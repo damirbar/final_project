@@ -1,5 +1,5 @@
 wizerApp.controller('sessionController',
-    function ($scope, $rootScope, $routeParams, $location, AuthService, SessionService) {
+    function ($scope, $rootScope, $routeParams, $location, $window, AuthService, SessionService/*, socketIO*/) {
 
         console.log("Hello from sessionController");
         $scope.sessionID = "";
@@ -37,14 +37,14 @@ wizerApp.controller('sessionController',
                     $scope.session = data;
                     console.log("Connected to session " + JSON.stringify(data.session));
                     $scope.isConnectedToSession = true;
-                    $scope.session = data.sess
+                    $scope.session = data.sess;
                     getting();
 
                 })
                 .catch(function(err) {
                     console.log("Error connection to session");
                 });
-        }
+        };
 
         $scope.sendMessage = function() {
 
@@ -55,7 +55,7 @@ wizerApp.controller('sessionController',
                 .catch(function(err) {
                     console.log("Error with sending message");
                 });
-        };;
+        };
 
         $scope.getMessages = function () {
 
@@ -69,22 +69,35 @@ wizerApp.controller('sessionController',
 
         };
 
-        $scope.disconnect = function () {
-
-            SessionService.disconnect($scope.sessionID)
-                .then(function(data) {
-                    console.log(JSON.stringify(data));
-                })
-                .catch(function(err) {
-                    console.log("Error with disconnecting from session");
-                });
-
-        };
-
-        $scope.$on("$destroy", function() {
-            console.log("DISCONNECTING FROM SESSION");
-            $scope.disconnect();
-        });
+        // $scope.disconnect = function () {
+        //
+        //     SessionService.disconnect($scope.sessionID)
+        //         .then(function(data) {
+        //             console.log(JSON.stringify(data));
+        //         })
+        //         .catch(function(err) {
+        //             console.log("Error with disconnecting from session");
+        //         });
+        //
+        // };
+        //
+        // $scope.$on("$destroy", function() {
+        //     console.log("DISCONNECTING FROM SESSION");
+        //     if($scope.isConnectedToSession) {
+        //         $scope.isConnectedToSession = false;
+        //         $scope.session = null;
+        //         $scope.disconnect();
+        //     }
+        // });
+        //
+        // $scope.$$applicationDestroyed("$destroy", function() {
+        //     console.log("DISCONNECTING FROM SESSION");
+        //     if($scope.isConnectedToSession) {
+        //         $scope.isConnectedToSession = false;
+        //         $scope.session = null;
+        //         $scope.disconnect();
+        //     }
+        // });
 
         var getting = function() {
             // while(!$scope.isConnectedToSession);
