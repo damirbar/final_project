@@ -73,9 +73,11 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/ti_email"
         android:layout_width="0dp"
-        android:layout_height="64dp"
+        android:layout_height="55dp"
         android:layout_below="@+id/ti_first_name"
         android:textColorHint="@android:color/white"
+        app:hintAnimationEnabled="false"
+        app:hintEnabled="false"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
         app:layout_constraintTop_toTopOf="@+id/h_guideline3">
@@ -89,7 +91,6 @@
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
             android:textColorLink="@android:color/white" />
 
     </android.support.design.widget.TextInputLayout>
@@ -97,11 +98,12 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/ti_password"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_below="@+id/ti_email"
-        android:layout_marginTop="8dp"
         android:textColorHint="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/h_guideline4"
+        app:hintAnimationEnabled="false"
+        app:hintEnabled="false"
+        app:layout_constraintBottom_toTopOf="@id/loginButton"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
@@ -119,7 +121,6 @@
             android:hint="Password"
             android:inputType="textPassword"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
             android:textColorLink="@android:color/white" />
 
     </android.support.design.widget.TextInputLayout>
@@ -139,7 +140,6 @@
         android:id="@+id/forgotPswTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
         android:text="Forgot Password?"
         android:textColor="@android:color/white"
@@ -152,7 +152,6 @@
         android:id="@+id/loginButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:background="#4867a0"
         android:enabled="false"
         android:text="Log In"
@@ -183,14 +182,14 @@
         android:id="@+id/newAccountButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/create_acc_button_background"
         android:text="SIGN UP"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+        app:layout_constraintTop_toBottomOf="@id/forgotPswTextView" />
 
     <ImageView
         android:id="@+id/logoStaticImageView"

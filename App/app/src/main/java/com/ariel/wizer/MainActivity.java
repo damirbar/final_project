@@ -1,14 +1,12 @@
 package com.ariel.wizer;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.WindowManager;
 
 import com.ariel.wizer.fragments.LoginFragment;
 import com.ariel.wizer.fragments.ResetPasswordDialog;
+import com.ariel.wizer.network.ServerResponse;
 
 public class MainActivity extends AppCompatActivity implements ResetPasswordDialog.Listener {
 
@@ -16,11 +14,14 @@ public class MainActivity extends AppCompatActivity implements ResetPasswordDial
 
     private LoginFragment mLoginFragment;
     private ResetPasswordDialog mResetPasswordDialog;
+    private ServerResponse mServerResponse;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mServerResponse = new ServerResponse(findViewById(R.id.activity_main));
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -55,12 +56,6 @@ public class MainActivity extends AppCompatActivity implements ResetPasswordDial
     @Override
     public void onPasswordReset(String message) {
 
-        showSnackBarMessage(message);
-    }
-
-    private void showSnackBarMessage(String message) {
-
-        Snackbar.make(findViewById(R.id.activity_main),message, Snackbar.LENGTH_SHORT).show();
-
+        mServerResponse.showSnackBarMessage(message);
     }
 }

@@ -17,9 +17,11 @@ import android.widget.TextView;
 import com.ariel.wizer.EditProfileActivity;
 import com.ariel.wizer.MainActivity;
 import com.ariel.wizer.R;
+import com.ariel.wizer.chat.ChatChannelsActivity;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
-import com.ariel.wizer.network.NetworkUtil;
+import com.ariel.wizer.network.RetrofitRequests;
+import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.utils.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,10 +38,10 @@ public class SideMenuFragment extends Fragment {
     private TextView mTvEmail;
     private TextView mEditProfile;
     private Button mBtLogout;
-    private SharedPreferences mSharedPreferences;
+    private Button mBtChat;
     private CompositeSubscription mSubscriptions;
-
-    private String mToken;
+    private RetrofitRequests mRetrofitRequests;
+    private ServerResponse mServerResponse;
 
     public static SideMenuFragment newInstance() {
         SideMenuFragment fragment = new SideMenuFragment();
@@ -51,9 +53,12 @@ public class SideMenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_side_menu,container,false);
         mSubscriptions = new CompositeSubscription();
+        mRetrofitRequests = new RetrofitRequests(this.getActivity());
+        mServerResponse = new ServerResponse(getActivity().findViewById(R.id.activity_nav));
+
         initViews(view);
-        initSharedPreferences();
         loadProfile();
+
         return view;
     }
 
@@ -61,72 +66,35 @@ public class SideMenuFragment extends Fragment {
     private void initViews(View v) {
         mEditProfile = (TextView) v.findViewById(R.id.edit_profile);
         mBtLogout = (Button) v.findViewById(R.id.btn_logout);
+        mBtChat = (Button) v.findViewById(R.id.btn_chat);
         mTvEmail = (TextView) v.findViewById(R.id.user_profile_email);
-
-
         mBtLogout.setOnClickListener(view -> logout());
+        mBtChat.setOnClickListener(view -> chat());
         mEditProfile.setOnClickListener(view -> edit());
-    }
 
-    private void initSharedPreferences() {
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-        mToken = mSharedPreferences.getString(Constants.TOKEN,"");
     }
-
 
     private void edit() {
         Intent intent = new Intent(this.getActivity(), EditProfileActivity.class);
         startActivity(intent);
-
-        getActivity().finish();
-
+//        getActivity().finish();
     }
 
     private void loadProfile() {
-        mSubscriptions.add(NetworkUtil.getRetrofit(mToken).getProfile()
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getProfile()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse,this::handleError));
+                .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
     }
+
 
     private void handleResponse(User user) {
         mTvEmail.setText(user.getEmail());
     }
 
-    private void handleError(Throwable error) {
-
-        if (error instanceof HttpException) {
-
-            Gson gson = new GsonBuilder().create();
-
-            try {
-
-                String errorBody = ((HttpException) error).response().errorBody().string();
-                Response response = gson.fromJson(errorBody,Response.class);
-                showSnackBarMessage(response.getMessage());
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-
-            showSnackBarMessage("Network Error !");
-        }
-    }
-
-    private void showSnackBarMessage(String message) {
-
-        if (getView() != null) {
-
-            Snackbar.make(getView(),message, Snackbar.LENGTH_SHORT).show();
-        }
-    }
-
-
 
     private void logout() {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(Constants.EMAIL,"");
+        SharedPreferences.Editor editor = mRetrofitRequests.getmSharedPreferences().edit();
         editor.putString(Constants.PASS,"");
         editor.putString(Constants.TOKEN,"");
         editor.apply();
@@ -136,6 +104,12 @@ public class SideMenuFragment extends Fragment {
 
         getActivity().finish();
     }
+
+    private void chat() {
+        Intent intent = new Intent(getActivity(), ChatChannelsActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public void onDestroy() {

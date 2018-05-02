@@ -1,17 +1,48 @@
 package com.ariel.wizer.network;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.util.Base64;
 
+import com.ariel.wizer.R;
+import com.ariel.wizer.model.Response;
 import com.ariel.wizer.utils.Constants;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.HttpException;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.schedulers.Schedulers;
 
-public class NetworkUtil {
+public class RetrofitRequests {
+
+    private Activity activity;
+    private SharedPreferences mSharedPreferences;
+    private String mToken;
+
+
+    public RetrofitRequests(Activity _activity){
+
+        this.activity = _activity;
+        initSharedPreferences();
+
+    }
+
+    public SharedPreferences getmSharedPreferences() {return mSharedPreferences; }
+
+    private void initSharedPreferences() {
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.activity);
+        mToken = mSharedPreferences.getString(Constants.TOKEN,"");
+    }
+
 
     public static RetrofitInterface getRetrofit(){
 
@@ -51,7 +82,7 @@ public class NetworkUtil {
                 .build().create(RetrofitInterface.class);
     }
 
-    public static RetrofitInterface getRetrofit(String token) {
+    public  RetrofitInterface getTokenRetrofit() {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
@@ -59,7 +90,7 @@ public class NetworkUtil {
 
             Request original = chain.request();
             Request.Builder builder = original.newBuilder()
-                    .addHeader("x-access-token", token)
+                    .addHeader("x-access-token", this.mToken)
                     .method(original.method(),original.body());
             return  chain.proceed(builder.build());
 
