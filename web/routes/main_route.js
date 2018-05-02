@@ -5,8 +5,9 @@ const jwt = require('jsonwebtoken');
 
 //make sure that all request contain a valid token
 router.all("*" , function (req, res, next) {
-    if(req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass'))return next();
-    console.log("in here");
+    if(req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass')){
+        return next();
+    }
     var token = req.headers["x-access-token"];
     if (!token) {
         // res.status(200).json({message: 'Unauthorized!'});
@@ -18,6 +19,7 @@ router.all("*" , function (req, res, next) {
                 // return res.json({success: false, message: 'Failed to authenticate token.'});
                 res.sendFile(path.join(__dirname + "/../index.html"));
             } else {
+                req.verifiedEmail = decoded;
                 return next();
             }
         });
