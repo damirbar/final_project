@@ -67,7 +67,24 @@ wizerApp.controller('sessionController',
                     console.log("Error with getting messages");
                 });
 
-        }
+        };
+
+        $scope.disconnect = function () {
+
+            SessionService.disconnect($scope.sessionID)
+                .then(function(data) {
+                    console.log(JSON.stringify(data));
+                })
+                .catch(function(err) {
+                    console.log("Error with disconnecting from session");
+                });
+
+        };
+
+        $scope.$on("$destroy", function() {
+            console.log("DISCONNECTING FROM SESSION");
+            $scope.disconnect();
+        });
 
         var getting = function() {
             // while(!$scope.isConnectedToSession);

@@ -14,7 +14,7 @@ var User    = require("../schemas/user");
 router.post("/connect-session", function (req, res) {
 
     var token = req.headers["x-access-token"];
-    var id = req.body.internal_id;
+    var id = req.body.sid;
 
     if (!token) {
         res.status(401).json({message: 'Unauthorized!'});
@@ -32,7 +32,7 @@ router.post("/connect-session", function (req, res) {
                 } else {
 
 
-                    Session.findOne({internal_id: id}, function (err, sess) {
+                    Session.findOne({sid: id}, function (err, sess) {
                         if (err) throw err;
 
                         if (sess) {
@@ -53,7 +53,7 @@ router.post("/connect-session", function (req, res) {
                                 if (!exists) {
                                     sess.students.push({
                                         rating_val: 1,
-                                        mail: user.email,
+                                        email: user.email,
                                         display_name: user.display_name,
                                         id_num: user._id
                                     });
@@ -87,7 +87,7 @@ router.post("/connect-session", function (req, res) {
 router.get("/get-students-count", function (req, res, next) {
     var id = req.query.id;
 
-    Session.findOne({internal_id: id}, function (err, sess) {
+    Session.findOne({sid: id}, function (err, sess) {
         if (err) return next(err);
 
         res.status(200).json({message: sess.students.length});
@@ -98,7 +98,7 @@ router.get("/get-students-count", function (req, res, next) {
 router.get("/get-students-rating", function (req, res, next) {
     var id = req.query.id;
 
-    Session.findOne({internal_id: id}, function (err, sess) {
+    Session.findOne({sid: id}, function (err, sess) {
         if (err) return next(err);
 
         res.status(200).json({message: sess.curr_rating});
@@ -122,12 +122,12 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
 
         console.log("The student is: " + JSON.stringify(student));
 
-        Session.find({internal_id: id}, function (err, sess) {
+        Session.find({sid: id}, function (err, sess) {
             if (err) next(err);
 
             var studs = sess.students;
             for (var i = 0; i < studs.length; ++i) {
-                if (studs[i].mail == student.mail && studs[i].rating_val != val) {
+                if (studs[i].email == student.email && studs[i].rating_val != val) {
                     sess.students[i].rating_val = val;
                 }
             }
@@ -135,7 +135,7 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
     });
 
 
-    Session.findOne({internal_id: id}, function (err, sess) {
+    Session.findOne({sid: id}, function (err, sess) {
         if (err) return next(err);
 
         sess.curr_rating = (val == 1 ? (sess.curr_rating + 1) : (sess.curr_rating - 1));
@@ -157,8 +157,8 @@ router.post("/create-session", function (req, res) {
         if (err) {
             if (err.name === 'MongoError' && err.code === 11000) {
                 // Duplicate username
-                console.log('User ' + myData.first_name + " cannot be added " + myData.mail + ' already exists!');
-                return res.status(500).send('User ' + myData.first_name + " cannot be added " + myData.mail + ' already exists!');
+                console.log('User ' + myData.first_name + " cannot be added " + myData.email + ' already exists!');
+                return res.status(500).send('User ' + myData.first_name + " cannot be added " + myData.email + ' already exists!');
             }
             if (err.name === 'ValidationError') {
                 //ValidationError
@@ -201,7 +201,7 @@ router.post("/messages", function (req, res){
 
 
 
-                Session.findOne({internal_id: msg.sid}, function (err, sess) {
+                Session.findOne({sid: msg.sid}, function (err, sess) {
                     if (err) return next(err);
 
                     sess.messages.push(msg);
@@ -229,18 +229,23 @@ router.post("/messages", function (req, res){
 router.get("/get-all-messages", function (req, res) {
 
     console.log("s");
-    Session.findOne({internal_id: req.sid}, function (err, sess) {
+    Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
-        res.status(200).json({messages :sess.messages});
+        res.status(200).json({messages: sess.messages});
     });
 });
 
 
 router.get("/disconnect", function (req, res) {
-
-
-    Session.findOne({internal_id: req.sid}, function (err, sess) {
+    console.log("\t\t\n\n\t "+req.verifiedEmail);
+    Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
+        for (var i=0; i< sess.students.length;++i){
+            if(sess.students[i].email == req.verifiedEmail){
+                sess.students.splice(i, 1);
+                sess.save();
+            }
+        }
     });
 });
 

@@ -1,7 +1,7 @@
 wizerApp.service('SessionService', function ($http) {
 
     this.getSessionByID = function (id) {
-        return $http.post('/sessions/connect-session', {internal_id: id})
+        return $http.post('/sessions/connect-session', {sid: id})
             .then(function (data) {
                 return data.data;
             }, function () {
@@ -11,7 +11,7 @@ wizerApp.service('SessionService', function ($http) {
 
     this.connectSession = function (id) {
         console.log("ID = " + id);
-        return $http.post('/sessions/connect-session', {internal_id: id})
+        return $http.post('/sessions/connect-session', {sid: id})
             .then(function (data) {
                 return data.data;
             }, function () {
@@ -30,11 +30,21 @@ wizerApp.service('SessionService', function ($http) {
 
 
     this.getMessages = function(sessionId) {
-        return $http.get('/sessions/get-all-messages', {sid: sessionId})
+        return $http.get('/sessions/get-all-messages?sid=' + sessionId)
             .then(function (data) {
                 return data.data;
             }, function () {
                 console.log("Error getting messages from session with ID = " + sessionId);
             });
+    };
+
+    this.disconnect = function(sessionId) {
+        return $http.get('/sessions/disconnect?sid=' + sessionId)
+            .then(function (data) {
+                return data.data;
+            }, function () {
+                console.log("Error disconnecting from session with ID = " + sessionId);
+            });
     }
+
 });

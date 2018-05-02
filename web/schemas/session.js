@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var SessionSchema = new mongoose.Schema({
-    internal_id: Number, // Corresponds to course id
+    sid: Number, // Corresponds to course id
     name: String,
     teacher_id:String,
     location: String,
