@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.ariel.wizer.EditProfileActivity;
 import com.ariel.wizer.MainActivity;
 import com.ariel.wizer.R;
+import com.ariel.wizer.chat.ChatChannelsActivity;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
@@ -37,6 +38,7 @@ public class SideMenuFragment extends Fragment {
     private TextView mTvEmail;
     private TextView mEditProfile;
     private Button mBtLogout;
+    private Button mBtChat;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
@@ -64,8 +66,10 @@ public class SideMenuFragment extends Fragment {
     private void initViews(View v) {
         mEditProfile = (TextView) v.findViewById(R.id.edit_profile);
         mBtLogout = (Button) v.findViewById(R.id.btn_logout);
+        mBtChat = (Button) v.findViewById(R.id.btn_chat);
         mTvEmail = (TextView) v.findViewById(R.id.user_profile_email);
         mBtLogout.setOnClickListener(view -> logout());
+        mBtChat.setOnClickListener(view -> chat());
         mEditProfile.setOnClickListener(view -> edit());
 
     }
@@ -91,7 +95,6 @@ public class SideMenuFragment extends Fragment {
 
     private void logout() {
         SharedPreferences.Editor editor = mRetrofitRequests.getmSharedPreferences().edit();
-//        editor.putString(Constants.EMAIL,"");
         editor.putString(Constants.PASS,"");
         editor.putString(Constants.TOKEN,"");
         editor.apply();
@@ -101,6 +104,12 @@ public class SideMenuFragment extends Fragment {
 
         getActivity().finish();
     }
+
+    private void chat() {
+        Intent intent = new Intent(getActivity(), ChatChannelsActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public void onDestroy() {

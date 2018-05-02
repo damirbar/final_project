@@ -23,6 +23,7 @@ import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.utils.Constants;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
 
@@ -184,8 +185,10 @@ public class ChangePasswordDialog extends DialogFragment {
                 Response response = gson.fromJson(errorBody,Response.class);
                 showMessage(response.getMessage());
 
-            } catch (IOException e) {
+            } catch (JsonSyntaxException|IOException e) {
                 e.printStackTrace();
+                showMessage("Internal Server Error !");
+
             }
         } else {
 

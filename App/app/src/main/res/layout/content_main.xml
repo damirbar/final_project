@@ -5,31 +5,24 @@
     android:background="#e1e1e1"
     android:orientation="vertical" >
 
-    <ProgressBar
-        android:id="@+id/progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone"
-        android:layout_gravity="center_vertical"/>
-
     <ListView
         android:id="@+id/chatMessagesList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/taskBar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:divider="@null"
-        android:dividerHeight="0dp"
-        android:paddingBottom="10dp"/>
+        android:listSelector="@android:color/transparent" />
 
     <LinearLayout
+        android:id="@+id/taskBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:background="#91f1f1f1"
-        android:orientation="horizontal"
-        android:paddingBottom="2dp" >
+        android:orientation="horizontal">
 
 
         <EditText
@@ -39,6 +32,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignTop="@+id/button1"
+            android:imeActionId="@+id/send"
             android:layout_toLeftOf="@+id/sendMessageButton"
             android:layout_weight="0.72"
             android:ems="10"
@@ -51,8 +45,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_gravity="center"
-            android:background="@drawable/send"
-            android:backgroundTint="#de75bd"
+            android:background="@android:drawable/ic_menu_send"
             android:text="d" />
     </LinearLayout>
 

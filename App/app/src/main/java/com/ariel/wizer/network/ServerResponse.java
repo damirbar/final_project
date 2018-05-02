@@ -1,6 +1,7 @@
 package com.ariel.wizer.network;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -8,6 +9,7 @@ import com.androidadvance.topsnackbar.TSnackbar;
 import com.ariel.wizer.model.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
 
@@ -38,19 +40,18 @@ public class ServerResponse {
     }
 
     public void handleError(Throwable error) {
-
         if (error instanceof HttpException) {
 
             Gson gson = new GsonBuilder().create();
 
             try {
-
                 String errorBody = ((HttpException) error).response().errorBody().string();
                 Response response = gson.fromJson(errorBody,Response.class);
                 showSnackBarMessage(response.getMessage());
 
-            } catch (IOException e) {
+            } catch (JsonSyntaxException|IOException e) {
                 e.printStackTrace();
+                showSnackBarMessage("Internal Server Error !");
             }
         } else {
 

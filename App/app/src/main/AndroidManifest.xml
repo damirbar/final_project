@@ -8,13 +8,14 @@
     <application
         android:allowBackup="true"
         android:configChanges="keyboardHidden|orientation|screenSize"
+        android:name=".chat.ChatApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.LoginRegister"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -33,10 +34,15 @@
         <activity android:name=".SessionActivity" />
         <activity android:name=".NavBarActivity" />
         <activity android:name=".EditProfileActivity" />
-        <activity android:name=".ChatActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".chat.ChatChannelsActivity" />
+        <activity android:name=".chat.ChatActivity"
+            android:configChanges="keyboardHidden" />
+        <activity android:name=".chat.ChatChannelsActivity"
+            android:configChanges="keyboardHidden" />
         <activity android:name=".ImageCrop.ImageCropActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

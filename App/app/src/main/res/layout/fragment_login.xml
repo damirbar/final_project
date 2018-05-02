@@ -97,7 +97,6 @@
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
             android:textColorLink="@android:color/white" />
 
     </android.support.design.widget.TextInputLayout>
@@ -127,7 +126,6 @@
             android:hint="Password"
             android:inputType="textPassword"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
             android:textColorLink="@android:color/white" />
 
     </android.support.design.widget.TextInputLayout>
