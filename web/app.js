@@ -59,7 +59,7 @@ app.use('/', mainRequests);
 app.use('/teachers', teacherRequests);
 app.use('/students', studentRequests);
 app.use('/courses', coursesRequests);
-app.use('/api/v1/sessions', sessionRequests);
+app.use('/sessions', sessionRequests);
 
 var chatRequests = require('./routes/chat_request');///////shay chat
 app.use('/chat', chatRequests);////shay chat

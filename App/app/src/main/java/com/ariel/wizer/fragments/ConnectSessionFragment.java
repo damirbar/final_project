@@ -14,6 +14,7 @@ import android.widget.EditText;
 import com.ariel.wizer.R;
 import com.ariel.wizer.SessionActivity;
 import com.ariel.wizer.model.Response;
+import com.ariel.wizer.model.Session;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 
@@ -79,12 +80,14 @@ public class ConnectSessionFragment extends Fragment {
         }
 
         if (err == 0) {
-            loginProcess(pin);
+            Session session = new Session();
+            session.setInternal_id(pin);
+            loginProcess(session);
         }
     }
 
-    private void loginProcess(String id) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().connectSession(id)
+    private void loginProcess(Session session) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().connectSession(session)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));

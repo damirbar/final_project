@@ -4,6 +4,8 @@ wizerApp.controller('sessionController',
         console.log("Hello from sessionController");
         $scope.sessionID = "";
         $scope.loggedUser = {};
+        $scope.isConnectedToSession = false;
+        $scope.session = {}
 
         var ensureLogged = function() {
             if (!AuthService.isLoggedIn()) {
@@ -31,12 +33,22 @@ wizerApp.controller('sessionController',
             SessionService.connectSession($scope.sessionID)
                 .then(function(data) {
                     $scope.session = data;
-                    console.log("Connected to session " + JSON.stringify(data));
+                    console.log("Connected to session " + JSON.stringify(data.session));
+                    $scope.isConnectedToSession = true;
+                    $scope.session = data.sess
                 })
                 .catch(function(err) {
                     console.log("Error connection to session");
                 });
         }
+
+
+
+
+
+
+
+
 
 
     });
