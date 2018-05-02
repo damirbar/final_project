@@ -181,19 +181,48 @@ router.post("/create-session", function (req, res) {
 //erans work receiving messages (Q/A) in session
 router.post("/messages", function (req, res){
 
-   var msg = new Session_Message(
-       
-   );
+    var token = req.headers["x-access-token"];
 
-    msg.save(function (err) {
-        if (err) {
-            console.log(err);
-            return res.status(500).send(err);
-        }
-        res.send("successfully added session " + myData.name + " to db");
-        console.log("successfully added session " + myData.name + " to db");
-    });
+    if (!token) {
+        res.status(401).json({message: 'Unauthorized!'});
+    }
+    else {
+        var decoded = jwt.verify(token, "Wizer", function (err, decoded) {
+            if (err) {
+                return res.json({success: false, message: 'Failed to authenticate token.'});
+            } else {
+                var msg = new Session_Message({
+                        sid: req.body.sid,
+                        type: req.body.type,
+                        body: req.body.body,
+                        email: decoded
+                    }
+                );
 
-})
+
+
+                Session.findOne({internal_id: msg.sid}, function (err, sess) {
+                    if (err) return next(err);
+
+                    sess.messages.push(msg);
+                    sess.save(function (err, updated_sess) {
+                        if (err) return next(err);
+                        console.log("Updates value successfully to " + updated_sess.curr_rating);
+                    });
+
+                });
+
+                msg.save(function (err) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).send(err);
+                    }
+                    res.status(200).json({message: "successfully added message " + msg.body + " to db"});
+                    console.log("successfully added message " + msg.body + " to db");
+                });
+            }
+        });
+    }
+});
 
 module.exports = router;
