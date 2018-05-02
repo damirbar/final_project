@@ -49,7 +49,7 @@ public interface RetrofitInterface {
     Observable<Response> getStudentsCount(@Query("id") String id);
 
     @GET("chat/get-messages")
-    Observable<SessionMessage[]> getMessages(@Query("uid") String uid);
+    Observable<SessionMessage[]> getMessages(@Query("sid") String sid);
 
 
 

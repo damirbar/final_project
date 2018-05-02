@@ -53,15 +53,15 @@ public class SessionActivity extends AppCompatActivity {
         getPin();
         initViews();
         pullMessages();
-        classAvgProcess();
+//        classAvgProcess();
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable(){
-            public void run(){
-                classAvgProcess();
-                handler.postDelayed(this, delay);
-            }
-        }, delay);
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable(){
+//            public void run(){
+//                classAvgProcess();
+//                handler.postDelayed(this, delay);
+//            }
+//        }, delay);
     }
 
     private void initViews() {
@@ -73,7 +73,7 @@ public class SessionActivity extends AppCompatActivity {
         mTvNoResults = (TextView) findViewById(R.id.tv_no_results);
         messagesList = (ListView) findViewById(R.id.sessionMessagesList);
 
-        submitButton.setOnClickListener(view -> rateClass());
+//        submitButton.setOnClickListener(view -> rateClass());
     }
 
     private void getPin() {
@@ -81,37 +81,37 @@ public class SessionActivity extends AppCompatActivity {
         pin = intent.getExtras().getString("pin");
     }
 
-    private void classAvgProcess() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getStudentsCount(pin)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseAvg,i -> mServerResponse.handleError(i)));
-    }
+//    private void classAvgProcess() {
+//        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getStudentsCount(pin)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(this::handleResponseAvg,i -> mServerResponse.handleError(i)));
+//    }
+//
+//    private void handleResponseAvg(Response response) {
+//        mTvClassAvg.setText("Rating:" + response.getMessage());
+//    }
 
-    private void handleResponseAvg(Response response) {
-        mTvClassAvg.setText("Rating:" + response.getMessage());
-    }
 
-
-    private void rateClass() {
-        String rate =  Integer.toString((int)simpleRatingBar.getRating());
-        String rating = "Rating :: " + simpleRatingBar.getRating();
-        Toast.makeText(getApplicationContext(), rating, Toast.LENGTH_LONG).show();
-        rateProcess(rate);
-
-    }
-
-    private void rateProcess(String rate) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().changeVal(pin,rate)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseRateProcess,i -> mServerResponse.handleError(i)));
-    }
-
-    private void handleResponseRateProcess(Response response) {
-        mServerResponse.showSnackBarMessage(response.getMessage());
-    }
-
+//    private void rateClass() {
+//        String rate =  Integer.toString((int)simpleRatingBar.getRating());
+//        String rating = "Rating :: " + simpleRatingBar.getRating();
+//        Toast.makeText(getApplicationContext(), rating, Toast.LENGTH_LONG).show();
+//        rateProcess(rate);
+//
+//    }
+//
+//    private void rateProcess(String rate) {
+//        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().changeVal(pin,rate)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(this::handleResponseRateProcess,i -> mServerResponse.handleError(i)));
+//    }
+//
+//    private void handleResponseRateProcess(Response response) {
+//        mServerResponse.showSnackBarMessage(response.getMessage());
+//    }
+//
 
 
 

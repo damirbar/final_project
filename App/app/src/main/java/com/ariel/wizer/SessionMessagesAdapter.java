@@ -19,6 +19,8 @@ import com.ariel.wizer.model.SessionMessage;
 public class SessionMessagesAdapter extends ArrayAdapter<SessionMessage> {
     private Context mContext;
     private List<SessionMessage> messagesList = new ArrayList<>();
+    private final String question = "question";
+
 
     public SessionMessagesAdapter(Context context, ArrayList<SessionMessage> list) {
         super(context, 0 , list);
@@ -30,13 +32,20 @@ public class SessionMessagesAdapter extends ArrayAdapter<SessionMessage> {
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
-        if(listItem == null)
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.list_item_session_msg_q,parent,false);
-
         SessionMessage currentMessage = messagesList.get(position);
 
-        TextView msg = (TextView) listItem.findViewById(R.id.textView_msg);
-        msg.setText(currentMessage.getContent());
+        if(currentMessage.getType().equalsIgnoreCase(question))
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.list_item_session_msg_q,parent,false);
+        else{
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.list_item_session_msg_ans,parent,false);
+
+        }
+
+        TextView msg1 = (TextView) listItem.findViewById(R.id.textView_msg1);
+        msg1.setText(currentMessage.getBody()[0]);
+        TextView msg2 = (TextView) listItem.findViewById(R.id.textView_msg2);
+        msg2.setText(currentMessage.getBody()[1]);
+
 
         return listItem;
     }
