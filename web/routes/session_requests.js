@@ -179,7 +179,44 @@ router.post("/create-session", function (req, res) {
     });
 });
 
+// TODO -> This is currently not updating the database
+router.get("/rate-message", function(req, res) {
+    var sess_id = req.query.sid;
+    var mess_id = req.query.msgid;
+    var rating  = req.query.rating;
 
+    Session.findOne({sid: sess_id}, function (err, sess) {
+        if (err) return next(err);
+
+        var found = false;
+        for (var i = 0; i < sess.messages.length; ++i) {
+            if (sess.messages[i]._id == mess_id) {
+                found = true;
+                if (rating == 1) {
+                    console.log("INCREMENTING THE MESSAGE " + sess.messages[i].body[1] + " to " + parseInt(sess.messages[i].rating) + 1);
+                    sess.messages[i].rating = parseInt(sess.messages[i].rating) + 1;
+                    console.log("CURRENT RATING = " + sess.messages[i].rating);
+
+                } else {
+                    console.log("DECREMENTING THE MESSAGE " + sess.messages[i].body[1] + " to " + parseInt(sess.messages[i].rating) - 1);
+                    sess.messages[i].rating = parseInt(sess.messages[i].rating) - 1;
+                    console.log("CURRENT RATING = " + sess.messages[i].rating);
+                }
+                break;
+            }
+        }
+        if (!found) {
+            res.status(404).json({message: "Message not found within session " + sess_id});
+        } else {
+            sess.markModified('object');
+            sess.save(function (err, updated_sess) {
+                if (err) return next(err);
+                res.status(200).json({message: "Updated message rating successfully"});
+            });
+        }
+
+    });
+});
 
 //erans work receiving messages (Q/A) in session
 router.post("/messages", function (req, res){

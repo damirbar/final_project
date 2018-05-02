@@ -115,6 +115,17 @@ wizerApp.controller('sessionController',
             $scope.message.type = type;
         };
 
+        $scope.rateMessage = function (sid, mid, rate) {
+            SessionService.rateMessage(sid, mid, rate)
+                .then(function (data) {
+                    // console.log(JSON.stringify(data));
+                    $scope.getMessages();
+                })
+                .catch(function (err) {
+                    console.log("Error with getting messages");
+                });
+        }
+
         // $scope.assignReply = function(msg) {
         //     console.log("MSG TO REPLY:" + JSON.stringify(msg))
         //     $scope.message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[0]

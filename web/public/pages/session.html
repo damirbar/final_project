@@ -48,8 +48,8 @@
                         <div class="col-8 message-content-quote" ng-if="msg.body[0].length != 0">{{msg.body[0]}}</div>
                         <div class="col-4 message-fix-place"></div>
                         <div class="col-8 message-content">{{msg.body[1]}}
-                            <button type="button" class="btn btn-outline-success float-right">Like</button>
-                            <button type="button" class="btn btn-outline-danger float-right">Hate</button>
+                            <button type="button" class="btn btn-outline-success float-right" ng-click="rateMessage(msg.sid, msg._id, 1)">Like</button>
+                            <button type="button" class="btn btn-outline-danger float-right" ng-click="rateMessage(msg.sid, msg._id, 0)">Hate</button>
                             <!--<button type="button" class="btn btn-outline-dark float-right" ng-click="assignReply(msg)">-->
                             <button type="button" class="btn btn-outline-dark float-right"
                             ng-click="message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[1]">
