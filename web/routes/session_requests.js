@@ -8,6 +8,7 @@ const auth = require('basic-auth');
 
 var Session = require("../schemas/session");
 var Student = require("../schemas/student");
+var User    = require("../schemas/user");
 
 router.post("/connect-session", function (req, res) {
 
@@ -35,12 +36,12 @@ router.post("/connect-session", function (req, res) {
 
                         if (sess) {
 
-                            Student.findOne({mail: decoded}, function (err, student) {
+                            User.findOne({email: decoded}, function (err, user) {
                                 if (err) throw err;
 
                                 var exists = false;
                                 for (var i = 0; i < sess.students.length; ++i) {
-                                    if (sess.students[i].id_num == student.id) {
+                                    if (sess.students[i].id_num == user.id) {
                                         exists = true;
                                         res.status(409).json({message: 'Conflict!'});
                                         break;
@@ -51,17 +52,17 @@ router.post("/connect-session", function (req, res) {
                                 if (!exists) {
                                     sess.students.push({
                                         rating_val: 1,
-                                        mail: student.mail,
-                                        display_name: student.display_name,
-                                        id_num: student._id
+                                        mail: user.email,
+                                        display_name: user.display_name,
+                                        id_num: user._id
                                     });
                                     sess.save()
                                         .then(function (item) {
-                                            console.log("Saved a the session with the new student " + student.display_name);
+                                            console.log("Saved a the session with the new student " + user.display_name);
                                             return res.status(200).json({message: 'Welcome to Class !'});
                                         })
                                         .catch(function (err) {
-                                            console.log("Unable to save the session with the new student " + student.display_name);
+                                            console.log("Unable to save the session with the new student " + user.display_name);
                                         });
                                 }
 
@@ -83,6 +84,17 @@ router.post("/connect-session", function (req, res) {
 });
 
 router.get("/get-students-count", function (req, res, next) {
+    var id = req.query.id;
+
+    Session.findOne({internal_id: id}, function (err, sess) {
+        if (err) return next(err);
+
+        res.status(200).json({message: sess.students.length});
+    });
+});
+
+
+router.get("/get-students-rating", function (req, res, next) {
     var id = req.query.id;
 
     Session.findOne({internal_id: id}, function (err, sess) {
