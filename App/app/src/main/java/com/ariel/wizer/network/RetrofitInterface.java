@@ -4,6 +4,7 @@ import com.ariel.wizer.model.ChatChannel;
 import com.ariel.wizer.model.ChatMessage;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.Session;
+import com.ariel.wizer.model.SessionMessage;
 import com.ariel.wizer.model.User;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -35,6 +36,9 @@ public interface RetrofitInterface {
     @POST("auth/reset-pass-finish")
     Observable<Response> resetPasswordFinish(@Body User user);
 
+
+    /////Session/////
+
     @POST("sessions/connect-session")
     Observable<Response> connectSession(@Body Session session);
 
@@ -43,6 +47,12 @@ public interface RetrofitInterface {
 
     @GET("sessions/get-students-count")
     Observable<Response> getStudentsCount(@Query("id") String id);
+
+    @GET("chat/get-messages")
+    Observable<SessionMessage[]> getMessages(@Query("uid") String uid);
+
+
+
 
     /////chat/////
     @GET("chat/get-channels")

@@ -41,14 +41,14 @@ router.post("/connect-session", function (req, res) {
                                 if (err) throw err;
 
                                 var exists = false;
-                                for (var i = 0; i < sess.students.length; ++i) {
-                                    if (sess.students[i].id_num == user.id) {
-                                        exists = true;
-                                        res.status(409).json({message: 'Conflict!'});
-                                        break;
-                                    }
-
-                                }
+                                // for (var i = 0; i < sess.students.length; ++i) {
+                                //     if (sess.students[i].id_num == user.id) {
+                                //         exists = true;
+                                //         res.status(409).json({message: 'Conflict!'});
+                                //         break;
+                                //     }
+                                //
+                                // }
 
                                 if (!exists) {
                                     sess.students.push({
