@@ -1,6 +1,9 @@
 var express = require("express");
 var app = express();
 
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
 var mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 
@@ -72,7 +75,15 @@ app.use('/auth', authRouts);
 /////////////////////////
 
 
-app.listen(3000, function () {
+io.on('connect', function(socket) {
+    console.log("SOMEBODY CONNECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    socket.on('disconnect', function() {
+        console.log("ERAN IS FUCKING GAY");
+    });
+});
+
+
+http.listen(3000, function () {
     console.log("listening...");
 });
 

@@ -41,14 +41,14 @@ router.post("/connect-session", function (req, res) {
                                 if (err) throw err;
 
                                 var exists = false;
-                                // for (var i = 0; i < sess.students.length; ++i) {
-                                //     if (sess.students[i].id_num == user.id) {
-                                //         exists = true;
-                                //         res.status(409).json({message: 'Conflict!'});
-                                //         break;
-                                //     }
-                                //
-                                // }
+                                for (var i = 0; i < sess.students.length; ++i) {
+                                    if (sess.students[i].id_num == user.id) {
+                                        exists = true;
+                                        // res.status(409).json({message: 'Conflict!'});
+                                        break;
+                                    }
+
+                                }
 
                                 if (!exists) {
                                     sess.students.push({
@@ -65,6 +65,9 @@ router.post("/connect-session", function (req, res) {
                                         .catch(function (err) {
                                             console.log("Unable to save the session with the new student " + user.display_name);
                                         });
+                                }
+                                else {
+                                    return res.status(200).json({message: 'Welcome back to Class !', session: sess});
                                 }
 
                             });
@@ -227,8 +230,6 @@ router.post("/messages", function (req, res){
 
 
 router.get("/get-all-messages", function (req, res) {
-
-    console.log("s");
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
         res.status(200).json({messages: sess.messages});
