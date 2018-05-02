@@ -44,7 +44,7 @@ router.post("/connect-session", function (req, res) {
                                 for (var i = 0; i < sess.students.length; ++i) {
                                     if (sess.students[i].id_num == user.id) {
                                         exists = true;
-                                        res.status(409).json({message: 'Conflict!'});
+                                        // res.status(409).json({message: 'Conflict!'});
                                         break;
                                     }
 
@@ -65,6 +65,9 @@ router.post("/connect-session", function (req, res) {
                                         .catch(function (err) {
                                             console.log("Unable to save the session with the new student " + user.display_name);
                                         });
+                                }
+                                else {
+                                    return res.status(200).json({message: 'Welcome back to Class !', session: sess});
                                 }
 
                             });
