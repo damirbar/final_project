@@ -20,11 +20,21 @@ wizerApp.service('SessionService', function ($http) {
     };
 
     this.sendMessage = function(sessionId, type, message) {
-        return $http.post('/session/messages', {sid: sessionId, type: type, body: message})
+        return $http.post('/sessions/messages', {sid: sessionId, type: type, body: message})
             .then(function (data) {
                 return data.data;
             }, function () {
                 console.log("Error sending message to session with ID = " + sessionId);
+            });
+    }
+
+
+    this.getMessages = function(sessionId) {
+        return $http.get('/sessions/get-all-messages', {sid: sessionId})
+            .then(function (data) {
+                return data.data;
+            }, function () {
+                console.log("Error getting messages from session with ID = " + sessionId);
             });
     }
 });

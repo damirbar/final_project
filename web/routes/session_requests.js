@@ -225,4 +225,18 @@ router.post("/messages", function (req, res){
     }
 });
 
+
+router.get("/get-all-messages", function (req, res) {
+
+    console.log("s");
+    Session.findOne({internal_id: req.sid}, function (err, sess) {
+        if (err) return next(err);
+        res.status(200).json({sess});
+    });
+});
+
+
+
+
+
 module.exports = router;

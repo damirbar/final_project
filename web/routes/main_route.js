@@ -1,7 +1,28 @@
 var express = require('express');
 var router = express.Router();
 var path = require("path");
+const jwt = require('jsonwebtoken');
 
+//make sure that all request contain a valid token
+router.all("*" , function (req, res, next) {
+    if(req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass'))return next();
+    console.log("in here");
+    var token = req.headers["x-access-token"];
+    if (!token) {
+        // res.status(200).json({message: 'Unauthorized!'});
+        res.sendFile(path.join(__dirname + "/../index.html"));
+    }
+    else {
+        var decoded = jwt.verify(token, "Wizer", function (err, decoded) {
+            if (err) {
+                // return res.json({success: false, message: 'Failed to authenticate token.'});
+                res.sendFile(path.join(__dirname + "/../index.html"));
+            } else {
+                return next();
+            }
+        });
+    }
+});
 
 router.get("/", function (req, res) {
     console.log(req.headers["x-forwarded-for"] || req.connection.remoteAddress);

@@ -1,8 +1,8 @@
 var router = require('express').Router();
 var path = require("path");
 var mongoose = require("mongoose");
-var Channel = require("../schemas/Channel");
-var Message = require("../schemas/Message");
+var Channel = require("../schemas/channel");
+var Message = require("../schemas/message");
 
 
 

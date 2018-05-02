@@ -38,6 +38,8 @@ wizerApp.controller('sessionController',
                     console.log("Connected to session " + JSON.stringify(data.session));
                     $scope.isConnectedToSession = true;
                     $scope.session = data.sess
+                    getting();
+
                 })
                 .catch(function(err) {
                     console.log("Error connection to session");
@@ -53,10 +55,24 @@ wizerApp.controller('sessionController',
                 .catch(function(err) {
                     console.log("Error with sending message");
                 });
+        };;
+
+        $scope.getMessages = function () {
+
+            SessionService.getMessages("1234")
+                .then(function(data) {
+                    console.log(JSON.stringify(data));
+                })
+                .catch(function(err) {
+                    console.log("Error with getting messages");
+                });
+
         }
 
-
-
+        var getting = function() {
+            // while(!$scope.isConnectedToSession);
+            $scope.getMessages();
+        };
 
 
 

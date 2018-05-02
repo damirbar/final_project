@@ -11,8 +11,8 @@ var bodyParser = require("body-parser");
 
 const Student = require("./schemas/student");
 const Session = require("./schemas/session");
-const Channel = require("./schemas/Channel");///shay chat
-const Message = require("./schemas/Message");///shay chat
+const Channel = require("./schemas/channel");///shay chat
+const Message = require("./schemas/message");///shay chat
 
 
 
@@ -196,6 +196,8 @@ var addMessage = function () {
             console.log("\nCouldn't save the message to the DB\nError: " + err + "\n");
         })
 };
+
+
 
 // addMessage();
 
