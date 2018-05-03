@@ -65,7 +65,7 @@ public class ChatActivity extends AppCompatActivity  {
     private Socket mSocket;
     {
         try {
-            mSocket = IO.socket("https://socket-io-chat.now.sh/");
+            mSocket = IO.socket(Constants.CHAT_SERVER_URL);
         } catch (URISyntaxException e) {}
     }
 

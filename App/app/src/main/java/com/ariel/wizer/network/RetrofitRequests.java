@@ -36,6 +36,10 @@ public class RetrofitRequests {
 
     }
 
+    public String getmToken() {
+        return mToken;
+    }
+
     public SharedPreferences getmSharedPreferences() {return mSharedPreferences; }
 
     private void initSharedPreferences() {

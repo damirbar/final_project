@@ -1,14 +1,15 @@
 wizerApp.controller('sessionController',
-    function ($scope, $rootScope, $routeParams, $location, $window, AuthService, SessionService/*, socketIO*/) {
+    function ($scope, $rootScope, $routeParams, $location, $window, AuthService, SessionService, socketIO) {
 
         console.log("Hello from sessionController");
         $scope.sessionID = "";
         $scope.loggedUser = {};
         $scope.isConnectedToSession = false;
         $scope.session = {};
-        $scope.message = "";
+        $scope.message = {type: "question", body: "", replyTo: ""};
+        $scope.sessionMessages = [];
 
-        var ensureLogged = function() {
+        var ensureLogged = function () {
             if (!AuthService.isLoggedIn()) {
                 $location.path('/');
             }
@@ -30,29 +31,31 @@ wizerApp.controller('sessionController',
         //     });
 
 
-        $scope.connectSession = function() {
+        $scope.connectSession = function () {
             console.log("SESSION ID = " + $scope.sessionID);
             SessionService.connectSession($scope.sessionID)
-                .then(function(data) {
+                .then(function (data) {
                     $scope.session = data;
                     console.log("Connected to session " + JSON.stringify(data.session));
+                    socketIO();
                     $scope.isConnectedToSession = true;
                     $scope.session = data.sess;
                     getting();
 
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     console.log("Error connection to session");
                 });
         };
 
-        $scope.sendMessage = function() {
+        $scope.sendMessage = function () {
 
-            SessionService.sendMessage($scope.sessionID, "question", ["Q: blahblah", "A: " + $scope.message])
-                .then(function(data) {
+            SessionService.sendMessage($scope.sessionID, $scope.message.type, [$scope.message.replyTo, $scope.message.body])
+                .then(function (data) {
                     console.log("Sent message");
+                    $scope.getMessages();
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     console.log("Error with sending message");
                 });
         };
@@ -60,10 +63,12 @@ wizerApp.controller('sessionController',
         $scope.getMessages = function () {
 
             SessionService.getMessages("1234")
-                .then(function(data) {
-                    console.log(JSON.stringify(data));
+                .then(function (data) {
+                    // console.log(JSON.stringify(data));
+                    $scope.sessionMessages = data.messages;
+                    $("#msg-cnt").animate({scrollTop: 999999999}, 1000);
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     console.log("Error with getting messages");
                 });
 
@@ -99,15 +104,31 @@ wizerApp.controller('sessionController',
         //     }
         // });
 
-        var getting = function() {
+        var getting = function () {
             // while(!$scope.isConnectedToSession);
             $scope.getMessages();
         };
 
 
+        $scope.typeChoose = function (type) {
+            $('.msg-type-dropdown-header').text(type.charAt(0).toUpperCase() + type.slice(1));
+            $scope.message.type = type;
+        };
 
+        $scope.rateMessage = function (sid, mid, rate) {
+            SessionService.rateMessage(sid, mid, rate)
+                .then(function (data) {
+                    // console.log(JSON.stringify(data));
+                    $scope.getMessages();
+                })
+                .catch(function (err) {
+                    console.log("Error with getting messages");
+                });
+        }
 
-
-
+        // $scope.assignReply = function(msg) {
+        //     console.log("MSG TO REPLY:" + JSON.stringify(msg))
+        //     $scope.message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[0]
+        // };
 
     });

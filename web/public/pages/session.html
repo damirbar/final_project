@@ -6,7 +6,8 @@
         <div class="row">
             <div class="pad col-2"></div>
             <div class="input-group col-8">
-                <input type="text" ng-model="sessionID" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                <input type="text" ng-model="sessionID" class="form-control" placeholder="" aria-label=""
+                       aria-describedby="basic-addon1">
                 <div class="input-group-append">
                     <button class="btn btn-success" type="button" ng-click="connectSession()">Connect!</button>
                 </div>
@@ -16,16 +17,75 @@
 
     </div>
 
-    <div class="container" ng-show="isConnectedToSession">
+    <div class="container connected-container" ng-show="isConnectedToSession">
+
+        <div id="msg-cnt" class="messages-container">
+
+            <!--<div ng-repeat="message in sessionMessages" class="row">-->
+            <!--&lt;!&ndash;{{message}}&ndash;&gt;-->
+            <!--<div class="col-4 message-type">{{message.type.charAt(0).toUpperCase() + message.type.slice(1)}}</div>-->
+            <!--&lt;!&ndash;<div class="col-2 message-sender">{{message.email}}</div>&ndash;&gt;-->
+            <!--<div class="col-8 message-content-quote" ng-if="message.body[0].length == 0"></div>-->
+            <!--<div class="col-8 message-content-quote" ng-if="message.body[0].length != 0">{{message.body[0]}}</div>-->
+            <!--<div class="col-4 message-fix-place"></div>-->
+            <!--<div class="col-8 message-content">{{message.body[1]}}</div>-->
+            <!--</div>-->
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Rating</th>
+                    <th>Question / Answer</th>
+                    <th>Last Name</th>
+                </tr>
+                </thead>
+                <tbody class="messages-table-body">
+                <tr ng-repeat="msg in sessionMessages">
+                    <th scope="row">{{msg.rating}}</th>
+                    <td>{{msg.type.charAt(0).toUpperCase() + msg.type.slice(1)}}</td>
+                    <td>
+                        <div class="col-8 message-content-quote" ng-if="msg.body[0].length == 0"></div>
+                        <div class="col-8 message-content-quote" ng-if="msg.body[0].length != 0">{{msg.body[0]}}</div>
+                        <div class="col-4 message-fix-place"></div>
+                        <div class="col-8 message-content">{{msg.body[1]}}
+                            <button type="button" class="btn btn-outline-success float-right" ng-click="rateMessage(msg.sid, msg._id, 1)">Like</button>
+                            <button type="button" class="btn btn-outline-danger float-right" ng-click="rateMessage(msg.sid, msg._id, 0)">Hate</button>
+                            <!--<button type="button" class="btn btn-outline-dark float-right" ng-click="assignReply(msg)">-->
+                            <button type="button" class="btn btn-outline-dark float-right"
+                            ng-click="message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[1]">
+
+                                Reply</button>
+                        </div>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+
+        </div>
 
         <form>
             <div class="form-group row">
                 <label for="inputMessage" class="col-sm-2 col-form-label">Enter message</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" ng-model="message" id="inputMessage" placeholder="">
+                    <input type="text" class="form-control" ng-model="message.body" id="inputMessage" placeholder="">
                 </div>
             </div>
             <div class="form-group row">
+
+                <div class="dropdown btn-group">
+                    <button class="btn btn-secondary dropdown-toggle msg-type-dropdown-header"
+                            type="button" id="dropdownMsg" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        Type
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <div class="dropdown-item" ng-click="typeChoose('question')">Question</div>
+                        <div class="dropdown-item" ng-click="typeChoose('answer')">Answer</div>
+                    </div>
+                </div>
+
                 <div class="col-sm-10 offset-sm-2">
                     <button type="submit" class="btn btn-primary" ng-click="sendMessage()">Send</button>
                 </div>

@@ -26,4 +26,12 @@
     <string name="no_channel">No channel</string>
     <string name="wrong_up">Wrong username or password</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="Type">User Type</string>
+    <string name="hello_world">Hello world!</string>
+    <string-array name="User_Type">
+        <item>User Type</item>
+        <item>Student</item>
+        <item>Teacher</item>
+    </string-array>
 </resources>

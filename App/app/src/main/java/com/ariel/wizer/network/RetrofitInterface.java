@@ -48,8 +48,12 @@ public interface RetrofitInterface {
     @GET("sessions/get-students-count")
     Observable<Response> getStudentsCount(@Query("id") String id);
 
-    @GET("chat/get-messages")
-    Observable<SessionMessage[]> getMessages(@Query("uid") String uid);
+    @GET("sessions/get-all-messages")
+    Observable<Session> getMessages(@Query("sid") String sid);
+
+    @POST("sessions/messages")
+    Observable<Response> publishSessionMessage(@Body SessionMessage message);
+
 
 
 

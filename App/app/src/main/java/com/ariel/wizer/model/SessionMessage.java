@@ -2,49 +2,78 @@ package com.ariel.wizer.model;
 
 public class SessionMessage {
 
-    String guid;
-    String channel_guid;
-    String user_guid;
-    long timestamp;
-    String content;
+    private String sid;
+    private String email;
+    private String type;
+    private int rating;
+    private int __v;
+    private String _id;
 
-    public String getGuid() {
-        return guid;
+
+    private String body[];
+
+    public String getSid() {
+        return sid;
     }
 
-    public void setGuid(String guid) {
-        this.guid = guid;
+    public void setSid(String sid) {
+        this.sid = sid;
     }
 
-    public String getChannelGuid() {
-        return channel_guid;
+    public int get__v() {
+        return __v;
     }
 
-    public void setChannelGuid(String channelGuid) {
-        this.channel_guid = channelGuid;
+    public void set__v(int __v) {
+        this.__v = __v;
     }
 
-    public String getUserGuid() {
-        return user_guid;
+    public String get_id() {
+        return _id;
     }
 
-    public void setUserGuid(String userGuid) {
-        this.user_guid = userGuid;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public String getEmail() {
+        return email;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getContent() {
-        return content;
+    public String getType() {
+        return type;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setType(String type) {
+        this.type = type;
     }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String[] getBody() {
+        return body;
+    }
+
+    public void setBody(String[] body) {
+        this.body = body;
+    }
+
+    public String getInternal_id() {
+        return sid;
+    }
+
+    public void setInternal_id(String internal_id) {
+        this.sid = internal_id;
+    }
+
 }
