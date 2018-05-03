@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var path = require("path");
 var mongoose = require("mongoose");
+var fs = require('fs');
 const jwt = require('jsonwebtoken');
 
 const auth = require('basic-auth');
@@ -278,13 +279,53 @@ router.get("/disconnect", function (req, res) {
     console.log("\t\t\n\n\t "+req.verifiedEmail);
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
+        var found = false;
         for (var i=0; i< sess.students.length;++i){
             if(sess.students[i].email == req.verifiedEmail){
+                found = true;
                 sess.students.splice(i, 1);
                 sess.save();
+                res.status(200).json({message: "Disconnected " + req.verifiedEmail + " from session " + req.query.sid})
             }
         }
+        if (! found) {
+            res.status(404).json({message: "User " + req.verifiedEmail + " not found in session " + req.query.sid})
+        }
     });
+});
+
+
+router.get('/video', function (req, res) {
+    var path = '/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4';
+    var stat = fs.statSync(path);
+    var fileSize = stat.size;
+    var range = req.headers.range
+    // var range = 'bytes=200-1000';
+
+    if(range){
+        const parts = range.replace(/bytes=/, "").split("-")
+        const start = parseInt(parts[0], 10)
+        const end = parts[1]
+            ? parseInt(parts[1], 10)
+            : fileSize-1
+        const chunksize = (end-start)+1
+        const file = fs.createReadStream(path, {start, end})
+        const head = {
+            'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunksize,
+            'Content-Type': 'video/mp4',
+        }
+        res.writeHead(206, head);
+        file.pipe(res);
+    } else {
+        const head = {
+            'Content-Length': fileSize,
+            'Content-Type': 'video/mp4',
+        }
+        res.writeHead(200, head)
+        fs.createReadStream(path).pipe(res)
+    }
 });
 
 

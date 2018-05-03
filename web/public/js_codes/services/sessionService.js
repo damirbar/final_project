@@ -56,4 +56,13 @@ wizerApp.service('SessionService', function ($http) {
             });
     }
 
+    this.getVideo = function(sessionId) {
+        return $http.get('/sessions/video?sid=' + sessionId)
+            .then(function (data) {
+                return data.data;
+            }, function () {
+                console.log("Error rating message in session with ID = " + sessionId);
+            });
+    }
+
 });

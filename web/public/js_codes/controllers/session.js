@@ -1,5 +1,5 @@
 wizerApp.controller('sessionController',
-    function ($scope, $rootScope, $routeParams, $location, $window, AuthService, SessionService, socketIO) {
+    function ($scope, $rootScope, $routeParams, $location, $window, AuthService, SessionService/*,socketIO*/) {
 
         console.log("Hello from sessionController");
         $scope.sessionID = "";
@@ -36,8 +36,19 @@ wizerApp.controller('sessionController',
             SessionService.connectSession($scope.sessionID)
                 .then(function (data) {
                     $scope.session = data;
-                    console.log("Connected to session " + JSON.stringify(data.session));
-                    socketIO();
+                    console.log("Connected to session ");// + JSON.stringify(data.session));
+                    // var sock = socketIO();
+                    io.connect();
+                     // console.log("The io looks like this: " + JSON.stringify(a));
+                    // io.emit('send:message', {
+                    //     message: "BLAHBLIHBLAH"
+                    // }, function(result) {
+                    //     if (!result) {
+                    //         console.log("NO RESULT");
+                    //     } else {
+                    //         console.log("SOCKET RESULT = " + result)
+                    //     }
+                    // });
                     $scope.isConnectedToSession = true;
                     $scope.session = data.sess;
                     getting();
@@ -74,24 +85,38 @@ wizerApp.controller('sessionController',
 
         };
 
-        // $scope.disconnect = function () {
-        //
-        //     SessionService.disconnect($scope.sessionID)
-        //         .then(function(data) {
-        //             console.log(JSON.stringify(data));
-        //         })
-        //         .catch(function(err) {
-        //             console.log("Error with disconnecting from session");
-        //         });
-        //
-        // };
-        //
+        $scope.getVideo = function () {
+
+            SessionService.getVideo("1234")
+                .then(function (data) {
+                    console.log('\n\n\t\t\t'+JSON.stringify(data)+'\n\n');
+                })
+                .catch(function (err) {
+                    console.log("Error with getting video");
+                });
+
+        };
+        // $scope.getVideo();
+
+        $scope.disconnect = function () {
+
+            SessionService.disconnect($scope.sessionID)
+                .then(function(data) {
+                    $scope.isConnectedToSession = false;
+                    console.log(JSON.stringify(data));
+                })
+                .catch(function(err) {
+                    console.log("Error with disconnecting from session");
+                });
+
+        };
+
         // $scope.$on("$destroy", function() {
         //     console.log("DISCONNECTING FROM SESSION");
         //     if($scope.isConnectedToSession) {
         //         $scope.isConnectedToSession = false;
         //         $scope.session = null;
-        //         $scope.disconnect();
+        //         // $scope.disconnect();
         //     }
         // });
         //
