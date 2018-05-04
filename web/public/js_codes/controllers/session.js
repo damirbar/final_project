@@ -85,18 +85,27 @@ wizerApp.controller('sessionController',
 
         };
 
-        $scope.getVideo = function () {
-
-            SessionService.getVideo("1234")
-                .then(function (data) {
-                    console.log('\n\n\t\t\t'+JSON.stringify(data)+'\n\n');
-                })
-                .catch(function (err) {
-                    console.log("Error with getting video");
-                });
-
-        };
+        // $scope.getVideo = function () {
+        //
+        //     SessionService.getVideo("1234")
+        //         .then(function (data) {
+        //             console.log('\n\n\t\t\t'+JSON.stringify(data)+'\n\n');
+        //         })
+        //         .catch(function (err) {
+        //             console.log("Error with getting video");
+        //         });
+        //
+        // };
         // $scope.getVideo();
+
+        $scope.getToken = function() {
+            return $window.localStorage.getItem('token');
+        };
+
+        //damir!!!!
+        // $scope.getSid = function() {
+        //     return $window.localStorage.getItem('sid');
+        // };
 
         $scope.disconnect = function () {
 

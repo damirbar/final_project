@@ -5,11 +5,12 @@ const jwt = require('jsonwebtoken');
 
 //make sure that all request contain a valid token
 router.all("*" , function (req, res, next) {
+
     if(req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass')){
         return next();
     }
-    var token = req.headers["x-access-token"];
-    if (!token) {
+    var token = req.headers["x-access-token"] || req.query.token;
+    if (!token && req.url!='/sessions/video?sid=1234') {
         // res.status(200).json({message: 'Unauthorized!'});
         res.sendFile(path.join(__dirname + "/../index.html"));
     }
