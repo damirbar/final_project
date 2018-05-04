@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var path = require("path");
 var mongoose = require("mongoose");
+var fs = require('fs');
 const jwt = require('jsonwebtoken');
 
 const auth = require('basic-auth');
@@ -179,7 +180,44 @@ router.post("/create-session", function (req, res) {
     });
 });
 
+// TODO -> This is currently not updating the database
+router.get("/rate-message", function(req, res) {
+    var sess_id = req.query.sid;
+    var mess_id = req.query.msgid;
+    var rating  = req.query.rating;
 
+    Session.findOne({sid: sess_id}, function (err, sess) {
+        if (err) return next(err);
+
+        var found = false;
+        for (var i = 0; i < sess.messages.length; ++i) {
+            if (sess.messages[i]._id == mess_id) {
+                found = true;
+                if (rating == 1) {
+                    console.log("INCREMENTING THE MESSAGE " + sess.messages[i].body[1] + " to " + parseInt(sess.messages[i].rating) + 1);
+                    sess.messages[i].rating = parseInt(sess.messages[i].rating) + 1;
+                    console.log("CURRENT RATING = " + sess.messages[i].rating);
+
+                } else {
+                    console.log("DECREMENTING THE MESSAGE " + sess.messages[i].body[1] + " to " + parseInt(sess.messages[i].rating) - 1);
+                    sess.messages[i].rating = parseInt(sess.messages[i].rating) - 1;
+                    console.log("CURRENT RATING = " + sess.messages[i].rating);
+                }
+                break;
+            }
+        }
+        if (!found) {
+            res.status(404).json({message: "Message not found within session " + sess_id});
+        } else {
+            sess.markModified('object');
+            sess.save(function (err, updated_sess) {
+                if (err) return next(err);
+                res.status(200).json({message: "Updated message rating successfully"});
+            });
+        }
+
+    });
+});
 
 //erans work receiving messages (Q/A) in session
 router.post("/messages", function (req, res){
@@ -241,14 +279,56 @@ router.get("/disconnect", function (req, res) {
     console.log("\t\t\n\n\t "+req.verifiedEmail);
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
+        var found = false;
         for (var i=0; i< sess.students.length;++i){
             if(sess.students[i].email == req.verifiedEmail){
+                found = true;
                 sess.students.splice(i, 1);
                 sess.save();
+                res.status(200).json({message: "Disconnected " + req.verifiedEmail + " from session " + req.query.sid})
             }
+        }
+        if (! found) {
+            res.status(404).json({message: "User " + req.verifiedEmail + " not found in session " + req.query.sid})
         }
     });
 });
+
+
+router.get('/video', function (req, res) {
+
+    var path ='/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4';
+    var stat = fs.statSync(path);
+    var total = stat.size;
+    if (req.headers['range']) {
+        var range = req.headers.range;
+        var parts = range.replace(/bytes=/, "").split("-");
+        var partialstart = parts[0];
+        var partialend = parts[1];
+
+        var start = parseInt(partialstart, 10);
+        var end = partialend ? parseInt(partialend, 10) : total-1;
+        var chunksize = (end-start)+1;
+        console.log('RANGE: ' + start + ' - ' + end + ' = ' + chunksize);
+
+        var file = fs.createReadStream(path, {start: start, end: end});
+        res.writeHead(206, { 'Content-Range': 'bytes ' + start + '-' + end + '/' + total, 'Accept-Ranges': 'bytes', 'Content-Length': chunksize, 'Content-Type': 'video/mp4' });
+        file.pipe(res);
+    } else {
+        console.log('ALL: ' + total);
+        res.writeHead(200, { 'Content-Length': total, 'Content-Type': 'video/mp4' });
+        fs.createReadStream(path).pipe(res);
+    }
+});
+
+
+router.get('/videoPic', function (req, res) {
+    return '/home/eran/projects/WebstormProjects/final_project/web/routes/omer.jpg?x11217'
+});
+
+
+
+
 
 
 module.exports = router;

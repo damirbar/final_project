@@ -1,5 +1,5 @@
 wizerApp.controller('sessionController',
-    function ($scope, $rootScope, $routeParams, $location, $window, AuthService, SessionService, socketIO) {
+    function ($scope, $rootScope, $routeParams, $location, $window, AuthService, SessionService/*,socketIO*/) {
 
         console.log("Hello from sessionController");
         $scope.sessionID = "";
@@ -36,8 +36,19 @@ wizerApp.controller('sessionController',
             SessionService.connectSession($scope.sessionID)
                 .then(function (data) {
                     $scope.session = data;
-                    console.log("Connected to session " + JSON.stringify(data.session));
-                    socketIO();
+                    console.log("Connected to session ");// + JSON.stringify(data.session));
+                    // var sock = socketIO();
+                    io.connect();
+                     // console.log("The io looks like this: " + JSON.stringify(a));
+                    // io.emit('send:message', {
+                    //     message: "BLAHBLIHBLAH"
+                    // }, function(result) {
+                    //     if (!result) {
+                    //         console.log("NO RESULT");
+                    //     } else {
+                    //         console.log("SOCKET RESULT = " + result)
+                    //     }
+                    // });
                     $scope.isConnectedToSession = true;
                     $scope.session = data.sess;
                     getting();
@@ -74,24 +85,47 @@ wizerApp.controller('sessionController',
 
         };
 
-        // $scope.disconnect = function () {
+        // $scope.getVideo = function () {
         //
-        //     SessionService.disconnect($scope.sessionID)
-        //         .then(function(data) {
-        //             console.log(JSON.stringify(data));
+        //     SessionService.getVideo("1234")
+        //         .then(function (data) {
+        //             console.log('\n\n\t\t\t'+JSON.stringify(data)+'\n\n');
         //         })
-        //         .catch(function(err) {
-        //             console.log("Error with disconnecting from session");
+        //         .catch(function (err) {
+        //             console.log("Error with getting video");
         //         });
         //
         // };
-        //
+        // $scope.getVideo();
+
+        $scope.getToken = function() {
+            return $window.localStorage.getItem('token');
+        };
+
+        //damir!!!!
+        // $scope.getSid = function() {
+        //     return $window.localStorage.getItem('sid');
+        // };
+
+        $scope.disconnect = function () {
+
+            SessionService.disconnect($scope.sessionID)
+                .then(function(data) {
+                    $scope.isConnectedToSession = false;
+                    console.log(JSON.stringify(data));
+                })
+                .catch(function(err) {
+                    console.log("Error with disconnecting from session");
+                });
+
+        };
+
         // $scope.$on("$destroy", function() {
         //     console.log("DISCONNECTING FROM SESSION");
         //     if($scope.isConnectedToSession) {
         //         $scope.isConnectedToSession = false;
         //         $scope.session = null;
-        //         $scope.disconnect();
+        //         // $scope.disconnect();
         //     }
         // });
         //
@@ -114,6 +148,17 @@ wizerApp.controller('sessionController',
             $('.msg-type-dropdown-header').text(type.charAt(0).toUpperCase() + type.slice(1));
             $scope.message.type = type;
         };
+
+        $scope.rateMessage = function (sid, mid, rate) {
+            SessionService.rateMessage(sid, mid, rate)
+                .then(function (data) {
+                    // console.log(JSON.stringify(data));
+                    $scope.getMessages();
+                })
+                .catch(function (err) {
+                    console.log("Error with getting messages");
+                });
+        }
 
         // $scope.assignReply = function(msg) {
         //     console.log("MSG TO REPLY:" + JSON.stringify(msg))

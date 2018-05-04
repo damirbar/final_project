@@ -26,7 +26,7 @@ wizerApp.service('SessionService', function ($http) {
             }, function () {
                 console.log("Error sending message to session with ID = " + sessionId);
             });
-    }
+    };
 
 
     this.getMessages = function(sessionId) {
@@ -45,6 +45,24 @@ wizerApp.service('SessionService', function ($http) {
             }, function () {
                 console.log("Error disconnecting from session with ID = " + sessionId);
             });
+    };
+
+    this.rateMessage = function(sessionId, messageId, rating) {
+        return $http.get('/sessions/rate-message?sid=' + sessionId + "&msgid=" + messageId + "&rating=" + rating)
+            .then(function (data) {
+                return data.data;
+            }, function () {
+                console.log("Error rating message in session with ID = " + sessionId);
+            });
     }
+
+    // this.getVideo = function(sessionId) {
+    //     return $http.get('/sessions/video?sid=' + sessionId)
+    //         .then(function (data) {
+    //             return data.data;
+    //         }, function () {
+    //             console.log("Error rating message in session with ID = " + sessionId);
+    //         });
+    // }
 
 });

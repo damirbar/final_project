@@ -169,8 +169,6 @@ var addSession = function () {
 
 
 
-
-
 var addChat = function () {
     var channel = new Channel(
         {
@@ -207,7 +205,6 @@ var addMessage = function () {
             console.log("\nCouldn't save the message to the DB\nError: " + err + "\n");
         })
 };
-
 
 
 // addMessage();
