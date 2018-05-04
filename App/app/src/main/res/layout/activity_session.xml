@@ -16,7 +16,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#e1e1e1">
 
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
@@ -67,7 +68,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentTop="true"
                         android:background="@android:color/black"
-                        android:text="Submit"
+                        android:text=":"
                         android:textColor="@android:color/white"
                         android:visibility="visible" />
 
@@ -103,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
-                android:background="@color/divider_color"
+                android:background="#91f1f1f1"
                 android:orientation="horizontal"
                 android:visibility="gone">
 

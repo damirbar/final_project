@@ -108,7 +108,7 @@ public class SessionActivity extends AppCompatActivity {
         mTvNoResults = (TextView) findViewById(R.id.tv_no_results);
         messagesList = (ListView) findViewById(R.id.sessionMessagesList);
         mMessage = (EditText) findViewById(R.id.chatMessageEditText);
-
+        messagesList.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         askButton.setOnClickListener(view -> openQuestion());
     }
 
@@ -126,7 +126,7 @@ public class SessionActivity extends AppCompatActivity {
 //    };
 
     private void openQuestion(){
-        mTvNoResults.setVisibility(View.VISIBLE);
+        mtaskBar.setVisibility(View.VISIBLE);
         mMessageButton.setOnClickListener(view -> attemptSend());
     }
 
@@ -154,12 +154,9 @@ public class SessionActivity extends AppCompatActivity {
     }
 
     private void handleResponseSendMessage(Response response) {
-        mTvNoResults.setVisibility(View.GONE);
+        mtaskBar.setVisibility(View.GONE);
         pullMessages();
     }
-
-
-
 
 
     private void getPin() {
