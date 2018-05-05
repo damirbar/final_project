@@ -62,6 +62,7 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     private ServerResponse mServerResponse;
     private String mEmail;
     private String mPass;
+    private String mToken;
     private static Boolean START_ANIMATION = true;
 
     @Nullable
@@ -178,9 +179,10 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     }
 
     private void autoLogin() {
-        if(!mEmail.isEmpty()&&!mPass.isEmpty()){
+//        if(!mEmail.isEmpty()&&!mPass.isEmpty()){
 //            loginProcess(mEmail,mPass);
-            Intent intent = new Intent(getActivity(), NavBarActivity.class);
+        if(!mToken.isEmpty()){
+        Intent intent = new Intent(getActivity(), NavBarActivity.class);
             startActivity(intent);
             getActivity().finish();
         }
@@ -197,7 +199,8 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mEmail = mSharedPreferences.getString(Constants.EMAIL,"");
         mPass = mSharedPreferences.getString(Constants.PASS,"");
-        }
+        mToken = mSharedPreferences.getString(Constants.TOKEN,"");
+    }
 
     private void login() {
 

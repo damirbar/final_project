@@ -6,14 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.ChatChannel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChannelsAdapter extends ArrayAdapter<ChatChannel> {
     private Context mContext;

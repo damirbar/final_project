@@ -36,11 +36,12 @@ public interface RetrofitInterface {
     @POST("auth/reset-pass-finish")
     Observable<Response> resetPasswordFinish(@Body User user);
 
-
     /////Session/////
-
     @POST("sessions/connect-session")
     Observable<Response> connectSession(@Body Session session);
+
+    @GET("sessions/create-session")
+    Observable<Session> createSession();
 
     @GET("sessions/change-val")
     Observable<Response> changeVal(@Query("id") String id, @Query("val") String val);
@@ -48,15 +49,17 @@ public interface RetrofitInterface {
     @GET("sessions/get-students-count")
     Observable<Response> getStudentsCount(@Query("id") String id);
 
+    @GET("sessions/get-students-rating")
+    Observable<Response> getStudentsRating(@Query("id") String id);
+
     @GET("sessions/get-all-messages")
     Observable<Session> getMessages(@Query("sid") String sid);
 
     @POST("sessions/messages")
     Observable<Response> publishSessionMessage(@Body SessionMessage message);
 
-
-
-
+    @GET("sessions/disconnect")
+    Observable<Response> disconnect(@Query("sid") String sid);
 
     /////chat/////
     @GET("chat/get-channels")

@@ -24,6 +24,9 @@
     <string name="no_channel">No channel</string>
     <string name="wrong_up">Wrong username or password</string>
     <string name="Type">User Type</string>
+    <string name="send">Send</string>
+    <string name="add_comment">Add comment</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

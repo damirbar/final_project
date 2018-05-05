@@ -53,13 +53,16 @@
         <activity
             android:name=".imageCrop.ImageCropActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".session.PostActivity"
+            android:configChanges="orientation|screenSize" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".session.PostActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity android:name=".session.CommentActivity"
+        android:configChanges="keyboardHidden|orientation|screenSize" />
 
     </application>
 

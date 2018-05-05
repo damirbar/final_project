@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -22,6 +23,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.ariel.wizer.R;
+import com.ariel.wizer.chat.ChannelsAdapter;
+import com.ariel.wizer.chat.ChatActivity;
+import com.ariel.wizer.model.ChatChannel;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.Session;
 import com.ariel.wizer.model.SessionMessage;
@@ -41,26 +45,15 @@ public class SessionFeedFragment extends Fragment {
 
 
     private CompositeSubscription mSubscriptions;
-    private Button askButton;
-    private RatingBar simpleRatingBar;
-    private TextView mTvClassAvg;
-    private TextView mTvClassPin;
     private ListView messagesList;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
-//    private TextView mTvNoResults;
-    private LinearLayout mtaskBar;
-    private ImageButton mMessageButton;
-    private EditText mMessage;
+    private TextView mTvNoResults;
     private FloatingActionButton mFBPost;
-
-    private final String question = "question";
     private String sid;
     private final int delay = 5000; //milliseconds
     private SessionMessagesAdapter mAdapter;
-    private SessionMessage sessionMessage;
-
-
+    private SessionMessage[] savePosts;
 
 
     @Override
@@ -76,7 +69,6 @@ public class SessionFeedFragment extends Fragment {
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
         mServerResponse = new ServerResponse(getActivity().findViewById(R.id.session_activity));
         pullMessages();
-//        mServerResponse.showSnackBarMessage(sid);
 //        classAvgProcess();
 //        Handler handler = new Handler();
 //        handler.postDelayed(new Runnable(){
@@ -86,24 +78,22 @@ public class SessionFeedFragment extends Fragment {
 //            }
 //        }, delay);
 
+        messagesList.setOnItemClickListener((parent, view1, position, id) -> {
+            Intent intent = new Intent(getActivity(),CommentActivity.class);
+            String uid = savePosts[position].getSid();///change to guid
+            intent.putExtra("sid",uid);///change to guid
+            startActivity(intent);
+        });
         return view;
     }
 
     private void initViews(View v) {
-//        mTvClassPin = (TextView) v.findViewById(R.id.num_sid);
-//        mTvClassPin.setText(pin);
 //        mTvClassAvg = (TextView) findViewById(R.id.tVclassAvg);
-//        simpleRatingBar = (RatingBar) findViewById(R.id.ratingBar);
-//        mtaskBar = (LinearLayout) findViewById(R.id.taskBar);
-//        mMessageButton = (ImageButton) findViewById(R.id.sendChatMessageButton);
-//        askButton = (Button) findViewById(R.id.ask_Button);
-//        mTvNoResults = (TextView) v.findViewById(R.id.tv_no_results);
+        mTvNoResults = (TextView) v.findViewById(R.id.tv_no_results);
         messagesList = (ListView) v.findViewById(R.id.sessionMessagesList);
         mFBPost = (FloatingActionButton) v.findViewById(R.id.fb_post);
         mFBPost.setOnClickListener(view -> openPost());
 
-//        mMessage = (EditText) v.findViewById(R.id.chatMessageEditText);
-//        askButton.setOnClickListener(view -> openQuestion());
     }
 
 
@@ -161,12 +151,6 @@ public class SessionFeedFragment extends Fragment {
 //
 
 
-
-
-
-
-
-
     private void pullMessages(){
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getMessages(sid)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -176,10 +160,11 @@ public class SessionFeedFragment extends Fragment {
 
     private void handleResponsePull(Session session) {
         if(session.getMessages().length == 0){
-//            mTvNoResults.setVisibility(View.VISIBLE);
+            mTvNoResults.setVisibility(View.VISIBLE);
         }
         else{
-//            mTvNoResults.setVisibility(View.GONE);
+            savePosts = session.getMessages();
+            mTvNoResults.setVisibility(View.GONE);
             mAdapter = new SessionMessagesAdapter(this.getActivity(), new ArrayList<>(Arrays.asList(session.getMessages())));
             messagesList.setAdapter(mAdapter);
         }

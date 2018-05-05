@@ -2,6 +2,7 @@ package com.ariel.wizer;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.WindowManager;
 
 import com.ariel.wizer.fragments.LoginFragment;
@@ -58,4 +59,6 @@ public class MainActivity extends AppCompatActivity implements ResetPasswordDial
 
         mServerResponse.showSnackBarMessage(message);
     }
+
+
 }

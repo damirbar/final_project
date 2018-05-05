@@ -14,17 +14,16 @@ import com.ariel.wizer.model.SessionMessage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SessionMessagesAdapter extends ArrayAdapter<SessionMessage> {
+public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
     private Context mContext;
     private List<SessionMessage> messagesList = new ArrayList<>();
-    private final String question = "question";
 
-    public SessionMessagesAdapter( Context context, ArrayList<SessionMessage> list) {
+
+    public SessionCommentsAdapter(Context context, ArrayList<SessionMessage> list) {
         super(context, 0 , list);
         mContext = context;
         messagesList = list;
     }
-
 
     @NonNull
     @Override
@@ -32,12 +31,9 @@ public class SessionMessagesAdapter extends ArrayAdapter<SessionMessage> {
         View listItem = convertView;
         SessionMessage currentMessage = messagesList.get(position);
 
-        if(currentMessage.getType().equalsIgnoreCase(question))
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.feed_post_item,parent,false);
-        else{
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.feed_post_item,parent,false);
+        if(listItem == null)
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.feed_comment_item,parent,false);
 
-        }
 
         TextView msg = (TextView) listItem.findViewById(R.id.content);
         msg.setText(currentMessage.getBody()[1]);
@@ -47,7 +43,6 @@ public class SessionMessagesAdapter extends ArrayAdapter<SessionMessage> {
 
         TextView mEmail = (TextView) listItem.findViewById(R.id.user_name);
         mEmail.setText(currentMessage.getEmail());
-
 
         return listItem;
     }

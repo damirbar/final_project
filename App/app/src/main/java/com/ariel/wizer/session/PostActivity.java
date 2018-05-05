@@ -1,8 +1,11 @@
 package com.ariel.wizer.session;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -21,7 +24,6 @@ public class PostActivity extends AppCompatActivity {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
-    private SessionFeedFragment mSessionFeedFragment;
 
     private EditText mPostText;
     private ImageButton buttonBack;
@@ -52,7 +54,6 @@ public class PostActivity extends AppCompatActivity {
     }
 
     private void goBack() {
-        getFragmentManager().beginTransaction().replace(R.id.frame_session, mSessionFeedFragment, SessionFeedFragment.TAG).commit();
         finish();
     }
 
@@ -77,15 +78,10 @@ public class PostActivity extends AppCompatActivity {
     }
 
     private void handleResponseSendPost(Response response) {
-        if (mSessionFeedFragment == null) {
-
-            mSessionFeedFragment = new SessionFeedFragment();
-        }
-        getFragmentManager().beginTransaction().replace(R.id.frame_session, mSessionFeedFragment, SessionFeedFragment.TAG).commit();
+        Intent i = new Intent(this,SessionFeedFragment.class);
+        startActivity(i);
         finish();
     }
-
-
 
     @Override
     protected void onDestroy() {
