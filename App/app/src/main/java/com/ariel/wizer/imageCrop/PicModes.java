@@ -1,4 +1,4 @@
-package com.ariel.wizer.ImageCrop;
+package com.ariel.wizer.imageCrop;
 
 public interface PicModes {
     String CAMERA = "Camera";

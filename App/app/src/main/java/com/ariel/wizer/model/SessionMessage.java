@@ -6,10 +6,6 @@ public class SessionMessage {
     private String email;
     private String type;
     private int rating;
-    private int __v;
-    private String _id;
-
-
     private String body[];
 
     public String getSid() {
@@ -18,22 +14,6 @@ public class SessionMessage {
 
     public void setSid(String sid) {
         this.sid = sid;
-    }
-
-    public int get__v() {
-        return __v;
-    }
-
-    public void set__v(int __v) {
-        this.__v = __v;
-    }
-
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
     }
 
     public String getEmail() {
@@ -66,14 +46,6 @@ public class SessionMessage {
 
     public void setBody(String[] body) {
         this.body = body;
-    }
-
-    public String getInternal_id() {
-        return sid;
-    }
-
-    public void setInternal_id(String internal_id) {
-        this.sid = internal_id;
     }
 
 }

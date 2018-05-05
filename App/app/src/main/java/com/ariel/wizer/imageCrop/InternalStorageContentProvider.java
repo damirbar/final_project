@@ -1,4 +1,4 @@
-package com.ariel.wizer.ImageCrop;
+package com.ariel.wizer.imageCrop;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;

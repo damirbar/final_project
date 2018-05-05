@@ -56,4 +56,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     implementation 'com.androidadvance:topsnackbar:1.1.1'
     implementation 'com.github.nkzawa:socket.io-client:0.3.0'
+
+
 }
