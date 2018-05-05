@@ -10,7 +10,7 @@ const auth = require('basic-auth');
 var Session = require("../schemas/session");
 var Session_Message = require("../schemas/session_message");
 var Student = require("../schemas/student");
-var User    = require("../schemas/user");
+var User = require("../schemas/user");
 
 router.post("/connect-session", function (req, res) {
 
@@ -81,8 +81,6 @@ router.post("/connect-session", function (req, res) {
         });
 
         // console.log("The token is: " + token);
-
-
 
 
     }
@@ -181,10 +179,10 @@ router.post("/create-session", function (req, res) {
 });
 
 // TODO -> This is currently not updating the database
-router.get("/rate-message", function(req, res) {
+router.get("/rate-message", function (req, res) {
     var sess_id = req.query.sid;
     var mess_id = req.query.msgid;
-    var rating  = req.query.rating;
+    var rating = req.query.rating;
 
     Session.findOne({sid: sess_id}, function (err, sess) {
         if (err) return next(err);
@@ -220,7 +218,7 @@ router.get("/rate-message", function(req, res) {
 });
 
 //erans work receiving messages (Q/A) in session
-router.post("/messages", function (req, res){
+router.post("/messages", function (req, res) {
 
     var token = req.headers["x-access-token"];
 
@@ -239,7 +237,6 @@ router.post("/messages", function (req, res){
                         email: decoded
                     }
                 );
-
 
 
                 Session.findOne({sid: msg.sid}, function (err, sess) {
@@ -276,59 +273,116 @@ router.get("/get-all-messages", function (req, res) {
 
 
 router.get("/disconnect", function (req, res) {
-    console.log("\t\t\n\n\t "+req.verifiedEmail);
+    console.log("\t\t\n\n\t " + req.verifiedEmail);
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
         var found = false;
-        for (var i=0; i< sess.students.length;++i){
-            if(sess.students[i].email == req.verifiedEmail){
+        for (var i = 0; i < sess.students.length; ++i) {
+            if (sess.students[i].email == req.verifiedEmail) {
                 found = true;
                 sess.students.splice(i, 1);
                 sess.save();
                 res.status(200).json({message: "Disconnected " + req.verifiedEmail + " from session " + req.query.sid})
             }
         }
-        if (! found) {
+        if (!found) {
             res.status(404).json({message: "User " + req.verifiedEmail + " not found in session " + req.query.sid})
         }
     });
 });
 
 
-router.get('/video', function (req, res) {
 
-    var path ='/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4';
-    var stat = fs.statSync(path);
-    var total = stat.size;
+router.get('/postVideo', function (req, res) {
+
+    var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
+    var mongo = require('mongodb');
+    var Grid = require('gridfs');
+
+    mongo.MongoClient.connect(mongoDB, function (err, db) {
+        var gfs = Grid(db, mongo);
+        var source = '/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4';
+        Session.findOne({sid: req.query.sid}, function (err, sess) {
+            if (err) return next(err);
+            gfs.fromFile({filename: 'hello.txt'}, source, function (err, file) {
+                console.log('saved %s to GridFS file %s', source, file._id);
+                sess.videoID = file._id;
+                sess.save();
+            });
+        });
+    });
+
+});
+
+
+router.get('/getVideo', function (req, res) {
+
+    var GridStore = require('mongodb').GridStore;
+    var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
+    var db = mongoose.connection;
+
+    var ObjectID = require('mongodb').ObjectID;
+    db.options = 'PRIMARY';
+    console.log('GET request');
+    Session.findOne({sid: req.query.sid}, function (err, sess) {
+        if (err) return next(err);
+        new GridStore(db, new ObjectID(sess.videoID), 'r').open(function (err, GridFile) {
+            if (!GridFile) {
+                console.log("video" + " not found!!!")
+                res.status(404).json({message: "video" + " not found"})
+            }
+            else {
+                StreamGridFile(req, res, GridFile)
+            }
+        });
+    });
+
+});
+
+function StreamGridFile(req, res, GridFile) {
     if (req.headers['range']) {
-        var range = req.headers.range;
-        var parts = range.replace(/bytes=/, "").split("-");
+        // Range request, partialle stream the file
+        console.log('Range Reuqest');
+        var parts = req.headers['range'].replace(/bytes=/, "").split("-");
         var partialstart = parts[0];
         var partialend = parts[1];
-
         var start = parseInt(partialstart, 10);
-        var end = partialend ? parseInt(partialend, 10) : total-1;
-        var chunksize = (end-start)+1;
-        console.log('RANGE: ' + start + ' - ' + end + ' = ' + chunksize);
-
-        var file = fs.createReadStream(path, {start: start, end: end});
-        res.writeHead(206, { 'Content-Range': 'bytes ' + start + '-' + end + '/' + total, 'Accept-Ranges': 'bytes', 'Content-Length': chunksize, 'Content-Type': 'video/mp4' });
-        file.pipe(res);
+        var end = partialend ? parseInt(partialend, 10) : GridFile.length - 1;
+        var chunksize = (end - start) + 1;
+        console.log('Range ', start, '-', end);
+        res.writeHead(206, {
+            'Content-Range': 'bytes ' + start + '-' + end + '/' + GridFile.length,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunksize,
+            'Content-Type': GridFile.contentType
+        });
+        // Set filepointer
+        GridFile.seek(start, function () {
+            // get GridFile stream
+            var stream = GridFile.stream(true);
+            // write to response
+            stream.on('data', function (buff) {
+                // count data to abort streaming if range-end is reached
+                // perhaps theres a better way?
+                start += buff.length;
+                if (start >= end) {
+                    // enough data send, abort
+                    GridFile.close();
+                    res.end();
+                } else {
+                    res.write(buff);
+                }
+            });
+        });
     } else {
-        console.log('ALL: ' + total);
-        res.writeHead(200, { 'Content-Length': total, 'Content-Type': 'video/mp4' });
-        fs.createReadStream(path).pipe(res);
+        // stream back whole file
+        console.log('No Range Request');
+        res.header('Content-Type', GridFile.contentType);
+        res.header('Content-Length', GridFile.length);
+        var stream = GridFile.stream(true);
+        stream.pipe(res);
     }
-});
-
-
-router.get('/videoPic', function (req, res) {
-    return '/home/eran/projects/WebstormProjects/final_project/web/routes/omer.jpg?x11217'
-});
-
-
-
-
+}
 
 
 module.exports = router;
