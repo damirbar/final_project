@@ -1,5 +1,5 @@
 
-package com.ariel.wizer.fragments;
+package com.ariel.wizer.session;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.ariel.wizer.R;
-import com.ariel.wizer.SessionActivity;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.Session;
 import com.ariel.wizer.network.RetrofitRequests;
@@ -26,10 +25,10 @@ import static com.ariel.wizer.utils.Validation.validateFields;
 
 public class ConnectSessionFragment extends Fragment {
 
-    private String pin = "";
-    private EditText etClasPin;
+    private String sid;
+    private EditText etClasSid;
     private Button mBtLogin;
-    private TextInputLayout mTcalssPin;
+    private TextInputLayout mTcalssSid;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
@@ -54,13 +53,13 @@ public class ConnectSessionFragment extends Fragment {
 
     private void initViews(View v) {
         mBtLogin = (Button) v.findViewById(R.id.classloginButton);
-        etClasPin = (EditText) v.findViewById(R.id.etClas_Pin);
-        mTcalssPin = (TextInputLayout) v.findViewById(R.id.tiClasPin);
+        etClasSid = (EditText) v.findViewById(R.id.etClas_Pin);
+        mTcalssSid = (TextInputLayout) v.findViewById(R.id.tiClasPin);
         mBtLogin.setOnClickListener(view -> login());
     }
 
     private void setError() {
-        mTcalssPin.setError(null);
+        mTcalssSid.setError(null);
     }
 
 
@@ -68,20 +67,20 @@ public class ConnectSessionFragment extends Fragment {
 
         setError();
 
-        pin = etClasPin.getText().toString();
+        sid = etClasSid.getText().toString().trim();
 
         int err = 0;
 
-        if (!validateFields(pin)) {
+        if (!validateFields(sid)) {
 
             err++;
-            mTcalssPin.setError("Pin should be valid !");
+            mTcalssSid.setError("Pin should be valid !");
 
         }
 
         if (err == 0) {
             Session session = new Session();
-            session.setInternal_id(pin);
+            session.setInternal_id(sid);
             loginProcess(session);
         }
     }
@@ -94,9 +93,11 @@ public class ConnectSessionFragment extends Fragment {
     }
 
     private void handleResponse(Response response) {
-        Intent intent = new Intent(getActivity(), SessionActivity.class);
-        intent.putExtra("pin",pin);
-        startActivity(intent);
+        Intent intent = new Intent(getActivity().getBaseContext(), SessionActivity.class);
+        intent.putExtra("sid",sid);
+        getActivity().startActivity(intent);
+
+
     }
 
     @Override

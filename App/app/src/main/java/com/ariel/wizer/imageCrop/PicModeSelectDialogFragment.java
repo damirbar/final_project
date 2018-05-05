@@ -1,12 +1,10 @@
-package com.ariel.wizer.ImageCrop;
+package com.ariel.wizer.imageCrop;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-
-import com.ariel.wizer.utils.Constants;
 
 public class PicModeSelectDialogFragment extends DialogFragment {
 

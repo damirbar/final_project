@@ -1,4 +1,4 @@
-package com.ariel.wizer;
+package com.ariel.wizer.session;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -35,16 +35,16 @@ public class SessionMessagesAdapter extends ArrayAdapter<SessionMessage> {
         SessionMessage currentMessage = messagesList.get(position);
 
         if(currentMessage.getType().equalsIgnoreCase(question))
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.list_item_session_msg_q,parent,false);
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.feed_post_item,parent,false);
         else{
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.list_item_session_msg_ans,parent,false);
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.feed_post_item,parent,false);
 
         }
 
-        TextView msg1 = (TextView) listItem.findViewById(R.id.textView_msg1);
+        TextView msg1 = (TextView) listItem.findViewById(R.id.content);
         msg1.setText(currentMessage.getBody()[0]);
-        TextView msg2 = (TextView) listItem.findViewById(R.id.textView_msg2);
-        msg2.setText(currentMessage.getBody()[1]);
+//        TextView msg2 = (TextView) listItem.findViewById(R.id.content);
+//        msg2.setText(currentMessage.getBody()[1]);
 
 
         return listItem;

@@ -16,10 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ariel.wizer.ImageCrop.ImageCropActivity;
-import com.ariel.wizer.ImageCrop.IntentExtras;
-import com.ariel.wizer.ImageCrop.PicModeSelectDialogFragment;
-import com.ariel.wizer.ImageCrop.PicModes;
+import com.ariel.wizer.imageCrop.ImageCropActivity;
+import com.ariel.wizer.imageCrop.IntentExtras;
+import com.ariel.wizer.imageCrop.PicModeSelectDialogFragment;
+import com.ariel.wizer.imageCrop.PicModes;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;

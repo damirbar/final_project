@@ -70,14 +70,14 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
 
 //        Intent intent = new Intent(getActivity(),LoginActivity.class);//remove
 //        startActivity(intent);//remove
+        initSharedPreferences();
+        autoLogin();
 
         View view = inflater.inflate(R.layout.fragment_login,container,false);
         super.onCreate(savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         mSubscriptions = new CompositeSubscription();
         mServerResponse = new ServerResponse(getActivity().findViewById(R.id.activity_main));
-        initSharedPreferences();
-        autoLogin();
         initViews(view);
         rememberEmail();
         return view;
@@ -179,7 +179,10 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
 
     private void autoLogin() {
         if(!mEmail.isEmpty()&&!mPass.isEmpty()){
-            loginProcess(mEmail,mPass);
+//            loginProcess(mEmail,mPass);
+            Intent intent = new Intent(getActivity(), NavBarActivity.class);
+            startActivity(intent);
+            getActivity().finish();
         }
     }
 

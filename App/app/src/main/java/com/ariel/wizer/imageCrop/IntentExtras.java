@@ -1,4 +1,4 @@
-package com.ariel.wizer.ImageCrop;
+package com.ariel.wizer.imageCrop;
 
 public interface IntentExtras {
     String ACTION_CAMERA = "action-camera";

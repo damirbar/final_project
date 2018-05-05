@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Wizer</string>
-    <string name="item_1">Item 1</string>
-    <string name="item_2">Item 2</string>
-    <string name="item_3">Item 3</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -13,7 +10,8 @@
     <string name="title_activity_menu">MenuActivity</string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="update_profile_picture">Update Picture</string>
-
+    <string name="add_new_post">Add New Post</string>
+    <string name="anonymously">Anonymously</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -25,13 +23,9 @@
     <string name="switch_channel_help">Open toolbar to switch between channels</string>
     <string name="no_channel">No channel</string>
     <string name="wrong_up">Wrong username or password</string>
+    <string name="Type">User Type</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="Type">User Type</string>
-    <string name="hello_world">Hello world!</string>
-    <string-array name="User_Type">
-        <item>User Type</item>
-        <item>Student</item>
-        <item>Teacher</item>
-    </string-array>
 </resources>

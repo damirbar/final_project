@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.ariel.wizer.fragments.ConnectSessionFragment;
+import com.ariel.wizer.session.ConnectSessionFragment;
 import com.ariel.wizer.fragments.HomeFragment;
 import com.ariel.wizer.fragments.ProfileFragment;
 import com.ariel.wizer.fragments.SideMenuFragment;

@@ -1,59 +1,46 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">#355796</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <!--<item name="colorPrimary">#355796</item>-->
         <!--<item name="colorPrimary">@color/colorPrimaryDark</item>-->
         <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <item name="colorPrimaryDark">@color/black</item>
-        <item name="colorAccent">@color/black</item>
-        <item name="android:textColorHint">@color/light_gray_inactive_icon</item>
+        <!--<item name="colvvvorPrimaryDark">@color/black</item>-->
+        <!--<item name="colorAccent">@color/black</item>-->
+        <!--<item name="android:textColorHint">#355796</item>-->
     </style>
 
     <style name="AppTheme.LoginRegister" parent="AppTheme">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/colorPrimaryDark</item>
-        <item name="colorControlNormal">@android:color/white</item>
-        <item name="colorControlHighlight">@android:color/white</item>
-        <item name="colorControlActivated">@android:color/white</item>
-        <item name="colorButtonNormal">@android:color/white</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:editTextColor">@android:color/white</item>
+        <!--<item name="android:windowBackground">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorControlNormal">@android:color/white</item>-->
+        <!--<item name="colorControlHighlight">@android:color/white</item>-->
+        <!--<item name="colorControlActivated">@android:color/white</item>-->
+        <!--<item name="colorButtonNormal">@android:color/white</item>-->
+        <!--<item name="android:textColor">@android:color/white</item>-->
+        <!--<item name="android:textColorPrimary">@android:color/white</item>-->
+        <!--<item name="android:editTextColor">@android:color/white</item>-->
     </style>
 
-    <style name="AppTheme.Profile" parent="AppTheme">
-        <item name="android:windowBackground">@color/colorDarkGrey</item>
-        <item name="colorButtonNormal">@android:color/white</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
+    <style name="intercom_floating_action_button_style">
+        <item name="android:layout_marginRight">8.0dip</item>
+        <item name="android:layout_marginBottom">0.0dip</item>
     </style>
 
-    <style name="AppTheme.MenuActivity" parent="AppTheme">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="intercom_toolbar_style">
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:descendantFocusability">beforeDescendants</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/intercom_toolbar_height</item>
+        <item name="contentInsetStart">0.0dip</item>
+        <item name="contentInsetEnd">0.0dip</item>
+        <item name="contentInsetLeft">0.0dip</item>
+        <item name="contentInsetRight">0.0dip</item>
     </style>
 
-    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorPrimary">@android:color/black</item>
-    </style>
-    <style name="myDialog" parent="android:style/Theme.Dialog">
-        <item name="android:windowNoTitle">true</item>
-    </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <style name="CustomShowcaseTheme" parent="ShowcaseView.Light">
-        <item name="sv_backgroundColor">#ccffffff</item>
-    </style>
 
-    <style name="mySpinnerItemStyle" parent="Base.Widget.AppCompat.Spinner">
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryDark">@color/black</item>
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:textColorSecondary">@color/black</item>
-        <item name="android:textColorTertiary">@color/black</item>
-    </style>
 
 
 </resources>

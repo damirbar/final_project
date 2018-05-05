@@ -1,4 +1,4 @@
-package com.ariel.wizer.ImageCrop;
+package com.ariel.wizer.imageCrop;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
@@ -36,7 +36,6 @@ import com.albinmathew.photocrop.cropoverlay.utils.ImageViewUtil;
 import com.albinmathew.photocrop.photoview.PhotoView;
 import com.albinmathew.photocrop.photoview.PhotoViewAttacher;
 import com.ariel.wizer.R;
-import com.ariel.wizer.utils.Constants;
 
 import java.io.Closeable;
 import java.io.File;
