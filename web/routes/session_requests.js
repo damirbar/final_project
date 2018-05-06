@@ -292,26 +292,58 @@ router.get("/disconnect", function (req, res) {
 });
 
 
-
 router.get('/postVideo', function (req, res) {
+
+    // good
+    // var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
+    // var mongo = require('mongodb');
+    // var Grid = require('gridfs');
+    //
+    // mongo.MongoClient.connect(mongoDB, function (err, db) {
+    //     var gfs = Grid(db, mongo);
+    //     var source = '/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4';
+    //     Session.findOne({sid: req.query.sid}, function (err, sess) {
+    //         if (err) return next(err);
+    //         console.log("starting to upload file "+ source);
+    //         gfs.fromFile({filename: 'session:' +req.query.sid+' video.mp4'}, source, function (err, file) {
+    //             console.log('saved %s to GridFS file %s', source, file._id);
+    //             sess.videoID = file._id;
+    //             sess.save();
+    //         });
+    //     });
+    // });
+    //    good
+
+    var ObjectID = require('mongodb').ObjectID,
+        GridStore = require('mongodb').GridStore,
+        assert = require('assert');
 
     var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
     var mongo = require('mongodb');
-    var Grid = require('gridfs');
 
     mongo.MongoClient.connect(mongoDB, function (err, db) {
-        var gfs = Grid(db, mongo);
+        // Our file ID
+        var fileId = new ObjectID();
+
+        // Open a new file
+        var gridStore = new GridStore(db, fileId, 'session:' +req.query.sid+' video.mp4', 'w');
         var source = '/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4';
-        Session.findOne({sid: req.query.sid}, function (err, sess) {
-            if (err) return next(err);
-            gfs.fromFile({filename: 'hello.txt'}, source, function (err, file) {
-                console.log('saved %s to GridFS file %s', source, file._id);
-                sess.videoID = file._id;
-                sess.save();
+
+        // Open the new file
+        gridStore.open(function (err, gridStore) {
+
+            // Write the file to gridFS
+            console.log("starting to upload file " + source + " as: " + fileId);
+            gridStore.writeFile(source, function (err, doc) {
+                Session.findOne({sid: req.query.sid}, function (err, sess) {
+                    if (err) return next(err);
+                    console.log('saved %s to GridFS file %s', source, fileId);
+                    sess.videoID = fileId;
+                    sess.save();
+                });
             });
         });
     });
-
 });
 
 
@@ -326,12 +358,12 @@ router.get('/getVideo', function (req, res) {
     console.log('GET request');
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
-        new GridStore(db, new ObjectID(sess.videoID), 'r').open(function (err, GridFile) {
-            if (!GridFile) {
-                console.log("video" + " not found!!!")
+        new GridStore(db, new ObjectID(sess.videoID), 'r').open(function (err, GridFile) {if (!GridFile) {
+                console.log("video" + " not found!!!");
                 res.status(404).json({message: "video" + " not found"})
             }
             else {
+                console.log("starting to stream file " + GridFile.filename);
                 StreamGridFile(req, res, GridFile)
             }
         });
@@ -347,7 +379,7 @@ function StreamGridFile(req, res, GridFile) {
         var partialstart = parts[0];
         var partialend = parts[1];
         var start = parseInt(partialstart, 10);
-        var end = partialend ? parseInt(partialend, 10) : GridFile.length - 1;
+        var end = partialend ? parseInt(partialend, 10) : GridFile.length -1;
         var chunksize = (end - start) + 1;
         console.log('Range ', start, '-', end);
         res.writeHead(206, {
@@ -364,7 +396,7 @@ function StreamGridFile(req, res, GridFile) {
             stream.on('data', function (buff) {
                 // count data to abort streaming if range-end is reached
                 // perhaps theres a better way?
-                start += buff.length;
+                start += buff.length-1;
                 if (start >= end) {
                     // enough data send, abort
                     GridFile.close();
