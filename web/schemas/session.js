@@ -8,6 +8,7 @@ var SessionSchema = new mongoose.Schema({
     students: Array,
     curr_rating: {type: Number, default: 0},
     hidden: Boolean,
-    messages: Array
+    messages: Array,
+    videoID: {type: String, default: ""}
 });
 module.exports = mongoose.model('Session', SessionSchema);

@@ -2,6 +2,13 @@
 
     <div class="container" ng-show="!isConnectedToSession">
 
+
+        <!--<video controls-->
+               <!--ng-src="http://localhost:3000/sessions/postVideo?sid=1234&token={{getToken()}}"-->
+               <!--width="620">-->
+        <!--</video>-->
+
+
         <div class="session-header display-4">Connect to a new session!</div>
         <div class="row">
             <div class="pad col-2"></div>
@@ -21,7 +28,7 @@
 
 
         <video controls
-               ng-src="http://localhost:3000/sessions/video?sid=1234&token={{getToken()}}"
+               ng-src="http://localhost:3000/sessions/getVideo?sid=1234&token={{getToken()}}"
                width="620">
         </video>
 
