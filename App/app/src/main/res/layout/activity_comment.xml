@@ -42,6 +42,7 @@
 
     </android.support.v7.widget.Toolbar>
 
+
     <ListView
         android:id="@+id/comments"
         android:layout_width="match_parent"
@@ -59,7 +60,9 @@
         android:focusableInTouchMode="false"
         android:listSelector="@android:color/transparent"
         android:scrollbarSize="2dp"
-        android:scrollbarThumbVertical="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" />
+        android:scrollbarThumbVertical="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" >
+
+    </ListView>
 
     <LinearLayout
         android:id="@+id/button_panel"

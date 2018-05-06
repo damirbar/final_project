@@ -17,10 +17,12 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ariel.wizer.R;
 import com.ariel.wizer.chat.ChannelsAdapter;
@@ -49,9 +51,10 @@ public class SessionFeedFragment extends Fragment {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private TextView mTvNoResults;
+    private ImageView btnLike;
     private FloatingActionButton mFBPost;
     private String sid;
-    private final int delay = 5000; //milliseconds
+//    private final int delay = 5000; //milliseconds
     private SessionMessagesAdapter mAdapter;
     private SessionMessage[] savePosts;
 
@@ -78,21 +81,46 @@ public class SessionFeedFragment extends Fragment {
 //            }
 //        }, delay);
 
+
         messagesList.setOnItemClickListener((parent, view1, position, id) -> {
-            Intent intent = new Intent(getActivity(),CommentActivity.class);
-            String uid = savePosts[position].getSid();///change to guid
-            intent.putExtra("sid",uid);///change to guid
-            startActivity(intent);
+            long viewId = view1.getId();
+            String guid = savePosts[position].get_id();
+            if (viewId == R.id.direct_btn_post_like) {
+                Toast.makeText(this.getActivity(), "Like", Toast.LENGTH_SHORT).show();
+                addRate(guid,1);
+                savePosts[position].setRating(savePosts[position].getRating()+1);
+                mAdapter.notifyDataSetChanged();
+
+            }
+            else if(viewId == R.id.direct_btn_dislike) {
+                Toast.makeText(this.getActivity(), "DisLike", Toast.LENGTH_SHORT).show();
+                addRate(guid,-1);
+                savePosts[position].setRating(savePosts[position].getRating()-1);///change to +1
+                mAdapter.notifyDataSetChanged();
+            }
+            else{
+                SessionMessage msg = mAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(),CommentActivity.class);
+                intent.putExtra("sid",sid);///change to guid
+//                intent.putExtra("msg",msg);
+                startActivity(intent);
+            }
         });
+
         return view;
     }
+
+
 
     private void initViews(View v) {
 //        mTvClassAvg = (TextView) findViewById(R.id.tVclassAvg);
         mTvNoResults = (TextView) v.findViewById(R.id.tv_no_results);
         messagesList = (ListView) v.findViewById(R.id.sessionMessagesList);
+        btnLike = (ImageView) v.findViewById(R.id.direct_btn_like);
+
         mFBPost = (FloatingActionButton) v.findViewById(R.id.fb_post);
         mFBPost.setOnClickListener(view -> openPost());
+//        btnLike.setOnClickListener(view -> addLike());
 
     }
 
@@ -169,6 +197,16 @@ public class SessionFeedFragment extends Fragment {
             messagesList.setAdapter(mAdapter);
         }
     }
+
+
+    public void addRate(String msgid,int rate) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().rateMessage(sid,msgid,rate)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe());
+    }
+
+
 
 
     @Override

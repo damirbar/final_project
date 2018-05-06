@@ -46,6 +46,9 @@ public interface RetrofitInterface {
     @GET("sessions/change-val")
     Observable<Response> changeVal(@Query("id") String id, @Query("val") String val);
 
+    @GET("sessions/rate-message")
+    Observable<Response> rateMessage(@Query("sid") String sid, @Query("msgid") String msgid, @Query("rating") int rating);
+
     @GET("sessions/get-students-count")
     Observable<Response> getStudentsCount(@Query("id") String id);
 

@@ -29,7 +29,8 @@
             android:background="@null"
             android:rotation="90"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_more_vert_black_24dp"/>
+            android:src="@drawable/ic_more_vert_black_24dp"
+            android:focusable="false"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_image"
@@ -44,7 +45,8 @@
             android:padding="5dp"
             android:src="@drawable/default_user_image"
             app:siBorderColor="#cccccc"
-            app:siBorderWidth="2dp"/>
+            app:siBorderWidth="2dp"
+            android:focusable="false"/>
 
         <LinearLayout
             android:id="@+id/author_details"
@@ -71,7 +73,8 @@
                 android:text="Shay Cohen"
                 android:textAlignment="viewStart"
                 android:textColor="@color/primary_text"
-                android:textSize="@dimen/subhead_size" />
+                android:textSize="@dimen/subhead_size"
+                android:focusable="false"/>
 
             <TextView
                 android:id="@+id/creation_date"
@@ -79,7 +82,8 @@
                 android:layout_height="wrap_content"
                 android:text="3/3/18"
                 android:textColor="@color/secondary_post_text"
-                android:textSize="@dimen/caption_size" />
+                android:textSize="@dimen/caption_size"
+                android:focusable="false"/>
 
             <TextView
                 android:id="@+id/content"
@@ -89,7 +93,8 @@
                 android:layout_marginTop="@dimen/box_feed_text_offset"
                 android:textColor="@color/primary_text"
                 android:textColorLink="@color/groovy_blue"
-                android:textSize="@dimen/feed_font_size" />
+                android:textSize="@dimen/feed_font_size"
+                android:focusable="false"/>
 
             <LinearLayout
                 android:id="@+id/comments_section"
@@ -108,7 +113,8 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginStart="5.0dip"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/bubble" />
+                    android:src="@drawable/bubble"
+                    android:focusable="false"/>
 
                 <TextView
                     android:id="@+id/comments_num"
@@ -117,16 +123,18 @@
                     android:layout_gravity="center_vertical"
                     android:text="0"
                     android:textColor="@color/secondary_post_text"
-                    android:textSize="@dimen/box_name_size" />
+                    android:textSize="@dimen/box_name_size"
+                    android:focusable="false"/>
 
                 <ImageView
-                    android:id="@+id/direct_btn_dislike"
+                    android:id="@+id/direct_btn_post_like"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="20.0dip"
                     android:layout_marginLeft="25dip"
                     android:layout_marginRight="5dp"
+                    android:focusable="false"
                     android:padding="1dp"
                     android:paddingEnd="@dimen/padding8"
                     android:paddingLeft="@dimen/padding8"
@@ -141,10 +149,11 @@
                     android:layout_gravity="center_vertical"
                     android:text="0"
                     android:textColor="@color/secondary_post_text"
-                    android:textSize="@dimen/box_name_size" />
+                    android:textSize="@dimen/box_name_size"
+                    android:focusable="false"/>
 
                 <ImageView
-                    android:id="@+id/direct_btn_like"
+                    android:id="@+id/direct_btn_dislike"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_gravity="center_vertical"
@@ -156,7 +165,8 @@
                     android:paddingLeft="@dimen/padding8"
                     android:paddingStart="@dimen/padding8"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/unlike" />
+                    android:src="@drawable/unlike"
+                    android:focusable="false"/>
 
                 <TextView
                     android:id="@+id/dislike_num"
@@ -165,7 +175,8 @@
                     android:layout_gravity="center_horizontal"
                     android:text="0"
                     android:textColor="@color/secondary_post_text"
-                    android:textSize="@dimen/box_name_size" />
+                    android:textSize="@dimen/box_name_size"
+                    android:focusable="false"/>
 
                 <TextView
                     android:id="@+id/comments_count"
@@ -178,7 +189,8 @@
                     android:paddingStart="@dimen/padding8"
                     android:scaleType="centerInside"
                     android:textColor="@color/secondary_post_text"
-                    android:textSize="@dimen/caption_size" />
+                    android:textSize="@dimen/caption_size"
+                    android:focusable="false"/>
             </LinearLayout>
 
             <FrameLayout

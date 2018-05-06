@@ -90,7 +90,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/direct_btn_dislike"
+                    android:id="@+id/direct_btn_like"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_gravity="center_vertical"
@@ -114,7 +114,7 @@
                     android:textSize="@dimen/box_name_size" />
 
                 <ImageView
-                    android:id="@+id/direct_btn_like"
+                    android:id="@+id/direct_btn_dislike"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_gravity="center_vertical"
