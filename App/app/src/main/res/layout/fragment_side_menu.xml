@@ -51,7 +51,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="22dp"
                 android:paddingBottom="3dp"
-                android:src="@drawable/profile2" />
+                android:src="@drawable/default_user_image_white" />
 
 
             <RelativeLayout

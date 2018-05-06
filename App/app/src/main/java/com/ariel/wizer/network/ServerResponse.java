@@ -42,8 +42,7 @@ public class ServerResponse {
     public void handleError(Throwable error) {
         if (error instanceof HttpException) {
 
-            Gson gson = new GsonBuilder().create();
-
+            Gson gson = new GsonBuilder().setLenient().create();
             try {
                 String errorBody = ((HttpException) error).response().errorBody().string();
                 Response response = gson.fromJson(errorBody,Response.class);

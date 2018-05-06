@@ -28,6 +28,7 @@ public class ConnectSessionFragment extends Fragment {
     private String sid;
     private EditText etClasSid;
     private Button mBtLogin;
+    private Button mCreateSessionButton;
     private TextInputLayout mTcalssSid;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
@@ -53,10 +54,28 @@ public class ConnectSessionFragment extends Fragment {
 
     private void initViews(View v) {
         mBtLogin = (Button) v.findViewById(R.id.classloginButton);
+        mCreateSessionButton = (Button) v.findViewById(R.id.create_session_button);
         etClasSid = (EditText) v.findViewById(R.id.etClas_Pin);
         mTcalssSid = (TextInputLayout) v.findViewById(R.id.tiClasPin);
         mBtLogin.setOnClickListener(view -> login());
+        mCreateSessionButton.setOnClickListener(view -> createSession());
+
     }
+
+    private void createSession() {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().createSession()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseCreateSession,i -> mServerResponse.handleError(i)));
+    }
+
+    private void handleResponseCreateSession(Session session) {
+        sid = session.getSid();
+        Intent intent = new Intent(getActivity().getBaseContext(), SessionActivity.class);
+        intent.putExtra("sid",sid);
+        getActivity().startActivity(intent);
+    }
+
 
     private void setError() {
         mTcalssSid.setError(null);
@@ -74,13 +93,13 @@ public class ConnectSessionFragment extends Fragment {
         if (!validateFields(sid)) {
 
             err++;
-            mTcalssSid.setError("Pin should be valid !");
+            mTcalssSid.setError("Session should be valid !");
 
         }
 
         if (err == 0) {
             Session session = new Session();
-            session.setInternal_id(sid);
+            session.setSid(sid);
             loginProcess(session);
         }
     }
@@ -96,8 +115,6 @@ public class ConnectSessionFragment extends Fragment {
         Intent intent = new Intent(getActivity().getBaseContext(), SessionActivity.class);
         intent.putExtra("sid",sid);
         getActivity().startActivity(intent);
-
-
     }
 
     @Override

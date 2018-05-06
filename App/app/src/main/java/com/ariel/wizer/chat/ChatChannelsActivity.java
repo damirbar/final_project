@@ -36,7 +36,7 @@ public class ChatChannelsActivity extends AppCompatActivity {
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.activity_chat_channels));
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         initViews();
         pullChannels();
         channelsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

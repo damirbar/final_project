@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.FragmentManager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -208,9 +210,38 @@ public class RegisterFragment extends Fragment {
         ft.commit();
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    LoginFragment fragment = new LoginFragment();
+                    ft.replace(R.id.fragmentFrame, fragment, LoginFragment.TAG);
+                    ft.commit();
+
+                    return true;
+
+                }
+
+                return false;
+            }
+        });
+    }
+
 }

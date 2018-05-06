@@ -43,11 +43,11 @@ public class Session {
     }
 
 
-    public String getInternal_id() {
+    public String getSid() {
         return sid;
     }
 
-    public void setInternal_id(String internal_id) {
+    public void setSid(String internal_id) {
         this.sid = internal_id;
     }
 

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_comment"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/dashboard_chat_background"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="?colorPrimary"
+        app:layout_scrollFlags="enterAlways|scroll"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageButton
+                android:id="@+id/image_Button_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="19dp"
+                android:layout_marginRight="19dp"
+                android:background="@null"
+                android:rotation="180"
+                app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+                android:contentDescription="TODO" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <ListView
+        android:id="@+id/comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_panel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tool_bar"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/documets_divider"
+        android:choiceMode="singleChoice"
+        android:divider="@color/documets_divider"
+        android:fastScrollEnabled="true"
+        android:focusableInTouchMode="false"
+        android:listSelector="@android:color/transparent"
+        android:scrollbarSize="2dp"
+        android:scrollbarThumbVertical="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" />
+
+    <LinearLayout
+        android:id="@+id/button_panel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/black21"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/top_margin8"
+        android:paddingTop="@dimen/top_margin8">
+
+        <TextView
+            android:id="@+id/send_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="5.0dip"
+            android:layout_marginRight="5.0dip"
+            android:enabled="false"
+            android:gravity="center_vertical"
+            android:text="@string/send"
+            android:textColor="@android:color/black"
+            android:textSize="18.0sp" />
+
+        <EditText
+            android:id="@+id/com_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1.0"
+            android:background="@drawable/chat_add_comment_btn"
+            android:hint="@string/add_comment"
+            android:inputType="textMultiLine"
+            android:maxLines="5"
+            android:minHeight="36.0dip"
+            android:paddingLeft="10.0dip"
+            android:paddingRight="10.0dip"
+            android:textColor="@color/steelGrey"
+            android:textColorHint="@color/secondary_comment_text"
+            android:textSize="@dimen/button_font_size" />
+    </LinearLayout>
+</RelativeLayout>
