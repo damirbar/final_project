@@ -34,35 +34,39 @@
                 android:layout_marginEnd="19dp"
                 android:layout_marginRight="19dp"
                 android:background="@null"
+                android:contentDescription="TODO"
                 android:rotation="180"
-                app:srcCompat="@drawable/ic_arrow_back_black_24dp"
-                android:contentDescription="TODO" />
+                app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
 
-
-    <ListView
-        android:id="@+id/comments"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/activity_main_swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button_panel"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tool_bar"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/documets_divider"
-        android:choiceMode="singleChoice"
-        android:divider="@color/documets_divider"
-        android:fastScrollEnabled="true"
-        android:focusableInTouchMode="false"
-        android:listSelector="@android:color/transparent"
-        android:scrollbarSize="2dp"
-        android:scrollbarThumbVertical="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" >
+        android:layout_height="wrap_content">
 
-    </ListView>
+        <ListView
+            android:id="@+id/comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button_panel"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tool_bar"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/documets_divider"
+            android:choiceMode="singleChoice"
+            android:divider="@color/documets_divider"
+            android:fastScrollEnabled="true"
+            android:focusableInTouchMode="false"
+            android:listSelector="@android:color/transparent"
+            android:scrollbarSize="2dp"
+            android:scrollbarThumbVertical="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <LinearLayout
         android:id="@+id/button_panel"
@@ -80,7 +84,6 @@
             android:layout_height="fill_parent"
             android:layout_marginLeft="5.0dip"
             android:layout_marginRight="5.0dip"
-            android:enabled="false"
             android:gravity="center_vertical"
             android:text="@string/send"
             android:textColor="@android:color/black"

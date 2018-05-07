@@ -40,6 +40,9 @@ public class ServerResponse {
     }
 
     public void handleError(Throwable error) {
+
+        Log.d("Test",error.toString());//rm
+
         if (error instanceof HttpException) {
 
             Gson gson = new GsonBuilder().setLenient().create();

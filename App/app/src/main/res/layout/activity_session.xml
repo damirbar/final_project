@@ -43,6 +43,15 @@
                 app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
             <ImageButton
+                android:id="@+id/image_Button_cam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@null"
+                app:srcCompat="@drawable/ic_image_photo_camera" />
+
+            <ImageButton
                 android:id="@+id/imageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

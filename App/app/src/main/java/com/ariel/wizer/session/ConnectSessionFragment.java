@@ -26,10 +26,9 @@ import static com.ariel.wizer.utils.Validation.validateFields;
 public class ConnectSessionFragment extends Fragment {
 
     private String sid;
-    private EditText etClasSid;
+    private EditText mEditTextSid;
     private Button mBtLogin;
     private Button mCreateSessionButton;
-    private TextInputLayout mTcalssSid;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
@@ -55,8 +54,7 @@ public class ConnectSessionFragment extends Fragment {
     private void initViews(View v) {
         mBtLogin = (Button) v.findViewById(R.id.classloginButton);
         mCreateSessionButton = (Button) v.findViewById(R.id.create_session_button);
-        etClasSid = (EditText) v.findViewById(R.id.etClas_Pin);
-        mTcalssSid = (TextInputLayout) v.findViewById(R.id.tiClasPin);
+        mEditTextSid = (EditText) v.findViewById(R.id.edit_text_sid);
         mBtLogin.setOnClickListener(view -> login());
         mCreateSessionButton.setOnClickListener(view -> createSession());
 
@@ -78,7 +76,7 @@ public class ConnectSessionFragment extends Fragment {
 
 
     private void setError() {
-        mTcalssSid.setError(null);
+        mEditTextSid.setError(null);
     }
 
 
@@ -86,14 +84,14 @@ public class ConnectSessionFragment extends Fragment {
 
         setError();
 
-        sid = etClasSid.getText().toString().trim();
+        sid = mEditTextSid.getText().toString().trim();
 
         int err = 0;
 
         if (!validateFields(sid)) {
 
             err++;
-            mTcalssSid.setError("Session should be valid !");
+            mEditTextSid.setError("Session should be valid !");
 
         }
 
@@ -115,6 +113,7 @@ public class ConnectSessionFragment extends Fragment {
         Intent intent = new Intent(getActivity().getBaseContext(), SessionActivity.class);
         intent.putExtra("sid",sid);
         getActivity().startActivity(intent);
+        mEditTextSid.setText("");
     }
 
     @Override

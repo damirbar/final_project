@@ -2,8 +2,11 @@ package com.ariel.wizer.session;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -20,6 +23,7 @@ import com.ariel.wizer.network.ServerResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -31,13 +35,15 @@ public class CommentActivity extends AppCompatActivity {
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
     private ListView commentsList;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private EditText mComtText;
     private ImageButton buttonBack;
     private TextView buttonSend;
     private final String answer = "answer";
     private String sid;
-    private SessionMessage[] saveComments;
+    private ArrayList<SessionMessage> saveComments;
+    private boolean firstTime = true;
 
 //    private String guid;
 
@@ -51,34 +57,48 @@ public class CommentActivity extends AppCompatActivity {
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.activity_comment));
-        sid = getIntent().getStringExtra("sid");
+
+        if (!getData()) {
+            finish();
+        }
+        initViews();
 
 //        SessionMessage msg = (SessionMessage) getIntent().getSerializableExtra("msg");
 
 
 //        guid = getIntent().getStringExtra("guid");
-        initViews();
         pullComments();
 
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pullComments();
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 1000);
+            }
+        });
 
         commentsList.setOnItemClickListener((parent, view1, position, id) -> {
             long viewId = view1.getId();
-            String guid = saveComments[position].get_id();
+            String guid = saveComments.get(position).get_id();
             if (viewId == R.id.direct_btn_like) {
                 Toast.makeText(this, "Like", Toast.LENGTH_SHORT).show();
                 addRate(guid,1);
-                saveComments[position].setRating(saveComments[position].getRating()+1);
+                saveComments.get(position).setRating(saveComments.get(position).getRating()+1);
                 mAdapter.notifyDataSetChanged();
 
             }
             else if(viewId == R.id.direct_btn_dislike) {
                 Toast.makeText(this, "DisLike", Toast.LENGTH_SHORT).show();
                 addRate(guid,-1);
-                saveComments[position].setRating(saveComments[position].getRating()-1);///change to +1
+                saveComments.get(position).setRating(saveComments.get(position).getRating()-1);///change to +1
                 mAdapter.notifyDataSetChanged();
             }
         });
-
 
     }
 
@@ -87,10 +107,23 @@ public class CommentActivity extends AppCompatActivity {
         mComtText = (EditText) findViewById(R.id.com_text);
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         buttonSend = (TextView) findViewById(R.id.send_btn);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
         buttonSend.setOnClickListener(view -> attemptSendCom());
         buttonBack.setOnClickListener(view -> goBack());
     }
 
+    private boolean getData() {
+        if (getIntent().getExtras() != null) {
+            String _sid = getIntent().getExtras().getString("sid");
+            if(_sid != null) {
+                sid = _sid;
+                return true;
+            } else
+                return false;
+        }
+        else
+            return false;
+    }
 
     private void pullComments(){
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getMessages(sid)
@@ -100,15 +133,14 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void handleResponsePull(Session session) {
-        if(session.getMessages().length == 0){
-        }
-        else{
-            saveComments = session.getMessages();
-            mAdapter = new SessionCommentsAdapter(this, new ArrayList<>(Arrays.asList(session.getMessages())));
+        if(! (session.getMessages().length == 0)){
+            saveComments = new ArrayList<>(Arrays.asList(session.getMessages()));
+            Collections.reverse(saveComments);
+            mAdapter = new SessionCommentsAdapter(this, new ArrayList<>(saveComments));
             commentsList.setAdapter(mAdapter);
+            firstTime = false;
         }
     }
-
 
     private void goBack() {
         finish();
@@ -135,20 +167,19 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void handleResponseSendCom(Response response) {
-        mComtText.setText(null);
-    }
+        mComtText.setText("");
+        pullComments(); }
 
-
-    /**
-     * Hides the soft keyboard
-     */
-    public void hideSoftKeyboard() {
-        if(getCurrentFocus()!=null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        }
-    }
-
+//    /**
+//     * Hides the soft keyboard
+//     */
+//    public void hideSoftKeyboard() {
+//        if(getCurrentFocus()!=null) {
+//            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+//        }
+//    }
+//
 //    /**
 //     * Shows the soft keyboard
 //     */
@@ -164,9 +195,6 @@ public class CommentActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .subscribe());
     }
-
-
-
 
     @Override
     protected void onDestroy() {

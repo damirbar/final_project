@@ -17,6 +17,7 @@ import rx.subscriptions.CompositeSubscription;
 public class SessionActivity extends AppCompatActivity  {
 
     private ImageButton buttonBack;
+    private ImageButton buttonVid;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private String sid;
@@ -29,9 +30,12 @@ public class SessionActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session);
-        sendData();
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
+        if (!getData()) {
+            finish();
+        }
+        sendData();
         initViews();
         if (savedInstanceState == null) {
             loadFragment();
@@ -40,6 +44,9 @@ public class SessionActivity extends AppCompatActivity  {
 
     private void initViews() {
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
+        buttonVid = (ImageButton) findViewById(R.id.image_Button_cam);
+        buttonVid.setOnClickListener(view -> goVid());
+
         buttonBack.setOnClickListener(view -> goBack());
 
     }
@@ -49,6 +56,11 @@ public class SessionActivity extends AppCompatActivity  {
         finish();
     }
 
+    private void goVid() {
+        VideoPlayerActivity.showRemoteVideo(this,sid);
+    }
+
+
     private void loadFragment(){
         if (mSessionFeedFragment == null) {
 
@@ -57,20 +69,24 @@ public class SessionActivity extends AppCompatActivity  {
         getFragmentManager().beginTransaction().replace(R.id.frame_session, mSessionFeedFragment, SessionFeedFragment.TAG).commit();
     }
 
-    private void sendData() {
-        Intent sessionIntent = getIntent();
-        sid = sessionIntent.getStringExtra("sid");
+    private boolean getData() {
+        if (getIntent().getExtras() != null) {
+            String _sid = getIntent().getExtras().getString("sid");
+            if(_sid != null) {
+                sid = _sid;
+                return true;
+            } else
+                return false;
+        }
+        else
+            return false;
+    }
 
+    private void sendData() {
         Bundle bundle = new Bundle();
         bundle.putString("sid",sid);
         mSessionFeedFragment = new SessionFeedFragment();
         mSessionFeedFragment.setArguments(bundle);
-
-        Intent intentPost = new Intent(getBaseContext(), PostActivity.class);
-        intentPost.putExtra("sid",sid);
-
-        Intent intentCom = new Intent(getBaseContext(), CommentActivity.class);
-        intentCom.putExtra("sid",sid);
     }
 
     private void disconnectFromSession(){

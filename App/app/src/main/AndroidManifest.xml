@@ -61,9 +61,13 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".session.CommentActivity"
-        android:configChanges="keyboardHidden|orientation|screenSize" />
-
+        <activity
+            android:name=".session.CommentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".session.VideoPlayerActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>

@@ -29,6 +29,7 @@ import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.network.RetrofitRequests;
+import com.ariel.wizer.session.VideoPlayerActivity;
 import com.ariel.wizer.utils.Constants;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -69,8 +70,10 @@ public class LoginFragment extends Fragment implements Animation.AnimationListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-//        Intent intent = new Intent(getActivity(),LoginActivity.class);//remove
+//        Intent intent = new Intent(getActivity(),VideoPlayerActivity.class);//remove
 //        startActivity(intent);//remove
+//        getActivity().finish(); //remove
+
         initSharedPreferences();
         autoLogin();
 
