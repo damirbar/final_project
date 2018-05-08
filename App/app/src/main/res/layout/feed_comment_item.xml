@@ -89,20 +89,17 @@
                 android:layout_marginBottom="@dimen/horizontal_margin8"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/direct_btn_like"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="20.0dip"
-                    android:layout_marginLeft="25dip"
-                    android:layout_marginRight="5dp"
-                    android:padding="1dp"
-                    android:paddingEnd="@dimen/padding8"
-                    android:paddingLeft="@dimen/padding8"
-                    android:paddingStart="@dimen/padding8"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/like" />
+                <CheckBox
+                    android:id="@+id/like_cbx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="25dp"
+                    android:layout_toEndOf="@+id/view_text_new_post"
+                    android:background="@null"
+                    android:button="@drawable/like_checkbox"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7" />
 
                 <TextView
                     android:id="@+id/like_num"
@@ -113,20 +110,17 @@
                     android:textColor="@color/secondary_post_text"
                     android:textSize="@dimen/box_name_size" />
 
-                <ImageView
-                    android:id="@+id/direct_btn_dislike"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="20.0dip"
+                <CheckBox
+                    android:id="@+id/dislike_cbx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
                     android:layout_marginLeft="25dp"
-                    android:layout_marginRight="5dp"
-                    android:padding="1dp"
-                    android:paddingEnd="@dimen/padding8"
-                    android:paddingLeft="@dimen/padding8"
-                    android:paddingStart="@dimen/padding8"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/unlike" />
+                    android:layout_toEndOf="@+id/view_text_new_post"
+                    android:background="@null"
+                    android:button="@drawable/dislike_checkbox"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7" />
 
                 <TextView
                     android:id="@+id/dislike_num"
@@ -135,7 +129,8 @@
                     android:layout_gravity="center_horizontal"
                     android:text="0"
                     android:textColor="@color/secondary_post_text"
-                    android:textSize="@dimen/box_name_size" />
+                    android:textSize="@dimen/box_name_size"
+                    android:visibility="invisible" />
 
             </LinearLayout>
 

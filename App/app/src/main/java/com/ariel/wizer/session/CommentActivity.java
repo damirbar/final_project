@@ -42,10 +42,7 @@ public class CommentActivity extends AppCompatActivity {
     private TextView buttonSend;
     private final String answer = "answer";
     private String sid;
-    private ArrayList<SessionMessage> saveComments;
-    private boolean firstTime = true;
-
-//    private String guid;
+    private String msid;
 
     private SessionCommentsAdapter mAdapter;
 
@@ -65,8 +62,6 @@ public class CommentActivity extends AppCompatActivity {
 
 //        SessionMessage msg = (SessionMessage) getIntent().getSerializableExtra("msg");
 
-
-//        guid = getIntent().getStringExtra("guid");
         pullComments();
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -81,25 +76,6 @@ public class CommentActivity extends AppCompatActivity {
                 }, 1000);
             }
         });
-
-        commentsList.setOnItemClickListener((parent, view1, position, id) -> {
-            long viewId = view1.getId();
-            String guid = saveComments.get(position).get_id();
-            if (viewId == R.id.direct_btn_like) {
-                Toast.makeText(this, "Like", Toast.LENGTH_SHORT).show();
-                addRate(guid,1);
-                saveComments.get(position).setRating(saveComments.get(position).getRating()+1);
-                mAdapter.notifyDataSetChanged();
-
-            }
-            else if(viewId == R.id.direct_btn_dislike) {
-                Toast.makeText(this, "DisLike", Toast.LENGTH_SHORT).show();
-                addRate(guid,-1);
-                saveComments.get(position).setRating(saveComments.get(position).getRating()-1);///change to +1
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
     }
 
     private void initViews() {
@@ -115,8 +91,10 @@ public class CommentActivity extends AppCompatActivity {
     private boolean getData() {
         if (getIntent().getExtras() != null) {
             String _sid = getIntent().getExtras().getString("sid");
-            if(_sid != null) {
+            String _msid = getIntent().getExtras().getString("msid");
+            if(_sid != null||_msid != null) {
                 sid = _sid;
+                msid = _msid;
                 return true;
             } else
                 return false;
@@ -134,11 +112,10 @@ public class CommentActivity extends AppCompatActivity {
 
     private void handleResponsePull(Session session) {
         if(! (session.getMessages().length == 0)){
-            saveComments = new ArrayList<>(Arrays.asList(session.getMessages()));
+            ArrayList<SessionMessage> saveComments = new ArrayList<>(Arrays.asList(session.getMessages()));
             Collections.reverse(saveComments);
             mAdapter = new SessionCommentsAdapter(this, new ArrayList<>(saveComments));
             commentsList.setAdapter(mAdapter);
-            firstTime = false;
         }
     }
 
@@ -169,32 +146,6 @@ public class CommentActivity extends AppCompatActivity {
     private void handleResponseSendCom(Response response) {
         mComtText.setText("");
         pullComments(); }
-
-//    /**
-//     * Hides the soft keyboard
-//     */
-//    public void hideSoftKeyboard() {
-//        if(getCurrentFocus()!=null) {
-//            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-//            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-//        }
-//    }
-//
-//    /**
-//     * Shows the soft keyboard
-//     */
-//    public void showSoftKeyboard(View view) {
-//        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-//        view.requestFocus();
-//        inputMethodManager.showSoftInput(view, 0);
-//    }
-
-    public void addRate(String msgid,int rate) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().rateMessage(sid,msgid,rate)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe());
-    }
 
     @Override
     protected void onDestroy() {
