@@ -1,37 +1,85 @@
 <div class="session-page">
 
-    <div class="container" ng-show="!isConnectedToSession">
-
-
-        <!--<video controls-->
-               <!--ng-src="http://localhost:3000/sessions/postVideo?sid=1234&token={{getToken()}}"-->
-               <!--width="620">-->
-        <!--</video>-->
+    <div class="container not-connected" ng-show="!isConnectedToSession">
 
 
         <div class="session-header display-4">Connect to a new session!</div>
         <div class="row">
             <div class="pad col-2"></div>
-            <div class="input-group col-8">
-                <input type="text" ng-model="sessionID" class="form-control" placeholder="" aria-label=""
+            <form class="input-group col-8">
+                <input type="text" ng-model="sessionID" class="form-control" placeholder="#" aria-label=""
+                       aria-describedby="basic-addon1">
+                <input type="text" ng-model="sessionUserName" class="form-control" placeholder="Anon" aria-label=""
                        aria-describedby="basic-addon1">
                 <div class="input-group-append">
-                    <button class="btn btn-success" type="button" ng-click="connectSession()">Connect!</button>
+                    <button class="btn btn-success" type="submit" ng-click="connectSession()">Connect!</button>
                 </div>
-            </div>
+            </form>
             <div class="pad col-2"></div>
+        </div>
+        <div class="not-found-session text-danger" ng-hide="firstConnectionTry">
+            Error connecting to session!
         </div>
 
     </div>
 
-    <div class="container connected-container" ng-show="isConnectedToSession">
+    <div class="container-fluid connected-container" ng-show="isConnectedToSession">
 
-        <div ng-if="isConnectedToSession">
-            <video controls
-                ng-src="http://localhost:3000/sessions/getVideo?sid=1234&token={{getToken()}}"
-                   width="620">
-            </video>
+
+
+        <div class="row">
+
+            <div class="col-6 session-vid" ng-if="isConnectedToSession">
+                <video class="video-div" controls
+                       ng-src="http://localhost:3000/sessions/getVideo?sid=1234&token={{getToken()}}">
+                </video>
+            </div>
+            <div class="col-6 session-info">
+
+                <div class="card bs-card">
+                    <h1 class="card-header bg-dark">
+                        {{session.name}}
+                    </h1>
+                    <div class="card-body">
+                        <h4 class="card-title bs-card-text">Teacher ID: {{session.teacher_id}}</h4>
+                        <p class="card-text bs-card-text">Location: {{session.location}}</p>
+                        <p class="card-text bs-card-text">{{session.students.length}} students connected</p>
+                    </div>
+                </div>
+
+            </div>
+
+
         </div>
+
+        <form>
+            <div class="form-group row">
+                <label for="inputMessage" class="col-sm-1 col-form-label">Enter message</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" ng-model="message.body" id="inputMessage" placeholder="">
+                </div>
+
+                <div class="form-group col-sm-3">
+
+                    <div class="dropdown btn-group col-sm-6">
+                        <button class="btn btn-secondary dropdown-toggle msg-type-dropdown-header"
+                                type="button" id="dropdownMsg" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            Type
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <div class="dropdown-item" ng-click="typeChoose('question')">Question</div>
+                            <div class="dropdown-item" ng-click="typeChoose('answer')">Answer</div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn btn-primary" ng-click="sendMessage()">Send</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
 
         <div id="msg-cnt" class="messages-container">
 
@@ -50,23 +98,29 @@
                 <tr>
                     <th>Rating</th>
                     <th>Question / Answer</th>
-                    <th>Last Name</th>
+                    <th>Message</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody class="messages-table-body">
-                <tr ng-repeat="msg in sessionMessages">
-                    <th scope="row">{{msg.rating}}</th>
+                <tr ng-repeat="msg in sessionMessages | reverse">
+                    <td scope="row">{{msg.rating}}</td>
                     <td>{{msg.type.charAt(0).toUpperCase() + msg.type.slice(1)}}</td>
                     <td>
                         <div class="col-8 message-content-quote" ng-if="msg.body[0].length == 0"></div>
                         <div class="col-8 message-content-quote" ng-if="msg.body[0].length != 0">{{msg.body[0]}}</div>
                         <div class="col-4 message-fix-place"></div>
-                        <div class="col-8 message-content">{{msg.body[1]}}
-                            <button type="button" class="btn btn-outline-success float-right" ng-click="rateMessage(msg.sid, msg._id, 1)">Like</button>
-                            <button type="button" class="btn btn-outline-danger float-right" ng-click="rateMessage(msg.sid, msg._id, 0)">Hate</button>
+                        <div class="message-text col-8">{{msg.body[1]}}</div>
+                        <div class="col-4 message-fix-place"></div>
+                    </td>
+                    <td class="">
+                        <div class="message-content">
+
+                            <button type="button" class="btn btn-outline-success" ng-click="rateMessage(msg.sid, msg._id, 1)">Like</button>
+                            <button type="button" class="btn btn-outline-danger" ng-click="rateMessage(msg.sid, msg._id, 0)">Hate</button>
                             <!--<button type="button" class="btn btn-outline-dark float-right" ng-click="assignReply(msg)">-->
-                            <button type="button" class="btn btn-outline-dark float-right"
-                            ng-click="message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[1]">
+                            <button type="button" class="btn btn-outline-dark"
+                                    ng-click="message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[1]">
 
                                 Reply</button>
                         </div>
@@ -79,32 +133,7 @@
 
         </div>
 
-        <form>
-            <div class="form-group row">
-                <label for="inputMessage" class="col-sm-2 col-form-label">Enter message</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" ng-model="message.body" id="inputMessage" placeholder="">
-                </div>
-            </div>
-            <div class="form-group row">
 
-                <div class="dropdown btn-group">
-                    <button class="btn btn-secondary dropdown-toggle msg-type-dropdown-header"
-                            type="button" id="dropdownMsg" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                        Type
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <div class="dropdown-item" ng-click="typeChoose('question')">Question</div>
-                        <div class="dropdown-item" ng-click="typeChoose('answer')">Answer</div>
-                    </div>
-                </div>
-
-                <div class="col-sm-10 offset-sm-2">
-                    <button type="submit" class="btn btn-primary" ng-click="sendMessage()">Send</button>
-                </div>
-            </div>
-        </form>
 
 
     </div>
