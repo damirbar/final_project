@@ -1,11 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var path = require("path");
 var mongoose = require("mongoose");
-var fs = require('fs');
-const jwt = require('jsonwebtoken');
 
-const auth = require('basic-auth');
 
 var Session = require("../schemas/session");
 var Session_Message = require("../schemas/session_message");

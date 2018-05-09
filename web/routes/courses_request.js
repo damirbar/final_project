@@ -29,11 +29,6 @@ router.post("/add-course", function (req, res) {
 });
 
 
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 router.get('/get-all-courses', function(req,res,next){
     Course.find({}, function(err,courses){
         if(err) {
