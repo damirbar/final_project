@@ -21,7 +21,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         Bundle bundle = new Bundle();
         switch (position) {
             case 0:
-                SessionFeedFragment tab1 = new SessionFeedFragment();
+                SessionInfoFragment tab1 = new SessionInfoFragment();
                 bundle.putString("sid", sid);
                 tab1.setArguments(bundle);
                 return tab1;
@@ -30,11 +30,11 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 bundle.putString("sid", sid);
                 tab2.setArguments(bundle);
                 return tab2;
-            case 2:
-                SessionInfoFragment tab3 = new SessionInfoFragment();
-                bundle.putString("sid", sid);
-                tab3.setArguments(bundle);
-                return tab3;
+//            case 2:
+//                SessionInfoFragment tab3 = new SessionInfoFragment();
+//                bundle.putString("sid", sid);
+//                tab3.setArguments(bundle);
+//                return tab3;
             default:
                 return null;
         }

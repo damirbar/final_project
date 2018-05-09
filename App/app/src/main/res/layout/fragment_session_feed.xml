@@ -64,7 +64,8 @@
                 android:layout_marginRight="20dp"
                 android:src="@drawable/intercom_compose"
                 android:visibility="visible"
-                app:backgroundTint="@android:color/holo_red_dark" />
+                app:backgroundTint="@android:color/holo_red_dark"
+                android:layout_alignParentRight="true" />
 
 
         </RelativeLayout>
