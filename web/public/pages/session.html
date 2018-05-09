@@ -31,7 +31,7 @@
 
             <div class="col-6 session-vid" ng-if="isConnectedToSession">
                 <video class="video-div" controls
-                       ng-src="http://localhost:3000/sessions/getVideo?sid=1234&token={{getToken()}}">
+                       ng-src="http://localhost:3000/sessions/getVideo?sid={{sessionID}}&token={{getToken()}}">
                 </video>
             </div>
             <div class="col-6 session-info">

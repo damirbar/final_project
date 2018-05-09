@@ -3,6 +3,7 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
 
         $scope.loggedUser = {};
         $scope.user = {};
+        // $scope.user.role = "student";
         $scope.isLogged = false;
 
         $scope.checkLogin = function () {
@@ -34,7 +35,7 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
         $scope.login = function () {
             AuthService.auth($scope.user.email, $scope.user.password)
                 .then(function (data) {
-                    console.log("Got " + data + " from login function");
+                    console.log("Got " + JSON.stringify(data) + " from login function");
                     data = data.data;
                     // $rootScope.loggedUser = data;
                     // $scope.loggedUser = data;
