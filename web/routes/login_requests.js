@@ -14,14 +14,17 @@ router.post("/auth-login-user-pass", function (req, res) {
     const credentials = auth(req);
     console.log(credentials);
 
-    // const projection = {
-    //     "temp_password": 0,
-    //     "temp_password_time": 0,
-    //     "last_modified": 0,
-    //     "accessToken": 0
-    // };
+    const projection = {
+        "temp_password": 0,
+        "temp_password_time": 0,
+        "last_modified": 0,
+        "accessToken": 0
+    };
+    if(credentials.name === "undefined" || credentials.pass === "undefined"){
+        return res.status(401).send({message: 'Invalid Credentials!'})
+    }
 
-    User.findOne({email: credentials.name}/*,projection*/, function (err, user) {
+    User.findOne({email: credentials.name},projection, function (err, user) {
         if (err) {
             console.log("Error while finding student");
             console.log("The error: " + err);
@@ -34,19 +37,6 @@ router.post("/auth-login-user-pass", function (req, res) {
                 console.log("Found the user " + credentials.name);
                 const token = jwt.sign(credentials.name, "Wizer");
 
-                const collection = user.role === "teacher" ? Teacher : Student;
-
-                collection.findOne({user_id: user._id}, function (err, role) {
-                    if (err) {
-                        console.log("Error while finding user's role");
-                        console.log("The error: " + err);
-                        return err;
-                    } else {
-                        Object.assign(user, role);
-                        console.log(user);
-                        return res.status(200).json({message: "Welcome to WizeUp!", token: token, student: user});
-                    }
-                });
                 User.update({email: credentials.name}, {accessToken: token}, function (err) {
                     if (err) {
                         console.log(err);
@@ -77,7 +67,8 @@ router.post("/new-user", function (req, res) {
     const fname = req.body.fname,
         lname = req.body.lname,
         email = req.body.email,
-        password = req.body.password;
+        password = req.body.password,
+        role = req.body.role;
 
     req.checkBody("fname", "First Name is required").notEmpty();
     req.checkBody("lname", "Last Name is required").notEmpty();
@@ -100,7 +91,8 @@ router.post("/new-user", function (req, res) {
             email: email,
             register_date: Date.now(),
             last_update: Date.now(),
-            password: password
+            password: password,
+            role: role
         });
 
         bcrypt.genSalt(10, function (err, salt) {
