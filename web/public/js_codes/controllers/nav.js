@@ -3,6 +3,7 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
 
         $scope.loggedUser = {};
         $scope.user = {};
+        // $scope.user.role = "student";
         $scope.isLogged = false;
 
         $scope.checkLogin = function () {
