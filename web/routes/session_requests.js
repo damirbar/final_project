@@ -24,7 +24,7 @@ router.post("/connect-session", function (req, res) {
 
                 let exists = false;
                 for (let i = 0; i < sess.students.length; ++i) {
-                    if (sess.students[i].id_num === user.id) {
+                    if (sess.students[i].id_num == user.id) {
                         exists = true;
                         break;
                     }
