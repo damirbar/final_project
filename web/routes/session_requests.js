@@ -154,24 +154,20 @@ router.post("/create-session", function (req, res) {
 // TODO -> This is currently not updating the database
 
 //sefi!!!
-// router.get("/rate-message", function (req, res) {
-//     const sess_id = req.query.sid;
-//     const mess_id = req.query.msgid;
-//     const rating = req.query.rating;
-//
-//     Session.findOne({sid: sess_id}, function (err, sess) {
-//         if(err) return err;
-//         Session_Message.findOne({},function (err, ans) {
-//             console.log(ans);
-//         });
-//         console.log("before "+ sess.messages[0].rating);
-//         sess.messages[0].rating+=1;
-//         sess.save();
-//         console.log("after "+ sess.messages[0].rating);
-//     });
-//
-//
-// });
+router.get("/rate-message", function (req, res) {
+    const sess_id = req.query.sid;
+    const mess_id = req.query.msgid;
+    const rating = req.query.rating;
+
+    //Increments the first message of the session only
+    //still on it
+    Session.update({sid: sess_id}, {$inc: {"messages.0.rating": 1}} , function(err){
+        if(err){
+            return err;
+        }
+    });
+
+});
 
 //erans work receiving messages (Q/A) in session
 router.post("/messages", function (req, res) {
