@@ -41,7 +41,7 @@ router.post("/auth-login-user-pass", function (req, res) {
                         console.log(err);
                     } else {
                         console.log("access token was successfully updated");
-                        res.status(200).send({message: 'welcome to Wizer!', email: user.email, first_name:user.first_name, last_name:user.last_name, token: token})
+                        res.status(200).send({message: 'welcome to Wizer!', email: user.email, first_name:user.first_name, last_name:user.last_name, token: token, role:user.role})
                     }
                 });
             } else {
@@ -55,9 +55,9 @@ router.post("/auth-login-user-pass", function (req, res) {
 });
 
 router.get("/get-user-by-token", function (req, res) {
-    User.findOne({email: req.verifiedEmail}, function (err, student) {
+    User.findOne({email: req.verifiedEmail}, function (err, user) {
         if (err) return next(err);
-        res.status(200).send(student);
+        res.status(200).send({message: 'welcome to Wizer!', email: user.email, first_name:user.first_name, last_name:user.last_name, token: token, role:user.role})
     });
 });
 
