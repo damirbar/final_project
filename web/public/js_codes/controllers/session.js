@@ -176,6 +176,17 @@ wizerApp.controller('sessionController',
         // };
 
 
+        $scope.onTimeUpdate = function () {
+            var currTime = $element[0].currentTime;
+            if (currTime - $scope.videoCurrentTime > 0.5 ||
+                $scope.videoCurrentTime - currTime > 0.5) {
+                $element[0].currentTime = $scope.videoCurrentTime;
+                console.log("CURRENT VIDEO TIME: " + $scope.videoCurrentTime);
+            }
+            $scope.$apply(function () {
+                $scope.videoCurrentTime = $element[0].currentTime;
+            });
+        };
 
         $interval(function () {
             if ($scope.isConnectedToSession) {
