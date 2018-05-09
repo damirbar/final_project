@@ -16,6 +16,7 @@ router.post("/connect-session", function (req, res) {
 
     const decoded = req.verifiedEmail;
     const id = req.body.sid;
+    const name = req.body.name;
 
     Session.findOne({sid: id}, function (err, sess) {
         if (err) throw err;
@@ -38,7 +39,7 @@ router.post("/connect-session", function (req, res) {
                     sess.students.push({
                         rating_val: 1,
                         email: user.email,
-                        display_name: user.display_name,
+                        display_name: name,
                         id_num: user.id
                     });
                     sess.save()
@@ -155,43 +156,26 @@ router.post("/create-session", function (req, res) {
 });
 
 // TODO -> This is currently not updating the database
-router.get("/rate-message", function (req, res) {
-    var sess_id = req.query.sid;
-    var mess_id = req.query.msgid;
-    var rating = req.query.rating;
 
-    Session.findOne({sid: sess_id}, function (err, sess) {
-        if (err) return next(err);
-
-        var found = false;
-        for (var i = 0; i < sess.messages.length; ++i) {
-            if (sess.messages[i]._id == mess_id) {
-                found = true;
-                if (rating == 1) {
-                    console.log("INCREMENTING THE MESSAGE " + sess.messages[i].body[1] + " to " + parseInt(sess.messages[i].rating) + 1);
-                    sess.messages[i].rating = parseInt(sess.messages[i].rating) + 1;
-                    console.log("CURRENT RATING = " + sess.messages[i].rating);
-
-                } else {
-                    console.log("DECREMENTING THE MESSAGE " + sess.messages[i].body[1] + " to " + parseInt(sess.messages[i].rating) - 1);
-                    sess.messages[i].rating = parseInt(sess.messages[i].rating) - 1;
-                    console.log("CURRENT RATING = " + sess.messages[i].rating);
-                }
-                break;
-            }
-        }
-        if (!found) {
-            res.status(404).json({message: "Message not found within session " + sess_id});
-        } else {
-            sess.markModified('object');
-            sess.save(function (err, updated_sess) {
-                if (err) return next(err);
-                res.status(200).json({message: "Updated message rating successfully"});
-            });
-        }
-
-    });
-});
+//sefi!!!
+// router.get("/rate-message", function (req, res) {
+//     const sess_id = req.query.sid;
+//     const mess_id = req.query.msgid;
+//     const rating = req.query.rating;
+//
+//     Session.findOne({sid: sess_id}, function (err, sess) {
+//         if(err) return err;
+//         Session_Message.findOne({},function (err, ans) {
+//             console.log(ans);
+//         });
+//         console.log("before "+ sess.messages[0].rating);
+//         sess.messages[0].rating+=1;
+//         sess.save();
+//         console.log("after "+ sess.messages[0].rating);
+//     });
+//
+//
+// });
 
 //erans work receiving messages (Q/A) in session
 router.post("/messages", function (req, res) {

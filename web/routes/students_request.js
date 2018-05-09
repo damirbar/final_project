@@ -18,18 +18,19 @@ router.get("/get-profile",function (req, res, next) {
     });
 });
 
-// router.get("/edit-profile",function (req, res, next) {
-//     const verified = req.verifiedEmail;
-//
-//     User.findOne({email: verified}, function (err, user) {
-//         if (err) return next(err);
-//         if(user) {
-//
-//             return res.status(200).json(user);
-//         }
-//         return res.status(404).json({message: 'user' + verified + 'dose not exist sorry'});
-//     });
-// });
+router.get("/edit-profile",function (req, res, next) {
+    const verified = req.verifiedEmail;
+    const updatedUser = req.user;
+    User.findOne({email: verified}, function (err, user) {
+        if (err) return next(err);
+        if(user) {
+            user = updatedUser;
+            user.save();
+            return res.status(200).json(user);
+        }
+        return res.status(404).json({message: 'user' + verified + 'dose not exist sorry'});
+    });
+});
 
 // router.get("/get-by-name", function (req, res, next) {
 //     var fname = req.query.fname;
