@@ -14,76 +14,53 @@ var User = require("../schemas/user");
 
 router.post("/connect-session", function (req, res) {
 
-    var token = req.headers["x-access-token"];
     var id = req.body.sid;
 
-    if (!token) {
-        res.status(401).json({message: 'Unauthorized!'});
-    }
-    else {
-        var decoded = jwt.verify(token, "Wizer", function (err, decoded) {
-            if (err) {
-                return res.json({success: false, message: 'Failed to authenticate token.'});
-            } else {
+    Session.findOne({sid: id}, function (err, sess) {
+        if (err) throw err;
 
-                if (!id || !id.trim()) {
+        if (sess) {
 
-                    res.status(500).json({message: 'Invalid Request !'});
+            User.findOne({email: decoded}, function (err, user) {
+                if (err) throw err;
 
-                } else {
+                var exists = false;
+                for (var i = 0; i < sess.students.length; ++i) {
+                    if (sess.students[i].id_num == user.id) {
+                        exists = true;
+                        // res.status(409).json({message: 'Conflict!'});
+                        break;
+                    }
 
-
-                    Session.findOne({sid: id}, function (err, sess) {
-                        if (err) throw err;
-
-                        if (sess) {
-
-                            User.findOne({email: decoded}, function (err, user) {
-                                if (err) throw err;
-
-                                var exists = false;
-                                for (var i = 0; i < sess.students.length; ++i) {
-                                    if (sess.students[i].id_num == user.id) {
-                                        exists = true;
-                                        // res.status(409).json({message: 'Conflict!'});
-                                        break;
-                                    }
-
-                                }
-
-                                if (!exists) {
-                                    sess.students.push({
-                                        rating_val: 1,
-                                        email: user.email,
-                                        display_name: user.display_name,
-                                        id_num: user._id
-                                    });
-                                    sess.save()
-                                        .then(function (item) {
-                                            console.log("Saved a the session with the new student " + user.display_name);
-                                            return res.status(200).json({message: 'Welcome to Class !', session: sess});
-                                        })
-                                        .catch(function (err) {
-                                            console.log("Unable to save the session with the new student " + user.display_name);
-                                        });
-                                }
-                                else {
-                                    return res.status(200).json({message: 'Welcome back to Class !', session: sess});
-                                }
-
-                            });
-
-
-                        }
-                    });
                 }
-            }
-        });
 
+                if (!exists) {
+                    sess.students.push({
+                        rating_val: 1,
+                        email: user.email,
+                        display_name: user.display_name,
+                        id_num: user._id
+                    });
+                    sess.save()
+                        .then(function (item) {
+                            console.log("Saved a the session with the new student " + user.display_name);
+                            return res.status(200).json({message: 'Welcome to Class !', session: sess});
+                        })
+                        .catch(function (err) {
+                            console.log("Unable to save the session with the new student " + user.display_name);
+                        });
+                }
+                else {
+                    return res.status(200).json({message: 'Welcome back to Class !', session: sess});
+                }
+
+            });
+
+
+        }
+        return res.status(404).json({message: 'session' +id + 'dose not exist sorry'});
+    });
         // console.log("The token is: " + token);
-
-
-    }
 });
 
 router.get("/get-students-count", function (req, res, next) {
@@ -278,7 +255,7 @@ router.get("/disconnect", function (req, res) {
         if (err) return next(err);
         var found = false;
         for (var i = 0; i < sess.students.length; ++i) {
-            if (sess.students[i].email == req.verifiedEmail) {
+            if (sess.students[i].email === req.verifiedEmail) {
                 found = true;
                 sess.students.splice(i, 1);
                 sess.save();
@@ -358,7 +335,8 @@ router.get('/getVideo', function (req, res) {
     console.log('GET request');
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
-        new GridStore(db, new ObjectID(sess.videoID), 'r').open(function (err, GridFile) {if (!GridFile) {
+        new GridStore(db, new ObjectID(sess.videoID), 'r').open(function (err, GridFile) {
+            if (!GridFile) {
                 console.log("video" + " not found!!!");
                 res.status(404).json({message: "video" + " not found"})
             }

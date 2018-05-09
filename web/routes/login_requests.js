@@ -20,7 +20,7 @@ router.post("/auth-login-user-pass", function (req, res) {
         "temp_password_time": 0,
         "last_modified": 0,
         "accessToken": 0
-    }
+    };
 
     User.findOne({email: credentials.name},projection, function (err, user) {
         if (err) {
@@ -98,6 +98,7 @@ router.get("/get-user-by-token", function (req, res) {
 router.use(expressValidator());
 
 router.post("/new-user", function (req, res) {
+    console.log("HERE");
     var fname = req.body.fname;
     var lname = req.body.lname;
     var email = req.body.email;
@@ -117,8 +118,6 @@ router.post("/new-user", function (req, res) {
         res.status(400).send("erans error");
     }
     else {
-        //TODO var user = ...
-
         var newUser = new User({
             first_name: fname,
             last_name: lname,

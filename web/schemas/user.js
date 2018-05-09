@@ -21,7 +21,8 @@ var UserSchema = new mongoose.Schema({
     last_modified: Date,
     accessToken: String,
     temp_password: String,
-    temp_password_time: String
+    temp_password_time: String,
+    courses: {type: Array, default: [] }
 });
 
 module.exports = mongoose.model('User', UserSchema);
