@@ -99,7 +99,7 @@ app.get('*', function(req, res){
 var addSession = function () {
     var session = new Session(
         {
-            internal_id: 1234,
+            sid: 1234,
             name: "Test Session",
             teacher_id: "WizeGuy1234",
             location: "10.4.2",

@@ -14,7 +14,8 @@ var User = require("../schemas/user");
 
 router.post("/connect-session", function (req, res) {
 
-    var id = req.body.sid;
+    const decoded = req.verifiedEmail;
+    const id = req.body.sid;
 
     Session.findOne({sid: id}, function (err, sess) {
         if (err) throw err;
@@ -24,11 +25,10 @@ router.post("/connect-session", function (req, res) {
             User.findOne({email: decoded}, function (err, user) {
                 if (err) throw err;
 
-                var exists = false;
-                for (var i = 0; i < sess.students.length; ++i) {
-                    if (sess.students[i].id_num == user.id) {
+                let exists = false;
+                for (let i = 0; i < sess.students.length; ++i) {
+                    if (sess.students[i].id_num === user.id) {
                         exists = true;
-                        // res.status(409).json({message: 'Conflict!'});
                         break;
                     }
 
@@ -39,28 +39,27 @@ router.post("/connect-session", function (req, res) {
                         rating_val: 1,
                         email: user.email,
                         display_name: user.display_name,
-                        id_num: user._id
+                        id_num: user.id
                     });
                     sess.save()
                         .then(function (item) {
-                            console.log("Saved a the session with the new student " + user.display_name);
-                            return res.status(200).json({message: 'Welcome to Class !', session: sess});
+                            console.log("Saved " + user.email+" to session: " + id);
+                            res.status(200).json({message: 'Welcome to Class !', session: sess});
                         })
                         .catch(function (err) {
                             console.log("Unable to save the session with the new student " + user.display_name);
                         });
                 }
                 else {
-                    return res.status(200).json({message: 'Welcome back to Class !', session: sess});
+                     res.status(200).json({message: 'Welcome back to Class !', session: sess});
                 }
 
             });
-
-
         }
-        return res.status(404).json({message: 'session' +id + 'dose not exist sorry'});
+        else {
+            res.status(404).json({message: 'session' + id + 'dose not exist sorry'});
+        }
     });
-        // console.log("The token is: " + token);
 });
 
 router.get("/get-students-count", function (req, res, next) {
@@ -104,9 +103,9 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
         Session.find({sid: id}, function (err, sess) {
             if (err) next(err);
 
-            var studs = sess.students;
-            for (var i = 0; i < studs.length; ++i) {
-                if (studs[i].email == student.email && studs[i].rating_val != val) {
+            let studs = sess.students;
+            for (let i = 0; i < studs.length; ++i) {
+                if (studs[i].email === student.email && studs[i].rating_val !== val) {
                     sess.students[i].rating_val = val;
                 }
             }
@@ -117,7 +116,7 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
     Session.findOne({sid: id}, function (err, sess) {
         if (err) return next(err);
 
-        sess.curr_rating = (val == 1 ? (sess.curr_rating + 1) : (sess.curr_rating - 1));
+        sess.curr_rating = (val === 1 ? (sess.curr_rating + 1) : (sess.curr_rating - 1));
 
         sess.save(function (err, updated_sess) {
             if (err) return next(err);
@@ -131,7 +130,7 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
 
 
 router.post("/create-session", function (req, res) {
-    var myData = new Session(req.body);
+    let myData = new Session(req.body);
     myData.save(function (err) {
         if (err) {
             if (err.name === 'MongoError' && err.code === 11000) {
@@ -326,25 +325,30 @@ router.get('/postVideo', function (req, res) {
 
 router.get('/getVideo', function (req, res) {
 
-    var GridStore = require('mongodb').GridStore;
-    var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
-    var db = mongoose.connection;
+    const GridStore = require('mongodb').GridStore;
+    const db = mongoose.connection;
 
-    var ObjectID = require('mongodb').ObjectID;
+    const ObjectID = require('mongodb').ObjectID;
     db.options = 'PRIMARY';
     console.log('GET request');
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
-        new GridStore(db, new ObjectID(sess.videoID), 'r').open(function (err, GridFile) {
-            if (!GridFile) {
-                console.log("video" + " not found!!!");
-                res.status(404).json({message: "video" + " not found"})
-            }
-            else {
-                console.log("starting to stream file " + GridFile.filename);
-                StreamGridFile(req, res, GridFile)
-            }
-        });
+        if(sess.videoID!== "") {
+            new GridStore(db, new ObjectID(sess.videoID), 'r').open(function (err, GridFile) {
+                if (!GridFile) {
+                    console.log("video" + " not found!!!");
+                    res.status(404).json({message: "video" + " not found"})
+                }
+                else {
+                    console.log("starting to stream file " + GridFile.filename);
+                    StreamGridFile(req, res, GridFile)
+                }
+            });
+        }
+        else {
+            console.log("video" + " not found!!!");
+            res.status(404).json({message: "video" + " not found"})
+        }
     });
 
 });
@@ -353,12 +357,12 @@ function StreamGridFile(req, res, GridFile) {
     if (req.headers['range']) {
         // Range request, partialle stream the file
         console.log('Range Reuqest');
-        var parts = req.headers['range'].replace(/bytes=/, "").split("-");
-        var partialstart = parts[0];
-        var partialend = parts[1];
-        var start = parseInt(partialstart, 10);
-        var end = partialend ? parseInt(partialend, 10) : GridFile.length -1;
-        var chunksize = (end - start) + 1;
+        const parts = req.headers['range'].replace(/bytes=/, "").split("-");
+        const partialstart = parts[0];
+        const partialend = parts[1];
+        let start = parseInt(partialstart, 10);
+        const end = partialend ? parseInt(partialend, 10) : GridFile.length -1;
+        const chunksize = (end - start) + 1;
         console.log('Range ', start, '-', end);
         res.writeHead(206, {
             'Content-Range': 'bytes ' + start + '-' + end + '/' + GridFile.length,
@@ -369,7 +373,7 @@ function StreamGridFile(req, res, GridFile) {
         // Set filepointer
         GridFile.seek(start, function () {
             // get GridFile stream
-            var stream = GridFile.stream(true);
+            const stream = GridFile.stream(true);
             // write to response
             stream.on('data', function (buff) {
                 // count data to abort streaming if range-end is reached
@@ -389,7 +393,7 @@ function StreamGridFile(req, res, GridFile) {
         console.log('No Range Request');
         res.header('Content-Type', GridFile.contentType);
         res.header('Content-Length', GridFile.length);
-        var stream = GridFile.stream(true);
+        const stream = GridFile.stream(true);
         stream.pipe(res);
     }
 }

@@ -7,71 +7,82 @@ var User = require("../schemas/user");
 
 
 router.get("/get-profile",function (req, res, next) {
-    var id = req.query.id;
+    const id = req.query.id;
 
     User.findOne({_id: id}, function (err, user) {
         if (err) return next(err);
-
-        // var ip = req.headers['x-forwarded-for'];
-        // // ip = ipaddr.process(ip + "");
-        // console.log("Got a " + req.method + " request from " + ip);
-        res.json(user);
+        if(user) {
+            return res.status(200).json(user);
+        }
+        return res.status(404).json({message: 'user' + id + 'dose not exist sorry'});
     });
-
 });
 
-router.get("/get-by-name", function (req, res, next) {
-    var fname = req.query.fname;
-    var lname = req.query.lname;
+// router.get("/edit-profile",function (req, res, next) {
+//     const verified = req.verifiedEmail;
+//
+//     User.findOne({email: verified}, function (err, user) {
+//         if (err) return next(err);
+//         if(user) {
+//
+//             return res.status(200).json(user);
+//         }
+//         return res.status(404).json({message: 'user' + verified + 'dose not exist sorry'});
+//     });
+// });
 
-    console.log("Got a search for " + fname + " " + lname);
-    var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-    console.log("Got a " + req.method + " request from " + ip);
-
-
-    if (!lname || lname == "null")
-        User.find({first_name: fname}, function (err, student) {
-            if (err) return next(err);
-            console.log("No last name");
-            console.log("Search result\n:" + student);
-
-            if (student instanceof Array) {
-                student.isarray = true;
-            } else {
-                student.isarray = false;
-            }
-
-            res.json(student);
-        });
-
-    else if(!lname || fname == "null")
-        User.find({last_name: lname}, function (err, student) {
-            if (err) return next(err);
-            console.log("No first name");
-
-            if (student instanceof Array) {
-                student.isarray = true;
-            } else {
-                student.isarray = false;
-            }
-
-            res.json(student);
-        });
-    else {
-        User.find({first_name: fname, last_name: lname}, function (err, student) {
-            if (err) return next(err);
-            console.log("Got first and last name");
-
-            if (student instanceof Array) {
-                student.isarray = true;
-            } else {
-                student.isarray = false;
-            }
-
-            res.json(student);
-        });
-    }
-});
+// router.get("/get-by-name", function (req, res, next) {
+//     var fname = req.query.fname;
+//     var lname = req.query.lname;
+//
+//     console.log("Got a search for " + fname + " " + lname);
+//     var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+//     console.log("Got a " + req.method + " request from " + ip);
+//
+//
+//     if (!lname || lname == "null")
+//         Student.find({first_name: fname}, function (err, student) {
+//             if (err) return next(err);
+//             console.log("No last name");
+//             console.log("Search result\n:" + student);
+//
+//             if (student instanceof Array) {
+//                 student.isarray = true;
+//             } else {
+//                 student.isarray = false;
+//             }
+//
+//             res.json(student);
+//         });
+//
+//     else if(!lname || fname == "null")
+//         Student.find({last_name: lname}, function (err, student) {
+//             if (err) return next(err);
+//             console.log("No first name");
+//
+//             if (student instanceof Array) {
+//                 student.isarray = true;
+//             } else {
+//                 student.isarray = false;
+//             }
+//
+//             res.json(student);
+//         });
+//     else {
+//         Student.find({first_name: fname, last_name: lname}, function (err, student) {
+//             if (err) return next(err);
+//             console.log("Got first and last name");
+//
+//             if (student instanceof Array) {
+//                 student.isarray = true;
+//             } else {
+//                 student.isarray = false;
+//             }
+//
+//             res.json(student);
+//         });
+//     }
+// });
 
 module.exports = router;
 

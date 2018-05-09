@@ -1,28 +1,27 @@
-var router = require('express').Router();
-var path = require("path");
-var passport = require('passport');
-var expressValidator = require('express-validator');
-var User = require("../schemas/user");
-var Student = require("../schemas/student");
-var Teacher = require("../schemas/teacher");
-var jwt = require('jsonwebtoken');
-
-var bcrypt = require('bcrypt-nodejs');
+const router = require('express').Router();
+const expressValidator = require('express-validator');
+const User = require("../schemas/user");
+const Student = require("../schemas/student");
+const Teacher = require("../schemas/teacher");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt-nodejs');
 const auth = require('basic-auth');
+
+router.use(expressValidator());
 
 router.post("/auth-login-user-pass", function (req, res) {
 
-    var credentials = auth(req);
+    const credentials = auth(req);
     console.log(credentials);
 
-    var projection = {
-        "temp_password": 0,
-        "temp_password_time": 0,
-        "last_modified": 0,
-        "accessToken": 0
-    };
+    // const projection = {
+    //     "temp_password": 0,
+    //     "temp_password_time": 0,
+    //     "last_modified": 0,
+    //     "accessToken": 0
+    // };
 
-    User.findOne({email: credentials.name},projection, function (err, user) {
+    User.findOne({email: credentials.name}/*,projection*/, function (err, user) {
         if (err) {
             console.log("Error while finding student");
             console.log("The error: " + err);
@@ -35,14 +34,14 @@ router.post("/auth-login-user-pass", function (req, res) {
                 console.log("Found the user " + credentials.name);
                 const token = jwt.sign(credentials.name, "Wizer");
 
-                var collection = user.role === "teacher" ? Teacher : Student;
+                const collection = user.role === "teacher" ? Teacher : Student;
 
                 collection.findOne({user_id: user._id}, function (err, role) {
-                    if(err){
-                    console.log("Error while finding user's role");
-                    console.log("The error: " + err);
-                    return err;
-                    }else{
+                    if (err) {
+                        console.log("Error while finding user's role");
+                        console.log("The error: " + err);
+                        return err;
+                    } else {
                         Object.assign(user, role);
                         console.log(user);
                         return res.status(200).json({message: "Welcome to WizeUp!", token: token, student: user});
@@ -66,43 +65,20 @@ router.post("/auth-login-user-pass", function (req, res) {
 });
 
 router.get("/get-user-by-token", function (req, res) {
-
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    // decode token
-    if (token) {
-        // verifies secret and checks exp
-        jwt.verify(token, "Wizer", function (err, decoded) {
-            if (err) {
-                return res.json({success: false, message: 'Failed to authenticate token.'});
-            } else {
-                // if everything is good, save to request for use in other routes
-                User.findOne({email: decoded}, function (err, student) {
-                    if (err) return next(err);
-                    res.status(200).send(student);
-                });
-                //return res.status(200).send()
-                //req.decoded = decoded;
-                // next();
-            }
-        });
-    } else {
-        // if there is no token
-        // return an error
-        return res.status(403).send({
-            success: false,
-            message: 'No token provided.'
-        });
-    }
+    User.findOne({email: req.verifiedEmail}, function (err, student) {
+        if (err) return next(err);
+        res.status(200).send(student);
+    });
 });
 
-router.use(expressValidator());
 
 router.post("/new-user", function (req, res) {
-    console.log("HERE");
-    var fname = req.body.fname;
-    var lname = req.body.lname;
-    var email = req.body.email;
-    var password = req.body.password;
+
+    const fname = req.body.fname,
+        lname = req.body.lname,
+        email = req.body.email,
+        password = req.body.password;
+
     req.checkBody("fname", "First Name is required").notEmpty();
     req.checkBody("lname", "Last Name is required").notEmpty();
     req.checkBody("email", "Email is required").notEmpty();
@@ -111,14 +87,14 @@ router.post("/new-user", function (req, res) {
     // req.checkBody("password_cnfrm", "Bouth passwords are required").notEmpty();
     // req.checkBody("password_cnfrm", "Passwords do not match").equals(req.body.password);
 
-    var errors = req.validationErrors();
+    const errors = req.validationErrors();
 
     if (errors) {
         console.log(error);
         res.status(400).send("erans error");
     }
     else {
-        var newUser = new User({
+        const newUser = new User({
             first_name: fname,
             last_name: lname,
             email: email,
@@ -140,7 +116,7 @@ router.post("/new-user", function (req, res) {
                         }
                         if (err.name === 'ValidationError') {
                             //ValidationError
-                            var str = "";
+                            let str = "";
                             for (field in err.errors) {
                                 console.log("you must provide: " + field + " field");
                                 str += "you must provide: " + field + " field  ";
@@ -152,7 +128,7 @@ router.post("/new-user", function (req, res) {
                         return res.status(500).send(err);
                     }
                     console.log(user);
-                    var newStudent = new Student({
+                    const newStudent = new Student({
                         user_id: user._id
                     });
                     newStudent.save();
@@ -165,7 +141,7 @@ router.post("/new-user", function (req, res) {
 
 router.put("/change-password", function (req, res) {
 
-    var token = req.headers['x-access-token'];
+    const token = req.headers['x-access-token'];
 
     if (token) {
         // verifies secret and checks exp
@@ -176,8 +152,8 @@ router.put("/change-password", function (req, res) {
                 User.findOne({accessToken: token}, function (err, user) {
                     if (err) return next(err);
                     if (user !== {}) {
-                        var oldPass = req.body.password;
-                        var newPass = req.body.newPassword;
+                        const oldPass = req.body.password;
+                        const newPass = req.body.newPassword;
                         if (bcrypt.compareSync(oldPass, user.password)) {
                             bcrypt.genSalt(10, function (err, salt) {
                                 bcrypt.hash(user.password, salt, null, function (err, hash) {
