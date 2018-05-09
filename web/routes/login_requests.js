@@ -19,17 +19,17 @@ router.post("/auth-login-user-pass", function (req, res) {
         "last_modified": 0,
         "accessToken": 0
     };
-    if(credentials.name === "undefined" || credentials.pass === "undefined"){
+    if (credentials.name === "undefined" || credentials.pass === "undefined") {
         return res.status(401).send({message: 'Invalid Credentials!'})
     }
 
-    User.findOne({email: credentials.name},projection, function (err, user) {
+    User.findOne({email: credentials.name}, projection, function (err, user) {
         if (err) {
             console.log("Error while finding student");
             console.log("The error: " + err);
             return err;
         } else {
-            if(!user){
+            if (!user) {
                 return res.status(400).send({message: 'no such user!'})
             }
             console.log(user);
@@ -44,7 +44,16 @@ router.post("/auth-login-user-pass", function (req, res) {
                         console.log(err);
                     } else {
                         console.log("access token was successfully updated");
-                        res.status(200).send({message: 'welcome to Wizer!', email: user.email, first_name:user.first_name, last_name:user.last_name, token: token, role:user.role})
+                        res.status(200).send({
+                            message: 'welcome to Wizer!',
+                            email: user.email,
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            token: token,
+                            role: user.role,
+                            photos: user.photos,
+                            _id: user._id
+                        })
                     }
                 });
             } else {
@@ -60,7 +69,16 @@ router.post("/auth-login-user-pass", function (req, res) {
 router.get("/get-user-by-token", function (req, res) {
     User.findOne({email: req.verifiedEmail}, function (err, user) {
         if (err) return next(err);
-        res.status(200).send({message: 'welcome to Wizer!', email: user.email, first_name:user.first_name, last_name:user.last_name, token: user.accessToken, role:user.role})
+        res.status(200).send({
+            message: 'welcome to Wizer!',
+            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            token: user.accessToken,
+            role: user.role,
+            photos: user.photos,
+            _id: user._id
+        })
     });
 });
 
