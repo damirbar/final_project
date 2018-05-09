@@ -3,19 +3,19 @@ var router = express.Router();
 var path = require("path");
 var mongoose = require("mongoose");
 
-var Student = require("../schemas/student");
+var User = require("../schemas/user");
 
 
 router.get("/get-profile",function (req, res, next) {
     var id = req.query.id;
 
-    Student.findOne({_id: id}, function (err, student) {
+    User.findOne({_id: id}, function (err, user) {
         if (err) return next(err);
 
-        var ip = req.headers['x-forwarded-for'];
-        // ip = ipaddr.process(ip + "");
-        console.log("Got a " + req.method + " request from " + ip);
-        res.json(student);
+        // var ip = req.headers['x-forwarded-for'];
+        // // ip = ipaddr.process(ip + "");
+        // console.log("Got a " + req.method + " request from " + ip);
+        res.json(user);
     });
 
 });
@@ -30,7 +30,7 @@ router.get("/get-by-name", function (req, res, next) {
 
 
     if (!lname || lname == "null")
-        Student.find({first_name: fname}, function (err, student) {
+        User.find({first_name: fname}, function (err, student) {
             if (err) return next(err);
             console.log("No last name");
             console.log("Search result\n:" + student);
@@ -45,7 +45,7 @@ router.get("/get-by-name", function (req, res, next) {
         });
 
     else if(!lname || fname == "null")
-        Student.find({last_name: lname}, function (err, student) {
+        User.find({last_name: lname}, function (err, student) {
             if (err) return next(err);
             console.log("No first name");
 
@@ -58,7 +58,7 @@ router.get("/get-by-name", function (req, res, next) {
             res.json(student);
         });
     else {
-        Student.find({first_name: fname, last_name: lname}, function (err, student) {
+        User.find({first_name: fname, last_name: lname}, function (err, student) {
             if (err) return next(err);
             console.log("Got first and last name");
 
