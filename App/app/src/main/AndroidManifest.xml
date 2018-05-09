@@ -62,7 +62,7 @@
             android:name=".session.CommentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".session.VideoPlayerActivity"
+            android:name=".demo.VideoPlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity

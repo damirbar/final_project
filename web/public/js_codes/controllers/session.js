@@ -122,11 +122,13 @@ wizerApp.controller('sessionController',
 
 
         $scope.$on('$locationChangeStart', function( event ) {
-            var answer = confirm("Are you sure you want to leave this page?")
-            if (!answer) {
-                event.preventDefault();
-            } else {
-                $scope.disconnect();
+            if ($scope.isConnectedToSession) {
+                var answer = confirm("Are you sure you want to leave this page?");
+                if (!answer) {
+                    event.preventDefault();
+                } else {
+                    $scope.disconnect();
+                }
             }
         });
 

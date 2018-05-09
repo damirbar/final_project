@@ -41,7 +41,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private void setupDrawer(){
         mDrawerView
-//                .addView(new DrawerHeader())
+                .addView(new DrawerHeader())
                 .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_PROFILE))
                 .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_SESSION))
 //                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_MESSAGE))
