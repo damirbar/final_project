@@ -6,19 +6,20 @@ const jwt = require('jsonwebtoken');
 //make sure that all request contain a valid token
 router.all("*" , function (req, res, next) {
 
-    if(req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass')){
+    if(req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass') || req.url.includes('/auth/new-user')){
         return next();
     }
     var token = req.headers["x-access-token"] || req.query.token;
-    if (!token && req.url!='/sessions/video?sid=1234') {
+    if (!token) {
         // res.status(200).json({message: 'Unauthorized!'});
+
         res.sendFile(path.join(__dirname + "/../index.html"));
     }
     else {
-        var decoded = jwt.verify(token, "Wizer", function (err, decoded) {
+            jwt.verify(token, "Wizer", function (err, decoded) {
             if (err) {
-                // return res.json({success: false, message: 'Failed to authenticate token.'});
                 res.sendFile(path.join(__dirname + "/../index.html"));
+                return res.status(401).json({success: false, message: 'Failed to authenticate token.'});
             } else {
                 req.verifiedEmail = decoded;
                 return next();

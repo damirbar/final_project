@@ -9,9 +9,9 @@ wizerApp.service('SessionService', function ($http) {
             });
     };
 
-    this.connectSession = function (id) {
+    this.connectSession = function (id, name) {
         console.log("ID = " + id);
-        return $http.post('/sessions/connect-session', {sid: id})
+        return $http.post('/sessions/connect-session', {sid: id, name: name})
             .then(function (data) {
                 return data.data;
             }, function () {

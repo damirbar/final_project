@@ -121,9 +121,10 @@
                             <div class="dropdown-item" ng-click="roleChoose('teacher')">Teacher</div>
                         </div>
                     </div>
+                    <div ng-if="!user.role">Must choose a role!</div>
                     <br>
 
-                    <button ng-click="signup()">SIGN UP</button>
+                    <button ng-disabled="!user.role" ng-click="signup()">SIGN UP</button>
 
                     <!--</div>-->
                 </form>
