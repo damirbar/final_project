@@ -70,6 +70,20 @@
                 android:inputType="number"
                 android:textSize="14sp" />
 
+            <EditText
+                android:id="@+id/edit_text_sid2"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginRight="70dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/dark_edittext"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="User Name"
+                android:text="Anon"
+                android:textSize="14sp" />
+
             <Button
                 android:id="@+id/classloginButton"
                 android:layout_width="match_parent"

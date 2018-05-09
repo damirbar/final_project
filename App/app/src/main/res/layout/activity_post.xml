@@ -43,34 +43,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
 
-            <LinearLayout
-                android:id="@+id/post_anonymously"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="end"
-                android:layout_marginEnd="62dp"
-                android:layout_marginRight="62dp"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/post_anonymously_cbx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:button="@drawable/anonymous_checkbox" />
-
-                <TextView
-                    android:id="@+id/post_anonymously_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/anonymously"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
             <ImageButton
                 android:id="@+id/imageButton"
                 android:layout_width="wrap_content"

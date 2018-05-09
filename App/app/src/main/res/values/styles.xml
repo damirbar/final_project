@@ -3,7 +3,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:fitsSystemWindows">true</item>
         <item name="colorPrimary">@color/user_selected</item>
-        <item name="colorPrimaryDark">@color/default_circle_indicator_page_color</item>
+        <item name="colorPrimaryDark">@color/user_selected</item>
         <item name="colorAccent">@color/default_circle_indicator_page_color</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowActionBar">false</item>
@@ -11,12 +11,6 @@
         <item name="background">@color/chat_me_window_background</item>
 
         <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>
-        <!--<item name="colorPrimary">#355796</item>-->
-        <!--<item name="colorPrimary">@color/colorPrimaryDark</item>-->
-        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <!--<item name="colvvvorPrimaryDark">@color/black</item>-->
-        <!--<item name="colorAccent">@color/black</item>-->
-        <!--<item name="android:textColorHint">#355796</item>-->
     </style>
 
     <style name="MaterialDrawer.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
@@ -25,14 +19,6 @@
     </style>
 
     <style name="AppTheme.LoginRegister" parent="AppTheme">
-        <!--<item name="android:windowBackground">@color/colorPrimaryDark</item>-->
-        <!--<item name="colorControlNormal">@android:color/white</item>-->
-        <!--<item name="colorControlHighlight">@android:color/white</item>-->
-        <!--<item name="colorControlActivated">@android:color/white</item>-->
-        <!--<item name="colorButtonNormal">@android:color/white</item>-->
-        <!--<item name="android:textColor">@android:color/white</item>-->
-        <!--<item name="android:textColorPrimary">@android:color/white</item>-->
-        <!--<item name="android:editTextColor">@android:color/white</item>-->
     </style>
 
     <style name="intercom_floating_action_button_style">
