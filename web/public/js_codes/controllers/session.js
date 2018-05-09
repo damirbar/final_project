@@ -1,13 +1,16 @@
 wizerApp.controller('sessionController',
-    function ($scope, $rootScope, $routeParams, $location, $window, AuthService, SessionService/*,socketIO*/) {
+    function ($scope, $rootScope, $routeParams, $location, $window, $interval, AuthService, SessionService/*,socketIO*/) {
 
         console.log("Hello from sessionController");
         $scope.sessionID = "";
+        $scope.sessionUserName = "Anon";
         $scope.loggedUser = {};
         $scope.isConnectedToSession = false;
-        $scope.session = {};
+        $scope.session = null;
         $scope.message = {type: "question", body: "", replyTo: ""};
         $scope.sessionMessages = [];
+
+        $scope.firstConnectionTry = true;
 
         var ensureLogged = function () {
             if (!AuthService.isLoggedIn()) {
@@ -33,29 +36,22 @@ wizerApp.controller('sessionController',
 
         $scope.connectSession = function () {
             console.log("SESSION ID = " + $scope.sessionID);
-            SessionService.connectSession($scope.sessionID)
+            SessionService.connectSession($scope.sessionID, $scope.sessionUserName)
                 .then(function (data) {
                     $scope.session = data;
-                    console.log("Connected to session ");// + JSON.stringify(data.session));
-                    // var sock = socketIO();
+                    console.log("Connected to session as " + $scope.sessionUserName);// + JSON.stringify(data.session));
+                    console.log("SESSION DATA = " + JSON.stringify(data));
                     io.connect();
-                     // console.log("The io looks like this: " + JSON.stringify(a));
-                    // io.emit('send:message', {
-                    //     message: "BLAHBLIHBLAH"
-                    // }, function(result) {
-                    //     if (!result) {
-                    //         console.log("NO RESULT");
-                    //     } else {
-                    //         console.log("SOCKET RESULT = " + result)
-                    //     }
-                    // });
-                    $scope.isConnectedToSession = true;
-                    $scope.session = data.sess;
-                    getting();
-
+                    if (data.session) {
+                        $scope.isConnectedToSession = true;
+                        $scope.session = data.session;
+                        getting();
+                    }
+                    $scope.firstConnectionTry = false;
                 })
                 .catch(function (err) {
                     console.log("Error connection to session");
+                    $scope.firstConnectionTry = false;
                 });
         };
 
@@ -65,6 +61,7 @@ wizerApp.controller('sessionController',
                 .then(function (data) {
                     console.log("Sent message");
                     $scope.getMessages();
+                    $scope.message = {type: "question", body: "", replyTo: ""};
                 })
                 .catch(function (err) {
                     console.log("Error with sending message");
@@ -73,11 +70,14 @@ wizerApp.controller('sessionController',
 
         $scope.getMessages = function () {
 
-            SessionService.getMessages("1234")
+            SessionService.getMessages($scope.sessionID)
                 .then(function (data) {
                     // console.log(JSON.stringify(data));
+                    var oldMessagesLength = $scope.sessionMessages.length;
                     $scope.sessionMessages = data.messages;
-                    $("#msg-cnt").animate({scrollTop: 999999999}, 1000);
+                    if (oldMessagesLength != $scope.sessionMessages.length) {
+                        $("#msg-cnt").animate({scrollTop: 0}, 1000);
+                    }
                 })
                 .catch(function (err) {
                     console.log("Error with getting messages");
@@ -120,6 +120,16 @@ wizerApp.controller('sessionController',
 
         };
 
+
+        $scope.$on('$locationChangeStart', function( event ) {
+            var answer = confirm("Are you sure you want to leave this page?")
+            if (!answer) {
+                event.preventDefault();
+            } else {
+                $scope.disconnect();
+            }
+        });
+
         // $scope.$on("$destroy", function() {
         //     console.log("DISCONNECTING FROM SESSION");
         //     if($scope.isConnectedToSession) {
@@ -158,11 +168,19 @@ wizerApp.controller('sessionController',
                 .catch(function (err) {
                     console.log("Error with getting messages");
                 });
-        }
+        };
 
         // $scope.assignReply = function(msg) {
         //     console.log("MSG TO REPLY:" + JSON.stringify(msg))
         //     $scope.message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[0]
         // };
+
+
+
+        $interval(function () {
+            if ($scope.isConnectedToSession) {
+                // getting();
+            }
+        }, 3000);
 
     });
