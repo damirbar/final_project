@@ -1,12 +1,10 @@
 
 
-package com.ariel.wizer.fragments;
+package com.ariel.wizer.demo;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,17 +16,11 @@ import com.ariel.wizer.EditProfileActivity;
 import com.ariel.wizer.MainActivity;
 import com.ariel.wizer.R;
 import com.ariel.wizer.chat.ChatChannelsActivity;
-import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.utils.Constants;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
-
-import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;

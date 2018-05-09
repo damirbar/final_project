@@ -185,8 +185,8 @@ public class EditProfileActivity extends AppCompatActivity implements PicModeSel
     }
 
     private void cancelButton() {
-        Intent intent = new Intent(this, NavBarActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, NavBarActivity.class);
+//        startActivity(intent);
         finish();
     }
 
@@ -218,8 +218,8 @@ public class EditProfileActivity extends AppCompatActivity implements PicModeSel
         SharedPreferences.Editor editor = mRetrofitRequests.getmSharedPreferences().edit();
         editor.putString(EMAIL,mEmail);
         editor.apply();
-        Intent intent = new Intent(this, NavBarActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, NavBarActivity.class);
+//        startActivity(intent);
         finish();
     }
 

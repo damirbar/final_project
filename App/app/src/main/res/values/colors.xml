@@ -6,7 +6,7 @@
     <color name="dark_teal">#00796b</color>
 
     <color name="colorPrimary">#64bbde</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorDarkGrey">#455a64</color>
     <color name="white">#ffffff</color>
@@ -36,7 +36,7 @@
     <color name="accent_material_dark">@color/material_deep_teal_200</color>
     <color name="accent_material_light">@color/material_deep_teal_500</color>
     <color name="account_status_bar">#ff282828</color>
-    <color name="actionBarBackground">#ff007de3</color>
+    <color name="actionBarBackground">#007de3</color>
     <color name="actionBarHighlight">#ff000000</color>
     <color name="actionModeBackground">#ffffffff</color>
     <color name="actionModeHighlight">#ff000000</color>
@@ -48,15 +48,15 @@
     <color name="background_material_light">@color/material_grey_50</color>
     <color name="barDark">#ff444444</color>
     <color name="barDarkBorder">#ff666666</color>
-    <color name="barLight">#ffdcdcdc</color>
+    <color name="barLight">#dcdcdc</color>
     <color name="barLightBorder">#c1c1c1</color>
-    <color name="black">#ff222222</color>
+    <color name="black">#222222</color>
     <color name="black21">#f5f5f5</color>
-    <color name="blackBackground">#ff000000</color>
+    <color name="blackBackground">#000000</color>
     <color name="blue">#ff0000ff</color>
     <color name="blueBackground">#ff1865a9</color>
-    <color name="box_item_delete_bg">#ffff3b30</color>
-    <color name="box_item_dismiss_bg">#fff76446</color>
+    <color name="box_item_delete_bg">#ff3b30</color>
+    <color name="box_item_dismiss_bg">#fd6654</color>
     <color name="box_item_dismiss_text">@android:color/white</color>
     <color name="box_tabs_color_text">#ff6c7d8d</color>
     <color name="bright_foreground_disabled_material_dark">#80ffffff</color>
@@ -124,7 +124,7 @@
     <color name="dashboard_divider">#ff364350</color>
     <color name="dashboard_menu_text">@color/black</color>
     <color name="default_circle_indicator_fill_color">#ffffffff</color>
-    <color name="default_circle_indicator_page_color">#ff636363</color>
+    <color name="default_circle_indicator_page_color">#3e4a5b</color>
     <color name="default_circle_indicator_stroke_color">#ffdddddd</color>
     <color name="design_bottom_navigation_shadow_color">#14000000</color>
     <color name="design_fab_shadow_end_color">@android:color/transparent</color>
@@ -164,7 +164,7 @@
     <color name="galleryChromeTransparencyBackgroundDark">#cc000000</color>
     <color name="galleryChromeTransparencyBackgroundLight">#99000000</color>
     <color name="galleryItemSelectedOverlay">#55007ee5</color>
-    <color name="google_plus">#ffdd4b39</color>
+    <color name="google_plus">#dd4b39</color>
     <color name="grayBlueishText">#ff768195</color>
     <color name="grayButtonText">#ff111111</color>
     <color name="green">#ff00ff00</color>
@@ -207,7 +207,7 @@
     <color name="intercom_input_text_hint_color">#ffb5b5bd</color>
     <color name="intercom_is_typing_grey">#ffbabac5</color>
     <color name="intercom_link_text">#ffb2b2bb</color>
-    <color name="intercom_list_divider_grey">#ffd6dfe4</color>
+    <color name="intercom_list_divider_grey">#d6dfe4</color>
     <color name="intercom_main_blue">#ff0f8bf0</color>
     <color name="intercom_note_grey">#ff92929c</color>
     <color name="intercom_note_tint">#b22a3037</color>
@@ -229,7 +229,7 @@
     <color name="item_flag">#ffe3b75f</color>
     <color name="item_like">#ff00bfa5</color>
     <color name="item_rename">#fff9a825</color>
-    <color name="item_share">#ffe06055</color>
+    <color name="item_share">#e06055</color>
     <color name="item_view">#ffe71c1c</color>
     <color name="lightBlueBackground">#fff4faff</color>
     <color name="lightBlueBackground2">#fff2f8fc</color>
@@ -343,7 +343,7 @@
     <color name="translucentWhiteText">#e6ffffff</color>
     <color name="transparent">#00000000</color>
     <color name="transparent_bg">#80000000</color>
-    <color name="user_selected">#fff05a28</color>
+    <color name="user_selected">#eb5d62</color>
     <color name="videoIconDetailsBackground">#aa000000</color>
     <color name="vpi__background_holo_dark">#ff000000</color>
     <color name="vpi__background_holo_light">#fff3f3f3</color>

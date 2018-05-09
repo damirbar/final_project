@@ -26,6 +26,9 @@
     <string name="Type">User Type</string>
     <string name="send">Send</string>
     <string name="add_comment">Add comment</string>
+    <string name="home">Home</string>
+    <string name="open_drawer">Drawer Open</string>
+    <string name="close_drawer">Drawer Close</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

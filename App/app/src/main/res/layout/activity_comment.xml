@@ -4,18 +4,17 @@
     android:id="@+id/activity_comment"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/dashboard_chat_background"
     android:focusable="true"
     android:focusableInTouchMode="true">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
         android:layout_width="fill_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="?colorPrimary"
+        android:background="?attr/colorPrimaryDark"
         app:layout_scrollFlags="enterAlways|scroll"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
@@ -28,38 +27,43 @@
                 android:id="@+id/image_Button_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="19dp"
-                android:layout_marginRight="19dp"
                 android:background="@null"
-                android:rotation="180"
-                app:srcCompat="@drawable/ic_arrow_back_black_24dp"
-                android:contentDescription="TODO" />
+                android:contentDescription="TODO"
+                app:srcCompat="@drawable/intercom_back" />
 
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
 
-    <ListView
-        android:id="@+id/comments"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/activity_main_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button_panel"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tool_bar"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/documets_divider"
-        android:choiceMode="singleChoice"
-        android:divider="@color/documets_divider"
-        android:fastScrollEnabled="true"
-        android:focusableInTouchMode="false"
-        android:listSelector="@android:color/transparent"
-        android:scrollbarSize="2dp"
-        android:scrollbarThumbVertical="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" />
+        android:layout_below="@+id/tool_bar">
+
+        <ListView
+            android:id="@+id/comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button_panel"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tool_bar"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/documets_divider"
+            android:choiceMode="singleChoice"
+            android:divider="@color/documets_divider"
+            android:fastScrollEnabled="true"
+            android:focusableInTouchMode="false"
+            android:listSelector="@android:color/transparent"
+            android:scrollbarSize="2dp"
+            android:scrollbarThumbVertical="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <LinearLayout
         android:id="@+id/button_panel"
@@ -71,24 +75,12 @@
         android:paddingBottom="@dimen/top_margin8"
         android:paddingTop="@dimen/top_margin8">
 
-        <TextView
-            android:id="@+id/send_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="5.0dip"
-            android:layout_marginRight="5.0dip"
-            android:enabled="false"
-            android:gravity="center_vertical"
-            android:text="@string/send"
-            android:textColor="@android:color/black"
-            android:textSize="18.0sp" />
-
         <EditText
             android:id="@+id/com_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1.0"
             android:background="@drawable/chat_add_comment_btn"
             android:hint="@string/add_comment"
@@ -100,5 +92,17 @@
             android:textColor="@color/steelGrey"
             android:textColorHint="@color/secondary_comment_text"
             android:textSize="@dimen/button_font_size" />
+
+        <TextView
+            android:id="@+id/send_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="5.0dip"
+            android:layout_marginRight="5.0dip"
+            android:gravity="center_vertical"
+            android:text="@string/send"
+            android:textColor="@android:color/black"
+            android:textSize="18.0sp" />
+
     </LinearLayout>
 </RelativeLayout>

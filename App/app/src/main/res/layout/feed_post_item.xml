@@ -15,8 +15,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:orientation="vertical"
-        android:descendantFocusability="blocksDescendants">
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical">
 
         <ImageButton
             android:id="@+id/feed_item_menu"
@@ -27,9 +27,10 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="2.0dip"
             android:background="@null"
+            android:focusable="false"
             android:rotation="90"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_more_vert_black_24dp"/>
+            android:src="@drawable/ic_more_vert_black_24dp" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_image"
@@ -41,10 +42,11 @@
             android:layout_marginLeft="@dimen/padding8"
             android:layout_marginStart="@dimen/padding8"
             android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:focusable="false"
             android:padding="5dp"
             android:src="@drawable/default_user_image"
             app:siBorderColor="#cccccc"
-            app:siBorderWidth="2dp"/>
+            app:siBorderWidth="2dp" />
 
         <LinearLayout
             android:id="@+id/author_details"
@@ -57,15 +59,16 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_toEndOf="@id/user_image"
             android:layout_toRightOf="@id/user_image"
+            android:descendantFocusability="blocksDescendants"
             android:gravity="start"
-            android:orientation="vertical"
-            android:descendantFocusability="blocksDescendants">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/user_name"
                 android:layout_width="190.0dip"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
+                android:focusable="false"
                 android:gravity="start"
                 android:maxLines="2"
                 android:text="Shay Cohen"
@@ -77,6 +80,7 @@
                 android:id="@+id/creation_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:focusable="false"
                 android:text="3/3/18"
                 android:textColor="@color/secondary_post_text"
                 android:textSize="@dimen/caption_size" />
@@ -87,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="@dimen/box_feed_text_offset"
+                android:focusable="false"
                 android:textColor="@color/primary_text"
                 android:textColorLink="@color/groovy_blue"
                 android:textSize="@dimen/feed_font_size" />
@@ -96,81 +101,81 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/horizontal_margin8"
-                android:orientation="horizontal"
-                android:descendantFocusability="blocksDescendants">
+                android:descendantFocusability="blocksDescendants"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/comment_btn"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="-1dp"
-                    android:layout_marginRight="5dp"
                     android:layout_marginStart="5.0dip"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/bubble" />
+                    android:focusable="false"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"
+                    android:src="@drawable/shape_1_0_2_0" />
 
                 <TextView
                     android:id="@+id/comments_num"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:layout_gravity="center_vertical"
+                    android:focusable="false"
                     android:text="0"
                     android:textColor="@color/secondary_post_text"
                     android:textSize="@dimen/box_name_size" />
 
-                <ImageView
-                    android:id="@+id/direct_btn_dislike"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="20.0dip"
-                    android:layout_marginLeft="25dip"
-                    android:layout_marginRight="5dp"
-                    android:padding="1dp"
-                    android:paddingEnd="@dimen/padding8"
-                    android:paddingLeft="@dimen/padding8"
-                    android:paddingStart="@dimen/padding8"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/like" />
+                <CheckBox
+                    android:id="@+id/like_cbx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="25dp"
+                    android:layout_toEndOf="@+id/view_text_new_post"
+                    android:background="@null"
+                    android:button="@drawable/like_checkbox"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7" />
 
                 <TextView
                     android:id="@+id/like_num"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:layout_gravity="center_vertical"
+                    android:focusable="false"
                     android:text="0"
                     android:textColor="@color/secondary_post_text"
                     android:textSize="@dimen/box_name_size" />
 
-                <ImageView
-                    android:id="@+id/direct_btn_like"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="20.0dip"
+                <CheckBox
+                    android:id="@+id/dislike_cbx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
                     android:layout_marginLeft="25dp"
-                    android:layout_marginRight="5dp"
-                    android:padding="1dp"
-                    android:paddingEnd="@dimen/padding8"
-                    android:paddingLeft="@dimen/padding8"
-                    android:paddingStart="@dimen/padding8"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/unlike" />
+                    android:layout_toEndOf="@+id/view_text_new_post"
+                    android:background="@null"
+                    android:button="@drawable/dislike_checkbox"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7" />
 
                 <TextView
                     android:id="@+id/dislike_num"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:layout_gravity="center_horizontal"
+                    android:focusable="false"
                     android:text="0"
                     android:textColor="@color/secondary_post_text"
-                    android:textSize="@dimen/box_name_size" />
+                    android:textSize="@dimen/box_name_size"
+                    android:visibility="invisible" />
 
                 <TextView
                     android:id="@+id/comments_count"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:focusable="false"
                     android:gravity="end|center"
                     android:paddingEnd="@dimen/padding8"
                     android:paddingLeft="@dimen/padding8"
@@ -187,7 +192,7 @@
                 android:layout_height="match_parent"
                 android:layout_below="@id/author_details"
                 android:background="#ffe5e5e5"
-                android:descendantFocusability="blocksDescendants"/>
+                android:descendantFocusability="blocksDescendants" />
         </LinearLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

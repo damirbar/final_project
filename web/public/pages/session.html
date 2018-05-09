@@ -26,12 +26,12 @@
 
     <div class="container connected-container" ng-show="isConnectedToSession">
 
-
-        <video controls
-               ng-src="http://localhost:3000/sessions/getVideo?sid=1234&token={{getToken()}}"
-               width="620">
-        </video>
-
+        <div ng-if="isConnectedToSession">
+            <video controls
+                ng-src="http://localhost:3000/sessions/getVideo?sid=1234&token={{getToken()}}"
+                   width="620">
+            </video>
+        </div>
 
         <div id="msg-cnt" class="messages-container">
 

@@ -1,12 +1,23 @@
 package com.ariel.wizer.model;
 
-public class SessionMessage {
+import java.io.Serializable;
+
+public class SessionMessage  {
 
     private String sid;
     private String email;
     private String type;
     private int rating;
+    private String _id;
     private String body[];
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public String getSid() {
         return sid;

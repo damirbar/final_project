@@ -1,13 +1,18 @@
 package com.ariel.wizer.session;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
@@ -18,6 +23,7 @@ import com.ariel.wizer.network.ServerResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -29,13 +35,14 @@ public class CommentActivity extends AppCompatActivity {
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
     private ListView commentsList;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private EditText mComtText;
     private ImageButton buttonBack;
     private TextView buttonSend;
     private final String answer = "answer";
     private String sid;
-//    private String guid;
+    private String msid;
 
     private SessionCommentsAdapter mAdapter;
 
@@ -47,10 +54,28 @@ public class CommentActivity extends AppCompatActivity {
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.activity_comment));
-        sid = getIntent().getStringExtra("sid");
-//        guid = getIntent().getStringExtra("guid");
+
+        if (!getData()) {
+            finish();
+        }
         initViews();
+
+//        SessionMessage msg = (SessionMessage) getIntent().getSerializableExtra("msg");
+
         pullComments();
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pullComments();
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 1000);
+            }
+        });
     }
 
     private void initViews() {
@@ -58,10 +83,25 @@ public class CommentActivity extends AppCompatActivity {
         mComtText = (EditText) findViewById(R.id.com_text);
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         buttonSend = (TextView) findViewById(R.id.send_btn);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
         buttonSend.setOnClickListener(view -> attemptSendCom());
         buttonBack.setOnClickListener(view -> goBack());
     }
 
+    private boolean getData() {
+        if (getIntent().getExtras() != null) {
+            String _sid = getIntent().getExtras().getString("sid");
+            String _msid = getIntent().getExtras().getString("msid");
+            if(_sid != null||_msid != null) {
+                sid = _sid;
+                msid = _msid;
+                return true;
+            } else
+                return false;
+        }
+        else
+            return false;
+    }
 
     private void pullComments(){
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getMessages(sid)
@@ -71,14 +111,13 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void handleResponsePull(Session session) {
-        if(session.getMessages().length == 0){
-        }
-        else{
-            mAdapter = new SessionCommentsAdapter(this, new ArrayList<>(Arrays.asList(session.getMessages())));
+        if(! (session.getMessages().length == 0)){
+            ArrayList<SessionMessage> saveComments = new ArrayList<>(Arrays.asList(session.getMessages()));
+            Collections.reverse(saveComments);
+            mAdapter = new SessionCommentsAdapter(this, new ArrayList<>(saveComments));
             commentsList.setAdapter(mAdapter);
         }
     }
-
 
     private void goBack() {
         finish();
@@ -105,29 +144,8 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void handleResponseSendCom(Response response) {
-        mComtText.setText(null);
-    }
-
-
-    /**
-     * Hides the soft keyboard
-     */
-    public void hideSoftKeyboard() {
-        if(getCurrentFocus()!=null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        }
-    }
-
-//    /**
-//     * Shows the soft keyboard
-//     */
-//    public void showSoftKeyboard(View view) {
-//        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-//        view.requestFocus();
-//        inputMethodManager.showSoftInput(view, 0);
-//    }
-
+        mComtText.setText("");
+        pullComments(); }
 
     @Override
     protected void onDestroy() {

@@ -16,6 +16,8 @@ import java.io.IOException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.HttpException;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -94,7 +96,7 @@ public class RetrofitRequests {
 
             Request original = chain.request();
             Request.Builder builder = original.newBuilder()
-                    .addHeader("x-access-token", this.mToken)
+                    .addHeader(Constants.TOKEN_HEADER, this.mToken)
                     .method(original.method(),original.body());
             return  chain.proceed(builder.build());
 

@@ -36,13 +36,13 @@ public class PostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.laout_post));
-        sid = getIntent().getStringExtra("sid");
+        if (!getData()) {
+            finish();
+        }
         initViews();
-
     }
 
     private void initViews() {
@@ -51,6 +51,19 @@ public class PostActivity extends AppCompatActivity {
         buttonSend = (ImageButton) findViewById(R.id.imageButton);
         buttonSend.setOnClickListener(view -> attemptSendPost());
         buttonBack.setOnClickListener(view -> goBack());
+    }
+
+    private boolean getData() {
+        if (getIntent().getExtras() != null) {
+            String _sid = getIntent().getExtras().getString("sid");
+            if(_sid != null) {
+                sid = _sid;
+                return true;
+            } else
+                return false;
+        }
+        else
+            return false;
     }
 
     private void goBack() {
@@ -78,10 +91,10 @@ public class PostActivity extends AppCompatActivity {
     }
 
     private void handleResponseSendPost(Response response) {
-        Intent i = new Intent(this,SessionFeedFragment.class);
-        startActivity(i);
         finish();
     }
+
+
 
     @Override
     protected void onDestroy() {

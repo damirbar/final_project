@@ -1,5 +1,5 @@
 
-package com.ariel.wizer.fragments;
+package com.ariel.wizer.demo;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ariel.wizer.R;
+import com.ariel.wizer.fragments.ChangePasswordDialog;
+
 public class ProfileFragment extends Fragment  {
 
     private Button mBtChangePassword;

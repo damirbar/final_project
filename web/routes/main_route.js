@@ -10,7 +10,7 @@ router.all("*" , function (req, res, next) {
         return next();
     }
     var token = req.headers["x-access-token"] || req.query.token;
-    if (!token && req.url!='/sessions/video?sid=1234') {
+    if (!token /*&& req.url!='/sessions/video?sid=1234'*/) {
         // res.status(200).json({message: 'Unauthorized!'});
         res.sendFile(path.join(__dirname + "/../index.html"));
     }

@@ -1,17 +1,27 @@
 package com.ariel.wizer.network;
 
+import android.net.Uri;
+
 import com.ariel.wizer.model.ChatChannel;
 import com.ariel.wizer.model.ChatMessage;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.Session;
 import com.ariel.wizer.model.SessionMessage;
 import com.ariel.wizer.model.User;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
+import retrofit2.http.Streaming;
 import rx.Observable;
+
+import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 public interface RetrofitInterface {
 
@@ -46,6 +56,9 @@ public interface RetrofitInterface {
     @GET("sessions/change-val")
     Observable<Response> changeVal(@Query("id") String id, @Query("val") String val);
 
+    @GET("sessions/rate-message")
+    Observable<Response> rateMessage(@Query("sid") String sid, @Query("msgid") String msgid, @Query("rating") int rating);
+
     @GET("sessions/get-students-count")
     Observable<Response> getStudentsCount(@Query("id") String id);
 
@@ -60,6 +73,14 @@ public interface RetrofitInterface {
 
     @GET("sessions/disconnect")
     Observable<Response> disconnect(@Query("sid") String sid);
+
+    /////Session-video/////
+
+    @GET("sessions/getVideo")
+    @Streaming
+    Observable<ResponseBody> getVideo(@Query("sid") String sid);
+
+
 
     /////chat/////
     @GET("chat/get-channels")
