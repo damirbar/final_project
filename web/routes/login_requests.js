@@ -2,7 +2,6 @@ const router = require('express').Router();
 const expressValidator = require('express-validator');
 const User = require("../schemas/user");
 const Student = require("../schemas/student");
-const Teacher = require("../schemas/teacher");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt-nodejs');
 const auth = require('basic-auth');
@@ -42,6 +41,7 @@ router.post("/auth-login-user-pass", function (req, res) {
                         console.log(err);
                     } else {
                         console.log("access token was successfully updated");
+                        res.status(200).send({message: 'welcome to Wizer!', email: user.email, first_name:user.first_name, last_name:user.last_name, token: token})
                     }
                 });
             } else {
