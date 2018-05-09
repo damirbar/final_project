@@ -29,6 +29,9 @@ router.post("/auth-login-user-pass", function (req, res) {
             console.log("The error: " + err);
             return err;
         } else {
+            if(!user){
+                return res.status(400).send({message: 'no such user!'})
+            }
             console.log(user);
             console.log("Found the user " + credentials.name);
 
@@ -75,14 +78,14 @@ router.post("/new-user", function (req, res) {
     req.checkBody("email", "Email is required").notEmpty();
     req.checkBody("email", "Email is not valid").isEmail();
     req.checkBody("password", "Password is required").notEmpty();
-    // req.checkBody("password_cnfrm", "Bouth passwords are required").notEmpty();
+    req.checkBody("role", "role is required").notEmpty();
     // req.checkBody("password_cnfrm", "Passwords do not match").equals(req.body.password);
 
     const errors = req.validationErrors();
 
     if (errors) {
-        console.log(error);
-        res.status(400).send("erans error");
+        console.log(errors);
+        res.status(400).send(errors[0].msg);
     }
     else {
         const newUser = new User({
