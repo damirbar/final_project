@@ -1,12 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var path = require("path");
-
 var Course = require("../schemas/course");
 var File = require("../schemas/file");
 
 router.post("/add-course", function (req, res) {
-    var course = new Course(req.body);
+    const course = new Course(req.body);
     course.save(function (err) {
         if (err) {
             if (err.name === 'MongoError' && err.code === 11000) {
@@ -37,7 +35,6 @@ router.post("/add-course", function (req, res) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 router.get('/get-all-courses', function(req,res,next){
-    var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     Course.find({}, function(err,courses){
         if(err) {
             console.log("Error while finding courses");
@@ -54,15 +51,15 @@ router.get('/get-all-courses', function(req,res,next){
 
 router.post('/get-all-courses-by-id', function(req,res,next){ // You get: Array of IDs
 
-    var ObjectID     = require('mongodb').ObjectID;
+    const ObjectID     = require('mongodb').ObjectID;
 
-    var coursesIds = req.body.courses;
+    const coursesIds = req.body.courses;
 
-    var ids = coursesIds.map(function(crs) {
+    const ids = coursesIds.map(function(crs) {
         return ObjectID(String(crs));
     });
 
-    var courses = [];
+    let courses = [];
 
     function addToCourses(coursesToAdd) {
         courses = coursesToAdd;
@@ -85,8 +82,8 @@ router.post('/get-all-courses-by-id', function(req,res,next){ // You get: Array 
 
 router.get('/search-by-name', function(req,res,next){
 
-    var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-    var course_name = req.query.course_name;
+    const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+    const course_name = req.query.course_name;
 
     console.log("Got a search for " + course_name);
     console.log("Got a " + req.method + " request from " + ip);
@@ -109,7 +106,7 @@ router.get('/search-by-name', function(req,res,next){
 
 
 router.get('/file-system', function(req,res){
-        var id = req.query.id;
+    const id = req.query.id;
         console.log("Got " + id);
         Course.findOne({_id: id},function(err,course){
             console.log("finding one");
@@ -118,7 +115,7 @@ router.get('/file-system', function(req,res){
                console.log("finding");
                if(err) throw err;
                console.log("filtering");
-                var ans = filesys.filter(function(file){
+               const ans = filesys.filter(function(file){
                     return file.course_id === id;
                 });
                console.log(ans);
@@ -128,8 +125,8 @@ router.get('/file-system', function(req,res){
 });
 
 router.post('/upload-file',function(req,res){
-    var course_id = req.query.course_id;
-    var file = new File(req.body);
+    const course_id = req.query.course_id;
+    const file = new File(req.body);
     file.course_id = course_id;
     file.save(function (err){
         if (err) {
@@ -157,9 +154,8 @@ router.post('/upload-file',function(req,res){
 
 
 router.get('/file-system/download-file',function(req,res){
-        var file_id = req.query.file_id;
-        var course_id = req.query.course_id;
-
+    const file_id = req.query.file_id;
+    const course_id = req.query.course_id;
         File.findOne({_id:file_id,course_id:course_id},function (err,file) {
                     if(err) throw err;
                     console.log("found " + file.url);
