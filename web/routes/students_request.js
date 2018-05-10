@@ -18,13 +18,23 @@ router.get("/get-profile",function (req, res, next) {
     });
 });
 
-router.get("/edit-profile",function (req, res, next) {
+router.post("/edit-profile",function (req, res, next) {
     const verified = req.verifiedEmail;
-    const updatedUser = req.user;
+    const updatedUser = req.body.user;
     User.findOne({email: verified}, function (err, user) {
         if (err) return next(err);
         if(user) {
-            user = updatedUser;
+            // user = updatedUser;
+
+            user.first_name = updatedUser.first_name ? updatedUser.first_name : user.first_name;
+            user.last_name = updatedUser.last_name ? updatedUser.last_name : user.last_name;
+            user.display_name = updatedUser.display_name ? updatedUser.display_name : user.display_name;
+            user.country = updatedUser.country ? updatedUser.country : user.country;
+            user.address = updatedUser.address ? updatedUser.address : user.address;
+            user.age = updatedUser.age ? updatedUser.age : user.age;
+            user.gender = updatedUser.gender ? updatedUser.gender : user.gender;
+
+            user.last_modified = Date.now();
             user.save();
             return res.status(200).json(user);
         }
