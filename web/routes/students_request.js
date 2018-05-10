@@ -33,6 +33,7 @@ router.post("/edit-profile",function (req, res, next) {
             user.address = updatedUser.address ? updatedUser.address : user.address;
             user.age = updatedUser.age ? updatedUser.age : user.age;
             user.gender = updatedUser.gender ? updatedUser.gender : user.gender;
+            user.about_me = updatedUser.about_me ? updatedUser.about_me : user.about_me;
 
             user.last_modified = Date.now();
             user.save();
