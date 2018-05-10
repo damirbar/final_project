@@ -151,9 +151,6 @@ router.post("/create-session", function (req, res) {
     });
 });
 
-// TODO -> This is currently not updating the database
-
-//sefi!!!
 router.get("/rate-message", function (req, res) {
     const rating = req.query.rating;
     const sess_id = req.query.sid;
@@ -162,7 +159,6 @@ router.get("/rate-message", function (req, res) {
     let found = false;
     let place = 0;
     let newArray = [];
-    //still on it
     User.findOne({email: decoded}, function (err, user) {
         if (err) throw err;
         Session.findOne({sid: sess_id}, function (err, sess) {
@@ -194,32 +190,19 @@ router.get("/rate-message", function (req, res) {
             }
 
             newArray = sess.messages[place].ratings;
-            // let likes=0;
-            // let dislikes=0;
-            // for (let i =0;i<newArray.length;i++){
-            //     if(newArray[i].val === "0"){
-            //         newArray.splice(i);
-            //     }
-            //     else if(newArray[i].val === "1"){
-            //         sess.messages[place].likes++;
-            //     }
-            //     else{
-            //         sess.messages[place].dislikes++;
-            //     }
-            // }
-            // sess.save(function () {
-            //     const query = {};
-            //     const ans = "messages." + place + ".ratings";
-            //     query["sid"] = sess_id;
-            //     query["$set"] = {};
-            //     query["$set"][ans] = newArray;
-            //     Session.update(query, function (err) {
-            //         if (err) return err;
-            //         //update likes and dislikes and remove 0 counts;
-            //         res.status(200).json({message: "successful changed likes of message " + mess_id});
-            //         console.log("successful changed rating of likes " + mess_id);
-            //     });
-            // });
+            let likes=0;
+            let dislikes=0;
+            for (let i =0;i<newArray.length;i++){
+                if(newArray[i].val === "0"){
+                    newArray.splice(i);
+                }
+                else if(newArray[i].val === "1"){
+                    likes++;
+                }
+                else{
+                    dislikes++;
+                }
+            }
             const query = {};
             const ans = "messages." + place + ".ratings";
             query["sid"] = sess_id;
@@ -231,30 +214,18 @@ router.get("/rate-message", function (req, res) {
                 res.status(200).json({message: "successful changed likes of message " + mess_id});
                 console.log("successful changed rating of likes " + mess_id);
             });
-            //test if exists
-            //chang or add
+            const newQuery = {};
+            const likers = "messages." + place + ".likes";
+            const dislikers = "messages." + place + ".dislikes";
+            newQuery["sid"] = sess_id;
+            newQuery["$set"] = {};
+            newQuery["$set"][likers] = likes;
+            newQuery["$set"][dislikers] = dislikes;
+            Session.update(newQuery, function () {
+                if (err) return err;
+            })
         });
     });
-
-    // if (found){
-    //     const ans = "messages." + place + ".likes";
-    //     const query = {};
-    //     query["sid"]= sess_id;// {$inc: {ans: 1}}
-    //     query["$inc"]= {};
-    //     query["$inc"][ans] = 1;
-    //     Session.update(query, function (err) {
-    //         if (err) {
-    //             return err;
-    //         }
-    //         res.status(200).json({message: "successful changed likes of message " + mess_id});
-    //         console.log("successful changed rating of likes " + mess_id);
-    //     });
-    // }
-    // else{
-    //     res.status(400).json({message: "failed to changed likes of message" + mess_id});
-    //
-    // }
-    // });
 });
 
 //erans work receiving messages (Q/A) in session
