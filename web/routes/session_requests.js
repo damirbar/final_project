@@ -60,22 +60,18 @@ router.post("/connect-session", function (req, res) {
 });
 
 router.get("/get-students-count", function (req, res, next) {
-    var id = req.query.id;
-
+    const id = req.query.sid;
     Session.findOne({sid: id}, function (err, sess) {
         if (err) return next(err);
-
         res.status(200).json({message: sess.students.length});
     });
 });
 
 
 router.get("/get-students-rating", function (req, res, next) {
-    var id = req.query.id;
-
+    const id = req.query.sid;
     Session.findOne({sid: id}, function (err, sess) {
         if (err) return next(err);
-
         res.status(200).json({message: sess.curr_rating});
     });
 });
@@ -166,7 +162,6 @@ router.get("/rate-message", function (req, res) {
             if (!sess) {
                 return res.status(400).json({message: "session: " + mess_id + "not found"});
             }
-            //test if exists
             for (let i = 0; i < sess.messages.length; ++i) {
                 if (sess.messages[i]._id == mess_id) {
                     place = i;
@@ -176,7 +171,6 @@ router.get("/rate-message", function (req, res) {
                             sess.messages[i].ratings[j] = {};
                             sess.messages[i].ratings[j]["id"] = user.id;
                             sess.messages[i].ratings[j]["val"] = rating;
-
                         }
                     }
                     if (!found) {
@@ -188,18 +182,17 @@ router.get("/rate-message", function (req, res) {
                     }
                 }
             }
-
             newArray = sess.messages[place].ratings;
-            let likes=0;
-            let dislikes=0;
-            for (let i =0;i<newArray.length;i++){
-                if(newArray[i].val === "0"){
+            let likes = 0;
+            let dislikes = 0;
+            for (let i = 0; i < newArray.length; i++) {
+                if (newArray[i].val === "0") {
                     newArray.splice(i);
                 }
-                else if(newArray[i].val === "1"){
+                else if (newArray[i].val === "1") {
                     likes++;
                 }
-                else{
+                else {
                     dislikes++;
                 }
             }
@@ -228,12 +221,9 @@ router.get("/rate-message", function (req, res) {
     });
 });
 
-//erans work receiving messages (Q/A) in session
 router.post("/messages", function (req, res) {
-
     const decoded = req.verifiedEmail;
-
-    var msg = new Session_Message({
+    const msg = new Session_Message({
             sid: req.body.sid,
             type: req.body.type,
             body: req.body.body,
@@ -241,10 +231,8 @@ router.post("/messages", function (req, res) {
             date: Date.now()
         }
     );
-
     Session.findOne({sid: msg.sid}, function (err, sess) {
         if (err) return next(err);
-
         for (let i = 0; i < sess.students.length; ++i) {
             if (sess.students[i].email && sess.students[i].email === decoded) {
                 msg.name = sess.students[i].display_name;
@@ -257,9 +245,7 @@ router.post("/messages", function (req, res) {
             if (err) return next(err);
             console.log("Updates value successfully to " + updated_sess.curr_rating);
         });
-
     });
-
     msg.save(function (err) {
         if (err) {
             console.log(err);
@@ -274,18 +260,36 @@ router.post("/messages", function (req, res) {
 router.get("/get-all-messages", function (req, res) {
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
-
         res.status(200).json({messages: sess.messages});
+    });
+});
+
+//test this
+router.get("/get-all-user-messages", function (req, res) {
+    let messages = [];
+    const decoded = req.verifiedEmail;
+    Session.findOne({sid: req.query.sid}, function (err, sess) {
+        if (err) return next(err);
+        User.findOne({email:decoded}, function (err, user) {
+          if (err) return err;
+          for(let i=0; i<sess.messages.length;++i){
+            for(let j =0;j<sess.messages[i].ratings.length;++j){
+                if(sess.messages[i].ratings[j].id == user.id){
+                    messages.push(sess.messages[i]);
+                }
+            }
+          }
+          res.status(200).json({messages: messages});
+        });
     });
 });
 
 
 router.get("/disconnect", function (req, res) {
-    console.log("\t\t\n\n\t " + req.verifiedEmail);
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
-        var found = false;
-        for (var i = 0; i < sess.students.length; ++i) {
+        let found = false;
+        for (let i = 0; i < sess.students.length; ++i) {
             if (sess.students[i].email === req.verifiedEmail) {
                 found = true;
                 sess.students.splice(i, 1);
@@ -322,20 +326,18 @@ router.get('/postVideo', function (req, res) {
     // });
     //    good
 
-    var ObjectID = require('mongodb').ObjectID,
+    const ObjectID = require('mongodb').ObjectID,
         GridStore = require('mongodb').GridStore,
-        assert = require('assert');
-
-    var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
-    var mongo = require('mongodb');
+        mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin',
+        mongo = require('mongodb');
 
     mongo.MongoClient.connect(mongoDB, function (err, db) {
         // Our file ID
-        var fileId = new ObjectID();
+        const fileId = new ObjectID();
 
         // Open a new file
-        var gridStore = new GridStore(db, fileId, 'session:' + req.query.sid + ' video.mp4', 'w');
-        var source = '/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4';
+        const gridStore = new GridStore(db, fileId, 'session:' + req.query.sid + ' video.mp4', 'w');
+        const source = '/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4';
 
         // Open the new file
         gridStore.open(function (err, gridStore) {
@@ -359,10 +361,8 @@ router.get('/getVideo', function (req, res) {
 
     const GridStore = require('mongodb').GridStore;
     const db = mongoose.connection;
-
     const ObjectID = require('mongodb').ObjectID;
     db.options = 'PRIMARY';
-    console.log('GET request');
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
         if (sess.videoID !== "") {
