@@ -178,9 +178,9 @@ router.get("/rate-message", function (req, res) {
                         if (sess.messages[i].ratings[j].id == user.id) {
                             found = true;
                             sess.messages[i].ratings[j] = {};
-                            stud["id"] = user.id;
-                            stud["val"] = rating;
-                            sess.messages[i].ratings.push(stud);
+                            sess.messages[i].ratings[j]["id"] = user.id;
+                            sess.messages[i].ratings[j]["val"] = rating;
+
                         }
                     }
                     if (!found) {
@@ -192,7 +192,34 @@ router.get("/rate-message", function (req, res) {
                     }
                 }
             }
-            newArray = sess.messages[place];
+
+            newArray = sess.messages[place].ratings;
+            // let likes=0;
+            // let dislikes=0;
+            // for (let i =0;i<newArray.length;i++){
+            //     if(newArray[i].val === "0"){
+            //         newArray.splice(i);
+            //     }
+            //     else if(newArray[i].val === "1"){
+            //         sess.messages[place].likes++;
+            //     }
+            //     else{
+            //         sess.messages[place].dislikes++;
+            //     }
+            // }
+            // sess.save(function () {
+            //     const query = {};
+            //     const ans = "messages." + place + ".ratings";
+            //     query["sid"] = sess_id;
+            //     query["$set"] = {};
+            //     query["$set"][ans] = newArray;
+            //     Session.update(query, function (err) {
+            //         if (err) return err;
+            //         //update likes and dislikes and remove 0 counts;
+            //         res.status(200).json({message: "successful changed likes of message " + mess_id});
+            //         console.log("successful changed rating of likes " + mess_id);
+            //     });
+            // });
             const query = {};
             const ans = "messages." + place + ".ratings";
             query["sid"] = sess_id;
