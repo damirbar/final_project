@@ -12,6 +12,15 @@ public class User {
     private String token;
     private String age;
     private String gender;
+    private String role = "teacher";
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getGender() {
         return gender;
