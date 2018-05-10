@@ -14,6 +14,7 @@
     <color name="gray">#97a8ad</color>
     <color name="colorBack">#355796</color>
     <color name="yellow">#FFFF00</color>
+    <color name="bottom_black_bgcolor">#90000000</color>
     <color name="fuchsia">#FF00FF</color>
     <color name="silver">#c0c0c0</color>
     <color name="olive">#808000</color>
