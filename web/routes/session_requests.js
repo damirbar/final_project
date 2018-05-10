@@ -40,7 +40,7 @@ router.post("/connect-session", function (req, res) {
                     });
                     sess.save()
                         .then(function (item) {
-                            console.log("Saved " + user.email+" to session: " + id);
+                            console.log("Saved " + user.email + " to session: " + id);
                             res.status(200).json({message: 'Welcome to Class !', session: sess});
                         })
                         .catch(function (err) {
@@ -48,7 +48,7 @@ router.post("/connect-session", function (req, res) {
                         });
                 }
                 else {
-                     res.status(200).json({message: 'Welcome back to Class !', session: sess});
+                    res.status(200).json({message: 'Welcome back to Class !', session: sess});
                 }
 
             });
@@ -155,18 +155,79 @@ router.post("/create-session", function (req, res) {
 
 //sefi!!!
 router.get("/rate-message", function (req, res) {
+    const rating = req.query.rating;
     const sess_id = req.query.sid;
     const mess_id = req.query.msgid;
-    const rating = req.query.rating;
-
-    //Increments the first message of the session only
+    const decoded = req.verifiedEmail;
+    let found = false;
+    let place = 0;
+    let newArray = [];
     //still on it
-    Session.update({sid: sess_id}, {$inc: {"messages.0.rating": 1}} , function(err){
-        if(err){
-            return err;
-        }
+    User.findOne({email: decoded}, function (err, user) {
+        if (err) throw err;
+        Session.findOne({sid: sess_id}, function (err, sess) {
+            if (err) return next(err);
+            if (!sess) {
+                return res.status(400).json({message: "session: " + mess_id + "not found"});
+            }
+            //test if exists
+            for (let i = 0; i < sess.messages.length; ++i) {
+                if (sess.messages[i]._id == mess_id) {
+                    place = i;
+                    for (let j = 0; j < sess.messages[i].ratings.length; ++j) {
+                        if (sess.messages[i].ratings[j].id == user.id) {
+                            found = true;
+                            sess.messages[i].ratings[j] = {};
+                            stud["id"] = user.id;
+                            stud["val"] = rating;
+                            sess.messages[i].ratings.push(stud);
+                        }
+                    }
+                    if (!found) {
+                        stud = {};
+                        stud["id"] = user.id;
+                        stud["val"] = rating;
+                        sess.messages[i].ratings.push(stud);
+                        newArray = sess.messages[i].ratings;
+                    }
+                }
+            }
+            newArray = sess.messages[place];
+            const query = {};
+            const ans = "messages." + place + ".ratings";
+            query["sid"] = sess_id;
+            query["$set"] = {};
+            query["$set"][ans] = newArray;
+            Session.update(query, function (err) {
+                if (err) return err;
+                //update likes and dislikes and remove 0 counts;
+                res.status(200).json({message: "successful changed likes of message " + mess_id});
+                console.log("successful changed rating of likes " + mess_id);
+            });
+            //test if exists
+            //chang or add
+        });
     });
 
+    // if (found){
+    //     const ans = "messages." + place + ".likes";
+    //     const query = {};
+    //     query["sid"]= sess_id;// {$inc: {ans: 1}}
+    //     query["$inc"]= {};
+    //     query["$inc"][ans] = 1;
+    //     Session.update(query, function (err) {
+    //         if (err) {
+    //             return err;
+    //         }
+    //         res.status(200).json({message: "successful changed likes of message " + mess_id});
+    //         console.log("successful changed rating of likes " + mess_id);
+    //     });
+    // }
+    // else{
+    //     res.status(400).json({message: "failed to changed likes of message" + mess_id});
+    //
+    // }
+    // });
 });
 
 //erans work receiving messages (Q/A) in session
@@ -215,6 +276,7 @@ router.post("/messages", function (req, res) {
 router.get("/get-all-messages", function (req, res) {
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
+
         res.status(200).json({messages: sess.messages});
     });
 });
@@ -274,7 +336,7 @@ router.get('/postVideo', function (req, res) {
         var fileId = new ObjectID();
 
         // Open a new file
-        var gridStore = new GridStore(db, fileId, 'session:' +req.query.sid+' video.mp4', 'w');
+        var gridStore = new GridStore(db, fileId, 'session:' + req.query.sid + ' video.mp4', 'w');
         var source = '/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4';
 
         // Open the new file
@@ -305,7 +367,7 @@ router.get('/getVideo', function (req, res) {
     console.log('GET request');
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
-        if(sess.videoID!== "") {
+        if (sess.videoID !== "") {
             new GridStore(db, new ObjectID(sess.videoID), 'r').open(function (err, GridFile) {
                 if (!GridFile) {
                     console.log("video" + " not found!!!");
@@ -333,7 +395,7 @@ function StreamGridFile(req, res, GridFile) {
         const partialstart = parts[0];
         const partialend = parts[1];
         let start = parseInt(partialstart, 10);
-        const end = partialend ? parseInt(partialend, 10) : GridFile.length -1;
+        const end = partialend ? parseInt(partialend, 10) : GridFile.length - 1;
         const chunksize = (end - start) + 1;
         console.log('Range ', start, '-', end);
         res.writeHead(206, {
@@ -350,7 +412,7 @@ function StreamGridFile(req, res, GridFile) {
             stream.on('data', function (buff) {
                 // count data to abort streaming if range-end is reached
                 // perhaps theres a better way?
-                start += buff.length-1;
+                start += buff.length - 1;
                 if (start >= end) {
                     // enough data send, abort
                     GridFile.close();
