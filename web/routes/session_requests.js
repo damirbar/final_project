@@ -9,28 +9,22 @@ var Student = require("../schemas/student");
 var User = require("../schemas/user");
 
 router.post("/connect-session", function (req, res) {
-
     const decoded = req.verifiedEmail;
     const id = req.body.sid;
     const name = req.body.name;
 
     Session.findOne({sid: id}, function (err, sess) {
         if (err) throw err;
-
         if (sess) {
-
             User.findOne({email: decoded}, function (err, user) {
                 if (err) throw err;
-
                 let exists = false;
                 for (let i = 0; i < sess.students.length; ++i) {
                     if (sess.students[i].id_num == user.id) {
                         exists = true;
                         break;
                     }
-
                 }
-
                 if (!exists) {
                     sess.students.push({
                         rating_val: 1,
@@ -50,7 +44,6 @@ router.post("/connect-session", function (req, res) {
                 else {
                     res.status(200).json({message: 'Welcome back to Class !', session: sess});
                 }
-
             });
         }
         else {
@@ -76,6 +69,7 @@ router.get("/get-students-rating", function (req, res, next) {
     });
 });
 
+
 router.get("/change-val", function (req, res, next) { // Expect 0 or 1
     const id = req.query.id;
     const val = req.query.val;
@@ -85,17 +79,13 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
     // We can't allow the user to change the rating more than one up or one down.
 
     const token = req.headers['x-access-token'];
-
     console.log("token = " + token);
     // console.log("cred.user = " + cred.user);
     Student.find({accessToken: token}, function (err, student) {
         if (err) next(err);
-
         console.log("The student is: " + JSON.stringify(student));
-
         Session.find({sid: id}, function (err, sess) {
             if (err) next(err);
-
             let studs = sess.students;
             for (let i = 0; i < studs.length; ++i) {
                 if (studs[i].email === student.email && studs[i].rating_val !== val) {
@@ -105,20 +95,15 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
         });
     });
 
-
     Session.findOne({sid: id}, function (err, sess) {
         if (err) return next(err);
-
         sess.curr_rating = (val === 1 ? (sess.curr_rating + 1) : (sess.curr_rating - 1));
-
         sess.save(function (err, updated_sess) {
             if (err) return next(err);
             console.log("Updates value successfully to " + updated_sess.curr_rating);
         });
-
         res.json(sess.curr_rating);
     });
-
 });
 
 
@@ -147,77 +132,94 @@ router.post("/create-session", function (req, res) {
     });
 });
 
+
+
 router.get("/rate-message", function (req, res) {
+
     const rating = req.query.rating;
     const sess_id = req.query.sid;
-    const mess_id = req.query.msgid;
+    const mess_id = new mongoose.Types.ObjectId(req.query.msgid);
     const decoded = req.verifiedEmail;
+
+    console.log('message id ' + mess_id);
+
     let found = false;
     let place = 0;
     let newArray = [];
     User.findOne({email: decoded}, function (err, user) {
         if (err) throw err;
-        Session.findOne({sid: sess_id}, function (err, sess) {
-            if (err) return next(err);
-            if (!sess) {
-                return res.status(400).json({message: "session: " + mess_id + "not found"});
+
+        Session_Message.update({_id: mess_id}, {$inc: {rating: 1}}, function(err){
+            if(err){
+                console.log(err);
+                return err;
             }
-            for (let i = 0; i < sess.messages.length; ++i) {
-                if (sess.messages[i]._id == mess_id) {
-                    place = i;
-                    for (let j = 0; j < sess.messages[i].ratings.length; ++j) {
-                        if (sess.messages[i].ratings[j].id == user.id) {
-                            found = true;
-                            sess.messages[i].ratings[j] = {};
-                            sess.messages[i].ratings[j]["id"] = user.id;
-                            sess.messages[i].ratings[j]["val"] = rating;
-                        }
-                    }
-                    if (!found) {
-                        stud = {};
-                        stud["id"] = user.id;
-                        stud["val"] = rating;
-                        sess.messages[i].ratings.push(stud);
-                        newArray = sess.messages[i].ratings;
-                    }
-                }
-            }
-            newArray = sess.messages[place].ratings;
-            let likes = 0;
-            let dislikes = 0;
-            for (let i = 0; i < newArray.length; i++) {
-                if (newArray[i].val === "0") {
-                    newArray.splice(i);
-                }
-                else if (newArray[i].val === "1") {
-                    likes++;
-                }
-                else {
-                    dislikes++;
-                }
-            }
-            const query = {};
-            const ans = "messages." + place + ".ratings";
-            query["sid"] = sess_id;
-            query["$set"] = {};
-            query["$set"][ans] = newArray;
-            Session.update(query, function (err) {
-                if (err) return err;
-                //update likes and dislikes and remove 0 counts;
-                res.status(200).json({message: "successful changed likes of message " + mess_id});
-                console.log("successful changed rating of likes " + mess_id);
-            });
-            const newQuery = {};
-            const likers = "messages." + place + ".likes";
-            const dislikers = "messages." + place + ".dislikes";
-            newQuery["sid"] = sess_id;
-            newQuery["$set"] = {};
-            newQuery["$set"][likers] = likes;
-            newQuery["$set"][dislikers] = dislikes;
-            Session.update(newQuery, function () {
-                if (err) return err;
-            })
         });
+
+
+        // Session.findOne({sid: sess_id}, function (err, sess) {
+        //     if (err) return next(err);
+        //     if (!sess) {
+        //         return res.status(400).json({message: "session: " + mess_id + "not found"});
+        //     }
+        //
+        //     for (let i = 0; i < sess.messages.length; ++i) {
+        //         if (sess.messages[i]._id == mess_id) {
+        //             place = i;
+        //             for (let j = 0; j < sess.messages[i].ratings.length; ++j) {
+        //                 if (sess.messages[i].ratings[j].id == user.id) {
+        //                     found = true;
+        //                     sess.messages[i].ratings[j] = {};
+        //                     sess.messages[i].ratings[j]["id"] = user.id;
+        //                     sess.messages[i].ratings[j]["val"] = rating;
+        //                 }
+        //             }
+        //
+        //             if (!found) {
+        //                 stud = {};
+        //                 stud["id"] = user.id;
+        //                 stud["val"] = rating;
+        //                 sess.messages[i].ratings.push(stud);
+        //                 newArray = sess.messages[i].ratings;
+        //             }
+        //         }
+        //     }
+        //     newArray = sess.messages[place].ratings;
+        //     let likes = 0;
+        //     let dislikes = 0;
+        //     for (let i = 0; i < newArray.length; i++) {
+        //         if (newArray[i].val === "0") {
+        //             newArray.splice(i);
+        //         }
+        //         else if (newArray[i].val === "1") {
+        //             likes++;
+        //         }
+        //         else {
+        //             dislikes++;
+        //         }
+        //     }
+        //     const query = {};
+        //     const ans = "messages." + place + ".ratings";
+        //     query["sid"] = sess_id;
+        //     query["$set"] = {};
+        //     query["$set"][ans] = newArray;
+        //     Session.update(query, function (err) {
+        //         if (err) return err;
+        //         //update likes and dislikes and remove 0 counts;
+        //         res.status(200).json({message: "successful changed likes of message " + mess_id});
+        //         console.log("successful changed rating of likes " + mess_id);
+        //     });
+        //     const newQuery = {};
+        //     const likers = "messages." + place + ".likes";
+        //     const dislikers = "messages." + place + ".dislikes";
+        //     newQuery["sid"] = sess_id;
+        //     newQuery["$set"] = {};
+        //     newQuery["$set"][likers] = likes;
+        //     newQuery["$set"][dislikers] = dislikes;
+        //     Session.update(newQuery, function () {
+        //         if (err) return err;
+        //     })
+        // });
     });
 });
 
@@ -231,26 +233,18 @@ router.post("/messages", function (req, res) {
             date: Date.now()
         }
     );
-    Session.findOne({sid: msg.sid}, function (err, sess) {
-        if (err) return next(err);
-        for (let i = 0; i < sess.students.length; ++i) {
-            if (sess.students[i].email && sess.students[i].email === decoded) {
-                msg.name = sess.students[i].display_name;
-                break;
-            }
-        }
-
-        sess.messages.push(msg);
-        sess.save(function (err, updated_sess) {
-            if (err) return next(err);
-            console.log("Updates value successfully to " + updated_sess.curr_rating);
-        });
-    });
     msg.save(function (err) {
         if (err) {
             console.log(err);
             return res.status(500).send(err);
         }
+        Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function(err){
+            console.log('pushing message to messages');
+           if(err){
+               return console.log(err);
+           }
+        });
+
         res.status(200).json({message: "successfully added message " + msg.body + " to db"});
         console.log("successfully added message " + msg.body + " to db");
     });
@@ -258,10 +252,41 @@ router.post("/messages", function (req, res) {
 
 
 router.get("/get-all-messages", function (req, res) {
-    Session.findOne({sid: req.query.sid}, function (err, sess) {
-        if (err) return next(err);
-        res.status(200).json({messages: sess.messages});
-    });
+    var sess_id = Number(req.query.sid);
+
+    console.log('session id: ' + sess_id);
+
+    console.log('starting to aggregate');
+
+    Session.aggregate([
+        {
+            $lookup: {
+                from: "session_messages",
+                localField: "messages",
+                foreignField: "_id",
+                as: "messages_list"
+            }
+        }, {
+            $match: {
+                "sid": sess_id
+            }
+        },
+            {
+            $project: {
+                "_id": 0,
+                "messages_list" : 1
+            }
+        }
+        ],
+        function (err, list) {
+            if (err) {
+                console.log(err);
+                return err;
+            } else {
+                return res.status(200).json(list[0].messages_list);
+            }
+        }
+    );
 });
 
 //test this
