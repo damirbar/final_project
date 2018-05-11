@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+
 var SessionMessageSchema = new mongoose.Schema({
     email: String,    // mail of sender
     sid: String ,   // session ID

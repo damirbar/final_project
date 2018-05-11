@@ -74,7 +74,7 @@ wizerApp.controller('sessionController',
                 .then(function (data) {
                     // console.log(JSON.stringify(data));
                     var oldMessagesLength = $scope.sessionMessages.length;
-                    $scope.sessionMessages = data.messages;
+                    $scope.sessionMessages = data;
                     if (oldMessagesLength != $scope.sessionMessages.length) {
                         $("#msg-cnt").animate({scrollTop: 0}, 1000);
                     }
