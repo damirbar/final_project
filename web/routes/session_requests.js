@@ -179,9 +179,9 @@ router.get("/rate-message", function (req, res) {
                     ratingUpdate.$inc = {dislikes: 1};
                 }
             }
-            // updtaes the message rating with the ratingUpdate object
+            // updates the message rating with the ratingUpdate object
             Session_Message.update({_id: mess_id}, ratingUpdate, function(err){
-                console.log('updateing session message');
+                console.log('updating session message');
                 if(err){
                     console.log(err);
                     return err;
