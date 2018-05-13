@@ -150,8 +150,8 @@ router.get("/rate-message", function (req, res) {
             if(err) return err;
             let likers = raters.likers;
             let dislikers = raters.dislikers;
-            let liked = raters.indexOf(user._id) > -1; // true if the user has liked the message
-            let disliked = raters.indexOf(user._id) > -1;// true if the user has disliked the message
+            let liked = likers.indexOf(user._id) > -1; // true if the user has liked the message
+            let disliked = dislikers.indexOf(user._id) > -1;// true if the user has disliked the message
             let ratingUpdate = {};
 
             if (rating == 1){ // user likes the message
