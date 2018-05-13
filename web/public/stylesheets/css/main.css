@@ -15,6 +15,7 @@
   padding-top: 3%;
   padding-bottom: 3%;
   color: #e8bebe;
+  height: 540px;
 }
 .home-page .welcome-section .welcome-big {
   margin: auto;
@@ -49,6 +50,46 @@
 }
 .home-page .welcome-section .search-something .search-input-group {
   margin-top: 5%;
+}
+.home-page .how-it-works-area {
+  background-color: #ffddd7e8;
+  text-align: center;
+  background: #b0ff9f;
+  background: -moz-linear-gradient(top, #b0ff9f 0%, #6c0000 100%);
+  background: -webkit-linear-gradient(top, #b0ff9f 0%, rgba(108, 0, 0, 0.95) 100%);
+  background: linear-gradient(to bottom, #b0ff9f 0%, rgba(108, 0, 0, 0.95) 100%);
+  height: 440px;
+  border-top: solid #ff4800 6px;
+}
+.home-page .how-it-works-area .wcircle {
+  background-color: #f5ffe4;
+  margin: auto;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  margin-top: 3%;
+  font-size: 32px;
+  border: solid #00c00082 6px;
+  -webkit-box-shadow: inset 4px 12px 44px 0px rgba(0, 0, 0, 0.38);
+  -moz-box-shadow: inset 4px 12px 44px 0px rgba(0, 0, 0, 0.38);
+  box-shadow: inset 4px 12px 44px 0px rgba(0, 0, 0, 0.38);
+}
+.home-page .how-it-works-area .wcircle .wcircle-text {
+  padding-top: 40%;
+  font-weight: 600;
+}
+.home-page .how-it-works-area .under-wcircle {
+  font-size: 30px;
+  color: #fff2f2;
+}
+.home-page .how-it-works-area .arrow {
+  font-size: 89px;
+  top: 70px;
+  color: #ff4800;
+}
+.home-page .footer-container {
+  padding: 75px;
+  background-color: #4b4b4b;
 }
 body {
   background: rgba(255, 222, 143, 0.44);
@@ -138,4 +179,23 @@ body {
 .session-page .session-header {
   text-align: center;
   margin: 6% 0;
+}
+.session-page .not-connected .not-found-session {
+  text-align: center;
+}
+.session-page .connected-container .session-vid {
+  width: 100%;
+}
+.session-page .connected-container .session-vid .video-div {
+  max-width: 100%;
+}
+.session-page .connected-container .session-info .bs-card {
+  height: 100%;
+}
+.session-page .connected-container .session-info .bs-card .card-body .bs-card-text {
+  padding: 1% 4%;
+}
+.session-page .connected-container .messages-container {
+  height: 400px;
+  overflow-y: scroll;
 }

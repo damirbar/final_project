@@ -1,217 +1,122 @@
-var router = require('express').Router();
-var path = require("path");
-var passport = require('passport');
-var expressValidator = require('express-validator');
-var User = require("../schemas/user");
-var Student = require("../schemas/student");
-var Teacher = require("../schemas/teacher");
-var jwt = require('jsonwebtoken');
-
-var bcrypt = require('bcrypt-nodejs');
+const router = require('express').Router();
+const expressValidator = require('express-validator');
+const User = require("../schemas/user");
+const Student = require("../schemas/student");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt-nodejs');
 const auth = require('basic-auth');
-
-router.post("/auth-login-user-pass", function (req, res) {
-
-    var role = req.role;
-    var credentials = auth(req);
-    console.log(credentials);
-
-    if(role === 'teacher'){
-        User.aggregate([{
-                $lookup: {
-                    from: "teachers",
-                    localField: "_id",
-                    foreignField: "user_id",
-                    as: "teacher"
-                }
-            },{
-                $match: {
-                    "email": credentials.name
-                }
-            },{
-                $project: {
-                    "temp_password": 0,
-                    "temp_password_time": 0,
-                    "last_modified": 0,
-                    "accessToken": 0
-                }
-            }
-            ],
-            function (err, list) {
-                if (err) {
-                    console.log("Error while finding models");
-                    console.log("The error: " + err);
-                    return err;
-                } else {
-                    console.log(list);
-                    console.log("Found the user " + credentials.name);
-
-                    const token = jwt.sign(credentials.name, "Wizer");
-
-                    // list[0].accessToken = token;
-                    // list[0].save();
-
-                    Object.assign(list[0], list[0].student[0]);
-                    delete list[0].teacher;
-
-                    return res.status(200).json({message: "Welcome to WizeUp!", token: token, teacher: list[0]});
-                }
-            }
-        );
-    }
-    else {
-        User.aggregate([{
-                $lookup: {
-                    from: "students",
-                    localField: "_id",
-                    foreignField: "user_id",
-                    as: "student"
-                }
-            },{
-                $match: {
-                    "email": credentials.name
-                }
-            },{
-                    $project: {
-                        "temp_password": 0,
-                        "temp_password_time": 0,
-                        "last_modified": 0,
-                        "accessToken": 0
-                    }
-                }
-            ],
-            function (err, list) {
-                if (err) {
-                    console.log("Error while finding student");
-                    console.log("The error: " + err);
-                    return err;
-                } else {
-                    console.log(list);
-                    console.log("Found the user " + credentials.name);
-
-                    if (bcrypt.compareSync(credentials.pass, list[0].password)) {
-                        console.log("Found the user " + credentials.name);
-
-                        const token = jwt.sign(credentials.name, "Wizer");
-                        //  const token = jwt.sign({name: credentials.name}, "Wizer", {expiresIn: '1d'});
-
-                        //TODO find one student and set his token and save
-
-                        User.update({email: credentials.name}, {accessToken: token}, function(err){
-                            if(err){
-                                console.log(err);
-                            }else{
-                                console.log("access token was successfully updated");
-                            }
-                        });
-
-
-                        // list[0].accessToken = token;
-                        // list[0].save();
-
-
-                        Object.assign(list[0], list[0].student[0]);
-                        delete list[0].student;
-                        return res.status(200).json({message: "Welcome to WizeUp!", token: token, student: list[0]});
-
-                    } else {
-                        console.log("An error occurred!");
-                        console.log("Your pass: " + credentials.pass
-                            + ",\nThe expected encrypted pass: " + list[0].password);
-                        res.status(401).send({message: 'Invalid Credentials!'})
-                    }
-                }
-            }
-        );
-
-        // Student.findOne({mail: credentials.name}, function (err, student) {
-        //     if (err) return next(err);
-        //
-        //     if (bcrypt.compareSync(credentials.pass, student.password)) {
-        //         console.log("Found the user " + credentials.name);
-        //
-        //         const token = jwt.sign(credentials.name, "Wizer");
-        //
-        //         student.accessToken = token;
-        //         student.save();
-        //
-        //         res.status(200).send({message: "Welcome to WizeUp!", token: token, student: student});
-        //     } else {
-        //         console.log("An error occurred!");
-        //         console.log("Your pass: " + credentials.pass
-        //             + ",\nThe expected encrypted pass: " + student.password);
-        //         res.status(401).send({message: 'Invalid Credentials!'})
-        //     }
-        // });
-    }
-});
-
-router.get("/get-user-by-token", function (req, res) {
-
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    // decode token
-    if (token) {
-        // verifies secret and checks exp
-        jwt.verify(token, "Wizer", function (err, decoded) {
-            if (err) {
-                return res.json({success: false, message: 'Failed to authenticate token.'});
-            } else {
-                // if everything is good, save to request for use in other routes
-                Student.findOne({email: decoded}, function (err, student) {
-                    if (err) return next(err);
-                    res.status(200).send(student);
-                });
-                //return res.status(200).send()
-                //req.decoded = decoded;
-                // next();
-            }
-        });
-    } else {
-        // if there is no token
-        // return an error
-        return res.status(403).send({
-            success: false,
-            message: 'No token provided.'
-        });
-    }
-});
 
 router.use(expressValidator());
 
-router.post("/new-student", function (req, res) {
-    var fname = req.body.fname;
-    var lname = req.body.lname;
-    var email = req.body.email;
-    var password = req.body.password;
+router.post("/auth-login-user-pass", function (req, res) {
+
+    const credentials = auth(req);
+    console.log(credentials);``
+
+    // const projection = {
+    //     "temp_password": 0,
+    //     "temp_password_time": 0,
+    //     "last_modified": 0,
+    //     "accessToken": 0
+    // };
+    if (credentials.name === "undefined" || credentials.pass === "undefined") {
+        return res.status(401).send({message: 'Invalid Credentials!'})
+    }
+
+    User.findOne({email: credentials.name}/*, projection*/, function (err, user) {
+        if (err) {
+            console.log("Error while finding student");
+            console.log("The error: " + err);
+            return err;
+        } else {
+            if (!user) {
+                return res.status(400).send({message: 'no such user!'})
+            }
+            console.log(user);
+            console.log("Found the user " + credentials.name);
+
+            if (bcrypt.compareSync(credentials.pass, user.password)) {
+                console.log("Found the user " + credentials.name);
+                const token = jwt.sign(credentials.name, "Wizer");
+
+                User.update({email: credentials.name}, {accessToken: token}, function (err) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log("access token was successfully updated");
+                        res.status(200).send({
+                            message: 'welcome to Wizer!',
+                            email: user.email,
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            token: token,
+                            role: user.role,
+                            photos: user.photos,
+                            _id: user._id
+                        })
+                    }
+                });
+            } else {
+                console.log("An error occurred!");
+                console.log("Your pass: " + credentials.pass
+                    + ",\nThe expected encrypted pass: " + user.password);
+                res.status(401).send({message: 'Invalid Credentials!'})
+            }
+        }
+    });
+});
+
+router.get("/get-user-by-token", function (req, res) {
+    User.findOne({email: req.verifiedEmail}, function (err, user) {
+        if (err) return next(err);
+        res.status(200).send({
+            message: 'welcome to Wizer!',
+            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            token: user.accessToken,
+            role: user.role,
+            photos: user.photos,
+            _id: user._id
+        })
+    });
+});
+
+
+router.post("/new-user", function (req, res) {
+
+    const fname = req.body.fname,
+        lname = req.body.lname,
+        email = req.body.email,
+        password = req.body.password,
+        role = req.body.role;
+
     req.checkBody("fname", "First Name is required").notEmpty();
     req.checkBody("lname", "Last Name is required").notEmpty();
     req.checkBody("email", "Email is required").notEmpty();
     req.checkBody("email", "Email is not valid").isEmail();
     req.checkBody("password", "Password is required").notEmpty();
-    // req.checkBody("password_cnfrm", "Bouth passwords are required").notEmpty();
-    // req.checkBody("password_cnfrm", "Passwords do not match").equals(req.body.password);
+    req.checkBody("role", "role is required").notEmpty();
 
-
-    var errors = req.validationErrors();
+    const errors = req.validationErrors();
 
     if (errors) {
-        console.log(error);
-        res.status(400).send("erans error");
+        console.log(errors);
+        res.status(400).send(errors[0].msg);
     }
     else {
-        //TODO var user = ...
-
-        var newUser = new User({
+        const newUser = new User({
             first_name: fname,
             last_name: lname,
             email: email,
             register_date: Date.now(),
             last_update: Date.now(),
-            password: password
+            password: password,
+            role: role
         });
 
-        bcrypt.genSalt(10, function(err, salt) {
-            bcrypt.hash(newUser.password, salt, null, function(err, hash) {
+        bcrypt.genSalt(10, function (err, salt) {
+            bcrypt.hash(newUser.password, salt, null, function (err, hash) {
                 newUser.password = hash;
                 newUser.save(function (err, user) {
                     if (err) {
@@ -223,7 +128,7 @@ router.post("/new-student", function (req, res) {
                         }
                         if (err.name === 'ValidationError') {
                             //ValidationError
-                            var str = "";
+                            let str = "";
                             for (field in err.errors) {
                                 console.log("you must provide: " + field + " field");
                                 str += "you must provide: " + field + " field  ";
@@ -235,7 +140,7 @@ router.post("/new-student", function (req, res) {
                         return res.status(500).send(err);
                     }
                     console.log(user);
-                    var newStudent = new Student({
+                    const newStudent = new Student({
                         user_id: user._id
                     });
                     newStudent.save();
@@ -248,7 +153,7 @@ router.post("/new-student", function (req, res) {
 
 router.put("/change-password", function (req, res) {
 
-    var token = req.headers['x-access-token'];
+    const token = req.headers['x-access-token'];
 
     if (token) {
         // verifies secret and checks exp
@@ -259,10 +164,10 @@ router.put("/change-password", function (req, res) {
                 User.findOne({accessToken: token}, function (err, user) {
                     if (err) return next(err);
                     if (user !== {}) {
-                        var oldPass = req.body.password;
-                        var newPass = req.body.newPassword;
+                        const oldPass = req.body.password;
+                        const newPass = req.body.newPassword;
                         if (bcrypt.compareSync(oldPass, user.password)) {
-                            bcrypt.genSalt(10, function(err, salt) {
+                            bcrypt.genSalt(10, function (err, salt) {
                                 bcrypt.hash(user.password, salt, null, function (err, hash) {
                                     if (err) next(err);
 
@@ -280,7 +185,7 @@ router.put("/change-password", function (req, res) {
                                     });
                                 });
                             });
-                        }else {
+                        } else {
                             console.log("An error occurred!");
                             res.status(401).send({message: "Wrong password"});
                         }
@@ -342,9 +247,9 @@ router.post("/reset-pass-finish", function (req, res) {
         if (seconds < 600) {
             return student;
         } else {
-            reject({ status: 401, message: 'Time Out ! Try again' });
+            reject({status: 401, message: 'Time Out ! Try again'});
         }
-    }).then(function(student){
+    }).then(function (student) {
         if (bcrypt.compareSync(token, student.temp_password)) {
 
             const salt = bcrypt.genSaltSync(10);
@@ -358,8 +263,10 @@ router.post("/reset-pass-finish", function (req, res) {
         } else {
             reject({status: 401, message: 'Invalid Token !'});
         }
-    }).then(function(student){resolve({ status: 200, message: 'Password Changed Sucessfully !'
-    })
+    }).then(function (student) {
+        resolve({
+            status: 200, message: 'Password Changed Successfully !'
+        })
     })
 });
 

@@ -17,11 +17,124 @@
 
         <div class="row search-something">
             <div class="input-group input-group-lg search-input-group">
-                <input type="text" class="form-control" placeholder="University,   Course,   whatever..." aria-describedby="sizing-addon1">
-                <button class="input-group-addon" type="submit">Search</button>
+                <input type="text" class="form-control" ng-model="keyword" placeholder="University,   Course,   whatever..."
+                       aria-describedby="sizing-addon1">
+                <button class="input-group-addon" ng-click="search(keyword)" type="submit">Search</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container-fluid how-it-works">
+
+        <div class="row how-it-works-area">
+
+            <div class="col-3 register">
+                <div class="wcircle register-circle">
+                    <div class="wcircle-text">
+                        Register
+                    </div>
+                </div>
+                <div class="under-wcircle">
+                    Go on, it's not too long.
+                </div>
+            </div>
+            <div class="col-1 arrow">
+                <i class="fas fa-angle-double-right"></i>
+            </div>
+            <div class="col-3 log-in">
+                <div class="wcircle log-in-circle">
+                    <div class="wcircle-text">
+                        Log In
+                    </div>
+                </div>
+                <div class="under-wcircle">
+                    The regular old Email and Password process
+                </div>
+            </div>
+            <div class="col-1 arrow">
+                <i class="fas fa-angle-double-right"></i>
+            </div>
+            <div class="col-4 start-learning">
+                <div class="wcircle start-learning-circle">
+                    <div class="wcircle-text">
+                        Start Learning
+                    </div>
+                </div>
+                <div class="under-wcircle">
+                    Dive in to the most exciting platform on earth!
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row circle-area">
+            <div>
+
             </div>
         </div>
     </div>
 
 
+    <div class="container-fluid footer-container">
+        <div class="media-container-row row content text-white">
+            <div class="col-12 col-md-3">
+                <div class="media-wrap">
+                    <!--<a href="https://mobirise.com/">-->
+                        <!--<img src="assets/images/logo.png" alt="Mobirise" media-simple="true">-->
+                    <!--</a>-->
+                </div>
+            </div>
+            <div class="col-12 col-md-3 mbr-fonts-style display-7">
+                <h5 class="pb-3">
+                    Address
+                </h5>
+                <p class="mbr-text">
+                    1234 Street Name
+                    <br>City, AA 99999
+                </p>
+            </div>
+            <div class="col-12 col-md-3 mbr-fonts-style display-7">
+                <h5 class="pb-3">
+                    Contacts
+                </h5>
+                <p class="mbr-text">
+                    Email: contact@wizeup.com
+                    <br>Phone: +972 052 555 2222
+                    <br>Hours: Monday-Thursday: 9AM - 8PM
+                </p>
+            </div>
+            <div class="col-12 col-md-3 mbr-fonts-style display-7">
+                <h5 class="pb-3">
+                    Links
+                </h5>
+                <p class="mbr-text">
+                    <a class="text-white" href="http://localhost:3000">Home page</a>
+                    <br><a class="text-white" href="http://www.google.com/">Google</a>
+                    <br><a class="text-white" href="http://www.facebook.com/">Facebook</a>
+                </p>
+            </div>
+        </div>
+        <div class="footer-lower">
+            <div class="media-container-row">
+                <div class="col-sm-12">
+                    <hr>
+                </div>
+            </div>
+            <div class="media-container-row mbr-white">
+                <div class="col-sm-6 copyright">
+                    <p class="mbr-text mbr-fonts-style display-7">
+                        © Copyright 2017 Wizeup - All Rights Reserved
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
 </div>
+

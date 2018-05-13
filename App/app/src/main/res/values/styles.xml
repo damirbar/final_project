@@ -1,42 +1,46 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@android:color/white</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="colorPrimary">@color/user_selected</item>
+        <item name="colorPrimaryDark">@color/user_selected</item>
+        <item name="colorAccent">@color/default_circle_indicator_page_color</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="background">@color/chat_me_window_background</item>
+
+        <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>
+    </style>
+
+    <style name="MaterialDrawer.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">false</item>
+        <item name="color">@android:color/white</item>
     </style>
 
     <style name="AppTheme.LoginRegister" parent="AppTheme">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/colorPrimaryDark</item>
-        <item name="colorControlNormal">@android:color/white</item>
-        <item name="colorControlHighlight">@android:color/white</item>
-        <item name="colorControlActivated">@android:color/white</item>
-        <item name="colorButtonNormal">@android:color/white</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:editTextColor">@android:color/white</item>
     </style>
 
-    <style name="AppTheme.Profile" parent="AppTheme">
-        <item name="android:windowBackground">@color/colorDarkGrey</item>
-        <item name="colorButtonNormal">@android:color/white</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
+    <style name="intercom_floating_action_button_style">
+        <item name="android:layout_marginRight">8.0dip</item>
+        <item name="android:layout_marginBottom">0.0dip</item>
     </style>
 
-    <style name="AppTheme.MenuActivity" parent="AppTheme">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="intercom_toolbar_style">
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:descendantFocusability">beforeDescendants</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/intercom_toolbar_height</item>
+        <item name="contentInsetStart">0.0dip</item>
+        <item name="contentInsetEnd">0.0dip</item>
+        <item name="contentInsetLeft">0.0dip</item>
+        <item name="contentInsetRight">0.0dip</item>
     </style>
 
-    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorPrimary">@android:color/black</item>
-    </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
 </resources>

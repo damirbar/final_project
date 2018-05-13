@@ -40,7 +40,7 @@ wizerApp.service('ProfileService', function($http) {
 
         console.log("Signup function activated!");
 
-        return $http.post("/auth/new-student", student)
+        return $http.post("/auth/new-user", student)
             .then(function(data) {
                 console.log("Successfully sent post with the query");
                 if (data.data) {
@@ -56,6 +56,21 @@ wizerApp.service('ProfileService', function($http) {
                 return {error: "Error"};
             });
 
-    }
+    };
+
+
+    this.editProfile = function(profile) {
+
+        return $http.post('students/edit-profile', {user: profile})
+            .then(function(data) {
+
+                    console.log("This is a print from profileService.js.\nI got: " + data.data);
+
+                    return data.data;
+                },
+                function() {
+                    console.log("Error getting users with the name \"" + fname + " " + lname + "\"");
+                });
+    };
 
 });

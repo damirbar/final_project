@@ -3,31 +3,31 @@ package com.ariel.wizer.fragments;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
-import android.util.Log;
+import android.support.v4.app.FragmentManager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import com.ariel.wizer.network.RetrofitRequests;
+import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.utils.Constants;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
-import com.ariel.wizer.network.NetworkUtil;
 
-import java.io.IOException;
-
-import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -47,6 +47,8 @@ public class RegisterFragment extends Fragment {
     private EditText mEtPassword;
     private EditText mEtPassword2;
     private Button mBtRegister;
+    private Spinner mTypeSpinner;
+
     private TextView mTvLogin;
     private TextInputLayout mTiFName;
     private TextInputLayout mTiLName;
@@ -54,11 +56,9 @@ public class RegisterFragment extends Fragment {
     private TextInputLayout mTiPassword;
     private TextInputLayout mTiPassword2;
     private ProgressBar mProgressbar;
-
+    private ServerResponse mServerResponse;
     private String mEmail;
     private String mPass;
-
-
     private SharedPreferences mSharedPreferences;
     private CompositeSubscription mSubscriptions;
 
@@ -67,13 +67,15 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register,container,false);
         mSubscriptions = new CompositeSubscription();
-        initSharedPreferences();
+        mServerResponse = new ServerResponse(getActivity().findViewById(R.id.activity_main));
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         initViews(view);
         return view;
     }
 
     private void initViews(View v) {
 
+        mTypeSpinner = (Spinner) v.findViewById(R.id.type_spinner);
         mEtFName = (EditText) v.findViewById(R.id.et_first_name);
         mEtLName = (EditText) v.findViewById(R.id.et_last_name);
         mEtEmail = (EditText) v.findViewById(R.id.et_email);
@@ -86,17 +88,11 @@ public class RegisterFragment extends Fragment {
         mTiEmail = (TextInputLayout) v.findViewById(R.id.ti_email);
         mTiPassword = (TextInputLayout) v.findViewById(R.id.ti_password);
         mTiPassword2 = (TextInputLayout) v.findViewById(R.id.ti_password2);
-
         mProgressbar = (ProgressBar) v.findViewById(R.id.progress);
 
         mBtRegister.setOnClickListener(view -> register());
         mTvLogin.setOnClickListener(view -> goToLogin());
     }
-
-    private void initSharedPreferences() {
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-    }
-
 
     private void register() {
 
@@ -164,12 +160,11 @@ public class RegisterFragment extends Fragment {
 
         } else {
 
-            showSnackBarMessage("Enter Valid Details !");
+            showMessage("Enter Valid Details !");
         }
     }
 
     private void setError() {
-
         mTiFName.setError(null);
         mTiLName.setError(null);
         mTiEmail.setError(null);
@@ -179,65 +174,74 @@ public class RegisterFragment extends Fragment {
 
     private void
     registerProcess(User user) {
-        mSubscriptions.add(NetworkUtil.getRetrofit().register(user)
+        mSubscriptions.add(RetrofitRequests.getRetrofit().register(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse,this::handleError));
     }
 
     private void handleResponse(Response response) {
-
         mProgressbar.setVisibility(View.GONE);
-        showSnackBarMessage(response.getMessage());
-
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(Constants.TOKEN,response.getToken());
         editor.putString(EMAIL,mEmail);
         editor.putString(PASS,mPass);
         editor.apply();
-
         goToLogin();
     }
 
     private void handleError(Throwable error) {
         mProgressbar.setVisibility(View.GONE);
-
-        if (error instanceof HttpException) {
-
-            Gson gson = new GsonBuilder().create();
-            try {
-                String errorBody = ((HttpException) error).response().errorBody().string();
-                Response response = gson.fromJson(errorBody,Response.class);
-                showSnackBarMessage(response.getMessage());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-
-            showSnackBarMessage("Network Error !");
-        }
+        mServerResponse.handleError(error);
     }
 
-    private void showSnackBarMessage(String message) {
+    private void showMessage(String message) {
 
         if (getView() != null) {
 
-            Snackbar.make(getView(),message, Snackbar.LENGTH_SHORT).show();
+            mServerResponse.showSnackBarMessage(message);
         }
-
     }
 
     private void goToLogin(){
-
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         LoginFragment fragment = new LoginFragment();
         ft.replace(R.id.fragmentFrame, fragment, LoginFragment.TAG);
         ft.commit();
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    LoginFragment fragment = new LoginFragment();
+                    ft.replace(R.id.fragmentFrame, fragment, LoginFragment.TAG);
+                    ft.commit();
+
+                    return true;
+
+                }
+
+                return false;
+            }
+        });
+    }
+
 }

@@ -1,4 +1,4 @@
-var wizerApp = angular.module('wizerApp', ['ngRoute']);
+var wizerApp = angular.module('wizerApp', ['ngRoute', 'btford.socket-io']);
 
 wizerApp.config(function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode({ enabled: true, requireBase: false }).hashPrefix('!');
@@ -65,7 +65,7 @@ wizerApp.factory('AuthInterceptor', function ($window, $q) {
         },
         response: function(response) {
             if (response.status === 401) {
-                //  Redirect user to login page / signup Page.
+                //  Redirect loggedUser to login page / signup Page.
             }
             return response || $q.when(response);
         }
