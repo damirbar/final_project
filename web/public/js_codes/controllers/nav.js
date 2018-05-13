@@ -1,4 +1,4 @@
-wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$timeout', 'ProfileService', '$rootScope', '$interval',
+wizerApp.controller('navController', ['$scope','AuthService', '$location', '$timeout', 'ProfileService', '$rootScope', '$interval',
     '$http', function ($scope, AuthService, $location, $timeout, ProfileService, $rootScope, $interval, $http) {
 
         $scope.loggedUser = {};
@@ -166,22 +166,10 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
         $scope.checkLogin();
 
 
-
-        // $scope.keywords = "";
-        //
-        // //free-text-search
-        //
-        // $scope.search = function (){
-        //
-        //     $scope.searchResults = SearchService.freeTextSearch(keywords);
-        //     console.log($scope.searchResults);
-        //
-        // }
-
         $scope.searchTerm = {keywords: ""}; //keywords for the free text search
 
         $scope.freeTextSearch = function(){
             console.log($scope.searchTerm.keywords);
+            // SearchService.freeTextSearch($scope.searchTerm.keywords);
         }
-
     }]);
