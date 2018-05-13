@@ -132,6 +132,7 @@ router.post("/create-session", function (req, res) {
 });
 
 
+
 router.get("/rate-message", function (req, res) {
 
     const rating = Number(req.query.rating);
@@ -144,44 +145,44 @@ router.get("/rate-message", function (req, res) {
         if (err) throw err;
 
         //finds the message and fetches its likers and dislikers arrays.
-        Session_Message.findOne({_id: mess_id}, {_id: 0, likers: 1, dislikers: 1}, function (err, raters) {
+        Session_Message.findOne({_id: mess_id},{_id: 0 , likers: 1, dislikers: 1}, function(err,raters){
 
-            if (err) return err;
+            if(err) return err;
             let likers = raters.likers;
             let dislikers = raters.dislikers;
             let liked = raters.indexOf(user._id) > -1; // true if the user has liked the message
             let disliked = raters.indexOf(user._id) > -1;// true if the user has disliked the message
             let ratingUpdate = {};
 
-            if (rating == 1) { // user likes the message
-                if (liked) { // user has already liked the message
+            if (rating == 1){ // user likes the message
+                if(liked) { // user has already liked the message
                     console.log('user has already liked this message. mess id:' + mess_id);
                     return res.status(200).json({message: 'user has already liked this message. mess id:' + mess_id});
-                } else if (disliked) { // user has already disliked the message.
-                    ratingUpdate.$push = {likers: user._id};
-                    ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
-                    ratingUpdate.$inc = {likes: 1, dislikes: -1};
-                } else { // user is liking the message fo the first time
+                }else if(disliked){ // user has already disliked the message.
+                        ratingUpdate.$push = {likers: user._id};
+                        ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
+                        ratingUpdate.$inc = {likes: 1, dislikes: -1};
+                }else { // user is liking the message fo the first time
                     ratingUpdate.$push = {likers: user._id};
                     ratingUpdate.$inc = {likes: 1};
                 }
-            } else {// user likes the message
-                if (disliked) {// user has already disliked the message
+            }else{// user likes the message
+                if(disliked) {// user has already disliked the message
                     console.log('user has already disliked this message. mess id:' + mess_id);
                     return res.status(200).json({message: 'user has already disliked this message. mess id:' + mess_id});
-                } else if (liked) { // user has already liked the message.
+                }else if(liked){ // user has already liked the message.
                     ratingUpdate.$push = {dislikers: user._id};
                     ratingUpdate.$pull = {likers: user._id};//removes the user id from the likers array
                     ratingUpdate.$inc = {likes: -1, dislikes: 1};
-                } else {// user is disliking the message fo the first time
+                }else {// user is disliking the message fo the first time
                     ratingUpdate.$push = {dislikers: user._id};
                     ratingUpdate.$inc = {dislikes: 1};
                 }
             }
-            // updtaes the message rating with the ratingUpdate object
-            Session_Message.update({_id: mess_id}, ratingUpdate, function (err) {
-                console.log('updateing session message');
-                if (err) {
+            // updates the message rating with the ratingUpdate object
+            Session_Message.update({_id: mess_id}, ratingUpdate, function(err){
+                console.log('updating session message');
+                if(err){
                     console.log(err);
                     return err;
                 }
@@ -205,16 +206,18 @@ router.post("/messages", function (req, res) {
             console.log(err);
             return res.status(500).send(err);
         }
-        Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function (err) {
+        Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function(err){
             console.log('pushing message to messages');
-            if (err) {
-                return console.log(err);
-            }
+           if(err){
+               return console.log(err);
+           }
         });
         res.status(200).json({message: "successfully added message " + msg.body + " to db"});
         console.log("successfully added message " + msg.body + " to db");
     });
 });
+
+
 
 
 router.get("/get-all-messages", function (req, res) {
@@ -225,24 +228,24 @@ router.get("/get-all-messages", function (req, res) {
     console.log('starting to aggregate');
 
     Session.aggregate([
-            {
-                $lookup: {
-                    from: "session_messages",
-                    localField: "messages",
-                    foreignField: "_id",
-                    as: "messages_list"
-                }
-            }, {
-                $match: {
-                    "sid": sess_id
-                }
-            },
-            {
-                $project: {
-                    "_id": 0,
-                    "messages_list": 1
-                }
+        {
+            $lookup: {
+                from: "session_messages",
+                localField: "messages",
+                foreignField: "_id",
+                as: "messages_list"
             }
+        }, {
+            $match: {
+                "sid": sess_id
+            }
+        },
+            {
+            $project: {
+                "_id": 0,
+                "messages_list" : 1
+            }
+        }
         ],
         function (err, list) {
             if (err) {
@@ -261,16 +264,16 @@ router.get("/get-all-user-messages", function (req, res) {
     const decoded = req.verifiedEmail;
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
-        User.findOne({email: decoded}, function (err, user) {
-            if (err) return err;
-            for (let i = 0; i < sess.messages.length; ++i) {
-                for (let j = 0; j < sess.messages[i].ratings.length; ++j) {
-                    if (sess.messages[i].ratings[j].id == user.id) {
-                        messages.push(sess.messages[i]);
-                    }
+        User.findOne({email:decoded}, function (err, user) {
+          if (err) return err;
+          for(let i=0; i<sess.messages.length;++i){
+            for(let j =0;j<sess.messages[i].ratings.length;++j){
+                if(sess.messages[i].ratings[j].id == user.id){
+                    messages.push(sess.messages[i]);
                 }
             }
-            res.status(200).json({messages: messages});
+          }
+          res.status(200).json({messages: messages});
         });
     });
 });
@@ -295,35 +298,7 @@ router.get("/disconnect", function (req, res) {
 });
 
 
-const cloudinary = require('cloudinary');
-
-cloudinary.config({
-    cloud_name: 'wizeup',
-    api_key: '472734726483424',
-    api_secret: 'A2ZBcQsnU72oh7p9JI415BOR1ws'
-});
-
 router.get('/postVideo', function (req, res) {
-    Session.findOne({sid: req.query.sid}, function (err, sess) {
-        if (err) return next(err);
-        cloudinary.v2.uploader.upload("/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4",
-            { resource_type: "video",
-                public_id: "sessions/" +req.query.sid + 'video',
-                eager: [
-                    { width: 300, height: 300,
-                        crop: "pad", audio_codec: "none" },
-                    { width: 160, height: 100,
-                        crop: "crop", gravity: "south",
-                        audio_codec: "none" } ],
-                eager_async: true,
-                eager_notification_url: "http://mysite/notify_endpoint"},
-            function(error, result) {
-            console.log(result);
-        sess.videoID = result.url;
-            sess.save();
-        });
-    });
-
 
     // good
     // var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
@@ -345,117 +320,109 @@ router.get('/postVideo', function (req, res) {
     // });
     //    good
 
-    // const ObjectID = require('mongodb').ObjectID,
-    //     GridStore = require('mongodb').GridStore,
-    //     mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin',
-    //     mongo = require('mongodb');
-    //
-    // mongo.MongoClient.connect(mongoDB, function (err, db) {
-    //     // Our file ID
-    //     const fileId = new ObjectID();
-    //
-    //     // Open a new file
-    //     const gridStore = new GridStore(db, fileId, 'session:' + req.query.sid + ' video.mp4', 'w');
-    //     const source = '/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4';
-    //
-    //     // Open the new file
-    //     gridStore.open(function (err, gridStore) {
-    //
-    //         // Write the file to gridFS
-    //         console.log("starting to upload file " + source + " as: " + fileId);
-    //         gridStore.writeFile(source, function (err, doc) {
-    //             Session.findOne({sid: req.query.sid}, function (err, sess) {
-    //                 if (err) return next(err);
-    //                 console.log('saved %s to GridFS file %s', source, fileId);
-    //                 sess.videoID = fileId;
-    //                 sess.save();
-    //             });
-    //         });
-    //     });
-    // });
+    const ObjectID = require('mongodb').ObjectID,
+        GridStore = require('mongodb').GridStore,
+        mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin',
+        mongo = require('mongodb');
+
+    mongo.MongoClient.connect(mongoDB, function (err, db) {
+        // Our file ID
+        const fileId = new ObjectID();
+
+        // Open a new file
+        const gridStore = new GridStore(db, fileId, 'session:' + req.query.sid + ' video.mp4', 'w');
+        const source = '/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4';
+
+        // Open the new file
+        gridStore.open(function (err, gridStore) {
+
+            // Write the file to gridFS
+            console.log("starting to upload file " + source + " as: " + fileId);
+            gridStore.writeFile(source, function (err, doc) {
+                Session.findOne({sid: req.query.sid}, function (err, sess) {
+                    if (err) return next(err);
+                    console.log('saved %s to GridFS file %s', source, fileId);
+                    sess.videoID = fileId;
+                    sess.save();
+                });
+            });
+        });
+    });
 });
 
 
 router.get('/getVideo', function (req, res) {
 
-
+    const GridStore = require('mongodb').GridStore;
+    const db = mongoose.connection;
+    const ObjectID = require('mongodb').ObjectID;
+    db.options = 'PRIMARY';
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
-        if (sess) {
-            return sess.videoID;
+        if (sess.videoID !== "") {
+            new GridStore(db, new ObjectID(sess.videoID), 'r').open(function (err, GridFile) {
+                if (!GridFile) {
+                    console.log("video" + " not found!!!");
+                    res.status(404).json({message: "video" + " not found"})
+                }
+                else {
+                    console.log("starting to stream file " + GridFile.filename);
+                    StreamGridFile(req, res, GridFile)
+                }
+            });
+        }
+        else {
+            console.log("video" + " not found!!!");
+            res.status(404).json({message: "video" + " not found"})
         }
     });
 
-    // const GridStore = require('mongodb').GridStore;
-    // const db = mongoose.connection;
-    // const ObjectID = require('mongodb').ObjectID;
-    // db.options = 'PRIMARY';
-    // Session.findOne({sid: req.query.sid}, function (err, sess) {
-    //     if (err) return next(err);
-    //     if (sess.videoID !== "") {
-    //         new GridStore(db, new ObjectID(sess.videoID), 'r').open(function (err, GridFile) {
-    //             if (!GridFile) {
-    //                 console.log("video" + " not found!!!");
-    //                 res.status(404).json({message: "video" + " not found"})
-    //             }
-    //             else {
-    //                 console.log("starting to stream file " + GridFile.filename);
-    //                 StreamGridFile(req, res, GridFile)
-    //             }
-    //         });
-    //     }
-    //     else {
-    //         console.log("video" + " not found!!!");
-    //         res.status(404).json({message: "video" + " not found"})
-    //     }
-    // });
-
 });
 
-// function StreamGridFile(req, res, GridFile) {
-//     if (req.headers['range']) {
-//         // Range request, partialle stream the file
-//         console.log('Range Reuqest');
-//         const parts = req.headers['range'].replace(/bytes=/, "").split("-");
-//         const partialstart = parts[0];
-//         const partialend = parts[1];
-//         let start = parseInt(partialstart, 10);
-//         const end = partialend ? parseInt(partialend, 10) : GridFile.length - 1;
-//         const chunksize = (end - start) + 1;
-//         console.log('Range ', start, '-', end);
-//         res.writeHead(206, {
-//             'Content-Range': 'bytes ' + start + '-' + end + '/' + GridFile.length,
-//             'Accept-Ranges': 'bytes',
-//             'Content-Length': chunksize,
-//             'Content-Type': GridFile.contentType
-//         });
-//         // Set filepointer
-//         GridFile.seek(start, function () {
-//             // get GridFile stream
-//             const stream = GridFile.stream(true);
-//             // write to response
-//             stream.on('data', function (buff) {
-//                 // count data to abort streaming if range-end is reached
-//                 // perhaps theres a better way?
-//                 start += buff.length - 1;
-//                 if (start >= end) {
-//                     // enough data send, abort
-//                     GridFile.close();
-//                     res.end();
-//                 } else {
-//                     res.write(buff);
-//                 }
-//             });
-//         });
-//     } else {
-//         // stream back whole file
-//         console.log('No Range Request');
-//         res.header('Content-Type', GridFile.contentType);
-//         res.header('Content-Length', GridFile.length);
-//         const stream = GridFile.stream(true);
-//         stream.pipe(res);
-//     }
-// }
+function StreamGridFile(req, res, GridFile) {
+    if (req.headers['range']) {
+        // Range request, partialle stream the file
+        console.log('Range Reuqest');
+        const parts = req.headers['range'].replace(/bytes=/, "").split("-");
+        const partialstart = parts[0];
+        const partialend = parts[1];
+        let start = parseInt(partialstart, 10);
+        const end = partialend ? parseInt(partialend, 10) : GridFile.length - 1;
+        const chunksize = (end - start) + 1;
+        console.log('Range ', start, '-', end);
+        res.writeHead(206, {
+            'Content-Range': 'bytes ' + start + '-' + end + '/' + GridFile.length,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunksize,
+            'Content-Type': GridFile.contentType
+        });
+        // Set filepointer
+        GridFile.seek(start, function () {
+            // get GridFile stream
+            const stream = GridFile.stream(true);
+            // write to response
+            stream.on('data', function (buff) {
+                // count data to abort streaming if range-end is reached
+                // perhaps theres a better way?
+                start += buff.length - 1;
+                if (start >= end) {
+                    // enough data send, abort
+                    GridFile.close();
+                    res.end();
+                } else {
+                    res.write(buff);
+                }
+            });
+        });
+    } else {
+        // stream back whole file
+        console.log('No Range Request');
+        res.header('Content-Type', GridFile.contentType);
+        res.header('Content-Length', GridFile.length);
+        const stream = GridFile.stream(true);
+        stream.pipe(res);
+    }
+}
 
 
 module.exports = router;
