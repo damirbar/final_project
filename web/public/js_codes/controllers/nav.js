@@ -178,5 +178,10 @@ wizerApp.controller('navController', ['$scope', 'AuthService', '$location', '$ti
         //
         // }
 
+        $scope.searchTerm = {keywords: ""}; //keywords for the free text search
+
+        $scope.freeTextSearch = function(){
+            console.log($scope.searchTerm.keywords);
+        }
 
     }]);

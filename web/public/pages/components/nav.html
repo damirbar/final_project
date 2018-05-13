@@ -33,8 +33,11 @@
             <div class="underlined"></div>
         </div>
         <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" >
-            <button class="btn btn-warning my-2 my-sm-0" type="submit" >Search</button>
+
+            <!--TODO free text search-->
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" ng-model="searchTerm.keywords">
+            <button class="btn btn-warning my-2 my-sm-0" type="submit" ng-click="freeTextSearch()" >Search</button>
+
         </form>
     </div>
 </nav>
@@ -105,9 +108,7 @@
                                 Wrong password!
                             </div>
                             <div class="col-4" ng-show="user.password == user.password_cnfrm"></div>
-
                         </div>
-
                     </div>
 
                     <div class="dropdown btn-group">
@@ -182,6 +183,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
