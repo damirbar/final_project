@@ -178,10 +178,17 @@ router.get("/rate-message", function (req, res) {
                     ratingUpdate.$inc = {dislikes: 1};
                 }
             }
+<<<<<<< .merge_file_a14904
             // updtaes the message rating with the ratingUpdate object
             Session_Message.update({_id: mess_id}, ratingUpdate, function (err) {
                 console.log('updateing session message');
                 if (err) {
+=======
+            // updates the message rating with the ratingUpdate object
+            Session_Message.update({_id: mess_id}, ratingUpdate, function(err){
+                console.log('updating session message');
+                if(err){
+>>>>>>> .merge_file_a03328
                     console.log(err);
                     return err;
                 }
