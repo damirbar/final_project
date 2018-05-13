@@ -384,7 +384,7 @@ router.get('/getVideo', function (req, res) {
 
 
     Session.findOne({sid: req.query.sid}, function (err, sess) {
-        if (err) return next(err);
+        if (err) return (err);
         if (sess) {
             return sess.videoID;
         }

@@ -26,6 +26,7 @@
     <div class="container-fluid connected-container" ng-show="isConnectedToSession">
 
 
+
         <div class="row">
 
             <div class="col-6 session-vid" ng-if="isConnectedToSession">
@@ -35,6 +36,8 @@
                             type="video/mp4">
                 </video>
             </div>
+
+            <!--<source src="http://localhost:3000/sessions/getVideo?sid={{sessionID}}&token={{getToken()}}"-->
 
             <div class="col-6 session-info">
 
@@ -118,18 +121,13 @@
                     <td class="">
                         <div class="message-content">
 
-                            <button type="button" class="btn btn-outline-success"
-                                    ng-click="rateMessage(msg.sid, msg._id, 1)">Like
-                            </button>
-                            <button type="button" class="btn btn-outline-danger"
-                                    ng-click="rateMessage(msg.sid, msg._id, 0)">Hate
-                            </button>
+                            <button type="button" class="btn btn-outline-success" ng-click="rateMessage(msg.sid, msg._id, 1)">Like</button>
+                            <button type="button" class="btn btn-outline-danger" ng-click="rateMessage(msg.sid, msg._id, 0)">Hate</button>
                             <!--<button type="button" class="btn btn-outline-dark float-right" ng-click="assignReply(msg)">-->
                             <button type="button" class="btn btn-outline-dark"
                                     ng-click="message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[1]">
 
-                                Reply
-                            </button>
+                                Reply</button>
                         </div>
                     </td>
                 </tr>
@@ -139,6 +137,8 @@
 
 
         </div>
+
+
 
 
     </div>
