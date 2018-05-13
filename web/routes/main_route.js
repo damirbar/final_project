@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 //make sure that all request contain a valid token
 router.all("*" , function (req, res, next) {
 
-    if(req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass') || req.url.includes('/auth/new-user')){
+    if(req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass') || req.url.includes('/auth/new-user') || req.url.includes('/sessions/getVideo')){
         return next();
     }
     var token = req.headers["x-access-token"] || req.query.token;
