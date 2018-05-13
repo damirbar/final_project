@@ -1,4 +1,4 @@
-wizerApp.service('searchService', function ($http) {
+wizerApp.service('SearchService', function ($http) {
 
     this.freeTextSearch = function (keyword){
         console.log('search service');
