@@ -1,7 +1,5 @@
-wizerApp.controller('homeController', ['$scope', '$http', 'SessionService', function ($scope, $http, SessionService) {
-
-
-
+wizerApp.controller('homeController', ['$scope', '$http', 'SessionService',
+    function ($scope, $http ,SessionService) {
 }]);
 
 

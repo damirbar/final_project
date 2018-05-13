@@ -7,9 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.ariel.wizer.R;
+import com.ariel.wizer.demo.VideoPlayerActivity;
+import com.ariel.wizer.fragments.LoginFragment;
 import com.ariel.wizer.network.RetrofitRequests;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -20,10 +24,12 @@ public class SessionTabActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ImageButton buttonBack;
-    private ImageButton buttonVid;
+    private ImageButton buttonCloseVid;
+    private FrameLayout frameVid;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
-    private SessionFeedFragment mSessionFeedFragment;
+    private VideoPlayerFragment mVideoPlayerFragment;
+    private int stopPosition;
     private String sid;
 
 
@@ -36,9 +42,30 @@ public class SessionTabActivity extends AppCompatActivity {
         if (!getData()) {
             finish();
         }
-        sendData();
-
         initViews();
+
+        buttonCloseVid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (frameVid.getVisibility() == View.VISIBLE) {
+                    frameVid.setVisibility(View.GONE);
+                    stopPosition = mVideoPlayerFragment.getVid().getCurrentPosition();
+                    mVideoPlayerFragment.getVid().pause();
+                    mVideoPlayerFragment.getVid().setMediaController(null);
+                    }
+                else{
+                    frameVid.setVisibility(View.VISIBLE);
+                    mVideoPlayerFragment.getVid().seekTo(stopPosition);
+                    mVideoPlayerFragment.getVid().start();
+                    mVideoPlayerFragment.getVid().setMediaController(mVideoPlayerFragment.getmMediaController());
+
+                }
+                buttonCloseVid.setRotation(buttonCloseVid.getRotation() + 180);
+
+            }
+        });
+
+
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),sid);
         viewPager.setAdapter(adapter);
@@ -59,21 +86,38 @@ public class SessionTabActivity extends AppCompatActivity {
 
             }
         });
+
+        if (savedInstanceState == null) {
+
+            loadFragment();
+        }
+
     }
 
     private void initViews() {
+        frameVid = (FrameLayout) findViewById(R.id.frame_vid);
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
-        buttonVid = (ImageButton) findViewById(R.id.image_Button_cam);
-        buttonVid.setOnClickListener(view -> goVid());
         buttonBack.setOnClickListener(view -> goBack());
+        buttonCloseVid= (ImageButton) findViewById(R.id.vid_button_close);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Session"));
         tabLayout.addTab(tabLayout.newTab().setText("Updates"));
-        tabLayout.addTab(tabLayout.newTab().setText("Friends"));
-        tabLayout.addTab(tabLayout.newTab().setText("Info"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
+
+    private void loadFragment(){
+
+        if (mVideoPlayerFragment == null) {
+            Bundle bundle = new Bundle();
+            mVideoPlayerFragment = new VideoPlayerFragment();
+            bundle.putString("sid", sid);
+            mVideoPlayerFragment.setArguments(bundle);
+        }
+        getFragmentManager().beginTransaction().replace(R.id.frame_vid,mVideoPlayerFragment,LoginFragment.TAG).commit();
+    }
+
 
 
     @Override
@@ -91,20 +135,12 @@ public class SessionTabActivity extends AppCompatActivity {
         if (id == R.id.action_settings2) {
             return true;
         }
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
     private void goBack() {
         disconnectFromSession();
         finish();
-    }
-
-    private void goVid() {
-        VideoPlayerActivity.showRemoteVideo(this,sid);
     }
 
     private boolean getData() {
@@ -118,13 +154,6 @@ public class SessionTabActivity extends AppCompatActivity {
         }
         else
             return false;
-    }
-
-    private void sendData() {
-        Bundle bundle = new Bundle();
-        bundle.putString("sid",sid);
-        mSessionFeedFragment = new SessionFeedFragment();
-        mSessionFeedFragment.setArguments(bundle);
     }
 
     private void disconnectFromSession(){

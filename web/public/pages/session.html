@@ -26,14 +26,16 @@
     <div class="container-fluid connected-container" ng-show="isConnectedToSession">
 
 
-
         <div class="row">
 
             <div class="col-6 session-vid" ng-if="isConnectedToSession">
-                <video class="video-div" controls
-                       ng-src="http://localhost:3000/sessions/getVideo?sid={{sessionID}}&token={{getToken()}}">
+                <video width="640" height="480"
+                       poster="https://res.cloudinary.com/demo/image/upload/sample.jpg" controls>
+                    <source src="http://res.cloudinary.com/davpekqlk/video/upload/v1526209589/sessions/1234video.mp4"
+                            type="video/mp4">
                 </video>
             </div>
+
             <div class="col-6 session-info">
 
                 <div class="card bs-card">
@@ -116,13 +118,18 @@
                     <td class="">
                         <div class="message-content">
 
-                            <button type="button" class="btn btn-outline-success" ng-click="rateMessage(msg.sid, msg._id, 1)">Like</button>
-                            <button type="button" class="btn btn-outline-danger" ng-click="rateMessage(msg.sid, msg._id, 0)">Hate</button>
+                            <button type="button" class="btn btn-outline-success"
+                                    ng-click="rateMessage(msg.sid, msg._id, 1)">Like
+                            </button>
+                            <button type="button" class="btn btn-outline-danger"
+                                    ng-click="rateMessage(msg.sid, msg._id, 0)">Hate
+                            </button>
                             <!--<button type="button" class="btn btn-outline-dark float-right" ng-click="assignReply(msg)">-->
                             <button type="button" class="btn btn-outline-dark"
                                     ng-click="message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[1]">
 
-                                Reply</button>
+                                Reply
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -132,8 +139,6 @@
 
 
         </div>
-
-
 
 
     </div>

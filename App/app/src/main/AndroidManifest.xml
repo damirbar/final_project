@@ -36,9 +36,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".demo.NavBarActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
             android:name=".EditProfileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
@@ -62,20 +59,23 @@
             android:name=".session.CommentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".session.VideoPlayerActivity"
+            android:name=".demo.VideoPlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name=".session.SessionTabActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-
-        <activity android:name=".BaseActivity"
+        <activity
+            android:name=".BaseActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-
-        <activity android:name=".session.ConnectSessionActivity"
+        <activity
+            android:name=".session.ConnectSessionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-
-        <activity android:name=".TermsActivity"
+        <activity
+            android:name=".TermsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".ProfileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
 
     </application>
