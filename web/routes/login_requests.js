@@ -11,57 +11,43 @@ router.use(expressValidator());
 router.post("/auth-login-user-pass", function (req, res) {
 
     const credentials = auth(req);
-    console.log(credentials);``
+    console.log(credentials);
 
-    // const projection = {
-    //     "temp_password": 0,
-    //     "temp_password_time": 0,
-    //     "last_modified": 0,
-    //     "accessToken": 0
-    // };
     if (credentials.name === "undefined" || credentials.pass === "undefined") {
         return res.status(401).send({message: 'Invalid Credentials!'})
     }
 
-    User.findOne({email: credentials.name}/*, projection*/, function (err, user) {
-        if (err) {
-            console.log("Error while finding student");
-            console.log("The error: " + err);
-            return err;
-        } else {
-            if (!user) {
-                return res.status(400).send({message: 'no such user!'})
-            }
-            console.log(user);
+    User.findOne({email: credentials.name}, function (err, user) {
+        if (err) return err;
+        if (!user) {
+            return res.status(400).send({message: 'no such user!'})
+        }
+        console.log(user);
+        console.log("Found the user " + credentials.name);
+        if (bcrypt.compareSync(credentials.pass, user.password)) {
             console.log("Found the user " + credentials.name);
+            const token = jwt.sign(credentials.name, "Wizer");
 
-            if (bcrypt.compareSync(credentials.pass, user.password)) {
-                console.log("Found the user " + credentials.name);
-                const token = jwt.sign(credentials.name, "Wizer");
-
-                User.update({email: credentials.name}, {accessToken: token}, function (err) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        console.log("access token was successfully updated");
-                        res.status(200).send({
-                            message: 'welcome to Wizer!',
-                            email: user.email,
-                            first_name: user.first_name,
-                            last_name: user.last_name,
-                            token: token,
-                            role: user.role,
-                            photos: user.photos,
-                            _id: user._id
-                        })
-                    }
-                });
-            } else {
-                console.log("An error occurred!");
-                console.log("Your pass: " + credentials.pass
-                    + ",\nThe expected encrypted pass: " + user.password);
-                res.status(401).send({message: 'Invalid Credentials!'})
-            }
+            User.update({email: credentials.name}, {accessToken: token}, function (err) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("access token was successfully updated");
+                    res.status(200).send({
+                        message: 'welcome to Wizer!',
+                        email: user.email,
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        token: token,
+                        role: user.role,
+                        photos: user.photos,
+                        _id: user._id
+                    })
+                }
+            });
+        } else {
+            console.log("Your pass: " + credentials.pass + ",\nThe expected encrypted pass: " + user.password);
+            res.status(401).send({message: 'Invalid Credentials!'})
         }
     });
 });
