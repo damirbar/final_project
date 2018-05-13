@@ -132,6 +132,7 @@ router.post("/create-session", function (req, res) {
 });
 
 
+
 router.get("/rate-message", function (req, res) {
 
     const rating = Number(req.query.rating);
@@ -144,51 +145,44 @@ router.get("/rate-message", function (req, res) {
         if (err) throw err;
 
         //finds the message and fetches its likers and dislikers arrays.
-        Session_Message.findOne({_id: mess_id}, {_id: 0, likers: 1, dislikers: 1}, function (err, raters) {
+        Session_Message.findOne({_id: mess_id},{_id: 0 , likers: 1, dislikers: 1}, function(err,raters){
 
-            if (err) return err;
+            if(err) return err;
             let likers = raters.likers;
             let dislikers = raters.dislikers;
             let liked = raters.indexOf(user._id) > -1; // true if the user has liked the message
             let disliked = raters.indexOf(user._id) > -1;// true if the user has disliked the message
             let ratingUpdate = {};
 
-            if (rating == 1) { // user likes the message
-                if (liked) { // user has already liked the message
+            if (rating == 1){ // user likes the message
+                if(liked) { // user has already liked the message
                     console.log('user has already liked this message. mess id:' + mess_id);
                     return res.status(200).json({message: 'user has already liked this message. mess id:' + mess_id});
-                } else if (disliked) { // user has already disliked the message.
-                    ratingUpdate.$push = {likers: user._id};
-                    ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
-                    ratingUpdate.$inc = {likes: 1, dislikes: -1};
-                } else { // user is liking the message fo the first time
+                }else if(disliked){ // user has already disliked the message.
+                        ratingUpdate.$push = {likers: user._id};
+                        ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
+                        ratingUpdate.$inc = {likes: 1, dislikes: -1};
+                }else { // user is liking the message fo the first time
                     ratingUpdate.$push = {likers: user._id};
                     ratingUpdate.$inc = {likes: 1};
                 }
-            } else {// user likes the message
-                if (disliked) {// user has already disliked the message
+            }else{// user likes the message
+                if(disliked) {// user has already disliked the message
                     console.log('user has already disliked this message. mess id:' + mess_id);
                     return res.status(200).json({message: 'user has already disliked this message. mess id:' + mess_id});
-                } else if (liked) { // user has already liked the message.
+                }else if(liked){ // user has already liked the message.
                     ratingUpdate.$push = {dislikers: user._id};
                     ratingUpdate.$pull = {likers: user._id};//removes the user id from the likers array
                     ratingUpdate.$inc = {likes: -1, dislikes: 1};
-                } else {// user is disliking the message fo the first time
+                }else {// user is disliking the message fo the first time
                     ratingUpdate.$push = {dislikers: user._id};
                     ratingUpdate.$inc = {dislikes: 1};
                 }
             }
-<<<<<<< .merge_file_a14904
-            // updtaes the message rating with the ratingUpdate object
-            Session_Message.update({_id: mess_id}, ratingUpdate, function (err) {
-                console.log('updateing session message');
-                if (err) {
-=======
             // updates the message rating with the ratingUpdate object
             Session_Message.update({_id: mess_id}, ratingUpdate, function(err){
                 console.log('updating session message');
                 if(err){
->>>>>>> .merge_file_a03328
                     console.log(err);
                     return err;
                 }
@@ -212,16 +206,18 @@ router.post("/messages", function (req, res) {
             console.log(err);
             return res.status(500).send(err);
         }
-        Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function (err) {
+        Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function(err){
             console.log('pushing message to messages');
-            if (err) {
-                return console.log(err);
-            }
+           if(err){
+               return console.log(err);
+           }
         });
         res.status(200).json({message: "successfully added message " + msg.body + " to db"});
         console.log("successfully added message " + msg.body + " to db");
     });
 });
+
+
 
 
 router.get("/get-all-messages", function (req, res) {
@@ -232,24 +228,24 @@ router.get("/get-all-messages", function (req, res) {
     console.log('starting to aggregate');
 
     Session.aggregate([
-            {
-                $lookup: {
-                    from: "session_messages",
-                    localField: "messages",
-                    foreignField: "_id",
-                    as: "messages_list"
-                }
-            }, {
-                $match: {
-                    "sid": sess_id
-                }
-            },
-            {
-                $project: {
-                    "_id": 0,
-                    "messages_list": 1
-                }
+        {
+            $lookup: {
+                from: "session_messages",
+                localField: "messages",
+                foreignField: "_id",
+                as: "messages_list"
             }
+        }, {
+            $match: {
+                "sid": sess_id
+            }
+        },
+            {
+            $project: {
+                "_id": 0,
+                "messages_list" : 1
+            }
+        }
         ],
         function (err, list) {
             if (err) {
@@ -268,16 +264,16 @@ router.get("/get-all-user-messages", function (req, res) {
     const decoded = req.verifiedEmail;
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
-        User.findOne({email: decoded}, function (err, user) {
-            if (err) return err;
-            for (let i = 0; i < sess.messages.length; ++i) {
-                for (let j = 0; j < sess.messages[i].ratings.length; ++j) {
-                    if (sess.messages[i].ratings[j].id == user.id) {
-                        messages.push(sess.messages[i]);
-                    }
+        User.findOne({email:decoded}, function (err, user) {
+          if (err) return err;
+          for(let i=0; i<sess.messages.length;++i){
+            for(let j =0;j<sess.messages[i].ratings.length;++j){
+                if(sess.messages[i].ratings[j].id == user.id){
+                    messages.push(sess.messages[i]);
                 }
             }
-            res.status(200).json({messages: messages});
+          }
+          res.status(200).json({messages: messages});
         });
     });
 });
@@ -300,6 +296,7 @@ router.get("/disconnect", function (req, res) {
         }
     });
 });
+
 
 
 const cloudinary = require('cloudinary');
@@ -325,10 +322,10 @@ router.get('/postVideo', function (req, res) {
                 eager_async: true,
                 eager_notification_url: "http://mysite/notify_endpoint"},
             function(error, result) {
-            console.log(result);
-        sess.videoID = result.url;
-            sess.save();
-        });
+                console.log(result);
+                sess.videoID = result.url;
+                sess.save();
+            });
     });
 
 
