@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require("mongoose");
 
-
 var Session = require("../schemas/session");
 var Session_Message = require("../schemas/session_message");
 var Student = require("../schemas/student");
@@ -136,90 +135,59 @@ router.post("/create-session", function (req, res) {
 
 router.get("/rate-message", function (req, res) {
 
-    const rating = req.query.rating;
+    const rating = Number(req.query.rating);
     const sess_id = req.query.sid;
-    const mess_id = new mongoose.Types.ObjectId(req.query.msgid);
+    const mess_id = req.query.msgid;
     const decoded = req.verifiedEmail;
 
-    console.log('message id ' + mess_id);
-
-    let found = false;
-    let place = 0;
-    let newArray = [];
+    // finds the user
     User.findOne({email: decoded}, function (err, user) {
         if (err) throw err;
 
-        Session_Message.update({_id: mess_id}, {$inc: {rating: 1}}, function(err){
-            if(err){
-                console.log(err);
-                return err;
+        //finds the message and fetches its likers and dislikers arrays.
+        Session_Message.findOne({_id: mess_id},{_id: 0 , likers: 1, dislikers: 1}, function(err,raters){
+
+            if(err) return err;
+            let likers = raters.likers;
+            let dislikers = raters.dislikers;
+            let liked = raters.indexOf(user._id) > -1; // true if the user has liked the message
+            let disliked = raters.indexOf(user._id) > -1;// true if the user has disliked the message
+            let ratingUpdate = {};
+
+            if (rating == 1){ // user likes the message
+                if(liked) { // user has already liked the message
+                    console.log('user has already liked this message. mess id:' + mess_id);
+                    return res.status(200).json({message: 'user has already liked this message. mess id:' + mess_id});
+                }else if(disliked){ // user has already disliked the message.
+                        ratingUpdate.$push = {likers: user._id};
+                        ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
+                        ratingUpdate.$inc = {likes: 1, dislikes: -1};
+                }else { // user is liking the message fo the first time
+                    ratingUpdate.$push = {likers: user._id};
+                    ratingUpdate.$inc = {likes: 1};
+                }
+            }else{// user likes the message
+                if(disliked) {// user has already disliked the message
+                    console.log('user has already disliked this message. mess id:' + mess_id);
+                    return res.status(200).json({message: 'user has already disliked this message. mess id:' + mess_id});
+                }else if(liked){ // user has already liked the message.
+                    ratingUpdate.$push = {dislikers: user._id};
+                    ratingUpdate.$pull = {likers: user._id};//removes the user id from the likers array
+                    ratingUpdate.$inc = {likes: -1, dislikes: 1};
+                }else {// user is disliking the message fo the first time
+                    ratingUpdate.$push = {dislikers: user._id};
+                    ratingUpdate.$inc = {dislikes: 1};
+                }
             }
+            // updtaes the message rating with the ratingUpdate object
+            Session_Message.update({_id: mess_id}, ratingUpdate, function(err){
+                console.log('updateing session message');
+                if(err){
+                    console.log(err);
+                    return err;
+                }
+            });
         });
-
-
-        // Session.findOne({sid: sess_id}, function (err, sess) {
-        //     if (err) return next(err);
-        //     if (!sess) {
-        //         return res.status(400).json({message: "session: " + mess_id + "not found"});
-        //     }
-        //
-        //     for (let i = 0; i < sess.messages.length; ++i) {
-        //         if (sess.messages[i]._id == mess_id) {
-        //             place = i;
-        //             for (let j = 0; j < sess.messages[i].ratings.length; ++j) {
-        //                 if (sess.messages[i].ratings[j].id == user.id) {
-        //                     found = true;
-        //                     sess.messages[i].ratings[j] = {};
-        //                     sess.messages[i].ratings[j]["id"] = user.id;
-        //                     sess.messages[i].ratings[j]["val"] = rating;
-        //                 }
-        //             }
-        //
-        //             if (!found) {
-        //                 stud = {};
-        //                 stud["id"] = user.id;
-        //                 stud["val"] = rating;
-        //                 sess.messages[i].ratings.push(stud);
-        //                 newArray = sess.messages[i].ratings;
-        //             }
-        //         }
-        //     }
-        //     newArray = sess.messages[place].ratings;
-        //     let likes = 0;
-        //     let dislikes = 0;
-        //     for (let i = 0; i < newArray.length; i++) {
-        //         if (newArray[i].val === "0") {
-        //             newArray.splice(i);
-        //         }
-        //         else if (newArray[i].val === "1") {
-        //             likes++;
-        //         }
-        //         else {
-        //             dislikes++;
-        //         }
-        //     }
-        //     const query = {};
-        //     const ans = "messages." + place + ".ratings";
-        //     query["sid"] = sess_id;
-        //     query["$set"] = {};
-        //     query["$set"][ans] = newArray;
-        //     Session.update(query, function (err) {
-        //         if (err) return err;
-        //         //update likes and dislikes and remove 0 counts;
-        //         res.status(200).json({message: "successful changed likes of message " + mess_id});
-        //         console.log("successful changed rating of likes " + mess_id);
-        //     });
-        //     const newQuery = {};
-        //     const likers = "messages." + place + ".likes";
-        //     const dislikers = "messages." + place + ".dislikes";
-        //     newQuery["sid"] = sess_id;
-        //     newQuery["$set"] = {};
-        //     newQuery["$set"][likers] = likes;
-        //     newQuery["$set"][dislikers] = dislikes;
-        //     Session.update(newQuery, function () {
-        //         if (err) return err;
-        //     })
-        // });
     });
 });
 
@@ -244,11 +212,12 @@ router.post("/messages", function (req, res) {
                return console.log(err);
            }
         });
-
         res.status(200).json({message: "successfully added message " + msg.body + " to db"});
         console.log("successfully added message " + msg.body + " to db");
     });
 });
+
+
 
 
 router.get("/get-all-messages", function (req, res) {
