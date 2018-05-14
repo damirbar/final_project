@@ -10,7 +10,6 @@ wizerApp.service('ProfileService', function($http) {
             });
     };
 
-
     this.getProfileByName = function(fname, lname) {
 
         var qfname = fname ? fname : "null";
@@ -30,7 +29,6 @@ wizerApp.service('ProfileService', function($http) {
                     console.log("Error getting users with the name \"" + fname + " " + lname + "\"");
                 });
     };
-
 
     this.signupStudent = function(student) {
         // var query = "?first_name=" + student.fname +
@@ -60,7 +58,6 @@ wizerApp.service('ProfileService', function($http) {
 
 
     this.editProfile = function(profile) {
-
         return $http.post('students/edit-profile', {user: profile})
             .then(function(data) {
 
@@ -72,5 +69,4 @@ wizerApp.service('ProfileService', function($http) {
                     console.log("Error getting users with the name \"" + fname + " " + lname + "\"");
                 });
     };
-
 });
