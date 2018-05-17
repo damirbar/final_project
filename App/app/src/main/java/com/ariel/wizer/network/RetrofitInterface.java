@@ -76,7 +76,7 @@ public interface RetrofitInterface {
 
     /////Session-video/////
 
-    @GET("sessions/getVideo")
+    @GET("sessions/get-video")
     @Streaming
     Observable<ResponseBody> getVideo(@Query("sid") String sid);
 
