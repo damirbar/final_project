@@ -300,6 +300,7 @@ router.get("/disconnect", function (req, res) {
 
 
 const cloudinary = require('cloudinary');
+const fs = require('fs');
 
 cloudinary.config({
     cloud_name: 'wizeup',
@@ -307,7 +308,7 @@ cloudinary.config({
     api_secret: 'A2ZBcQsnU72oh7p9JI415BOR1ws'
 });
 
-router.get('/postVideo', function (req, res) {
+router.get('/post-video', function (req, res) {
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
         cloudinary.v2.uploader.upload("/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4",
@@ -380,13 +381,16 @@ router.get('/postVideo', function (req, res) {
 });
 
 
-router.get('/getVideo', function (req, res) {
+router.get('/get-video', function (req, res) {
 
 
     Session.findOne({sid: req.query.sid}, function (err, sess) {
-        if (err) return (err);
-        if (sess) {
-            return sess.videoID;
+        if(err) return err;
+        if(sess){
+            res.status(200).json({url:sess.videoID});
+        }
+        else{
+            res.status(400).json({error:'no such session'});
         }
     });
 

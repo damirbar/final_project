@@ -3,9 +3,8 @@ var router = express.Router();
 var User = require("../schemas/user");
 
 router.get("/get-profile",function (req, res, next) {
-    const id = req.query.id;
 
-    User.findOne({_id: id}, function (err, user) {
+    User.findOne({emial: req.verifiedEmail}, function (err, user) {
         if (err) return next(err);
         if(user) {
             return res.status(200).json(user);
