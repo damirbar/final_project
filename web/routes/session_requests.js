@@ -313,7 +313,7 @@ router.get('/post-video', function (req, res) {
         if (err) return next(err);
         cloudinary.v2.uploader.upload("/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4",
             { resource_type: "video",
-                public_id: "sessions/" +req.query.sid + 'video',
+                public_id: req.query.sid + 'video',
                 eager: [
                     { width: 300, height: 300,
                         crop: "pad", audio_codec: "none" },
