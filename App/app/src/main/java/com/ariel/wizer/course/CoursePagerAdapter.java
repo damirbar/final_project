@@ -1,16 +1,18 @@
-package com.ariel.wizer.session;
-
+package com.ariel.wizer.course;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class PagerAdapter extends FragmentStatePagerAdapter {
+import com.ariel.wizer.session.SessionFeedFragment;
+import com.ariel.wizer.session.SessionInfoFragment;
+
+public class CoursePagerAdapter extends FragmentStatePagerAdapter {
     private int mNumOfTabs;
     private String sid;
 
-    public PagerAdapter(FragmentManager fm, int NumOfTabs, String _sid) {
+    public CoursePagerAdapter(FragmentManager fm, int NumOfTabs, String _sid) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
         this.sid = _sid;
@@ -21,7 +23,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         Bundle bundle = new Bundle();
         switch (position) {
             case 0:
-                SessionInfoFragment tab1 = new SessionInfoFragment();
+                CourseInfoFragment tab1 = new CourseInfoFragment();
                 bundle.putString("sid", sid);
                 tab1.setArguments(bundle);
                 return tab1;
@@ -30,11 +32,6 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 bundle.putString("sid", sid);
                 tab2.setArguments(bundle);
                 return tab2;
-//            case 2:
-//                SessionInfoFragment tab3 = new SessionInfoFragment();
-//                bundle.putString("sid", sid);
-//                tab3.setArguments(bundle);
-//                return tab3;
             default:
                 return null;
         }

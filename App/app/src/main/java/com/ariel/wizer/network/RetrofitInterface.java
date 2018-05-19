@@ -4,6 +4,8 @@ import android.net.Uri;
 
 import com.ariel.wizer.model.ChatChannel;
 import com.ariel.wizer.model.ChatMessage;
+import com.ariel.wizer.model.Course;
+import com.ariel.wizer.model.CourseFile;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.Session;
 import com.ariel.wizer.model.SessionMessage;
@@ -29,12 +31,12 @@ public interface RetrofitInterface {
     Observable<Response> register(@Body User user);
 
     @POST("auth/auth-login-user-pass")
-    Observable<Response> login();
+    Observable<User> login();
 
     @GET("students/get-profile")
-    Observable<User> getProfile();
+    Observable<User> getProfile(@Query("id") String id);
 
-    @POST("auth/updateProfile")
+    @POST("students/edit-profile")
     Observable<Response> updateProfile(@Body User user);
 
     @PUT("auth/change-password")
@@ -66,7 +68,7 @@ public interface RetrofitInterface {
     Observable<Response> getStudentsRating(@Query("id") String id);
 
     @GET("sessions/get-all-messages")
-    Observable<Session> getMessages(@Query("sid") String sid);
+    Observable<SessionMessage []> getMessages(@Query("sid") String sid);
 
     @POST("sessions/messages")
     Observable<Response> publishSessionMessage(@Body SessionMessage message);
@@ -80,6 +82,13 @@ public interface RetrofitInterface {
     @Streaming
     Observable<ResponseBody> getVideo(@Query("sid") String sid);
 
+    /////Classes/////
+
+    @GET("courses/get-all-courses")
+    Observable<Course[]> getAllCourses();
+
+    @GET("courses/get-all-Files")
+    Observable<CourseFile[]> getAllFiles();
 
 
     /////chat/////

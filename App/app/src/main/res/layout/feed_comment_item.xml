@@ -24,7 +24,7 @@
             android:src="@drawable/ic_more_vert_black_24dp" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/user_image"
+            android:id="@+id/course_image"
             app:siBorderColor="#cccccc"
             app:siBorderWidth="2dp"
             android:layout_width="42.0dip"
@@ -47,8 +47,8 @@
             android:layout_marginRight="10.0dip"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_toEndOf="@id/user_image"
-            android:layout_toRightOf="@id/user_image"
+            android:layout_toEndOf="@id/course_image"
+            android:layout_toRightOf="@id/course_image"
             android:gravity="start"
             android:orientation="vertical">
 
@@ -130,7 +130,7 @@
                     android:text="0"
                     android:textColor="@color/secondary_post_text"
                     android:textSize="@dimen/box_name_size"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
             </LinearLayout>
 

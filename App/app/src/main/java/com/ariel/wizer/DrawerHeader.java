@@ -1,5 +1,7 @@
 package com.ariel.wizer;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,10 +29,19 @@ public class DrawerHeader {
     @View(R.id.emailTxt)
     private TextView emailTxt;
 
+    private String displayName;
+    private String email;
+
+
+    public DrawerHeader(String _displayName, String _email) {
+        displayName = _displayName;
+        email = _email;
+    }
+
     @Resolve
     private void onResolved() {
-        nameTxt.setText("Shay Cohen");
-        emailTxt.setText(Constants.EMAIL);
+        nameTxt.setText(displayName);
+        emailTxt.setText(email);
     }
 
 }

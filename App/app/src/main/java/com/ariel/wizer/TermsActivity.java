@@ -18,15 +18,9 @@ public class TermsActivity extends AppCompatActivity {
 
     private void initViews() {
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
-        buttonBack.setOnClickListener(view -> goBack());
-
+        buttonBack.setOnClickListener(view ->finish());
 
     }
-
-    private void goBack() {
-        finish();
-    }
-
 
 
 }

@@ -8,7 +8,9 @@ import android.util.Base64;
 
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
+import com.ariel.wizer.model.User;
 import com.ariel.wizer.utils.Constants;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -111,4 +113,5 @@ public class RetrofitRequests {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(RetrofitInterface.class);
     }
+
 }

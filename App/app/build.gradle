@@ -58,5 +58,4 @@ dependencies {
     implementation 'com.github.siyamed:android-shape-imageview:0.9.3@aar'
     implementation 'com.github.nkzawa:socket.io-client:0.3.0'
 
-
 }

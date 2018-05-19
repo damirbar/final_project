@@ -67,7 +67,7 @@ public class ImageCropActivity extends AppCompatActivity {
     private String mImagePath;
     private Uri mSaveUri = null;
     private Uri mImageUri = null;
-    //File for capturing camera images
+    //CourseFile for capturing camera images
     private File mFileTemp;
     private View.OnClickListener btnCancelListener = new View.OnClickListener() {
         @Override

@@ -161,9 +161,9 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
                 .subscribe(this::handleResponsePull,i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponsePull(Session session) {
-        if(!(session.getMessages().length == 0)){
-            ArrayList<SessionMessage> savePosts = new ArrayList<>(Arrays.asList(session.getMessages()));
+    private void handleResponsePull(SessionMessage sessionMessages[]) {
+        if(!(sessionMessages.length == 0)){
+            ArrayList<SessionMessage> savePosts = new ArrayList<>(Arrays.asList(sessionMessages));
             Collections.reverse(savePosts);
             mTvNoResults.setVisibility(View.GONE);
             mAdapter = new SessionPostsAdapter(this.getActivity(), new ArrayList<>(savePosts));
@@ -183,4 +183,12 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
 //        mSocket.disconnect();
 //        mSocket.off(Socket.EVENT_CONNECT, onConnect);
     }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        pullMessages();
+    }
+
 }

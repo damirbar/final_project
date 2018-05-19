@@ -4,15 +4,15 @@ package com.ariel.wizer.model;
 public class User {
 
     private String role = "teacher";
-
     private String first_name;
+    private String _id;
     private String last_name;
     private String display_name;
     private String email;
     private String about_me;
     private String country;
     private String address;
-    private String age;
+    private int age;
     private String gender;
     private String photos[];
     private String profile_img;
@@ -20,12 +20,24 @@ public class User {
     private int fame;
     private String register_date;
     private String last_modified;
-    private String accessToken;
+    private String token;
     private String password;
     private String temp_password;
     private String temp_password_time;
 //    private String courses[];
 
+
+    public String getId_num() {
+        return _id;
+}
+
+    public void setId_num(String id_num) {
+        this._id = id_num;
+    }
+
+    public String getToken() {
+        return token;
+    }
 
     public String getDisplay_name() {
         return display_name;
@@ -139,11 +151,11 @@ public class User {
         this.gender = gender;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int  age) {
         this.age = age;
     }
 
@@ -184,6 +196,6 @@ public class User {
     }
 
     public void setToken(String token) {
-        this.accessToken = token;
+        this.token = token;
     }
 }

@@ -29,7 +29,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Session Id:"
+                    android:text=" Name:"
                     android:textStyle="bold" />
 
                 <TextView
@@ -53,7 +53,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Session Rating:"
+                    android:text="Teacher"
                     android:textStyle="bold" />
 
                 <TextView
@@ -64,57 +64,6 @@
                     android:gravity="center"
                     android:text="5" />
             </TableRow>
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
-                android:layout_marginRight="100dp"
-                android:layout_marginTop="@dimen/top_margin30"
-                android:background="@drawable/buttonshape"
-                android:text="Stream Session"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/top_margin30"
-                android:gravity="center"
-                android:text="Rate The Session !" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="30dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white">
-
-                <CheckBox
-                    android:id="@+id/dislike_cbx2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginEnd="67dp"
-                    android:layout_marginRight="67dp"
-                    android:background="@null"
-                    android:button="@drawable/dislike_checkbox" />
-
-                <CheckBox
-                    android:id="@+id/like_cbx2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="74dp"
-                    android:layout_marginStart="74dp"
-                    android:background="@null"
-                    android:button="@drawable/like_checkbox" />
-            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>

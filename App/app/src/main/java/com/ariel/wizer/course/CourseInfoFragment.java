@@ -1,4 +1,4 @@
-package com.ariel.wizer.session;
+package com.ariel.wizer.course;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 
 import com.ariel.wizer.R;
 
-public class SessionInfoFragment extends Fragment {
+public class CourseInfoFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_session_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_course_info, container, false);
         initViews(view);
 
 

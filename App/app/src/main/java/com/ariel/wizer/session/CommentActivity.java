@@ -110,9 +110,9 @@ public class CommentActivity extends AppCompatActivity {
                 .subscribe(this::handleResponsePull,i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponsePull(Session session) {
-        if(! (session.getMessages().length == 0)){
-            ArrayList<SessionMessage> saveComments = new ArrayList<>(Arrays.asList(session.getMessages()));
+    private void handleResponsePull(SessionMessage sessionMessages[]) {
+        if(! (sessionMessages.length == 0)){
+            ArrayList<SessionMessage> saveComments = new ArrayList<>(Arrays.asList(sessionMessages));
             Collections.reverse(saveComments);
             mAdapter = new SessionCommentsAdapter(this, new ArrayList<>(saveComments));
             commentsList.setAdapter(mAdapter);
@@ -152,4 +152,12 @@ public class CommentActivity extends AppCompatActivity {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        pullComments();
+    }
+
 }

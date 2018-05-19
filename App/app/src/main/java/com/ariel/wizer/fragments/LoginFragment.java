@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -16,19 +15,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ariel.wizer.BaseActivity;
-import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.R;
-import com.ariel.wizer.model.Response;
+import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
+import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.utils.Constants;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -36,8 +32,12 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.ariel.wizer.R.id.langTextView;
+import static com.ariel.wizer.utils.Constants.DISPLAY_NAME;
 import static com.ariel.wizer.utils.Constants.EMAIL;
+import static com.ariel.wizer.utils.Constants.ID;
 import static com.ariel.wizer.utils.Constants.PASS;
+import static com.ariel.wizer.utils.Constants.PROFILE_IMG;
+import static com.ariel.wizer.utils.Constants.TOKEN;
 import static com.ariel.wizer.utils.Validation.validateEmail;
 import static com.ariel.wizer.utils.Validation.validateFields;
 
@@ -58,8 +58,8 @@ public class LoginFragment extends Fragment{
     private SharedPreferences mSharedPreferences;
     private ServerResponse mServerResponse;
     private String mEmail;
-    private String mPass;
     private String mToken;
+    private String mPass;
 
     @Nullable
     @Override
@@ -169,16 +169,16 @@ public class LoginFragment extends Fragment{
     private void initSharedPreferences() {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mEmail = mSharedPreferences.getString(Constants.EMAIL,"");
-        mPass = mSharedPreferences.getString(Constants.PASS,"");
         mToken = mSharedPreferences.getString(Constants.TOKEN,"");
+
     }
 
     private void login() {
 
         setError();
 
-        mEmail = mEtEmail.getText().toString();
-        mPass = mEtPassword.getText().toString();
+        mEmail = mEtEmail.getText().toString().trim();
+        mPass = mEtPassword.getText().toString().trim();
 
         int err = 0;
 
@@ -218,13 +218,16 @@ public class LoginFragment extends Fragment{
                 .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponse(Response response) {
+    private void handleResponse(User user) {
         mProgressBar.setVisibility(View.GONE);
 
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(Constants.TOKEN,response.getToken());
-        editor.putString(EMAIL,mEmail);
+        editor.putString(TOKEN,user.getToken());
+        editor.putString(EMAIL,user.getEmail());
         editor.putString(PASS,mPass);
+        editor.putString(DISPLAY_NAME,user.getFname() + " " + user.getLname());
+        editor.putString(ID,user.getId_num());
+//        editor.putString(PROFILE_IMG,user.getPhotos()[0]);
         editor.apply();
 
         Intent intent = new Intent(getActivity(), BaseActivity.class);
@@ -257,5 +260,4 @@ public class LoginFragment extends Fragment{
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
-
 }

@@ -1,16 +1,18 @@
 package com.ariel.wizer;
 
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TextView;
 
 import com.mindorks.placeholderview.PlaceHolderView;
 
-import rx.subscriptions.CompositeSubscription;
+import static com.ariel.wizer.utils.Constants.DISPLAY_NAME;
+import static com.ariel.wizer.utils.Constants.EMAIL;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -19,13 +21,15 @@ public class BaseActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
     private PlaceHolderView mGalleryView;
-
+    private String mEmail;
+    private String mDisplayName;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+        initSharedPreferences();
         initViews();
         setupDrawer();
     }
@@ -36,16 +40,22 @@ public class BaseActivity extends AppCompatActivity {
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         mGalleryView = (PlaceHolderView)findViewById(R.id.galleryView);
 
-
     }
+
+    private void initSharedPreferences() {
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mEmail = mSharedPreferences.getString(EMAIL,"");
+        mDisplayName = mSharedPreferences.getString(DISPLAY_NAME,"");
+    }
+
 
     private void setupDrawer(){
         mDrawerView
-                .addView(new DrawerHeader())
+                .addView(new DrawerHeader(mDisplayName,mEmail))
                 .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_PROFILE))
                 .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_SESSION))
 //                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_MESSAGE))
-//                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_GROUPS))
+                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_MY_COURSES))
 //                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_NOTIFICATIONS))
                 .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_TERMS))
 //                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_SETTINGS))
@@ -65,5 +75,6 @@ public class BaseActivity extends AppCompatActivity {
         mDrawer.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
     }
+
 
 }
