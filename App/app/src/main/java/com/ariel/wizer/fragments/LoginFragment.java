@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.ariel.wizer.BaseActivity;
 import com.ariel.wizer.R;
+import com.ariel.wizer.demo.FileDownActivity;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
@@ -65,7 +66,7 @@ public class LoginFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-//        Intent intent = new Intent(getActivity(),BaseActivity.class);//remove
+//        Intent intent = new Intent(getActivity(),FileDownActivity.class);//remove
 //        startActivity(intent);//remove
 //        getActivity().finish(); //remove
 

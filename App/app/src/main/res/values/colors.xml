@@ -59,7 +59,7 @@
     <color name="box_item_delete_bg">#ff3b30</color>
     <color name="box_item_dismiss_bg">#fd6654</color>
     <color name="box_item_dismiss_text">@android:color/white</color>
-    <color name="box_tabs_color_text">#ff6c7d8d</color>
+    <color name="box_tabs_color_text">#6c7d8d</color>
     <color name="bright_foreground_disabled_material_dark">#80ffffff</color>
     <color name="bright_foreground_disabled_material_light">#80000000</color>
     <color name="bright_foreground_inverse_material_dark">@color/bright_foreground_material_light</color>
@@ -269,7 +269,7 @@
     <color name="passwordStrength4">#ff68b321</color>
     <color name="passwordStrengthMeterLit">#ffff00ff</color>
     <color name="passwordStrengthMeterUnlit">#ffe7e7e7</color>
-    <color name="passwordStrengthText">#ff58c473</color>
+    <color name="passwordStrengthText">#58c473</color>
     <color name="passwordStrengthUnlitPhone">#ffe7e7e7</color>
     <color name="photoTabBackground">#ffffffff</color>
     <color name="place_autocomplete_prediction_primary_text">#ff212121</color>

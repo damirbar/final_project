@@ -6,39 +6,86 @@ import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.ariel.wizer.model.User;
+import com.ariel.wizer.network.RetrofitRequests;
+import com.ariel.wizer.network.ServerResponse;
 import com.mindorks.placeholderview.PlaceHolderView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 import static com.ariel.wizer.utils.Constants.DISPLAY_NAME;
 import static com.ariel.wizer.utils.Constants.EMAIL;
 
 public class BaseActivity extends AppCompatActivity {
 
+    private RetrofitRequests mRetrofitRequests;
+    private ServerResponse mServerResponse;
+    private CompositeSubscription mSubscriptions;
+
+    private ListView searchList;
+    private TextView mTvNoResults;
+    private SearchListAdapter mAdapter;
 
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
-    private PlaceHolderView mGalleryView;
     private String mEmail;
     private String mDisplayName;
+    private SearchView editsearch;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+        mSubscriptions = new CompositeSubscription();
+        mRetrofitRequests = new RetrofitRequests(this);
+        mServerResponse = new ServerResponse(findViewById(R.id.drawerLayout));
         initSharedPreferences();
         initViews();
         setupDrawer();
-    }
+
+        editsearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                callSearch(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+//              if (searchView.isExpanded() && TextUtils.isEmpty(newText)) {
+                callSearch(newText);
+//              }
+                return true;
+            }
+            public void callSearch(String query) {
+                sendQuery(query);
+            }
+        });
+
+
+        }
 
     private void initViews() {
         mDrawer = (DrawerLayout)findViewById(R.id.drawerLayout);
         mDrawerView = (PlaceHolderView)findViewById(R.id.drawerView);
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
-        mGalleryView = (PlaceHolderView)findViewById(R.id.galleryView);
+        mTvNoResults = (TextView) findViewById(R.id.tv_no_results);
+        searchList = (ListView) findViewById(R.id.search_List);
+        editsearch = (SearchView) findViewById(R.id.searchView);
+
 
     }
 
@@ -75,6 +122,32 @@ public class BaseActivity extends AppCompatActivity {
         mDrawer.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
     }
+
+    private void sendQuery(String query) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getSearch(query)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
+    }
+
+    private void handleResponse(User users[]) {
+        if (!(users.length == 0)) {
+            ArrayList<User> saveUsers = new ArrayList<>(Arrays.asList(users));
+            mTvNoResults.setVisibility(View.GONE);
+            mAdapter = new SearchListAdapter(this, new ArrayList<>(saveUsers));
+            searchList.setAdapter(mAdapter);
+        } else {
+            mTvNoResults.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSubscriptions.unsubscribe();
+    }
+
 
 
 }

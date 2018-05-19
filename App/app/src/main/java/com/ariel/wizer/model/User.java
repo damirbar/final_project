@@ -2,13 +2,16 @@ package com.ariel.wizer.model;
 
 
 public class User {
-
-    private String role = "teacher";
+    private String id_num;
     private String first_name;
-    private String _id;
     private String last_name;
-    private String display_name;
     private String email;
+    private String password;
+    private String role = "teacher";
+    private String token;
+
+
+    private String display_name;
     private String about_me;
     private String country;
     private String address;
@@ -16,23 +19,21 @@ public class User {
     private String gender;
     private String photos[];
     private String profile_img;
-    private int cred;
-    private int fame;
-    private String register_date;
+//    private int cred;
+//    private int fame;
+//    private String register_date;
     private String last_modified;
-    private String token;
-    private String password;
     private String temp_password;
     private String temp_password_time;
 //    private String courses[];
 
 
     public String getId_num() {
-        return _id;
+        return id_num;
 }
 
     public void setId_num(String id_num) {
-        this._id = id_num;
+        this.id_num = id_num;
     }
 
     public String getToken() {
@@ -85,30 +86,6 @@ public class User {
 
     public void setProfile_img(String profile_img) {
         this.profile_img = profile_img;
-    }
-
-    public int getCred() {
-        return cred;
-    }
-
-    public void setCred(int cred) {
-        this.cred = cred;
-    }
-
-    public int getFame() {
-        return fame;
-    }
-
-    public void setFame(int fame) {
-        this.fame = fame;
-    }
-
-    public String getRegister_date() {
-        return register_date;
-    }
-
-    public void setRegister_date(String register_date) {
-        this.register_date = register_date;
     }
 
     public String getLast_modified() {
