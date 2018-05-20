@@ -13,6 +13,7 @@ import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.utils.Constants;
+import com.squareup.picasso.Picasso;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -25,6 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView mCountry;
     private TextView mAboutMe;
     private TextView btunEditProfile;
+    private ImageView image;
 
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
@@ -50,6 +52,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     private void initViews() {
+        image = (ImageView)findViewById(R.id.user_profile_photo);
         mDisplayName = (TextView) findViewById(R.id.tvdisName);
         mCountry = (TextView) findViewById(R.id.tvcountry_);
         mAboutMe = (TextView) findViewById(R.id.tvAboutMe);
@@ -76,7 +79,7 @@ public class ProfileActivity extends AppCompatActivity {
         mDisplayName.setText(user.getDisplay_name());
         mCountry.setText(user.getCountry());
         mAboutMe.setText(user.getAbout_me());
-        
+        Picasso.get().load("https://scontent.fsdv2-1.fna.fbcdn.net/v/t1.0-9/22730135_839880432861616_8306732533151605396_n.jpg?_nc_cat=0&oh=1597bce378ebaa853df982319d669bf5&oe=5B9303BC").into(image);
     }
 
     @Override

@@ -1,12 +1,15 @@
 package com.ariel.wizer;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -27,6 +30,8 @@ import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.utils.Constants;
+
+import java.io.ByteArrayOutputStream;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -55,6 +60,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     private ImageView image;
     private Button mBSave;
     private Button mBcancel;
+    private Bitmap myBitmap;
 
 
     @Override
@@ -120,7 +126,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
     private void showCroppedImage(String mImagePath) {
         if (mImagePath != null) {
-            Bitmap myBitmap = BitmapFactory.decodeFile(mImagePath);
+            myBitmap = BitmapFactory.decodeFile(mImagePath);
             image.setImageBitmap(myBitmap);
         }
     }
@@ -186,6 +192,8 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         String Age = mETAge.getText().toString().trim();
         String AboutMe = mETAboutMe.getText().toString().trim();
 
+
+
         User user = new User();
         user.setFname(first_name);
         user.setLname(last_name);
@@ -196,9 +204,21 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         user.setAge(Integer.parseInt(Age));
         user.setAbout_me(AboutMe);
 
+//        String g = getImageUri(this,myBitmap).toString();
+//        String pic [] ={g};
+//        user.setPhotos(pic);
+
+
         updateProfile(user);
 
     }
+
+//    public Uri getImageUri(Context inContext, Bitmap inImage) {
+//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+//        return Uri.parse(path);
+//    }
 
     private void loadProfile() {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getProfile(mId)
