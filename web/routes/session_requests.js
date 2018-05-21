@@ -17,6 +17,9 @@ router.post("/connect-session", function (req, res) {
         if (sess) {
             User.findOne({email: decoded}, function (err, user) {
                 if (err) throw err;
+                if(!user){
+                    res.status(404).json({message: 'error with user'});
+                }
                 let exists = false;
                 for (let i = 0; i < sess.students.length; ++i) {
                     if (sess.students[i].id_num == user.id) {
@@ -308,6 +311,47 @@ cloudinary.config({
     api_secret: 'A2ZBcQsnU72oh7p9JI415BOR1ws'
 });
 
+var multer  = require('multer');
+var upload = multer({ dest: 'upload/'});
+
+/** Permissible loading a single file,
+ the value of the attribute "name" in the form of "recfile". **/
+var type = upload.single('recfile');
+
+router.post('/upload', type, function (req,res) {
+
+    /** When using the "single"
+     data come in "req.file" regardless of the attribute "name". **/
+    var path = req.file.path;
+    Session.findOne({sid: "1234"}, function (err, sess) {
+        if (err) return next(err);
+        cloudinary.v2.uploader.upload('/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4',
+            { public_id: sess.sid +"video" },
+            function(err, result) {
+                fs.unlinkSync(path);
+            if(err) return err;
+                fs.unlinkSync(path);
+                console.log(result);
+                sess.videoID = result.url;
+                sess.save();
+            });
+    });
+    // /** The original name of the uploaded file
+    //  stored in the variable "originalname". **/
+    // var target_path = 'upload/' + req.file.originalname;
+    //
+    // /** A better way to copy the uploaded file. **/
+    // var src = fs.createReadStream(tmp_path);
+    // var dest = fs.createWriteStream(target_path);
+    // src.pipe(dest);
+    // src.on('end', function() {
+    //     res.render('complete');
+    // });
+    // src.on('error', function(err) {
+    //     res.render('error');
+    // });
+
+});
 router.get('/post-video', function (req, res) {
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
