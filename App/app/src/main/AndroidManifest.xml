@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="wizer"
+                    android:host="wizup"
                     android:scheme="http" />
             </intent-filter>
         </activity>
@@ -59,10 +59,6 @@
             android:name=".session.CommentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".demo.VideoPlayerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
             android:name=".session.SessionTabActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
@@ -76,6 +72,21 @@
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".ProfileActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".course.CourseTabActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".course.MyCourseActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".demo.FileDownActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+
+        <service android:name=".demo.DownloadService" />
+
+        <activity
+            android:name=".demo.FileUploadActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
 
     </application>

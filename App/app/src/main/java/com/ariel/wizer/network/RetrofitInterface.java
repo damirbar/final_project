@@ -4,18 +4,23 @@ import android.net.Uri;
 
 import com.ariel.wizer.model.ChatChannel;
 import com.ariel.wizer.model.ChatMessage;
+import com.ariel.wizer.model.Course;
+import com.ariel.wizer.model.CourseFile;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.Session;
 import com.ariel.wizer.model.SessionMessage;
 import com.ariel.wizer.model.User;
 
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
@@ -29,12 +34,12 @@ public interface RetrofitInterface {
     Observable<Response> register(@Body User user);
 
     @POST("auth/auth-login-user-pass")
-    Observable<Response> login();
+    Observable<User> login();
 
     @GET("students/get-profile")
-    Observable<User> getProfile();
+    Observable<User> getProfile(@Query("id") String id);
 
-    @POST("auth/updateProfile")
+    @POST("students/edit-profile")
     Observable<Response> updateProfile(@Body User user);
 
     @PUT("auth/change-password")
@@ -66,7 +71,7 @@ public interface RetrofitInterface {
     Observable<Response> getStudentsRating(@Query("id") String id);
 
     @GET("sessions/get-all-messages")
-    Observable<Session> getMessages(@Query("sid") String sid);
+    Observable<SessionMessage []> getMessages(@Query("sid") String sid);
 
     @POST("sessions/messages")
     Observable<Response> publishSessionMessage(@Body SessionMessage message);
@@ -76,9 +81,34 @@ public interface RetrofitInterface {
 
     /////Session-video/////
 
-    @GET("sessions/getVideo")
+    @GET("sessions/get-video")
     @Streaming
     Observable<ResponseBody> getVideo(@Query("sid") String sid);
+
+    /////Classes/////
+
+    @GET("courses/get-all-courses")
+    Observable<Course[]> getAllCourses();
+
+    @GET("courses/get-all-Files")
+    Observable<CourseFile[]> getAllFiles();
+
+
+
+    ////////////////////////////Demo//////////////////////////////////////
+    @GET("files/Node-Android-Chat.zip")
+    @Streaming
+    Call<ResponseBody> downloadFile();
+
+    @Multipart
+    @POST("/images/upload")
+    Call<Response> uploadImage(@Part MultipartBody.Part image);
+    ///////////////////////////////////////////////////////////////////////
+
+
+    /////search/////
+    @GET("search/free-text-search")
+    Observable<User[]> getSearch(@Query("keywords") String keywords);
 
 
 

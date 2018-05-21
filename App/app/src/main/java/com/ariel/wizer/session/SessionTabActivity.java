@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.ariel.wizer.R;
-import com.ariel.wizer.demo.VideoPlayerActivity;
 import com.ariel.wizer.fragments.LoginFragment;
 import com.ariel.wizer.network.RetrofitRequests;
 
@@ -67,7 +66,7 @@ public class SessionTabActivity extends AppCompatActivity {
 
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),sid);
+        final SessionPagerAdapter adapter = new SessionPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),sid);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

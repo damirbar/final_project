@@ -7,8 +7,36 @@ public class Session {
     private String name;
     private String teacher_id;
     private String location;
-    private int rating;
+    private int curr_rating;
+    private String creation_date;
+    private boolean hidden;
+    private String videoID;
     private SessionMessage messages[];
+
+
+    public String getCreation_date() {
+        return creation_date;
+    }
+
+    public void setCreation_date(String creation_date) {
+        this.creation_date = creation_date;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    public String getVideoID() {
+        return videoID;
+    }
+
+    public void setVideoID(String videoID) {
+        this.videoID = videoID;
+    }
 
     public String getTeacher_id() {
         return teacher_id;
@@ -35,11 +63,11 @@ public class Session {
     }
 
     public int getRating() {
-        return rating;
+        return curr_rating;
     }
 
     public void setRating(int rating) {
-        this.rating = rating;
+        this.curr_rating = rating;
     }
 
 

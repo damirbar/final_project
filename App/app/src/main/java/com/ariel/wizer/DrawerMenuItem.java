@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ariel.wizer.chat.ChatChannelsActivity;
+import com.ariel.wizer.course.MyCourseActivity;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.session.ConnectSessionActivity;
 import com.ariel.wizer.utils.Constants;
@@ -21,7 +22,7 @@ public class DrawerMenuItem {
 
     public static final int DRAWER_MENU_ITEM_PROFILE = 1;
     public static final int DRAWER_MENU_ITEM_SESSION = 2;
-    public static final int DRAWER_MENU_ITEM_GROUPS = 3;
+    public static final int DRAWER_MENU_ITEM_MY_COURSES = 3;
     public static final int DRAWER_MENU_ITEM_MESSAGE = 4;
     public static final int DRAWER_MENU_ITEM_NOTIFICATIONS = 5;
     public static final int DRAWER_MENU_ITEM_SETTINGS = 6;
@@ -55,8 +56,8 @@ public class DrawerMenuItem {
                 itemNameTxt.setText("Session");
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_compare_arrows_black_18dp));
                 break;
-            case DRAWER_MENU_ITEM_GROUPS:
-                itemNameTxt.setText("Groups");
+            case DRAWER_MENU_ITEM_MY_COURSES:
+                itemNameTxt.setText("My Courses ");
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_group_work_black_18dp));
                 break;
             case DRAWER_MENU_ITEM_MESSAGE:
@@ -86,16 +87,16 @@ public class DrawerMenuItem {
     private void onMenuItemClick(){
         switch (mMenuPosition){
             case DRAWER_MENU_ITEM_PROFILE:
-                mContext.startActivity(new Intent (mContext, EditProfileActivity.class));
+                mContext.startActivity(new Intent (mContext, ProfileActivity.class));
                 if(mCallBack != null)mCallBack.onProfileMenuSelected();
                 break;
             case DRAWER_MENU_ITEM_SESSION:
                 mContext.startActivity(new Intent (mContext, ConnectSessionActivity.class));
                 if(mCallBack != null)mCallBack.onSessionMenuSelected();
                 break;
-            case DRAWER_MENU_ITEM_GROUPS:
-                Toast.makeText(mContext, "Groups", Toast.LENGTH_SHORT).show();
-                if(mCallBack != null)mCallBack.onGroupsMenuSelected();
+            case DRAWER_MENU_ITEM_MY_COURSES:
+                mContext.startActivity(new Intent (mContext, MyCourseActivity.class));
+                if(mCallBack != null)mCallBack.onMycoursesMenuSelected();
                 break;
             case DRAWER_MENU_ITEM_MESSAGE:
                 mContext.startActivity(new Intent (mContext, ChatChannelsActivity.class));
@@ -126,6 +127,10 @@ public class DrawerMenuItem {
         SharedPreferences.Editor editor = mRetrofitRequests.getmSharedPreferences().edit();
         editor.putString(Constants.PASS,"");
         editor.putString(Constants.TOKEN,"");
+        editor.putString(Constants.ID,"");
+        editor.putString(Constants.DISPLAY_NAME,"");
+        editor.putString(Constants.PROFILE_IMG,"");
+
         editor.apply();
         Intent intent = new Intent(mActivity, MainActivity.class);
         mActivity.startActivity(intent);
@@ -140,7 +145,7 @@ public class DrawerMenuItem {
     public interface DrawerCallBack{
         void onProfileMenuSelected();
         void onSessionMenuSelected();
-        void onGroupsMenuSelected();
+        void onMycoursesMenuSelected();
         void onMessagesMenuSelected();
         void onNotificationsMenuSelected();
         void onSettingsMenuSelected();
