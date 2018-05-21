@@ -1,7 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require("mongoose");
-
 var Session = require("../schemas/session");
 var Session_Message = require("../schemas/session_message");
 var Student = require("../schemas/student");
@@ -301,213 +299,81 @@ router.get("/disconnect", function (req, res) {
 });
 
 
-
+const multer  = require('multer');
+const upload = multer({ dest: 'upload/'});
+const type = upload.single('recfile');
 const cloudinary = require('cloudinary');
 const fs = require('fs');
-
 cloudinary.config({
     cloud_name: 'wizeup',
     api_key: '472734726483424',
     api_secret: 'A2ZBcQsnU72oh7p9JI415BOR1ws'
 });
 
-var multer  = require('multer');
-var upload = multer({ dest: 'upload/'});
-
-/** Permissible loading a single file,
- the value of the attribute "name" in the form of "recfile". **/
-var type = upload.single('recfile');
-
-router.post('/upload', type, function (req,res) {
-
-    /** When using the "single"
-     data come in "req.file" regardless of the attribute "name". **/
-    var path = req.file.path;
-    Session.findOne({sid: "1234"}, function (err, sess) {
-        if (err) return next(err);
-        cloudinary.v2.uploader.upload('/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4',
-            { public_id: sess.sid +"video" },
-            function(err, result) {
-                fs.unlinkSync(path);
-            if(err) return err;
-                fs.unlinkSync(path);
-                console.log(result);
-                sess.videoID = result.url;
-                sess.save();
+let first = true;
+router.post('/post-video', type, function (req,res) {
+    const path = req.file.path;
+    if(first) {
+        first = false;
+        if (!req.file.originalname.match(/\.(mp4)$/)) {
+            fs.unlinkSync(path);
+            res.status(400).json({message: 'wrong file'});
+        }
+        else {
+            res.status(200).json({message: 'received file'});
+            console.log(path);
+            Session.findOne({sid: "1234"}, function (err, sess) {
+                cloudinary.v2.image("1234video.jpg", {start_offset: "8.5", resource_type: "video"},function (err, result) {
+                    console.log("here");
+                });
+                return;
+                if (err) return next(err);
+                console.log("BEFORE!!!");
+                cloudinary.v2.uploader.upload(path,
+                    {
+                        resource_type: "video",
+                        public_id: sess.sid + 'video',
+                        eager: [
+                            {
+                                width: 300, height: 300,
+                                crop: "pad", audio_codec: "none"
+                            },
+                            {
+                                width: 160, height: 100,
+                                crop: "crop", gravity: "south",
+                                audio_codec: "none"
+                            }],
+                        eager_async: true,
+                        eager_notification_url: "http://mysite/notify_endpoint"
+                    },
+                    function (err, result) {
+                        console.log("AFTER!!!");
+                        console.log(path);
+                        fs.unlinkSync(path);
+                        if (err) return err;
+                        console.log(result);
+                        sess.videoID = result.url;
+                        sess.save();
+                        first = true;
+                    });
             });
-    });
-    // /** The original name of the uploaded file
-    //  stored in the variable "originalname". **/
-    // var target_path = 'upload/' + req.file.originalname;
-    //
-    // /** A better way to copy the uploaded file. **/
-    // var src = fs.createReadStream(tmp_path);
-    // var dest = fs.createWriteStream(target_path);
-    // src.pipe(dest);
-    // src.on('end', function() {
-    //     res.render('complete');
-    // });
-    // src.on('error', function(err) {
-    //     res.render('error');
-    // });
-
+        }
+    }
+    else{
+        fs.unlinkSync(path);
+    }
 });
-router.get('/post-video', function (req, res) {
-    Session.findOne({sid: req.query.sid}, function (err, sess) {
-        if (err) return next(err);
-        cloudinary.v2.uploader.upload("/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4",
-            { resource_type: "video",
-                public_id: req.query.sid + 'video',
-                eager: [
-                    { width: 300, height: 300,
-                        crop: "pad", audio_codec: "none" },
-                    { width: 160, height: 100,
-                        crop: "crop", gravity: "south",
-                        audio_codec: "none" } ],
-                eager_async: true,
-                eager_notification_url: "http://mysite/notify_endpoint"},
-            function(error, result) {
-                console.log(result);
-                sess.videoID = result.url;
-                sess.save();
-            });
-    });
-
-
-    // good
-    // var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
-    // var mongo = require('mongodb');
-    // var Grid = require('gridfs');
-    //
-    // mongo.MongoClient.connect(mongoDB, function (err, db) {
-    //     var gfs = Grid(db, mongo);
-    //     var source = '/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4';
-    //     Session.findOne({sid: req.query.sid}, function (err, sess) {
-    //         if (err) return next(err);
-    //         console.log("starting to upload file "+ source);
-    //         gfs.fromFile({filename: 'session:' +req.query.sid+' video.mp4'}, source, function (err, file) {
-    //             console.log('saved %s to GridFS file %s', source, file._id);
-    //             sess.videoID = file._id;
-    //             sess.save();
-    //         });
-    //     });
-    // });
-    //    good
-
-    // const ObjectID = require('mongodb').ObjectID,
-    //     GridStore = require('mongodb').GridStore,
-    //     mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin',
-    //     mongo = require('mongodb');
-    //
-    // mongo.MongoClient.connect(mongoDB, function (err, db) {
-    //     // Our file ID
-    //     const fileId = new ObjectID();
-    //
-    //     // Open a new file
-    //     const gridStore = new GridStore(db, fileId, 'session:' + req.query.sid + ' video.mp4', 'w');
-    //     const source = '/home/eran/projects/WebstormProjects/final_project/web/routes/good.mp4';
-    //
-    //     // Open the new file
-    //     gridStore.open(function (err, gridStore) {
-    //
-    //         // Write the file to gridFS
-    //         console.log("starting to upload file " + source + " as: " + fileId);
-    //         gridStore.writeFile(source, function (err, doc) {
-    //             Session.findOne({sid: req.query.sid}, function (err, sess) {
-    //                 if (err) return next(err);
-    //                 console.log('saved %s to GridFS file %s', source, fileId);
-    //                 sess.videoID = fileId;
-    //                 sess.save();
-    //             });
-    //         });
-    //     });
-    // });
-});
-
 
 router.get('/get-video', function (req, res) {
-
-
     Session.findOne({sid: req.query.sid}, function (err, sess) {
-        if(err) return err;
-        if(sess){
-            res.status(200).json({url:sess.videoID});
+        if (err) return err;
+        if (sess) {
+            res.status(200).json({url: sess.videoID});
         }
-        else{
-            res.status(400).json({error:'no such session'});
+        else {
+            res.status(400).json({error: 'no such session'});
         }
     });
 
-    // const GridStore = require('mongodb').GridStore;
-    // const db = mongoose.connection;
-    // const ObjectID = require('mongodb').ObjectID;
-    // db.options = 'PRIMARY';
-    // Session.findOne({sid: req.query.sid}, function (err, sess) {
-    //     if (err) return next(err);
-    //     if (sess.videoID !== "") {
-    //         new GridStore(db, new ObjectID(sess.videoID), 'r').open(function (err, GridFile) {
-    //             if (!GridFile) {
-    //                 console.log("video" + " not found!!!");
-    //                 res.status(404).json({message: "video" + " not found"})
-    //             }
-    //             else {
-    //                 console.log("starting to stream file " + GridFile.filename);
-    //                 StreamGridFile(req, res, GridFile)
-    //             }
-    //         });
-    //     }
-    //     else {
-    //         console.log("video" + " not found!!!");
-    //         res.status(404).json({message: "video" + " not found"})
-    //     }
-    // });
-
 });
-
-// function StreamGridFile(req, res, GridFile) {
-//     if (req.headers['range']) {
-//         // Range request, partialle stream the file
-//         console.log('Range Reuqest');
-//         const parts = req.headers['range'].replace(/bytes=/, "").split("-");
-//         const partialstart = parts[0];
-//         const partialend = parts[1];
-//         let start = parseInt(partialstart, 10);
-//         const end = partialend ? parseInt(partialend, 10) : GridFile.length - 1;
-//         const chunksize = (end - start) + 1;
-//         console.log('Range ', start, '-', end);
-//         res.writeHead(206, {
-//             'Content-Range': 'bytes ' + start + '-' + end + '/' + GridFile.length,
-//             'Accept-Ranges': 'bytes',
-//             'Content-Length': chunksize,
-//             'Content-Type': GridFile.contentType
-//         });
-//         // Set filepointer
-//         GridFile.seek(start, function () {
-//             // get GridFile stream
-//             const stream = GridFile.stream(true);
-//             // write to response
-//             stream.on('data', function (buff) {
-//                 // count data to abort streaming if range-end is reached
-//                 // perhaps theres a better way?
-//                 start += buff.length - 1;
-//                 if (start >= end) {
-//                     // enough data send, abort
-//                     GridFile.close();
-//                     res.end();
-//                 } else {
-//                     res.write(buff);
-//                 }
-//             });
-//         });
-//     } else {
-//         // stream back whole file
-//         console.log('No Range Request');
-//         res.header('Content-Type', GridFile.contentType);
-//         res.header('Content-Length', GridFile.length);
-//         const stream = GridFile.stream(true);
-//         stream.pipe(res);
-//     }
-// }
-
-
 module.exports = router;
