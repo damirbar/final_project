@@ -155,7 +155,7 @@ router.get("/rate-message", function (req, res) {
             let disliked = dislikers.indexOf(user._id) > -1;// true if the user has disliked the message
             let ratingUpdate = {};
 
-            if (rating == 1){ // user likes the message
+            if (rating === 1){ // user likes the message
                 if(liked) { // user has already liked the message
                     console.log('user has already liked this message. mess id:' + mess_id);
                     return res.status(200).json({message: 'user has already liked this message. mess id:' + mess_id});
@@ -323,12 +323,8 @@ router.post('/post-video', type, function (req,res) {
             res.status(200).json({message: 'received file'});
             console.log(path);
             Session.findOne({sid: "1234"}, function (err, sess) {
-                cloudinary.v2.image("1234video.jpg", {start_offset: "8.5", resource_type: "video"},function (err, result) {
-                    console.log("here");
-                });
-                return;
                 if (err) return next(err);
-                console.log("BEFORE!!!");
+                console.log("starting to upload "+req.file.originalname);
                 cloudinary.v2.uploader.upload(path,
                     {
                         resource_type: "video",
@@ -347,10 +343,9 @@ router.post('/post-video', type, function (req,res) {
                         eager_notification_url: "http://mysite/notify_endpoint"
                     },
                     function (err, result) {
-                        console.log("AFTER!!!");
-                        console.log(path);
                         fs.unlinkSync(path);
                         if (err) return err;
+                        console.log("uploaded "+req.file.originalname);
                         console.log(result);
                         sess.videoID = result.url;
                         sess.save();
