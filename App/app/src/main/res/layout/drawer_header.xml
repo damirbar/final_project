@@ -9,23 +9,22 @@
     android:paddingLeft="30dp"
     tools:targetApi="lollipop">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profileImageView"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="left|top"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="35dp"
         android:src="@drawable/default_user_image"
-        app:civ_border_color="?attr/colorAccent"
-        app:civ_border_width="2dp" />
+        app:civ_border_color="?android:attr/colorAccent"
+        app:civ_border_width="1dp" />
 
 
     <TextView
         android:id="@+id/nameTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="bold" />

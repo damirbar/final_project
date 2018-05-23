@@ -36,11 +36,11 @@
     <color name="accent">@color/groovy_blue</color>
     <color name="accent_material_dark">@color/material_deep_teal_200</color>
     <color name="accent_material_light">@color/material_deep_teal_500</color>
-    <color name="account_status_bar">#ff282828</color>
+    <color name="account_status_bar">#f0f2f5</color>
     <color name="actionBarBackground">#007de3</color>
     <color name="actionBarHighlight">#ff000000</color>
     <color name="actionModeBackground">#ffffffff</color>
-    <color name="actionModeHighlight">#ff000000</color>
+    <color name="actionModeHighlight">#000000</color>
     <color name="album_list_cover_image_frame">#ff000000</color>
     <color name="alert_title_divider">#c8c8c8</color>
     <color name="background_floating_material_dark">@color/material_grey_800</color>
@@ -48,7 +48,7 @@
     <color name="background_material_dark">@color/material_grey_850</color>
     <color name="background_material_light">@color/material_grey_50</color>
     <color name="barDark">#ff444444</color>
-    <color name="barDarkBorder">#ff666666</color>
+    <color name="barDarkBorder">#666666</color>
     <color name="barLight">#dcdcdc</color>
     <color name="barLightBorder">#c1c1c1</color>
     <color name="black">#222222</color>

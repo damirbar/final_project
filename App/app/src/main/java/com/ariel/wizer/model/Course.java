@@ -8,7 +8,6 @@ public class Course {
     private String location;
     private int points;
     private String creation_date;
-    private boolean hidden;
 
     public String getName() {
         return name;
@@ -58,11 +57,4 @@ public class Course {
         this.creation_date = creation_date;
     }
 
-    public boolean isHidden() {
-        return hidden;
-    }
-
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
-    }
 }
