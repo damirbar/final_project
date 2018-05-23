@@ -20,8 +20,8 @@ wizerApp.service('SessionService', function ($http) {
     };
 
     this.createSession = function (sid, name, location) {
-        console.log("ID = " + id);
-        return $http.post('/sessions/create-session', {sid: id, name: name, location: location})
+        console.log("ID = " + sid);
+        return $http.post('/sessions/create-session', {sid: sid, name: name, location: location})
             .then(function (data) {
                 return data.data;
             }, function () {

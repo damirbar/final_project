@@ -5,3 +5,5 @@ web/public/stylesheets/css/main.css
 web/node_modules/*
 web/public/stylesheets/css/main.min.css
 \.idea/
+
+web/upload/

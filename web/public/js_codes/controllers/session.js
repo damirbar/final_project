@@ -64,7 +64,7 @@ wizerApp.controller('sessionController',
                     $scope.message = {type: "question", body: "", replyTo: ""};
                 })
                 .catch(function (err) {
-                    console.log("Error with sending message");
+                    console.log(err);
                 });
         };
 
@@ -85,7 +85,7 @@ wizerApp.controller('sessionController',
                     $scope.firstConnectionTry = false;
                 })
                 .catch(function (err) {
-                    console.log("Error connection to session");
+                    console.log(err);
                     $scope.firstConnectionTry = false;
                 });
 
