@@ -30,6 +30,23 @@
     <string name="open_drawer">Drawer Open</string>
     <string name="close_drawer">Drawer Close</string>
 
+    <string name="info">wizeUp is a tool to help students get better
+                        at their studies and to help teachers have a better
+                        perspective on their class. wizeUp allows teachers
+                        to upload relevant files, answer students\' questions and
+                        improve their teaching methods using wizeUp feedback.
+                        With wizeUp students can communicate with their classmates,
+                        share files and enjoy live video streaming, providing
+                        the option of live feedback.
+                        wizeUp is the best way to gather statistical information
+                        for the use of both parties, students and teachers,
+                        as well as any department chosen.
+                        wizeStream will drive both sides, students and teachers,
+                        to thrive using a scoring system.
+                        wizeStream will make teaching and
+                        learning easier, faster and better.</string>
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

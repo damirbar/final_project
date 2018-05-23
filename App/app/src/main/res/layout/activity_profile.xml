@@ -5,7 +5,7 @@
     android:id="@+id/layout_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff">
+    android:background="#fdfdfe">
 
 
     <android.support.v7.widget.Toolbar
@@ -40,22 +40,23 @@
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/down_bar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/tool_bar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fff"
+            android:background="#fdfdfe"
             android:orientation="vertical">
 
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:background="#fff">
+                android:layout_height="wrap_content">
 
 
                 <!-- Cover Image -->
@@ -63,21 +64,47 @@
                 <ImageView
                     android:id="@+id/image"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="230dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/nav_menu_header" />
+                    android:src="?android:attr/colorAccent" />
 
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/user_profile_photo"
-                    android:layout_width="135dp"
-                    android:layout_height="126dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="50dp"
-                    android:paddingBottom="3dp"
-                    android:src="@drawable/default_user_image"
-                    app:civ_border_color="?attr/colorAccent"
-                    app:civ_border_width="2dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="25dp"
+                    android:orientation="vertical">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/user_profile_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="126dp"
+                        android:layout_gravity="center"
+                        android:paddingBottom="3dp"
+                        android:src="@drawable/default_user_image"
+                        app:civ_border_color="?android:attr/colorAccent"
+                        app:civ_border_width="1dp" />
+
+                    <TextView
+                        android:id="@+id/tvdisName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvcountry_"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingBottom="7dp"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
 
 
             </FrameLayout>
@@ -86,34 +113,32 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#fff"
-                android:orientation="vertical">
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:background="#fdfdfe"
+                android:divider="@drawable/divider"
+                android:orientation="vertical"
+                android:showDividers="none|end">
 
 
                 <TextView
-                    android:id="@+id/tvdisName"
+                    android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
+                    android:text="About me"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvcountry_"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingBottom="7dp"
-                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tvAboutMe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:layout_marginTop="2dp"
+                    android:gravity="left|center"
                     android:paddingBottom="5dp"
-                    android:textSize="16sp" />
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp" />
 
 
             </LinearLayout>
@@ -132,6 +157,20 @@
                 android:padding="10dp"
                 android:text="EDIT PROFILE"
                 android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/edit_profile2"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="center"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/rounded"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Change Password"
+                android:textAlignment="center"
+                android:textAllCaps="true" />
 
 
         </LinearLayout>

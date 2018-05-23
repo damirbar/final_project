@@ -5,7 +5,7 @@
     android:id="@+id/laout_post"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/dashboard_chat_background">
+    android:background="#fdfdfe">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"

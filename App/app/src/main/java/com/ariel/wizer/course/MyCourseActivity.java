@@ -76,7 +76,7 @@ public class MyCourseActivity extends AppCompatActivity {
     }
 
     private void pullClasses() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllCourses()
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllCoursesById()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull, i -> mServerResponse.handleError(i)));

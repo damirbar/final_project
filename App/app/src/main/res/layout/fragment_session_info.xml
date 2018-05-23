@@ -4,7 +4,7 @@
     android:id="@+id/activity_session_feed"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/chat_me_window_background"
+    android:background="#fdfdfe"
     android:fitsSystemWindows="true">
 
     <ScrollView
@@ -14,56 +14,245 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/chat_me_window_background"
+            android:background="#fdfdfe"
             android:orientation="vertical">
 
-            <TableRow
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:background="#fdfdfe"
+                android:divider="@drawable/divider"
+                android:orientation="vertical"
+                android:showDividers="none|end">
+
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Session Id:"
+                    android:text="Session Number"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/tvAboutMe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="1234" />
-            </TableRow>
+                    android:layout_marginTop="2dp"
+                    android:gravity="left|center"
+                    android:paddingBottom="5dp"
+                    android:text="1234"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp" />
 
-            <TableRow
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#fdfdfe"
+                android:divider="@drawable/divider"
+                android:orientation="vertical"
+                android:showDividers="none|end">
+
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Session Rating:"
+                    android:text="Creation Date"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textView46"
+                    android:id="@+id/tvAboutMe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="5" />
-            </TableRow>
+                    android:layout_marginTop="2dp"
+                    android:gravity="left|center"
+                    android:paddingBottom="5dp"
+                    android:text="1/1/18"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#fdfdfe"
+                android:divider="@drawable/divider"
+                android:orientation="vertical"
+                android:showDividers="none|end">
+
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Teacher"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvAboutMe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:gravity="left|center"
+                    android:paddingBottom="5dp"
+                    android:text="Shay cohen"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#fdfdfe"
+                android:divider="@drawable/divider"
+                android:orientation="vertical"
+                android:showDividers="none|end">
+
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Location"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvAboutMe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:gravity="left|center"
+                    android:paddingBottom="5dp"
+                    android:text="4.4.4"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#fdfdfe"
+                android:divider="@drawable/divider"
+                android:orientation="vertical"
+                android:showDividers="none|end">
+
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="User Online"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvAboutMe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:gravity="left|center"
+                    android:paddingBottom="5dp"
+                    android:text="5"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#fdfdfe"
+                android:divider="@drawable/divider"
+                android:orientation="vertical"
+                android:showDividers="none|end">
+
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rate The Session !"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white">
+
+                    <CheckBox
+                        android:id="@+id/dislike_cbx2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginEnd="67dp"
+                        android:layout_marginRight="67dp"
+                        android:background="@null"
+                        android:button="@drawable/dislike_checkbox" />
+
+                    <TextView
+                        android:id="@+id/tvAboutMe4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="left|center"
+                        android:paddingBottom="5dp"
+                        android:text="5"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="18sp" />
+
+                    <CheckBox
+                        android:id="@+id/like_cbx2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="74dp"
+                        android:layout_marginStart="74dp"
+                        android:background="@null"
+                        android:button="@drawable/like_checkbox" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/button"
@@ -75,46 +264,6 @@
                 android:background="@drawable/buttonshape"
                 android:text="Stream Session"
                 android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/top_margin30"
-                android:gravity="center"
-                android:text="Rate The Session !" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="30dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white">
-
-                <CheckBox
-                    android:id="@+id/dislike_cbx2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginEnd="67dp"
-                    android:layout_marginRight="67dp"
-                    android:background="@null"
-                    android:button="@drawable/dislike_checkbox" />
-
-                <CheckBox
-                    android:id="@+id/like_cbx2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="74dp"
-                    android:layout_marginStart="74dp"
-                    android:background="@null"
-                    android:button="@drawable/like_checkbox" />
-            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
