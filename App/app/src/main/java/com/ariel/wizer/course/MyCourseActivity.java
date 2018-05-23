@@ -14,6 +14,7 @@ import com.ariel.wizer.R;
 import com.ariel.wizer.model.Course;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
+import com.ariel.wizer.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +34,7 @@ public class MyCourseActivity extends AppCompatActivity {
     private TextView mTvNoResults;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoursesAdapter mAdapter;
+    private  String mId;
 
 
     @Override
@@ -42,7 +44,7 @@ public class MyCourseActivity extends AppCompatActivity {
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.layout_my_classes));
-
+        initSharedPreferences();
         initViews();
         pullClasses();
 
@@ -66,6 +68,11 @@ public class MyCourseActivity extends AppCompatActivity {
 
     }
 
+    private void initSharedPreferences() {
+        mId = mRetrofitRequests.getmSharedPreferences().getString(Constants.ID,"");
+    }
+
+
     private void initViews() {
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         mTvNoResults = (TextView) findViewById(R.id.tv_no_results);
@@ -76,7 +83,7 @@ public class MyCourseActivity extends AppCompatActivity {
     }
 
     private void pullClasses() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllCoursesById()
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllCoursesById(mId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull, i -> mServerResponse.handleError(i)));
