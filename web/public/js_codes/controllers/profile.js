@@ -10,7 +10,7 @@ wizerApp.controller('profileController',
         $scope.editUser = {};
 
         var initPage = function() {
-            CourseService.getCoursesById($scope.profile.courses)
+            CourseService.getCoursesById($routeParams.id)
                 .then(function (data) {
                     console.log("got courses");
                     $scope.courses = data.courses;
