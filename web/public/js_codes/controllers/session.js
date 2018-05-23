@@ -1,5 +1,5 @@
 wizerApp.controller('sessionController',
-    function ($scope, $rootScope, $routeParams, $location, $window, $interval, AuthService, SessionService/*,socketIO*/) {
+    function ($scope, $rootScope, $routeParams, $location, $window, $interval, AuthService, SessionService, UploadService/*,socketIO*/) {
 
         console.log("Hello from sessionController");
         $scope.sessionID = "";
@@ -106,6 +106,15 @@ wizerApp.controller('sessionController',
                     console.log("Error with getting messages");
                 });
 
+        };
+
+        $scope.uploadVideo = function(){
+            var file = $scope.myFile;
+
+            console.log('file is ' );
+            console.dir(file);
+            
+            UploadService.uploadVideoToUrl(file, $scope.sessionID);
         };
 
         // $scope.getVideo = function () {
