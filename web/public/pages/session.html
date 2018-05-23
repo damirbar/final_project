@@ -12,7 +12,7 @@
                 <input type="text" ng-model="sessionUserName" class="form-control" placeholder="Anon" aria-label=""
                        aria-describedby="basic-addon1">
                 <div class="input-group-append">
-                    <button class="btn btn-success" type="submit" ng-click="connectSession()">Create!</button>
+                    <button class="btn btn-success" type="submit" ng-click="connectSession()">Connect!</button>
                 </div>
             </form>
             <div class="pad col-2"></div>
@@ -21,26 +21,35 @@
             Error connecting to session!
         </div>
 
-        <div>OR</div>
-
+        <br>
+        <div class="row">
+            <div class="col-5"></div>
+            <div class="col-2 display-3">OR</div>
+            <div class="col-5"></div>
+        </div>
         <div class="session-header display-4">Create a new session!</div>
         <div class="row">
             <div class="pad col-2"></div>
             <form class="input-group col-8">
-                <input type="text" ng-model="createSessionID" class="form-control" placeholder="Session ID" aria-label=""
+                <input type="text" ng-model="createSessionID" class="form-control" placeholder="Session ID"
+                       aria-label=""
                        aria-describedby="basic-addon1" required>
-                <input type="text" ng-model="createSessionName" class="form-control" placeholder="Session name" aria-label=""
+                <input type="text" ng-model="createSessionName" class="form-control" placeholder="Session name"
+                       aria-label=""
                        aria-describedby="basic-addon1" required>
-                <input type="text" ng-model="createSessionLocation" class="form-control" placeholder="Location" aria-label=""
+                <input type="text" ng-model="createSessionLocation" class="form-control" placeholder="Location"
+                       aria-label=""
                        aria-describedby="basic-addon1" required>
 
                 <div class="input-group-append">
-                    <button class="btn btn-success" type="submit" ng-click="createSession()">Connect!</button>
+                    <button class="btn btn-success" type="submit" ng-click="createSession()">Create!</button>
                 </div>
             </form>
             <div class="pad col-2"></div>
         </div>
-
+        <div class="not-found-session text-danger" ng-hide="firstConnectionTry">
+            Session ID already exists!
+        </div>
 
 
     </div>
