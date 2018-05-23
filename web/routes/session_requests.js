@@ -108,8 +108,16 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
 
 
 router.post("/create-session", function (req, res) {
-    let myData = new Session(req.body);
-    myData.save(function (err) {
+    const sess =new Session({
+        sid:   req.body.sid,
+        name : req.body.name,
+        admin : req.verifiedEmail,
+        location : req.body.location,
+        creation_date : Date.now()
+        });
+
+
+    sess.save(function (err) {
         if (err) {
             if (err.name === 'MongoError' && err.code === 11000) {
                 // Duplicate username
@@ -127,8 +135,8 @@ router.post("/create-session", function (req, res) {
             console.log(err);
             return res.status(500).send(err);
         }
-        res.send("successfully added session " + myData.name + " to db");
-        console.log("successfully added session " + myData.name + " to db");
+        res.send("successfully added session " + sess.name + " to db");
+        console.log("successfully added session " + sess.name + " to db");
     });
 });
 

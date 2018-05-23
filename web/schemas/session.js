@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var User = require('./user');
 var SessionSchema = new mongoose.Schema({
-    sid: Number, // Corresponds to course id
+    sid: {type: Number, unique: true, require: true},
     name: String,
     admin:  {type: mongoose.Schema.ObjectId, ref: 'User'},
     teacher_id:String,
