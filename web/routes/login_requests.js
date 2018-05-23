@@ -38,10 +38,11 @@ router.post("/auth-login-user-pass", function (req, res) {
                         email: user.email,
                         first_name: user.first_name,
                         last_name: user.last_name,
-                        token: token,
+                        accessToken: token,
                         role: user.role,
                         photos: user.photos,
-                        _id: user._id
+                        id_num: user.id_num,
+                        display_name: user.display_name
                     })
                 }
             });
@@ -60,10 +61,11 @@ router.get("/get-user-by-token", function (req, res) {
             email: user.email,
             first_name: user.first_name,
             last_name: user.last_name,
-            token: user.accessToken,
+            accessToken: user.accessToken,
             role: user.role,
             photos: user.photos,
-            _id: user._id
+            id_num: user.id_num,
+            display_name: user.display_name
         })
     });
 });
@@ -71,14 +73,14 @@ router.get("/get-user-by-token", function (req, res) {
 
 router.post("/new-user", function (req, res) {
 
-    const fname = req.body.fname,
-        lname = req.body.lname,
+    const fname = req.body.first_name,
+        lname = req.body.last_name,
         email = req.body.email,
         password = req.body.password,
         role = req.body.role;
 
-    req.checkBody("fname", "First Name is required").notEmpty();
-    req.checkBody("lname", "Last Name is required").notEmpty();
+    req.checkBody("first_name", "First Name is required").notEmpty();
+    req.checkBody("last_name", "Last Name is required").notEmpty();
     req.checkBody("email", "Email is required").notEmpty();
     req.checkBody("email", "Email is not valid").isEmail();
     req.checkBody("password", "Password is required").notEmpty();

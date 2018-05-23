@@ -16,7 +16,7 @@ router.get("/get-profile",function (req, res, next) {
 
 router.post("/edit-profile",function (req, res, next) {
     const verified = req.verifiedEmail;
-    const updatedUser = req.body.user;
+    const updatedUser = req.body.user || req.body;
     User.findOne({email: verified}, function (err, user) {
         if (err) return next(err);
         if(user) {
