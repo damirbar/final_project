@@ -32,7 +32,7 @@ router.post("/connect-session", function (req, res) {
                         display_name: name,
                         id_num: user.id
                     });
-                    sess.save()
+                    sess.update()
                         .then(function (item) {
                             console.log("Saved " + user.email + " to session: " + id);
                             res.status(200).json({message: 'Welcome to Class !', session: sess});
