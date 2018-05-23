@@ -10,8 +10,8 @@ wizerApp.service('CourseService', function($http) {
             });
     };
 
-    this.getCoursesById = function(arr) {
-        return $http.post('/courses/get-all-courses-by-id', {courses: arr})
+    this.getCoursesById = function(id) {
+        return $http.post('/courses/get-all-courses-by-id', {id: id})
             .then(function(data) {
                 return data.data;
             }, function() {

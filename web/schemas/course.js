@@ -7,6 +7,7 @@ var CourseSchema = new mongoose.Schema({
     points: Number,
     creation_date: {type: Date, default: Date.now()},
     last_modified: Date,
-    hidden: Boolean
+    hidden: Boolean,
+    students:[String]
 });
 module.exports = mongoose.model('Course', CourseSchema);
