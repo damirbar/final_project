@@ -1,15 +1,19 @@
 package com.ariel.wizer.model;
 
-import java.io.Serializable;
-
 public class SessionMessage  {
 
     private String sid;
     private String email;
-    private String type;
-    private int rating;
-    private String _id;
+    private int likes;
+    private int dislikes;
+
+//    private String likers[];
+//    private String dislikers[];
+
     private String body[];
+    private String type;
+    private String _id;
+    private String date;
 
     public String get_id() {
         return _id;
@@ -43,14 +47,6 @@ public class SessionMessage  {
         this.type = type;
     }
 
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
     public String[] getBody() {
         return body;
     }
@@ -59,4 +55,27 @@ public class SessionMessage  {
         this.body = body;
     }
 
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public int getDislikes() {
+        return dislikes;
+    }
+
+    public void setDislikes(int dislikes) {
+        this.dislikes = dislikes;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 }

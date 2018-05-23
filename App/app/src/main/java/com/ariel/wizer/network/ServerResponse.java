@@ -40,7 +40,7 @@ public class ServerResponse {
     }
 
     public void handleError(Throwable error) {
-
+        Log.d("tag",error.toString());
         if (error instanceof HttpException) {
 
             Gson gson = new GsonBuilder().setLenient().create();
@@ -60,22 +60,17 @@ public class ServerResponse {
     }
 
     public static void handleErrorRate(Throwable error) {
-
+        Log.d("tag",error.toString());
         if (error instanceof HttpException) {
-
             Gson gson = new GsonBuilder().setLenient().create();
             try {
                 String errorBody = ((HttpException) error).response().errorBody().string();
                 Response response = gson.fromJson(errorBody,Response.class);
-//                showSnackBarMessage(response.getMessage());
-
             } catch (JsonSyntaxException|IOException e) {
                 e.printStackTrace();
-//                showSnackBarMessage("Internal Server Error !");
             }
         } else {
 
-//            showSnackBarMessage("Network Error !");
         }
     }
 

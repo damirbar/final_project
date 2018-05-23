@@ -1,13 +1,17 @@
 package com.ariel.wizer;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -16,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ariel.wizer.fragments.MyDateDialog;
 import com.ariel.wizer.imageCrop.ImageCropActivity;
 import com.ariel.wizer.imageCrop.IntentExtras;
 import com.ariel.wizer.imageCrop.PicModeSelectDialogFragment;
@@ -26,24 +31,28 @@ import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.utils.Constants;
 
+import java.io.ByteArrayOutputStream;
+
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.ariel.wizer.utils.Constants.EMAIL;
-import static com.ariel.wizer.utils.Validation.validateEmail;
-
-public class EditProfileActivity extends AppCompatActivity implements PicModeSelectDialogFragment.IPicModeSelectListener {
+public class EditProfileActivity extends AppCompatActivity implements MyDateDialog.OnCallbackReceived, PicModeSelectDialogFragment.IPicModeSelectListener {
 
     private EditText mETFirstName;
     private EditText mETLastName;
-    private EditText mETEmail;
+    private EditText mETDisplayName;
+    private EditText mETCountry;
+    private EditText mETAddress;
+    private EditText mETAge;
     private EditText mETGender;
+    private EditText mETAboutMe;
     private TextView mProfileChange;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
-    private String mEmail;
+    private String mId;
+    private String mDisplayName;
 
     public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
     public static final int REQUEST_CODE_UPDATE_PIC = 0x1;
@@ -51,6 +60,8 @@ public class EditProfileActivity extends AppCompatActivity implements PicModeSel
     private ImageView image;
     private Button mBSave;
     private Button mBcancel;
+    private Bitmap myBitmap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,25 +75,38 @@ public class EditProfileActivity extends AppCompatActivity implements PicModeSel
         initSharedPreferences();
         initViews();
         loadProfile();
-    }
+        }
 
     private void initSharedPreferences() {
-        mEmail = mRetrofitRequests.getmSharedPreferences().getString(Constants.EMAIL,"");
+        mId = mRetrofitRequests.getmSharedPreferences().getString(Constants.ID,"");
     }
 
     private void initViews() {
         mETFirstName = (EditText) findViewById(R.id.eTFirstName);
         mETLastName = (EditText) findViewById(R.id.eTLastName);
-        mETEmail = (EditText) findViewById(R.id.eTEmail);
         mETGender = (EditText) findViewById(R.id.eTGender);
+
+        mETDisplayName = (EditText) findViewById(R.id.eTDisplay_Name);
+        mETCountry = (EditText) findViewById(R.id.eTCountry);
+        mETAddress = (EditText) findViewById(R.id.eTAddress);
+        mETAge = (EditText) findViewById(R.id.eTAge);
+        mETAboutMe = (EditText) findViewById(R.id.eTAboutMe);
+
         mProfileChange = (TextView) findViewById(R.id.user_profile_change);
         image = (ImageView)findViewById(R.id.user_profile_photo);
         mBSave = (Button) findViewById(R.id.save_button);
         mBcancel = (Button) findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveButton());
-        mBcancel.setOnClickListener(view -> cancelButton());
+        mBcancel.setOnClickListener(view -> finish());
         mETGender.setOnClickListener(view -> genderViewClick());
         mProfileChange.setOnClickListener(view -> showAddProfilePicDialog());
+        mETAge.setOnClickListener(view -> showDialog());
+
+    }
+
+    private void showDialog() {
+        MyDateDialog newFragment = new MyDateDialog();
+        newFragment.show(getSupportFragmentManager(), MyDateDialog.TAG);
     }
 
     @Override
@@ -102,7 +126,7 @@ public class EditProfileActivity extends AppCompatActivity implements PicModeSel
 
     private void showCroppedImage(String mImagePath) {
         if (mImagePath != null) {
-            Bitmap myBitmap = BitmapFactory.decodeFile(mImagePath);
+            myBitmap = BitmapFactory.decodeFile(mImagePath);
             image.setImageBitmap(myBitmap);
         }
     }
@@ -159,55 +183,70 @@ public class EditProfileActivity extends AppCompatActivity implements PicModeSel
     }
 
     private void saveButton(){
-        setError();
-        String first_name = mETFirstName.getText().toString();
-        String last_name = mETLastName.getText().toString();
-        String email = mETEmail.getText().toString();
-        String gender = mETGender.getText().toString();
+        String first_name = mETFirstName.getText().toString().trim();
+        String last_name = mETLastName.getText().toString().trim();
+        String gender = mETGender.getText().toString().trim();
+        mDisplayName = mETDisplayName.getText().toString().trim();
+        String country = mETCountry.getText().toString().trim();
+        String TAddress = mETAddress.getText().toString().trim();
+        String Age = mETAge.getText().toString().trim();
+        String AboutMe = mETAboutMe.getText().toString().trim();
 
-        int err = 0;
-        if (!validateEmail(email)) {
 
-            err++;
-            mETEmail.setError("Email should be valid !");
-        }
 
-        if (err == 0) {
-            mEmail = email;
+        User user = new User();
+        user.setFname(first_name);
+        user.setLname(last_name);
+        user.setGender(gender);
+        user.setDisplay_name(mDisplayName);
+        user.setCountry(country);
+        user.setAddress(TAddress);
+        user.setAge(Integer.parseInt(Age));
+        user.setAbout_me(AboutMe);
 
-            User user = new User();
-            user.setFname(first_name);
-            user.setLname(last_name);
-            user.setEmail(email);
-            user.setGender(gender);
-            updateProfile(user);
-        }
+//        String g = getImageUri(this,myBitmap).toString();
+//        String pic [] ={g};
+//        user.setPhotos(pic);
+
+
+        updateProfile(user);
+
     }
 
-    private void cancelButton() {
-//        Intent intent = new Intent(this, NavBarActivity.class);
-//        startActivity(intent);
-        finish();
-    }
-
-    private void setError() {
-        mETEmail.setError(null);
-    }
+//    public Uri getImageUri(Context inContext, Bitmap inImage) {
+//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+//        return Uri.parse(path);
+//    }
 
     private void loadProfile() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getProfile()
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getProfile(mId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseProfile,i -> mServerResponse.handleError(i)));
     }
-    private void handleResponse(User user) {
+
+    private void handleResponseProfile(User user) {
         mETFirstName.setText(user.getLname());
         mETLastName.setText(user.getFname());
-        mETEmail.setText(user.getEmail());
-        mETGender.setText(user.getGender());
+        mETDisplayName.setText(user.getDisplay_name());
+        mETCountry.setText(user.getCountry());
+        mETAddress.setText(user.getAddress());
+        mETAge.setText(String.valueOf(user.getAge()));
+        mETAboutMe.setText(user.getAbout_me());
+
+        String g = user.getGender();
+        if(g == null || g.isEmpty()){
+            mETGender.setText("Not Specified");
+        }
+        else
+            mETGender.setText(user.getGender());
+
     }
 
     private void updateProfile(User user) {
+
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().updateProfile(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -216,11 +255,14 @@ public class EditProfileActivity extends AppCompatActivity implements PicModeSel
 
     private void handleResponseUpdate(Response response) {
         SharedPreferences.Editor editor = mRetrofitRequests.getmSharedPreferences().edit();
-        editor.putString(EMAIL,mEmail);
+        editor.putString(Constants.DISPLAY_NAME,mDisplayName);
+//        editor.putString(Constants.PROFILE_IMG,mEmail);
         editor.apply();
-//        Intent intent = new Intent(this, NavBarActivity.class);
-//        startActivity(intent);
         finish();
+        }
+
+    public void Update(String date) {
+        mETAge.setText(date);
     }
 
 
@@ -228,5 +270,6 @@ public class EditProfileActivity extends AppCompatActivity implements PicModeSel
     public void onDestroy() {
         super.onDestroy();
         mSubscriptions.unsubscribe();
+
     }
 }

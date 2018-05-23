@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_marginLeft="@dimen/padding8"
+    android:layout_marginBottom="8.0dip"
+    android:layout_marginStart="@dimen/padding8"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/file_image2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@+id/feed_item_menu"
+        android:padding="5dp"
+        android:rotation="270"
+        android:src="@drawable/ic_arrow_back_black_24dp"
+        app:siBorderColor="#cccccc"
+        app:siBorderWidth="2dp" />
+
+    <ImageButton
+        android:id="@+id/feed_item_menu"
+        android:layout_width="48.0dip"
+        android:layout_height="36.0dip"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="2.0dip"
+        android:background="@null"
+        android:rotation="90"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_more_vert_black_24dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/file_image"
+        android:layout_width="42.0dip"
+        android:layout_height="42.0dip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/padding8"
+        android:layout_marginStart="@dimen/padding8"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:padding="5dp"
+        android:src="@drawable/ic_add_file_48dp"
+        app:siBorderColor="#cccccc"
+        app:siBorderWidth="2dp" />
+
+    <LinearLayout
+        android:id="@+id/author_details"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10.0dip"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="10.0dip"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_toEndOf="@id/file_image"
+        android:layout_toRightOf="@id/file_image"
+        android:gravity="start"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/file_name"
+            android:layout_width="190.0dip"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="2"
+            android:text="file "
+            android:textAlignment="viewStart"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/subhead_size" />
+
+        <TextView
+            android:id="@+id/creation_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3/3/18"
+            android:textColor="@color/secondary_post_text"
+            android:textSize="@dimen/caption_size" />
+
+    </LinearLayout>
+</RelativeLayout>

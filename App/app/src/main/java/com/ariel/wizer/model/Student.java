@@ -1,7 +1,7 @@
 package com.ariel.wizer.model;
 
 
-public class Student extends User {
+public class Student  {
 
     private String first_name;
     private String last_name;

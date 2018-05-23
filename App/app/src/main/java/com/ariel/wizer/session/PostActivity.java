@@ -50,7 +50,7 @@ public class PostActivity extends AppCompatActivity {
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         buttonSend = (ImageButton) findViewById(R.id.imageButton);
         buttonSend.setOnClickListener(view -> attemptSendPost());
-        buttonBack.setOnClickListener(view -> goBack());
+        buttonBack.setOnClickListener(view -> finish());
     }
 
     private boolean getData() {
@@ -64,10 +64,6 @@ public class PostActivity extends AppCompatActivity {
         }
         else
             return false;
-    }
-
-    private void goBack() {
-        finish();
     }
 
     private void attemptSendPost() {

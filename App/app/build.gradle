@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
 
     compileOptions {
@@ -47,9 +48,9 @@ dependencies {
     implementation 'com.orhanobut:logger:1.15'
     implementation 'com.loopj.android:android-async-http:1.4.9'
     implementation 'com.jakewharton:butterknife:8.4.0'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.androidadvance:topsnackbar:1.1.1'
     implementation 'com.mindorks:placeholderview:0.2.7'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     //github
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
@@ -57,6 +58,5 @@ dependencies {
     implementation 'com.github.amlcurran.showcaseview:library:5.4.3'
     implementation 'com.github.siyamed:android-shape-imageview:0.9.3@aar'
     implementation 'com.github.nkzawa:socket.io-client:0.3.0'
-
 
 }
