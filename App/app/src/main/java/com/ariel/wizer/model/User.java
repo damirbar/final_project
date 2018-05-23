@@ -2,13 +2,13 @@ package com.ariel.wizer.model;
 
 
 public class User {
-    private String id_num;
+    private String _id;
     private String first_name;
     private String last_name;
     private String email;
     private String password;
     private String role = "teacher";
-    private String token;
+    private String accessToken;
 
 
     private String display_name;
@@ -29,15 +29,15 @@ public class User {
 
 
     public String getId_num() {
-        return id_num;
+        return _id;
 }
 
     public void setId_num(String id_num) {
-        this.id_num = id_num;
+        this._id = id_num;
     }
 
     public String getToken() {
-        return token;
+        return accessToken;
     }
 
     public String getDisplay_name() {
@@ -173,6 +173,6 @@ public class User {
     }
 
     public void setToken(String token) {
-        this.token = token;
+        this.accessToken = token;
     }
 }
