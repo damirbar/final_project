@@ -30,7 +30,7 @@
 
             <div class="col-6 session-vid" ng-if="isConnectedToSession && session.video != ''">
                 <video width="640" height="480"
-                       poster="https://res.cloudinary.com/demo/image/upload/sample.jpg" controls>
+                       poster="{{session.picID}}" controls>
                     <source ng-src="{{session.videoID}}"
                             type="video/mp4">
                 </video>
