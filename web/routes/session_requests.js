@@ -312,63 +312,68 @@ cloudinary.config({
 
 let first = true;
 router.post('/post-video', type, function (req,res) {
-    const path = req.file.path;
-    if(first) {
-        first = false;
-        if (!req.file.originalname.match(/\.(mp4)$/)) {
-            fs.unlinkSync(path);
-            res.status(400).json({message: 'wrong file'});
-        }
-        else {
-            res.status(200).json({message: 'received file'});
-            console.log(path);
-            Session.findOne({sid: "1234"}, function (err, sess) {
-                if (err) return next(err);
-                console.log("starting to upload "+req.file.originalname);
-                cloudinary.v2.uploader.upload(path,
-                    {
-                        resource_type: "video",
-                        public_id: sess.sid + 'video',
-                        eager: [
-                            {
-                                width: 300, height: 300,
-                                crop: "pad", audio_codec: "none"
-                            },
-                            {
-                                width: 160, height: 100,
-                                crop: "crop", gravity: "south",
-                                audio_codec: "none"
-                            }],
-                        eager_async: true,
-                        eager_notification_url: "http://mysite/notify_endpoint"
-                    },
-                    function (err, result) {
-                        fs.unlinkSync(path);
-                        if (err) return err;
-                        console.log("uploaded "+req.file.originalname);
-                        console.log(result);
-                        sess.videoID = result.url;
-                        sess.save();
-                        first = true;
-                    });
-            });
-        }
+    if(!req.file) {
+        res.status(400).json({message: 'no file'});
     }
     else{
-        fs.unlinkSync(path);
-    }
-});
-
-router.get('/get-video', function (req, res) {
-    Session.findOne({sid: req.query.sid}, function (err, sess) {
-        if (err) return err;
-        if (sess) {
-            res.status(200).json({url: sess.videoID});
+        const path = req.file.path;
+        if (first) {
+            first = false;
+            if (!req.file.originalname.match(/\.(mp4)$/)) {
+                fs.unlinkSync(path);
+                res.status(400).json({message: 'wrong file'});
+            }
+            else {
+                res.status(200).json({message: 'received file'});
+                console.log(path);
+                Session.findOne({sid: "1234"}, function (err, sess) {
+                    if (err) return next(err);
+                    console.log("starting to upload " + req.file.originalname);
+                    cloudinary.v2.uploader.upload(path,
+                        {
+                            resource_type: "video",
+                            public_id: sess.sid + 'video',
+                            eager: [
+                                {
+                                    width: 300, height: 300,
+                                    crop: "pad", audio_codec: "none"
+                                },
+                                {
+                                    width: 160, height: 100,
+                                    crop: "crop", gravity: "south",
+                                    audio_codec: "none"
+                                }],
+                            eager_async: true,
+                            eager_notification_url: "http://mysite/notify_endpoint"
+                        },
+                        function (err, result) {
+                            fs.unlinkSync(path);
+                            if (err) return err;
+                            console.log("uploaded " + req.file.originalname);
+                            console.log(result);
+                            sess.videoID = result.url;
+                            sess.save();
+                            first = true;
+                        });
+                });
+            }
         }
         else {
-            res.status(400).json({error: 'no such session'});
+            fs.unlinkSync(path);
         }
-    });
-
+    }
 });
+//
+// router.get('/get-video', function (req, res) {
+//     Session.findOne({sid: req.query.sid}, function (err, sess) {
+//         if (err) return err;
+//         if (sess) {
+//             res.status(200).json({url: sess.videoID});
+//         }
+//         else {
+//             res.status(400).json({error: 'no such session'});
+//         }
+//     });
+//
+// });
 module.exports = router;
