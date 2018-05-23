@@ -41,7 +41,7 @@ router.post("/auth-login-user-pass", function (req, res) {
                         accessToken: token,
                         role: user.role,
                         photos: user.photos,
-                        id_num: user.id_num,
+                        _id: user._id,
                         display_name: user.display_name
                     })
                 }
@@ -64,7 +64,7 @@ router.get("/get-user-by-token", function (req, res) {
             accessToken: user.accessToken,
             role: user.role,
             photos: user.photos,
-            id_num: user.id_num,
+            _id: user._id,
             display_name: user.display_name
         })
     });
