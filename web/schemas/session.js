@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 var User = require('./user');
 var SessionSchema = new mongoose.Schema({
-    sid: Number, // Corresponds to course id
+    sid: {type: Number, unique: true, required: true},
     name: String,
-    admin:  {type: mongoose.Schema.ObjectId, ref: 'User'},
+    admin: String,
     teacher_id:String,
     location: String,
     creation_date: Date,
@@ -12,6 +12,6 @@ var SessionSchema = new mongoose.Schema({
     hidden: Boolean,
     messages: Array,
     videoID: {type: String, default: ""},
-
+    picID: {type: String, default: "http://res.cloudinary.com/wizeup/image/upload/v1527096126/wizeup.jpg"}
 });
 module.exports = mongoose.model('Session', SessionSchema);

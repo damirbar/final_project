@@ -19,6 +19,16 @@ wizerApp.service('SessionService', function ($http) {
             });
     };
 
+    this.createSession = function (sid, name, location) {
+        console.log("ID = " + sid);
+        return $http.post('/sessions/create-session', {sid: sid, name: name, location: location})
+            .then(function (data) {
+                return data.data;
+            }, function () {
+                console.log("Error getting session with ID = " + id);
+            });
+    };
+
     this.sendMessage = function(sessionId, type, message) {
         return $http.post('/sessions/messages', {sid: sessionId, type: type, body: message})
             .then(function (data) {
