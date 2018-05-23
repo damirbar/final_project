@@ -68,6 +68,29 @@ wizerApp.controller('sessionController',
                 });
         };
 
+
+        $scope.createSession = function () {
+
+            SessionService.createSession($scope.createSessionID, $scope.createSessionName, $scope.createSessionLocation)
+                .then(function (data) {
+                    $scope.session = data;
+                    console.log("Connected to session as " + $scope.sessionUserName);// + JSON.stringify(data.session));
+                    console.log("SESSION DATA = " + JSON.stringify(data));
+                    io.connect();
+                    if (data.session) {
+                        $scope.isConnectedToSession = true;
+                        $scope.session = data.session;
+                        getting();
+                    }
+                    $scope.firstConnectionTry = false;
+                })
+                .catch(function (err) {
+                    console.log("Error connection to session");
+                    $scope.firstConnectionTry = false;
+                });
+
+        };
+
         $scope.getMessages = function () {
 
             SessionService.getMessages($scope.sessionID)
