@@ -11,6 +11,7 @@ var SessionSchema = new mongoose.Schema({
     curr_rating: {type: Number, default: 0},
     hidden: Boolean,
     messages: Array,
-    videoID: {type: String, default: ""}
+    videoID: {type: String, default: ""},
+
 });
 module.exports = mongoose.model('Session', SessionSchema);
