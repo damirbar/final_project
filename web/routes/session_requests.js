@@ -121,21 +121,21 @@ router.post("/create-session", function (req, res) {
         if (err) {
             if (err.name === 'MongoError' && err.code === 11000) {
                 // Duplicate username
-                console.log('User ' + myData.first_name + " cannot be added " + myData.email + ' already exists!');
-                return res.status(500).send('User ' + myData.first_name + " cannot be added " + myData.email + ' already exists!');
+                console.log('Session ' + sess.name + " cannot be added id" + sess.sid + ' already exists!');
+                return res.status(200).json({message:'Session ' + sess.name + " cannot be added id" + sess.sid + ' already exists!'});
             }
             if (err.name === 'ValidationError') {
                 //ValidationError
                 for (field in err.errors) {
-                    console.log("you must provide: " + field + "field");
-                    return res.status(500).send("you must provide: " + field + "field");
+                    console.log("you must provide: " + field + " field");
+                    return res.status(200).json({message: "you must provide: " + field + " field"});
                 }
             }
             // Some other error
             console.log(err);
-            return res.status(500).send(err);
+            return res.status(200).send(err);
         }
-        res.send("successfully added session " + sess.name + " to db");
+        res.status(200).json({message:"successfully added session " + sess.name + " to db"});
         console.log("successfully added session " + sess.name + " to db");
     });
 });
@@ -334,7 +334,7 @@ router.post('/post-video', type, function (req,res) {
             else {
                 res.status(200).json({message: 'received file'});
                 console.log(path);
-                Session.findOne({sid: "1234"}, function (err, sess) {
+                Session.findOne({sid: req.body.sid}, function (err, sess) {
                     if (err) return next(err);
                     console.log("starting to upload " + req.file.originalname);
                     cloudinary.v2.uploader.upload(path,

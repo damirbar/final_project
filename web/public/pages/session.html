@@ -18,7 +18,7 @@
             <div class="pad col-2"></div>
         </div>
         <div class="not-found-session text-danger" ng-hide="firstConnectionTry">
-            Error connecting to session!
+            {{session.message}}
         </div>
 
         <br>
@@ -48,7 +48,7 @@
             <div class="pad col-2"></div>
         </div>
         <div class="not-found-session text-danger" ng-hide="firstConnectionTry">
-            Session ID already exists!
+            {{session.message}}
         </div>
 
 

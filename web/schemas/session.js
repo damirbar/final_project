@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 var User = require('./user');
 var SessionSchema = new mongoose.Schema({
-    sid: {type: Number, unique: true, require: true},
+    sid: {type: Number, unique: true, required: true},
     name: String,
-    admin:  {type: mongoose.Schema.ObjectId, ref: 'User'},
+    admin: String,
     teacher_id:String,
     location: String,
     creation_date: Date,
