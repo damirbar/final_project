@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var Course = require("../schemas/course");
 var File = require("../schemas/file");
+var User = require("../schemas/user");
+
 
 router.post("/add-course", function (req, res) {
     const course = new Course(req.body);
@@ -44,32 +46,15 @@ router.get('/get-all-courses', function(req,res,next){
     });
 });
 
-router.post('/get-all-courses-by-id', function(req,res,next){ // You get: Array of IDs
-
-    const ObjectID     = require('mongodb').ObjectID;
-
-    const coursesIds = req.body.courses;
-
-    const ids = coursesIds.map(function(crs) {
-        return ObjectID(String(crs));
-    });
-
-    let courses = [];
-
-    function addToCourses(coursesToAdd) {
-        courses = coursesToAdd;
-        res.json({courses: courses});
-    }
-
-    Course.find({ '_id': { $in: ids } }, function(err, crses) {
-        if(err) {
-            console.log("Error in get-courses-by-id. error = " + err);
-            error.message = err;
-        } else {
-            addToCourses(crses);
-        }
-    });
-
+router.post('/get-all-courses-by-id', function(req,res){ // You get: Array of IDs
+    const decoded = req.verifiedEmail;
+    User.findOne({email:decoded},function (err,user) {
+        if(err)return err;
+        Courses.find({students: user.id},function (err,courses) {
+            if(err)return err;
+            res.status(200).json({"courses":courses});
+        })
+    })
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////////
