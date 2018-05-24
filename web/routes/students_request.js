@@ -8,9 +8,11 @@ router.get("/get-profile",function (req, res, next) {
     User.findOne({_id: id}, function (err, user) {
         if (err) return next(err);
         if(user) {
-            return res.status(200).json(user);
+            res.status(200).json(user);
         }
-        return res.status(404).json({message: 'user' + id + 'dose not exist sorry'});
+        else {
+            res.status(404).json({message: 'user' + id + 'dose not exist sorry'});
+        }
     });
 });
 
