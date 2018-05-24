@@ -91,7 +91,7 @@ public interface RetrofitInterface {
     Observable<Course[]> getAllCourses();
 
     @GET("courses/get-all-courses-by-id")
-    Observable<Course[]> getAllCoursesById();
+    Observable<Course[]> getAllCoursesById(@Query("id") String id);
 
 
     @GET("courses/get-all-Files")
