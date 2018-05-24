@@ -13,5 +13,6 @@ var SessionSchema = new mongoose.Schema({
     messages: Array,
     videoID: {type: String, default: ""},
     picID: {type: String, default: "http://res.cloudinary.com/wizeup/image/upload/v1527096126/wizeup.jpg"}
-});
+
+}, {usePushEach: true});
 module.exports = mongoose.model('Session', SessionSchema);
