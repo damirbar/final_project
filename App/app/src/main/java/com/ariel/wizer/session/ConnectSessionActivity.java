@@ -24,6 +24,8 @@ public class ConnectSessionActivity extends AppCompatActivity {
 
     private String sid;
     private EditText mEditTextSid;
+    private EditText mEditTextName;
+
     private Button mBtLogin;
     private Button mCreateSessionButton;
     private CompositeSubscription mSubscriptions;
@@ -41,16 +43,15 @@ public class ConnectSessionActivity extends AppCompatActivity {
 
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
-        mServerResponse = new ServerResponse(findViewById(R.id.activity_nav));
+        mServerResponse = new ServerResponse(findViewById(R.id.scroll_view));
         initViews();
-
-
     }
 
     private void initViews() {
         mBtLogin = (Button) findViewById(R.id.classloginButton);
         mCreateSessionButton = (Button) findViewById(R.id.create_session_button);
         mEditTextSid = (EditText) findViewById(R.id.edit_text_sid);
+        mEditTextName = (EditText) findViewById(R.id.edit_text_name);
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         mBtLogin.setOnClickListener(view -> login());
         mCreateSessionButton.setOnClickListener(view -> createSession());
@@ -89,25 +90,28 @@ public class ConnectSessionActivity extends AppCompatActivity {
         setError();
 
         sid = mEditTextSid.getText().toString().trim();
+        String name = mEditTextName.getText().toString().trim();
 
         int err = 0;
 
         if (!validateFields(sid)) {
-
             err++;
             mEditTextSid.setError("Session should be valid !");
-
         }
 
+        if (!validateFields(name)) {
+            err++;
+            mEditTextName.setError("User Name should be valid !");
+        }
+
+
         if (err == 0) {
-            Session session = new Session();
-            session.setSid(sid);
-            loginProcess(session);
+            loginProcess(sid,name);
         }
     }
 
-    private void loginProcess(Session session) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().connectSession(session)
+    private void loginProcess(String sid, String name) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().connectSession(sid,name)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));

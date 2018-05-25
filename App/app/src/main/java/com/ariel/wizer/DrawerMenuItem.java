@@ -128,7 +128,7 @@ public class DrawerMenuItem {
         editor.putString(Constants.PASS,"");
         editor.putString(Constants.TOKEN,"");
         editor.putString(Constants.ID,"");
-        editor.putString(Constants.DISPLAY_NAME,"");
+        editor.putString(Constants.USER_NAME,"");
         editor.putString(Constants.PROFILE_IMG,"");
 
         editor.apply();

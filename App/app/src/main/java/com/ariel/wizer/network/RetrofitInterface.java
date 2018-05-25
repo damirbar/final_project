@@ -15,6 +15,8 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -52,8 +54,9 @@ public interface RetrofitInterface {
     Observable<Response> resetPasswordFinish(@Body User user);
 
     /////Session/////
+    @FormUrlEncoded
     @POST("sessions/connect-session")
-    Observable<Response> connectSession(@Body Session session);
+    Observable<Response> connectSession(@Field("sid") String sid, @Field("name") String name);
 
     @GET("sessions/create-session")
     Observable<Session> createSession();
@@ -85,7 +88,7 @@ public interface RetrofitInterface {
     @Streaming
     Observable<ResponseBody> getVideo(@Query("sid") String sid);
 
-    /////Classes/////
+    /////Courses/////
 
     @GET("courses/get-all-courses")
     Observable<Course[]> getAllCourses();
@@ -93,11 +96,8 @@ public interface RetrofitInterface {
     @GET("courses/get-all-courses-by-id")
     Observable<Course[]> getAllCoursesById(@Query("id") String id);
 
-
     @GET("courses/get-all-Files")
     Observable<CourseFile[]> getAllFiles();
-
-
 
     ////////////////////////////Demo//////////////////////////////////////
     @GET("files/Node-Android-Chat.zip")

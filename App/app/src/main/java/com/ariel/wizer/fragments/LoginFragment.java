@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.ariel.wizer.BaseActivity;
 import com.ariel.wizer.R;
-import com.ariel.wizer.demo.FileDownActivity;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
@@ -33,11 +32,10 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.ariel.wizer.R.id.langTextView;
-import static com.ariel.wizer.utils.Constants.DISPLAY_NAME;
+import static com.ariel.wizer.utils.Constants.USER_NAME;
 import static com.ariel.wizer.utils.Constants.EMAIL;
 import static com.ariel.wizer.utils.Constants.ID;
 import static com.ariel.wizer.utils.Constants.PASS;
-import static com.ariel.wizer.utils.Constants.PROFILE_IMG;
 import static com.ariel.wizer.utils.Constants.TOKEN;
 import static com.ariel.wizer.utils.Validation.validateEmail;
 import static com.ariel.wizer.utils.Validation.validateFields;
@@ -226,7 +224,7 @@ public class LoginFragment extends Fragment{
         editor.putString(TOKEN,user.getToken());
         editor.putString(EMAIL,user.getEmail());
         editor.putString(PASS,mPass);
-        editor.putString(DISPLAY_NAME,user.getFname() + " " + user.getLname());
+        editor.putString(USER_NAME,user.getFname() + " " + user.getLname());
         editor.putString(ID,user.getId_num());
 //        editor.putString(PROFILE_IMG,user.getPhotos()[0]);
         editor.apply();

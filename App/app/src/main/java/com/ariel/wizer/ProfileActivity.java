@@ -1,14 +1,13 @@
 package com.ariel.wizer;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ariel.wizer.fragments.ChangePasswordDialog;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
@@ -25,14 +24,14 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView mDisplayName;
     private TextView mCountry;
     private TextView mAboutMe;
-    private TextView btunEditProfile;
+    private TextView mBtEditProfile;
     private ImageView image;
+    private TextView mBtChangePassword;
 
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private String mId;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +49,17 @@ public class ProfileActivity extends AppCompatActivity {
         mId = mRetrofitRequests.getmSharedPreferences().getString(Constants.ID,"");
     }
 
-
     private void initViews() {
-        image = (ImageView)findViewById(R.id.user_profile_photo);
-        mDisplayName = (TextView) findViewById(R.id.tvdisName);
-        mCountry = (TextView) findViewById(R.id.tvcountry_);
-        mAboutMe = (TextView) findViewById(R.id.tvAboutMe);
-        btunEditProfile = (TextView) findViewById(R.id.edit_profile);
-        buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
+        image = findViewById(R.id.user_profile_photo);
+        mDisplayName = findViewById(R.id.tvdisName);
+        mCountry = findViewById(R.id.tvcountry_);
+        mAboutMe = findViewById(R.id.tvAboutMe);
+        mBtEditProfile = findViewById(R.id.edit_profile);
+        buttonBack = findViewById(R.id.image_Button_back);
+        mBtChangePassword = findViewById(R.id.change_pass);
         buttonBack.setOnClickListener(view ->finish());
-        btunEditProfile.setOnClickListener(view ->  editProfile());
-
+        mBtEditProfile.setOnClickListener(view ->  editProfile());
+        mBtChangePassword.setOnClickListener(view -> showDialog());
     }
 
     private void editProfile() {
@@ -87,6 +86,12 @@ public class ProfileActivity extends AppCompatActivity {
         mAboutMe.setText(user.getAbout_me());
         Picasso.get().load("https://scontent.fsdv2-1.fna.fbcdn.net/v/t1.0-9/22730135_839880432861616_8306732533151605396_n.jpg?_nc_cat=0&oh=1597bce378ebaa853df982319d669bf5&oe=5B9303BC").into(image);
     }
+
+    private void showDialog(){
+        ChangePasswordDialog fragment = new ChangePasswordDialog();
+        fragment.show(getFragmentManager(), ChangePasswordDialog.TAG);
+    }
+
 
     @Override
     protected void onResume()

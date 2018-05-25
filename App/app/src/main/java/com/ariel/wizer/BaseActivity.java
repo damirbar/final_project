@@ -24,7 +24,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.ariel.wizer.utils.Constants.DISPLAY_NAME;
+import static com.ariel.wizer.utils.Constants.USER_NAME;
 import static com.ariel.wizer.utils.Constants.EMAIL;
 
 public class BaseActivity extends AppCompatActivity {
@@ -42,7 +42,7 @@ public class BaseActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private String mEmail;
     private String mDisplayName;
-    private SearchView editsearch;
+    private SearchView editSearch;
 
 
     @Override
@@ -56,7 +56,7 @@ public class BaseActivity extends AppCompatActivity {
         initViews();
         setupDrawer();
 
-        editsearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        editSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 callSearch(query);
@@ -70,7 +70,7 @@ public class BaseActivity extends AppCompatActivity {
 //              }
                 return true;
             }
-            public void callSearch(String query) {
+            private void callSearch(String query) {
                 sendQuery(query);
             }
         });
@@ -84,7 +84,7 @@ public class BaseActivity extends AppCompatActivity {
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         mTvNoResults = (TextView) findViewById(R.id.tv_no_results);
         searchList = (ListView) findViewById(R.id.search_List);
-        editsearch = (SearchView) findViewById(R.id.searchView);
+        editSearch = (SearchView) findViewById(R.id.searchView);
 
 
     }
@@ -92,7 +92,7 @@ public class BaseActivity extends AppCompatActivity {
     private void initSharedPreferences() {
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEmail = mSharedPreferences.getString(EMAIL,"");
-        mDisplayName = mSharedPreferences.getString(DISPLAY_NAME,"");
+        mDisplayName = mSharedPreferences.getString(USER_NAME,"");
     }
 
 

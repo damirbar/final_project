@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:background="@color/chat_me_window_background">
 
     <android.support.v7.widget.Toolbar
@@ -36,6 +38,7 @@
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tool_bar">
@@ -64,21 +67,19 @@
                 android:layout_marginRight="70dp"
                 android:layout_marginTop="50dp"
                 android:background="@drawable/dark_edittext"
-                android:ems="10"
                 android:gravity="center"
                 android:hint="PIN"
                 android:inputType="number"
                 android:textSize="14sp" />
 
             <EditText
-                android:id="@+id/edit_text_sid2"
+                android:id="@+id/edit_text_name"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="70dp"
                 android:layout_marginRight="70dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/dark_edittext"
-                android:ems="10"
                 android:gravity="center"
                 android:hint="User Name"
                 android:text="Anon"

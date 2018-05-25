@@ -1,16 +1,12 @@
 package com.ariel.wizer;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -30,8 +26,6 @@ import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.utils.Constants;
-
-import java.io.ByteArrayOutputStream;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -255,7 +249,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
     private void handleResponseUpdate(Response response) {
         SharedPreferences.Editor editor = mRetrofitRequests.getmSharedPreferences().edit();
-        editor.putString(Constants.DISPLAY_NAME,mDisplayName);
+        editor.putString(Constants.USER_NAME,mDisplayName);
 //        editor.putString(Constants.PROFILE_IMG,mEmail);
         editor.apply();
         finish();
