@@ -47,12 +47,6 @@
             android:name=".EditProfileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".chat.ChatActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name=".chat.ChatChannelsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
             android:name=".imageCrop.ImageCropActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity

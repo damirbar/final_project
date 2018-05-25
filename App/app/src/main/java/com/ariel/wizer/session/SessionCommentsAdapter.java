@@ -35,8 +35,6 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
     private RetrofitRequests mRetrofitRequests;
 
 
-
-
     public SessionCommentsAdapter(Activity context, ArrayList<SessionMessage> list) {
         super(context, 0 , list);
         mContext = context;
@@ -45,6 +43,23 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
         dislikeCheckBoxState = new boolean[list.size()];
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(context);
+
+    }
+
+    public boolean[] getLikeCheckBoxState() {
+        return likeCheckBoxState;
+    }
+
+    public void setLikeCheckBoxState(boolean[] likeCheckBoxState) {
+        this.likeCheckBoxState = likeCheckBoxState;
+    }
+
+    public boolean[] getDislikeCheckBoxState() {
+        return dislikeCheckBoxState;
+    }
+
+    public void setDislikeCheckBoxState(boolean[] dislikeCheckBoxState) {
+        this.dislikeCheckBoxState = dislikeCheckBoxState;
     }
 
     public List<SessionMessage> getMessagesList() {
@@ -58,14 +73,14 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
         SessionMessage currentMessage = messagesList.get(position);
 
         if(listItem == null)
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.feed_comment_item,parent,false);
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.feed_comment_item, parent, false);
 
 
         TextView msg = (TextView) listItem.findViewById(R.id.content);
         msg.setText(currentMessage.getBody()[1]);
         TextView mDislikeNum = (TextView) listItem.findViewById(R.id.dislike_num);
-        TextView mlikeNum = (TextView) listItem.findViewById(R.id.like_num);
-        mlikeNum.setText(String.valueOf(currentMessage.getLikes()));
+        TextView mLikeNum = (TextView) listItem.findViewById(R.id.like_num);
+        mLikeNum.setText(String.valueOf(currentMessage.getLikes()));
         mDislikeNum.setText(String.valueOf(currentMessage.getDislikes()));
         TextView mEmail = (TextView) listItem.findViewById(R.id.user_name);
         mEmail.setText(currentMessage.getEmail());
@@ -83,21 +98,18 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Integer pos = (Integer)buttonView.getTag();
                 if(isChecked){
-                    if(dislikeCheckBoxState[pos]){
-                        messagesList.get(position).setLikes(messagesList.get(position).getLikes()+2);
+                    if(dislikeCheckBoxState[pos]) {
+                        messagesList.get(position).setDislikes(messagesList.get(position).getDislikes()-1);
+                        dislikeCheckBoxState[pos]= false;
                     }
-                    else{
-                    }
-                    addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),1);
-
+                    messagesList.get(position).setLikes(messagesList.get(position).getLikes() + 1);
                     likeCheckBoxState[pos]= true;
-                    dislikeCheckBoxState[pos]= false;
                 }
                 else{
                     likeCheckBoxState[pos] = false;
-                    messagesList.get(position).setLikes(messagesList.get(position).getLikes()-1);
-                    addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),0);
+                    messagesList.get(position).setLikes(messagesList.get(position).getLikes() - 1);
                 }
+                addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),1);
                 notifyDataSetChanged();
             }
         });
@@ -112,22 +124,18 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
                 Integer pos = (Integer)buttonView.getTag();
                 if(isChecked){
                     if(likeCheckBoxState[pos]){
-                        messagesList.get(position).setDislikes(messagesList.get(position).getDislikes()-2);
-                        addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),-2);
+                        messagesList.get(position).setLikes(messagesList.get(position).getLikes() - 1);
+                        likeCheckBoxState[pos] = false;
                     }
-                    else{
-                        messagesList.get(position).setDislikes(messagesList.get(position).getDislikes()-1);
-                        addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),-1);
-                    }
+                    messagesList.get(position).setDislikes(messagesList.get(position).getDislikes() + 1);
                     dislikeCheckBoxState[pos]= true;
-                    likeCheckBoxState[pos] = false;
 
                 }
                 else{
                     dislikeCheckBoxState[pos] = false;
-                    messagesList.get(position).setDislikes(messagesList.get(position).getDislikes()+1);
-                    addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),+1);
+                    messagesList.get(position).setDislikes(messagesList.get(position).getDislikes() - 1);
                 }
+                addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),0);
                 notifyDataSetChanged();
             }
         });

@@ -8,16 +8,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ariel.wizer.R;
-import com.ariel.wizer.model.Session;
 import com.ariel.wizer.model.SessionMessage;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
+import com.ariel.wizer.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +36,8 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
     private FloatingActionButton mFBPost;
     private String sid;
     private SessionPostsAdapter mAdapter;
+    private String mId;
+
 //    private final int delay = 5000; //milliseconds
 
 
@@ -45,14 +45,17 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_session_feed,container,false);
-        getData();
-        initViews(view);
-//        mSocket.on(Socket.EVENT_CONNECT,onConnect);
-//        mSocket.connect();
-
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
         mServerResponse = new ServerResponse(getActivity().findViewById(R.id.main_layout));
+
+        initSharedPreferences();
+        getData();
+        initViews(view);
+
+//        mSocket.on(Socket.EVENT_CONNECT,onConnect);
+//        mSocket.connect();
+
         pullMessages();
 //        classAvgProcess();
 //        Handler handler = new Handler();
@@ -88,6 +91,12 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
 
         return view;
     }
+
+    private void initSharedPreferences() {
+        mId = mRetrofitRequests.getmSharedPreferences().getString(Constants.ID,"");
+//        mId = "5af33ce49a714e30547168dd";
+    }
+
 
     private void initViews(View v) {
 //        mTvClassAvg = (TextView) findViewById(R.id.tVclassAvg);
@@ -155,7 +164,7 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
 //    }
 //
     private void pullMessages(){
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getMessages(sid)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllMessages(sid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull,i -> mServerResponse.handleError(i)));
@@ -167,14 +176,28 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
             Collections.reverse(savePosts);
             mTvNoResults.setVisibility(View.GONE);
             mAdapter = new SessionPostsAdapter(this.getActivity(), new ArrayList<>(savePosts));
+
+            for(int i=0;i<mAdapter.getMessagesList().size();i++){
+                for(int j=0;j<mAdapter.getMessagesList().get(i).getLikers().length;j++){
+                    if(mAdapter.getMessagesList().get(i).getLikers()[j].equalsIgnoreCase(mId)) {
+                        mAdapter.getLikeCheckBoxState()[i] = true;
+                    }
+                }
+                for(int j=0;j<mAdapter.getMessagesList().get(i).getDislikers().length;j++){
+                    if(mAdapter.getMessagesList().get(i).getDislikers()[j].equalsIgnoreCase(mId)) {
+                        mAdapter.getDislikeCheckBoxState()[i] = true;
+                    }
+                }
+            }
+
             messagesList.setAdapter(mAdapter);
+
         }
         else{
             mTvNoResults.setVisibility(View.VISIBLE);
 
         }
     }
-
 
     @Override
     public void onDestroy() {

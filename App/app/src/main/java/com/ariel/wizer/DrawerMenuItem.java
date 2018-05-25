@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ariel.wizer.chat.ChatChannelsActivity;
 import com.ariel.wizer.course.MyCourseActivity;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.session.ConnectSessionActivity;
@@ -99,7 +98,7 @@ public class DrawerMenuItem {
                 if(mCallBack != null)mCallBack.onMycoursesMenuSelected();
                 break;
             case DRAWER_MENU_ITEM_MESSAGE:
-                mContext.startActivity(new Intent (mContext, ChatChannelsActivity.class));
+                Toast.makeText(mContext, "Chat", Toast.LENGTH_SHORT).show();
                 if(mCallBack != null)mCallBack.onMessagesMenuSelected();
                 break;
             case DRAWER_MENU_ITEM_NOTIFICATIONS:

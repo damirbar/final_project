@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.ariel.wizer.BaseActivity;
 import com.ariel.wizer.R;
+import com.ariel.wizer.demo.FileUploadActivity;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
@@ -64,13 +65,13 @@ public class LoginFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-//        Intent intent = new Intent(getActivity(),FileDownActivity.class);//remove
+//        Intent intent = new Intent(getActivity(),FileUploadActivity.class);//remove
 //        startActivity(intent);//remove
 //        getActivity().finish(); //remove
 
         initSharedPreferences();
         autoLogin();
-
+//
         View view = inflater.inflate(R.layout.fragment_login,container,false);
         super.onCreate(savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);

@@ -74,7 +74,11 @@ public interface RetrofitInterface {
     Observable<Response> getStudentsRating(@Query("id") String id);
 
     @GET("sessions/get-all-messages")
-    Observable<SessionMessage []> getMessages(@Query("sid") String sid);
+    Observable<SessionMessage []> getAllMessages(@Query("sid") String sid);
+
+    @GET("sessions/get-all-user-messages")
+    Observable<SessionMessage []> getMyMessages(@Query("sid") String sid);
+
 
     @POST("sessions/messages")
     Observable<Response> publishSessionMessage(@Body SessionMessage message);
@@ -105,8 +109,8 @@ public interface RetrofitInterface {
     Call<ResponseBody> downloadFile();
 
     @Multipart
-    @POST("/images/upload")
-    Call<Response> uploadImage(@Part MultipartBody.Part image);
+    @POST("sessions/post-video")
+    Observable<Response> uploadFile(@Part MultipartBody.Part file);
     ///////////////////////////////////////////////////////////////////////
 
 
