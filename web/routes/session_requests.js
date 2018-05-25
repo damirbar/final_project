@@ -7,47 +7,39 @@ var User = require("../schemas/user");
 
 router.post("/connect-session", function (req, res) {
     const decoded = req.verifiedEmail;
-    const id = req.body.sid;
+    const sid = req.body.sid;
     const name = req.body.name;
 
-    Session.findOne({sid: id}, function (err, sess) {
+    Session.findOne({sid: sid}, function (err, sess) {
         if (err) throw err;
         if (sess) {
-            User.findOne({email: decoded}, function (err, user) {
-                if (err) throw err;
-                if(!user){
-                    res.status(404).json({message: 'error with user'});
+            let exists = false;
+            sess.students.forEach(function (user) {
+                if (user.email === decoded) {
+                    exists = true;
                 }
-                let exists = false;
-                for (let i = 0; i < sess.students.length; ++i) {
-                    if (sess.students[i].id_num == user.id) {
-                        exists = true;
-                        break;
-                    }
-                }
+            });
                 if (!exists) {
                     sess.students.push({
                         rating_val: 1,
-                        email: user.email,
+                        email: decoded,
                         display_name: name,
-                        id_num: user.id
                     });
-                    sess.save()
-                        .then(function (item) {
-                            console.log("Saved " + user.email + " to session: " + id);
-                            res.status(200).json({message: 'Welcome to Class !', session: sess});
-                        })
-                        .catch(function (err) {
-                            console.log("Unable to save the session with the new student " + user.display_name);
-                        });
+                    const newArray = sess.students;
+                    sess.update({students:newArray}).then(function (item) {
+                        console.log("Saved " + decoded + " to session: " + sid);
+                        res.status(200).json({message: 'Welcome to Class !', session: sess});
+                    }).catch(function (err) {
+                        console.log("Unable to save the session with the new student " + name);
+                    });
                 }
                 else {
+                    console.log('Welcome back to Class '+ decoded+'!');
                     res.status(200).json({message: 'Welcome back to Class !', session: sess});
                 }
-            });
         }
         else {
-            res.status(404).json({message: 'session' + id + 'dose not exist sorry'});
+            res.status(404).json({message: 'session' + sid + 'dose not exist sorry'});
         }
     });
 });
@@ -108,13 +100,13 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
 
 
 router.post("/create-session", function (req, res) {
-    const sess =new Session({
-        sid:   req.body.sid,
-        name : req.body.name,
-        admin : req.verifiedEmail,
-        location : req.body.location,
-        creation_date : Date.now()
-        });
+    const sess = new Session({
+        sid: req.body.sid,
+        name: req.body.name,
+        admin: req.verifiedEmail,
+        location: req.body.location,
+        creation_date: Date.now()
+    });
 
 
     sess.save(function (err) {
@@ -122,7 +114,7 @@ router.post("/create-session", function (req, res) {
             if (err.name === 'MongoError' && err.code === 11000) {
                 // Duplicate username
                 console.log('Session ' + sess.name + " cannot be added id" + sess.sid + ' already exists!');
-                return res.status(200).json({message:'Session ' + sess.name + " cannot be added id" + sess.sid + ' already exists!'});
+                return res.status(200).json({message: 'Session ' + sess.name + " cannot be added id" + sess.sid + ' already exists!'});
             }
             if (err.name === 'ValidationError') {
                 //ValidationError
@@ -135,11 +127,10 @@ router.post("/create-session", function (req, res) {
             console.log(err);
             return res.status(200).send(err);
         }
-        res.status(200).json({message:"successfully added session " + sess.name + " to db"});
+        res.status(200).json({message: "successfully added session " + sess.name + " to db"});
         console.log("successfully added session " + sess.name + " to db");
     });
 });
-
 
 
 router.get("/rate-message", function (req, res) {
@@ -154,44 +145,44 @@ router.get("/rate-message", function (req, res) {
         if (err) throw err;
 
         //finds the message and fetches its likers and dislikers arrays.
-        Session_Message.findOne({_id: mess_id},{_id: 0 , likers: 1, dislikers: 1}, function(err,raters){
+        Session_Message.findOne({_id: mess_id}, {_id: 0, likers: 1, dislikers: 1}, function (err, raters) {
 
-            if(err) return err;
+            if (err) return err;
             let likers = raters.likers;
             let dislikers = raters.dislikers;
             let liked = likers.indexOf(user._id) > -1; // true if the user has liked the message
             let disliked = dislikers.indexOf(user._id) > -1;// true if the user has disliked the message
             let ratingUpdate = {};
 
-            if (rating === 1){ // user likes the message
-                if(liked) { // user has already liked the message
+            if (rating === 1) { // user likes the message
+                if (liked) { // user has already liked the message
                     console.log('user has already liked this message. mess id:' + mess_id);
                     return res.status(200).json({message: 'user has already liked this message. mess id:' + mess_id});
-                }else if(disliked){ // user has already disliked the message.
-                        ratingUpdate.$push = {likers: user._id};
-                        ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
-                        ratingUpdate.$inc = {likes: 1, dislikes: -1};
-                }else { // user is liking the message fo the first time
+                } else if (disliked) { // user has already disliked the message.
+                    ratingUpdate.$push = {likers: user._id};
+                    ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
+                    ratingUpdate.$inc = {likes: 1, dislikes: -1};
+                } else { // user is liking the message fo the first time
                     ratingUpdate.$push = {likers: user._id};
                     ratingUpdate.$inc = {likes: 1};
                 }
-            }else{// user likes the message
-                if(disliked) {// user has already disliked the message
+            } else {// user likes the message
+                if (disliked) {// user has already disliked the message
                     console.log('user has already disliked this message. mess id:' + mess_id);
                     return res.status(200).json({message: 'user has already disliked this message. mess id:' + mess_id});
-                }else if(liked){ // user has already liked the message.
+                } else if (liked) { // user has already liked the message.
                     ratingUpdate.$push = {dislikers: user._id};
                     ratingUpdate.$pull = {likers: user._id};//removes the user id from the likers array
                     ratingUpdate.$inc = {likes: -1, dislikes: 1};
-                }else {// user is disliking the message fo the first time
+                } else {// user is disliking the message fo the first time
                     ratingUpdate.$push = {dislikers: user._id};
                     ratingUpdate.$inc = {dislikes: 1};
                 }
             }
             // updates the message rating with the ratingUpdate object
-            Session_Message.update({_id: mess_id}, ratingUpdate, function(err){
+            Session_Message.update({_id: mess_id}, ratingUpdate, function (err) {
                 console.log('updating session message');
-                if(err){
+                if (err) {
                     console.log(err);
                     return err;
                 }
@@ -215,11 +206,11 @@ router.post("/messages", function (req, res) {
             console.log(err);
             return res.status(500).send(err);
         }
-        Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function(err){
+        Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function (err) {
             console.log('pushing message to messages');
-           if(err){
-               return console.log(err);
-           }
+            if (err) {
+                return console.log(err);
+            }
         });
         res.status(200).json({message: "successfully added message " + msg.body + " to db"});
         console.log("successfully added message " + msg.body + " to db");
@@ -227,34 +218,27 @@ router.post("/messages", function (req, res) {
 });
 
 
-
-
 router.get("/get-all-messages", function (req, res) {
     var sess_id = Number(req.query.sid);
-
-    console.log('session id: ' + sess_id);
-
-    console.log('starting to aggregate');
-
     Session.aggregate([
-        {
-            $lookup: {
-                from: "session_messages",
-                localField: "messages",
-                foreignField: "_id",
-                as: "messages_list"
-            }
-        }, {
-            $match: {
-                "sid": sess_id
-            }
-        },
             {
-            $project: {
-                "_id": 0,
-                "messages_list" : 1
+                $lookup: {
+                    from: "session_messages",
+                    localField: "messages",
+                    foreignField: "_id",
+                    as: "messages_list"
+                }
+            }, {
+                $match: {
+                    "sid": sess_id
+                }
+            },
+            {
+                $project: {
+                    "_id": 0,
+                    "messages_list": 1
+                }
             }
-        }
         ],
         function (err, list) {
             if (err) {
@@ -273,16 +257,16 @@ router.get("/get-all-user-messages", function (req, res) {
     const decoded = req.verifiedEmail;
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) return next(err);
-        User.findOne({email:decoded}, function (err, user) {
-          if (err) return err;
-          for(let i=0; i<sess.messages.length;++i){
-            for(let j =0;j<sess.messages[i].ratings.length;++j){
-                if(sess.messages[i].ratings[j].id == user.id){
-                    messages.push(sess.messages[i]);
+        User.findOne({email: decoded}, function (err, user) {
+            if (err) return err;
+            for (let i = 0; i < sess.messages.length; ++i) {
+                for (let j = 0; j < sess.messages[i].ratings.length; ++j) {
+                    if (sess.messages[i].ratings[j].id == user.id) {
+                        messages.push(sess.messages[i]);
+                    }
                 }
             }
-          }
-          res.status(200).json({messages: messages});
+            res.status(200).json({messages: messages});
         });
     });
 });
@@ -296,8 +280,10 @@ router.get("/disconnect", function (req, res) {
             if (sess.students[i].email === req.verifiedEmail) {
                 found = true;
                 sess.students.splice(i, 1);
-                sess.save();
-                res.status(200).json({message: "Disconnected " + req.verifiedEmail + " from session " + req.query.sid})
+                sess.save().then(function () {
+                    console.log("Disconnected " + req.verifiedEmail + " from session " + req.query.sid);
+                    res.status(200).json({message: "Disconnected " + req.verifiedEmail + " from session " + req.query.sid})
+                });
             }
         }
         if (!found) {
@@ -307,8 +293,8 @@ router.get("/disconnect", function (req, res) {
 });
 
 
-const multer  = require('multer');
-const upload = multer({ dest: 'upload/'});
+const multer = require('multer');
+const upload = multer({dest: 'upload/'});
 const type = upload.single('recfile');
 const cloudinary = require('cloudinary');
 const fs = require('fs');
@@ -319,11 +305,11 @@ cloudinary.config({
 });
 
 let first = true;
-router.post('/post-video', type, function (req,res) {
-    if(!req.file) {
+router.post('/post-video', type, function (req, res) {
+    if (!req.file) {
         res.status(400).json({message: 'no file'});
     }
-    else{
+    else {
         const path = req.file.path;
         if (first) {
             first = false;

@@ -75,12 +75,12 @@ app.use('/auth', authRouts);
 /////////////////////////
 
 
-io.on('connect', function(socket) {
-    console.log("SOMEBODY CONNECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    socket.on('disconnect', function() {
-        console.log("ERAN IS FUCKING GAY");
-    });
-});
+// io.on('connect', function(socket) {
+//     console.log("SOMEBODY CONNECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//     socket.on('disconnect', function() {
+//         console.log("ERAN IS FUCKING GAY");
+//     });
+// });
 
 
 http.listen(3000, function () {

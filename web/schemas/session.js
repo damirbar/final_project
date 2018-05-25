@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var User = require('./user');
 var SessionSchema = new mongoose.Schema({
     sid: {type: Number, unique: true, required: true},
     name: String,
