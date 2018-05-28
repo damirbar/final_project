@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:fitsSystemWindows">true</item>
@@ -42,8 +42,7 @@
         <item name="colorPrimary">@color/user_selected</item>
         <item name="colorPrimaryDark">@color/user_selected</item>
         <item name="android:windowBackground">@drawable/background_splash</item>
-        <item name="windowNoTitle">true</item>
-
+        <item name="android:windowFullscreen" >true</item>
     </style>
 
 
