@@ -42,7 +42,6 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-
         <activity
             android:name=".EditProfileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
@@ -82,6 +81,13 @@
         <activity
             android:name=".demo.FileUploadActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".session.CreateSessionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".BioActivity"
+            android:configChanges="orientation|screenSize" />
+
 
     </application>
 

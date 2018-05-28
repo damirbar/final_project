@@ -20,14 +20,14 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.ariel.wizer.utils.Validation.validateFields;
 
-public class ConnectSessionActivity extends AppCompatActivity {
+
+public class CreateSessionActivity extends AppCompatActivity {
 
     private String sid;
     private EditText mEditTextSid;
     private EditText mEditTextName;
-
+    private EditText mEditTextLoc;
     private Button mBtLogin;
-    private Button mCreateSessionButton;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
@@ -38,37 +38,44 @@ public class ConnectSessionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_connect_session);
+        setContentView(R.layout.activity_create_session);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.scroll_view));
         initViews();
+
     }
 
     private void initViews() {
-        mBtLogin = (Button) findViewById(R.id.classloginButton);
-        mCreateSessionButton = (Button) findViewById(R.id.create_session_button);
+        mBtLogin = (Button) findViewById(R.id.create_session_button);
         mEditTextSid = (EditText) findViewById(R.id.edit_text_sid);
         mEditTextName = (EditText) findViewById(R.id.edit_text_name);
+        mEditTextLoc = (EditText) findViewById(R.id.edit_text_loc);
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         mBtLogin.setOnClickListener(view -> login());
-        mCreateSessionButton.setOnClickListener(view -> createSession());
         buttonBack.setOnClickListener(view -> finish());
-
 
     }
 
+    private void createSession(Session session) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().createSession(session)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseCreateSession,i -> mServerResponse.handleError(i)));
+    }
 
-    private void createSession() {
-        this.startActivity(new Intent (this, CreateSessionActivity.class));
-
+    private void handleResponseCreateSession(Response response) {
+        Intent intent = new Intent(getBaseContext(),SessionTabActivity.class);
+        intent.putExtra("sid",sid);
+        startActivity(intent);
+        finish();
     }
 
     private void setError() {
-        mEditTextName.setError(null);
         mEditTextSid.setError(null);
+        mEditTextLoc.setError(null);
+        mEditTextName.setError(null);
     }
 
 
@@ -76,6 +83,7 @@ public class ConnectSessionActivity extends AppCompatActivity {
 
         setError();
 
+        String loc = mEditTextLoc.getText().toString().trim();
         sid = mEditTextSid.getText().toString().trim();
         String name = mEditTextName.getText().toString().trim();
 
@@ -83,34 +91,28 @@ public class ConnectSessionActivity extends AppCompatActivity {
 
         if (!validateFields(sid)) {
             err++;
-            mEditTextSid.setError("Session should be valid !");
+            mEditTextSid.setError("Session Id should be valid !");
         }
 
         if (!validateFields(name)) {
             err++;
-            mEditTextName.setError("User Name should be valid !");
+            mEditTextName.setError("Session Name should be valid !");
         }
 
+        if (!validateFields(name)) {
+            err++;
+            mEditTextLoc.setError("Session Location should be valid !");
+        }
 
         if (err == 0) {
-            loginProcess(sid,name);
+
+            Session session = new Session();
+            session.setSid(sid);
+            session.setLocation(loc);
+            session.setName(name);
+
+            createSession(session);
         }
-    }
-
-    private void loginProcess(String sid, String name) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().connectSession(sid,name)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
-    }
-
-    private void handleResponse(Response response) {
-        Intent intent = new Intent(getBaseContext(), SessionTabActivity.class);
-        intent.putExtra("sid",sid);
-        startActivity(intent);
-        mEditTextSid.setText("");
-        finish();
-
     }
 
     @Override
@@ -118,6 +120,7 @@ public class ConnectSessionActivity extends AppCompatActivity {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
+
 
 
 }

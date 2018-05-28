@@ -1,5 +1,7 @@
 package com.ariel.wizer;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -8,13 +10,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.ariel.wizer.course.MyCourseActivity;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
+import com.ariel.wizer.session.ConnectSessionActivity;
+import com.ariel.wizer.utils.Constants;
 import com.mindorks.placeholderview.PlaceHolderView;
 
 import java.util.ArrayList;
@@ -27,7 +33,7 @@ import rx.subscriptions.CompositeSubscription;
 import static com.ariel.wizer.utils.Constants.USER_NAME;
 import static com.ariel.wizer.utils.Constants.EMAIL;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.DrawerCallBack {
 
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
@@ -43,6 +49,7 @@ public class BaseActivity extends AppCompatActivity {
     private String mEmail;
     private String mDisplayName;
     private SearchView editSearch;
+    private DrawerMenuItem.DrawerCallBack callBack;
 
 
     @Override
@@ -95,7 +102,6 @@ public class BaseActivity extends AppCompatActivity {
         mDisplayName = mSharedPreferences.getString(USER_NAME,"");
     }
 
-
     private void setupDrawer(){
         mDrawerView
                 .addView(new DrawerHeader(mDisplayName,mEmail))
@@ -117,8 +123,9 @@ public class BaseActivity extends AppCompatActivity {
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
             }
-        };
 
+
+        };
         mDrawer.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
     }
@@ -149,5 +156,65 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onProfileMenuSelected() {
+        this.startActivity(new Intent(this, ProfileActivity.class));
+        mDrawer.closeDrawer(Gravity.START, false);
+    }
+
+    @Override
+    public void onSessionMenuSelected() {
+        this.startActivity(new Intent (this, ConnectSessionActivity.class));
+        mDrawer.closeDrawer(Gravity.START, false);
+    }
+
+    @Override
+    public void onMycoursesMenuSelected() {
+        this.startActivity(new Intent (this, MyCourseActivity.class));
+        mDrawer.closeDrawer(Gravity.START, false);
+    }
+
+    @Override
+    public void onMessagesMenuSelected() {
+
+    }
+
+    @Override
+    public void onNotificationsMenuSelected() {
+
+    }
+
+    @Override
+    public void onSettingsMenuSelected() {
+
+    }
+
+    @Override
+    public void onTermsMenuSelected() {
+        this.startActivity(new Intent (this, TermsActivity.class));
+        mDrawer.closeDrawer(Gravity.START, false);
+    }
+
+    @Override
+    public void onLogoutMenuSelected() {
+        logout();
+
+
+    }
+
+    private void logout() {
+        RetrofitRequests mRetrofitRequests = new RetrofitRequests(this);
+        SharedPreferences.Editor editor = mRetrofitRequests.getmSharedPreferences().edit();
+        editor.putString(Constants.PASS,"");
+        editor.putString(Constants.TOKEN,"");
+        editor.putString(Constants.ID,"");
+        editor.putString(Constants.USER_NAME,"");
+        editor.putString(Constants.PROFILE_IMG,"");
+
+        editor.apply();
+        Intent intent = new Intent(this, MainActivity.class);
+        this.startActivity(intent);
+        this.finish();
+    }
 
 }

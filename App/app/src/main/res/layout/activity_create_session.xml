@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:gravity="center"
-                android:text="Enter New Session !"
+                android:text="Create Session  !"
                 android:textAlignment="center"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -81,31 +81,20 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/dark_edittext"
                 android:gravity="center"
-                android:hint="User Name"
-                android:text="Anon"
+                android:hint="Name"
                 android:textSize="14sp" />
 
-            <Button
-                android:id="@+id/classloginButton"
+            <EditText
+                android:id="@+id/edit_text_loc"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginLeft="70dp"
                 android:layout_marginRight="70dp"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/buttonshape"
-                android:foregroundGravity="center"
-                android:text="Enter"
-                android:textColor="@color/white"
-                android:textColorHighlight="@color/white" />
-
-            <TextView
-                android:id="@+id/textView_or"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/dark_edittext"
                 android:gravity="center"
-                android:text="OR" />
+                android:hint="Location"
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/create_session_button"
@@ -114,6 +103,7 @@
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="70dp"
                 android:layout_marginRight="70dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/dark_buttonshape"
                 android:foregroundGravity="center"
                 android:text="Create Session"

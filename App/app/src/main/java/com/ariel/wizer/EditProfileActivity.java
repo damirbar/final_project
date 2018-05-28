@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ariel.wizer.course.MyCourseActivity;
 import com.ariel.wizer.fragments.MyDateDialog;
 import com.ariel.wizer.imageCrop.ImageCropActivity;
 import com.ariel.wizer.imageCrop.IntentExtras;
@@ -25,6 +26,7 @@ import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
+import com.ariel.wizer.session.ConnectSessionActivity;
 import com.ariel.wizer.utils.Constants;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -50,6 +52,8 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
     public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
     public static final int REQUEST_CODE_UPDATE_PIC = 0x1;
+    public static final int REQUEST_CODE_UPDATE_BIO = 0x2;
+
 
     private ImageView image;
     private Button mBSave;
@@ -61,8 +65,8 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+//        getWindow().setSoftInputMode(
+//                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.edit_profile));
@@ -96,6 +100,17 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mProfileChange.setOnClickListener(view -> showAddProfilePicDialog());
         mETAge.setOnClickListener(view -> showDialog());
 
+        mETAboutMe.setOnClickListener(view -> setBio());
+
+    }
+
+    private void setBio() {
+        Intent i = new Intent(this, BioActivity.class);
+        String bio = mETAboutMe.getText().toString().trim();
+        Bundle extra = new Bundle();
+        extra.putString("bio", bio);
+        i.putExtras(extra);
+        startActivityForResult(i, REQUEST_CODE_UPDATE_BIO);
     }
 
     private void showDialog() {
@@ -106,9 +121,24 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
         if (requestCode == REQUEST_CODE_UPDATE_PIC) {
+            Toast.makeText(this,"F", Toast.LENGTH_LONG).show();/////RM
+
             if (resultCode == RESULT_OK) {
                 String imagePath = result.getStringExtra(IntentExtras.IMAGE_PATH);
                 showCroppedImage(imagePath);
+            } else if (resultCode == RESULT_CANCELED) {
+
+            } else {
+                String errorMsg = result.getStringExtra(ImageCropActivity.ERROR_MSG);
+                Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+            }
+        }
+
+        if (requestCode == REQUEST_CODE_UPDATE_BIO) {
+            if (resultCode == RESULT_OK) {
+                Bundle extra = result.getExtras();
+                String bio = extra.getString("bio");
+                mETAboutMe.setText(bio);
             } else if (resultCode == RESULT_CANCELED) {
 
             } else {
@@ -186,8 +216,6 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         String Age = mETAge.getText().toString().trim();
         String AboutMe = mETAboutMe.getText().toString().trim();
 
-
-
         User user = new User();
         user.setFname(first_name);
         user.setLname(last_name);
@@ -260,10 +288,12 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     }
 
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         mSubscriptions.unsubscribe();
 
     }
+
 }

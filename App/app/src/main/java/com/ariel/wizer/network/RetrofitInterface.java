@@ -1,7 +1,5 @@
 package com.ariel.wizer.network;
 
-import android.net.Uri;
-
 import com.ariel.wizer.model.ChatChannel;
 import com.ariel.wizer.model.ChatMessage;
 import com.ariel.wizer.model.Course;
@@ -18,17 +16,13 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
 import rx.Observable;
-
-import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 public interface RetrofitInterface {
 
@@ -58,8 +52,8 @@ public interface RetrofitInterface {
     @POST("sessions/connect-session")
     Observable<Response> connectSession(@Field("sid") String sid, @Field("name") String name);
 
-    @GET("sessions/create-session")
-    Observable<Session> createSession();
+    @POST("sessions/create-session")
+    Observable<Response> createSession(@Body Session session);
 
     @GET("sessions/change-val")
     Observable<Response> changeVal(@Query("id") String id, @Query("val") String val);
