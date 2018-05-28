@@ -58,14 +58,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_gravity="end|bottom|center"
                 android:layout_marginBottom="20dp"
                 android:layout_marginEnd="21dp"
                 android:layout_marginRight="20dp"
                 android:src="@drawable/intercom_compose"
                 android:visibility="visible"
-                app:backgroundTint="@android:color/holo_red_dark"
-                android:layout_alignParentRight="true" />
+                app:backgroundTint="@android:color/holo_red_dark" />
 
 
         </RelativeLayout>

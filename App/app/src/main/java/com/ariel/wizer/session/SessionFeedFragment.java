@@ -3,6 +3,8 @@ package com.ariel.wizer.session;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -42,12 +44,11 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_session_feed,container,false);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
-        mServerResponse = new ServerResponse(getActivity().findViewById(R.id.main_layout));
+        mServerResponse = new ServerResponse(view.findViewById(R.id.activity_session_feed));
 
         initSharedPreferences();
         getData();
@@ -129,7 +130,6 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
         if (bundle != null) {
             sid = bundle.getString("sid");
         }
-
     }
 
 //    private void classAvgProcess() {
