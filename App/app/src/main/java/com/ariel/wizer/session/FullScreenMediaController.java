@@ -1,8 +1,8 @@
 package com.ariel.wizer.session;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,8 +15,6 @@ public class FullScreenMediaController extends MediaController {
 
     private ImageButton fullScreen;
     private String isFullScreen;
-    private ImageButton buttonBack;
-
 
     public FullScreenMediaController(Context context) {
         super(context);
@@ -30,36 +28,37 @@ public class FullScreenMediaController extends MediaController {
         //image button for full screen to be added to media controller
         fullScreen = new ImageButton (super.getContext());
 
-        FrameLayout.LayoutParams params =
-                new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
-                        LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.RIGHT;
-        params.rightMargin = 0;
-        addView(fullScreen, params);
+//        FrameLayout.LayoutParams params =
+//                new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+//                        LayoutParams.WRAP_CONTENT);
+//        params.gravity = Gravity.RIGHT;
+//        params.rightMargin = 80;
+//        addView(fullScreen, params);
 
         //fullscreen indicator from intent
-        isFullScreen =  ((Activity)getContext()).getIntent().
-                getStringExtra("fullScreenInd");
-
-        if("y".equals(isFullScreen)){
-            fullScreen.setImageResource(R.drawable.ic_fullscreen_exit);
-        }else{
-            fullScreen.setImageResource(R.drawable.ic_fullscreen);
-        }
+//        isFullScreen =  ((Activity)getContext()).getIntent().
+//                getStringExtra("fullScreenInd");
+//
+//        if("y".equals(isFullScreen)){
+//            fullScreen.setImageResource(R.drawable.ic_fullscreen_exit);
+//        }else{
+//            fullScreen.setImageResource(R.drawable.ic_fullscreen);
+//        }
 
         //add listener to image button to handle full screen and exit full screen events
         fullScreen.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getContext(),SessionTabActivity.class);
 
-                if("y".equals(isFullScreen)){
-                    intent.putExtra("fullScreenInd", "");
-                }else{
-                    intent.putExtra("fullScreenInd", "y");
-                }
-                ((Activity)getContext()).startActivity(intent);
+//                Intent intent = new Intent(getContext(),SessionActivity.class);
+//
+//                if("y".equals(isFullScreen)){
+//                    intent.putExtra("fullScreenInd", "");
+//                }else{
+//                    intent.putExtra("fullScreenInd", "y");
+//                }
+//                ((Activity)getContext()).startActivity(intent);
             }
         });
     }

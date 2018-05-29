@@ -15,7 +15,7 @@
 //import com.ariel.wizer.model.Session;
 //import com.ariel.wizer.network.RetrofitRequests;
 //import com.ariel.wizer.network.ServerResponse;
-//import com.ariel.wizer.session.SessionTabActivity;
+//import com.ariel.wizer.session.SessionActivity;
 //
 //import rx.android.schedulers.AndroidSchedulers;
 //import rx.schedulers.Schedulers;
@@ -69,7 +69,7 @@
 //
 //    private void handleResponseCreateSession(Session session) {
 //        sid = session.getSid();
-//        Intent intent = new Intent(getActivity().getBaseContext(),SessionTabActivity.class);
+//        Intent intent = new Intent(getActivity().getBaseContext(),SessionActivity.class);
 //        intent.putExtra("sid",sid);
 //        getActivity().startActivity(intent);
 //    }
@@ -110,7 +110,7 @@
 //    }
 //
 //    private void handleResponse(Response response) {
-//        Intent intent = new Intent(getActivity().getBaseContext(), SessionTabActivity.class);
+//        Intent intent = new Intent(getActivity().getBaseContext(), SessionActivity.class);
 //        intent.putExtra("sid",sid);
 //        getActivity().startActivity(intent);
 //        mEditTextSid.setText("");

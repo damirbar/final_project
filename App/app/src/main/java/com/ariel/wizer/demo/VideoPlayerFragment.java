@@ -1,4 +1,4 @@
-package com.ariel.wizer.session;
+package com.ariel.wizer.demo;
 
 import android.app.Fragment;
 import android.media.MediaPlayer;
@@ -42,7 +42,7 @@ public class VideoPlayerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_video_player, container, false);
+        View view = inflater.inflate(R.layout.fragment_video_player, container, false);
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
 
         initViews(view);
@@ -109,6 +109,9 @@ public class VideoPlayerFragment extends Fragment {
             }
         }
 
+//        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
 //        String fullScreen =  getActivity().getIntent().getStringExtra("fullScreenInd");
 //        if("y".equals(fullScreen)){
@@ -116,20 +119,23 @@ public class VideoPlayerFragment extends Fragment {
 //                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //            ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 //        }
-        mMediaController = new FullScreenMediaController(getActivity());
+
+
+
+        mMediaController = new MediaController(getActivity());
 
         vid.setMediaController(mMediaController);
     }
 
-//    private boolean isLandScape(){
-//        Display display = ((WindowManager) getActivity().getSystemService(WINDOW_SERVICE))
-//                .getDefaultDisplay();
-//        int rotation = display.getRotation();
-//
-//        if (rotation == Surface.ROTATION_90
-//                || rotation == Surface.ROTATION_270) {
-//            return true;
-//        }
-//        return false;
-//    }
+    private boolean isLandScape(){
+        Display display = ((WindowManager) getActivity().getSystemService(WINDOW_SERVICE))
+                .getDefaultDisplay();
+        int rotation = display.getRotation();
+
+        if (rotation == Surface.ROTATION_90
+                || rotation == Surface.ROTATION_270) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -46,20 +46,29 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <FrameLayout
-        android:id="@+id/frame_vid"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/videoViewRelative"
+        android:layout_width="fill_parent"
         android:layout_height="150dp"
         android:layout_below="@+id/tab_layout"
         android:visibility="gone">
 
-    </FrameLayout>
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"></VideoView>
+
+    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/vid_button_close"
         android:layout_width="match_parent"
         android:layout_height="15dp"
-        android:layout_below="@+id/frame_vid"
+        android:layout_below="@+id/videoViewRelative"
         android:background="?attr/actionModeSplitBackground"
         app:srcCompat="@drawable/intercom_expand_arrow" />
 

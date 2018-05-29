@@ -66,7 +66,7 @@ public class CreateSessionActivity extends AppCompatActivity {
     }
 
     private void handleResponseCreateSession(Response response) {
-        Intent intent = new Intent(getBaseContext(),SessionTabActivity.class);
+        Intent intent = new Intent(getBaseContext(),SessionActivity.class);
         intent.putExtra("sid",sid);
         startActivity(intent);
         finish();

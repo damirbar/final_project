@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
-import com.ariel.wizer.model.Session;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 
@@ -105,7 +104,7 @@ public class ConnectSessionActivity extends AppCompatActivity {
     }
 
     private void handleResponse(Response response) {
-        Intent intent = new Intent(getBaseContext(), SessionTabActivity.class);
+        Intent intent = new Intent(getBaseContext(), SessionActivity.class);
         intent.putExtra("sid",sid);
         startActivity(intent);
         mEditTextSid.setText("");

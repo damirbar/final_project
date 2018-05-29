@@ -1,41 +1,59 @@
 package com.ariel.wizer.session;
 
+import android.content.pm.ActivityInfo;
+import android.hardware.SensorManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.OrientationEventListener;
+import android.view.Surface;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.MediaController;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.ariel.wizer.R;
-import com.ariel.wizer.fragments.LoginFragment;
 import com.ariel.wizer.network.RetrofitRequests;
+import com.ariel.wizer.utils.Constants;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-public class SessionTabActivity extends AppCompatActivity {
+public class SessionActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ImageButton buttonBack;
     private ImageButton buttonCloseVid;
-    private FrameLayout frameVid;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
-    private VideoPlayerFragment mVideoPlayerFragment;
     private int stopPosition;
     private String sid;
 
+    private VideoView vid;
+    private MediaController mMediaController;
+    private RelativeLayout mvideoViewRelative;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_session_tab);
+        setContentView(R.layout.activity_session);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         if (!getData()) {
@@ -43,25 +61,21 @@ public class SessionTabActivity extends AppCompatActivity {
         }
         initViews();
 
-        buttonCloseVid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (frameVid.getVisibility() == View.VISIBLE) {
-                    frameVid.setVisibility(View.GONE);
-                    stopPosition = mVideoPlayerFragment.getVid().getCurrentPosition();
-                    mVideoPlayerFragment.getVid().pause();
-                    mVideoPlayerFragment.getVid().setMediaController(null);
-                    }
-                else{
-                    frameVid.setVisibility(View.VISIBLE);
-                    mVideoPlayerFragment.getVid().seekTo(stopPosition);
-                    mVideoPlayerFragment.getVid().start();
-                    mVideoPlayerFragment.getVid().setMediaController(mVideoPlayerFragment.getmMediaController());
-
-                }
-                buttonCloseVid.setRotation(buttonCloseVid.getRotation() + 180);
-
+        buttonCloseVid.setOnClickListener(v -> {
+            if (mvideoViewRelative.getVisibility() == View.VISIBLE) {
+                stopPosition = vid.getCurrentPosition();
+                vid.pause();
+                vid.setMediaController(null);
+                mvideoViewRelative.setVisibility(View.GONE);
             }
+            else{
+                mvideoViewRelative.setVisibility(View.VISIBLE);
+                vid.seekTo(stopPosition);
+                vid.start();
+                vid.setMediaController(mMediaController);
+            }
+            buttonCloseVid.setRotation(buttonCloseVid.getRotation() + 180);
+
         });
 
 
@@ -86,15 +100,21 @@ public class SessionTabActivity extends AppCompatActivity {
             }
         });
 
-        if (savedInstanceState == null) {
 
-            loadFragment();
-        }
+//        String fullScreen =  getIntent().getStringExtra("fullScreenInd");
+//        if("y".equals(fullScreen)){
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//            getSupportActionBar().hide();
+//        }
+
+
+        playVideo();
 
     }
 
+
     private void initViews() {
-        frameVid = (FrameLayout) findViewById(R.id.frame_vid);
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         buttonBack.setOnClickListener(view -> goBack());
         buttonCloseVid= (ImageButton) findViewById(R.id.vid_button_close);
@@ -104,19 +124,44 @@ public class SessionTabActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Session"));
         tabLayout.addTab(tabLayout.newTab().setText("Updates"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        vid = findViewById(R.id.videoView);
+        mvideoViewRelative = findViewById(R.id.videoViewRelative);
+
     }
 
-    private void loadFragment(){
+    private void playVideo() {
 
-        if (mVideoPlayerFragment == null) {
-            Bundle bundle = new Bundle();
-            mVideoPlayerFragment = new VideoPlayerFragment();
-            bundle.putString("sid", sid);
-            mVideoPlayerFragment.setArguments(bundle);
+        String url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";//rm
+
+        Map<String, String> header = new HashMap<String, String>(1);
+        header.put(Constants.TOKEN_HEADER, mRetrofitRequests.getmToken());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            vid.setVideoURI(Uri.parse(url), header);
+        } else {
+            Method setVideoURIMethod = null;
+            try {
+                setVideoURIMethod = vid.getClass().getMethod("setVideoURI", Uri.class, Map.class);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (setVideoURIMethod != null) {
+                    setVideoURIMethod.invoke(vid, Uri.parse(url), header);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
         }
-        getFragmentManager().beginTransaction().replace(R.id.frame_vid,mVideoPlayerFragment,LoginFragment.TAG).commit();
-    }
 
+//        mMediaController = new MediaController(this);
+
+//        mMediaController.setAnchorView(vid);
+//
+//        vid.setMediaController(mMediaController);
+    }
 
 
     @Override
