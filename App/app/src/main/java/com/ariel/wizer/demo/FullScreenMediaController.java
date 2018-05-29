@@ -1,4 +1,4 @@
-package com.ariel.wizer.session;
+package com.ariel.wizer.demo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;

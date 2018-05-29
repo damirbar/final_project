@@ -1,36 +1,25 @@
 package com.ariel.wizer.session;
 
-import android.content.pm.ActivityInfo;
-import android.hardware.SensorManager;
+import android.content.res.Configuration;
+import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.OrientationEventListener;
-import android.view.Surface;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.ariel.wizer.R;
 import com.ariel.wizer.network.RetrofitRequests;
-import com.ariel.wizer.utils.Constants;
+import com.github.rtoshiro.view.video.FullscreenVideoLayout;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -45,9 +34,10 @@ public class SessionActivity extends AppCompatActivity {
     private RetrofitRequests mRetrofitRequests;
     private int stopPosition;
     private String sid;
+    private ProgressBar spinnerView;
 
-    private VideoView vid;
-    private MediaController mMediaController;
+    private FullscreenVideoLayout vid;
+//    private MediaController mMediaController;
     private RelativeLayout mvideoViewRelative;
 
     @Override
@@ -65,14 +55,14 @@ public class SessionActivity extends AppCompatActivity {
             if (mvideoViewRelative.getVisibility() == View.VISIBLE) {
                 stopPosition = vid.getCurrentPosition();
                 vid.pause();
-                vid.setMediaController(null);
+//                vid.setMediaController(null);
                 mvideoViewRelative.setVisibility(View.GONE);
             }
             else{
                 mvideoViewRelative.setVisibility(View.VISIBLE);
                 vid.seekTo(stopPosition);
                 vid.start();
-                vid.setMediaController(mMediaController);
+//                vid.setMediaController(mMediaController);
             }
             buttonCloseVid.setRotation(buttonCloseVid.getRotation() + 180);
 
@@ -100,15 +90,6 @@ public class SessionActivity extends AppCompatActivity {
             }
         });
 
-
-//        String fullScreen =  getIntent().getStringExtra("fullScreenInd");
-//        if("y".equals(fullScreen)){
-//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//            getSupportActionBar().hide();
-//        }
-
-
         playVideo();
 
     }
@@ -124,42 +105,69 @@ public class SessionActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Session"));
         tabLayout.addTab(tabLayout.newTab().setText("Updates"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        vid = findViewById(R.id.videoView);
+        vid = (FullscreenVideoLayout) findViewById(R.id.videoView);
         mvideoViewRelative = findViewById(R.id.videoViewRelative);
+        spinnerView = (ProgressBar) findViewById(R.id.my_spinner);
+        vid.setOnInfoListener(onInfoToPlayStateListener);
 
     }
 
+    private final MediaPlayer.OnInfoListener onInfoToPlayStateListener = new MediaPlayer.OnInfoListener() {
+
+        @Override
+        public boolean onInfo(MediaPlayer mp, int what, int extra) {
+            if (MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START == what) {
+                spinnerView.setVisibility(View.GONE);
+            }
+            if (MediaPlayer.MEDIA_INFO_BUFFERING_START == what) {
+                spinnerView.setVisibility(View.VISIBLE);
+            }
+            if (MediaPlayer.MEDIA_INFO_BUFFERING_END == what) {
+                spinnerView.setVisibility(View.VISIBLE);
+            }
+            return false;
+        }
+    };
+
     private void playVideo() {
 
-        String url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";//rm
+        vid.setActivity(this);
 
-        Map<String, String> header = new HashMap<String, String>(1);
-        header.put(Constants.TOKEN_HEADER, mRetrofitRequests.getmToken());
+        Uri videoUri = Uri.parse("http://res.cloudinary.com/wizeup/video/upload/v1527153142/1234video.mp4");
+        try {
+            vid.setVideoURI(videoUri);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            vid.setVideoURI(Uri.parse(url), header);
-        } else {
-            Method setVideoURIMethod = null;
-            try {
-                setVideoURIMethod = vid.getClass().getMethod("setVideoURI", Uri.class, Map.class);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-            try {
-                if (setVideoURIMethod != null) {
-                    setVideoURIMethod.invoke(vid, Uri.parse(url), header);
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-//        mMediaController = new MediaController(this);
-
-//        mMediaController.setAnchorView(vid);
+//        String url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";//rm
 //
+//        Map<String, String> header = new HashMap<String, String>(1);
+//        header.put(Constants.TOKEN_HEADER, mRetrofitRequests.getmToken());
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            vid.setVideoURI(Uri.parse(url), header);
+//        } else {
+//            Method setVideoURIMethod = null;
+//            try {
+//                setVideoURIMethod = vid.getClass().getMethod("setVideoURI", Uri.class, Map.class);
+//            } catch (NoSuchMethodException e) {
+//                e.printStackTrace();
+//            }
+//            try {
+//                if (setVideoURIMethod != null) {
+//                    setVideoURIMethod.invoke(vid, Uri.parse(url), header);
+//                }
+//            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+//            } catch (InvocationTargetException e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+//        mMediaController = new MediaController(this);
+//        mMediaController.setAnchorView(vid);
 //        vid.setMediaController(mMediaController);
     }
 
@@ -219,6 +227,11 @@ public class SessionActivity extends AppCompatActivity {
         disconnectFromSession();
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
 }

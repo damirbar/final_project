@@ -53,14 +53,25 @@
         android:layout_below="@+id/tab_layout"
         android:visibility="gone">
 
-        <VideoView
+        <com.github.rtoshiro.view.video.FullscreenVideoLayout
             android:id="@+id/videoView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"></VideoView>
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+
+        <ProgressBar
+            android:id="@+id/my_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:indeterminate="true" />
 
     </RelativeLayout>
 
