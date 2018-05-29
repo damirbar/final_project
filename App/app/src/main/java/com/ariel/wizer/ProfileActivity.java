@@ -3,6 +3,7 @@ package com.ariel.wizer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,8 +41,16 @@ public class ProfileActivity extends AppCompatActivity {
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.layout_profile));
-        initSharedPreferences();
         initViews();
+
+        if (!getData()) {
+            initSharedPreferences();
+        }
+        else{
+            mBtEditProfile.setVisibility(View.GONE);
+            mBtChangePassword.setVisibility(View.GONE);
+        }
+
         loadProfile();
     }
 
@@ -62,6 +71,20 @@ public class ProfileActivity extends AppCompatActivity {
         mBtChangePassword.setOnClickListener(view -> showDialog());
     }
 
+    private boolean getData() {
+        if (getIntent().getExtras() != null) {
+            String _id = getIntent().getExtras().getString("id");
+            if(_id != null && !(_id.isEmpty())){
+                mId = _id;
+                return true;
+            } else
+                return false;
+        }
+        else
+            return false;
+    }
+
+
     private void editProfile() {
         Intent myIntent = new Intent(this, EditProfileActivity.class);
         startActivity(myIntent);
@@ -76,7 +99,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void handleResponseProfile(User user) {
         String disName = user.getDisplay_name();
-        if(!(disName.isEmpty())){
+        if(disName!=null && !(disName.isEmpty())){
             mDisplayName.setText(user.getDisplay_name());
         }
         else{

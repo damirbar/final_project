@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/chat_me_window_background"
@@ -197,12 +198,12 @@
 
                 <EditText
                     android:id="@+id/eTGender"
-                    android:focusable="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:editable="false"
                     android:ems="10"
+                    android:focusable="false"
                     android:inputType="none"
                     android:text="Not Specified"
                     android:textSize="14sp" />
@@ -285,12 +286,12 @@
 
                 <EditText
                     android:id="@+id/eTAge"
-                    android:focusable="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:editable="false"
                     android:ems="10"
+                    android:focusable="false"
                     android:hint="Age"
                     android:inputType="none"
                     android:textSize="14sp" />
@@ -309,20 +310,20 @@
                     android:id="@+id/tVAboutMe"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:gravity="left|center"
                     android:editable="false"
                     android:ems="10"
-                    android:text="About Me"
+                    android:gravity="left|center"
                     android:inputType="none"
+                    android:text="About Me"
                     android:textSize="14sp" />
 
                 <EditText
                     android:id="@+id/eTAboutMe"
-                    android:focusable="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:editable="false"
+                    android:focusable="false"
                     android:hint="About Me"
                     android:inputType="none"
                     android:textSize="14sp" />

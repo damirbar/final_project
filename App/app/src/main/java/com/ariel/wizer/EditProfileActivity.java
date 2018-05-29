@@ -65,11 +65,11 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-//        getWindow().setSoftInputMode(
-//                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
-        mServerResponse = new ServerResponse(findViewById(R.id.edit_profile));
+        mServerResponse = new ServerResponse(findViewById(R.id.layout));
         initSharedPreferences();
         initViews();
         loadProfile();
@@ -121,8 +121,6 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
         if (requestCode == REQUEST_CODE_UPDATE_PIC) {
-            Toast.makeText(this,"F", Toast.LENGTH_LONG).show();/////RM
-
             if (resultCode == RESULT_OK) {
                 String imagePath = result.getStringExtra(IntentExtras.IMAGE_PATH);
                 showCroppedImage(imagePath);
@@ -133,7 +131,6 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
                 Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
             }
         }
-
         if (requestCode == REQUEST_CODE_UPDATE_BIO) {
             if (resultCode == RESULT_OK) {
                 Bundle extra = result.getExtras();

@@ -5,6 +5,7 @@ import com.ariel.wizer.model.ChatMessage;
 import com.ariel.wizer.model.Course;
 import com.ariel.wizer.model.CourseFile;
 import com.ariel.wizer.model.Response;
+import com.ariel.wizer.model.Searchable;
 import com.ariel.wizer.model.Session;
 import com.ariel.wizer.model.SessionMessage;
 import com.ariel.wizer.model.User;
@@ -110,7 +111,7 @@ public interface RetrofitInterface {
 
     /////search/////
     @GET("search/free-text-search")
-    Observable<User[]> getSearch(@Query("keywords") String keywords);
+    Observable<Searchable> getSearch(@Query("keyword") String keyword);
 
 
 

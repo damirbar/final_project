@@ -81,8 +81,8 @@ public class SessionInfoFragment extends Fragment {
             tryChangeVal(DISLIKE);
         });
 
-        tryGetStudentsCount();
-        tryGetStudentsRating();
+//        tryGetStudentsCount();
+//        tryGetStudentsRating();
         return view;
 
     }
@@ -146,8 +146,8 @@ public class SessionInfoFragment extends Fragment {
     public void onResume()
     {
         super.onResume();
-        tryGetStudentsCount();
-        tryGetStudentsRating();
+//        tryGetStudentsCount();
+//        tryGetStudentsRating();
     }
 
 

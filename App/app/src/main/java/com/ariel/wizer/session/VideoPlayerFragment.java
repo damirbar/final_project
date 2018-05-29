@@ -83,6 +83,9 @@ public class VideoPlayerFragment extends Fragment {
     }
 
     private void playVideo() {
+
+        url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";//rm
+
         Map<String, String> header = new HashMap<String, String>(1);
         header.put(Constants.TOKEN_HEADER, mRetrofitRequests.getmToken());
 

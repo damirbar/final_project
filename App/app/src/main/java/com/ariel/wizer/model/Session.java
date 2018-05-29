@@ -5,29 +5,30 @@ public class Session {
 
     private String sid;
     private String name;
+    private String admin;
     private String teacher_id;
     private String location;
-    private int curr_rating;
-    private String creation_date;
-    private boolean hidden;
     private String videoID;
-    private SessionMessage messages[];
+//    private SessionMessage messages[];
+    private String picID;
+    //private int curr_rating;
+    //private String creation_date;
 
 
-    public String getCreation_date() {
-        return creation_date;
+    public String getAdmin() {
+        return admin;
     }
 
-    public void setCreation_date(String creation_date) {
-        this.creation_date = creation_date;
+    public void setAdmin(String admin) {
+        this.admin = admin;
     }
 
-    public boolean isHidden() {
-        return hidden;
+    public String getPicID() {
+        return picID;
     }
 
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
+    public void setPicID(String picID) {
+        this.picID = picID;
     }
 
     public String getVideoID() {
@@ -54,21 +55,13 @@ public class Session {
         this.location = location;
     }
 
-    public SessionMessage[] getMessages() {
-        return messages;
-    }
-
-    public void setMessages(SessionMessage[] messages) {
-        this.messages = messages;
-    }
-
-    public int getRating() {
-        return curr_rating;
-    }
-
-    public void setRating(int rating) {
-        this.curr_rating = rating;
-    }
+//    public SessionMessage[] getMessages() {
+//        return messages;
+//    }
+//
+//    public void setMessages(SessionMessage[] messages) {
+//        this.messages = messages;
+//    }
 
 
     public String getSid() {
