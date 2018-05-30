@@ -28,10 +28,13 @@ import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.session.ConnectSessionActivity;
 import com.ariel.wizer.utils.Constants;
+import com.squareup.picasso.Picasso;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+
+import static com.ariel.wizer.utils.Validation.validateFields;
 
 public class EditProfileActivity extends AppCompatActivity implements MyDateDialog.OnCallbackReceived, PicModeSelectDialogFragment.IPicModeSelectListener {
 
@@ -203,7 +206,18 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         builder.show();
     }
 
+    private void setError() {
+        mETFirstName.setError(null);
+        mETLastName.setError(null);
+        mETGender.setError(null);
+    }
+
+
     private void saveButton(){
+
+        setError();
+
+
         String first_name = mETFirstName.getText().toString().trim();
         String last_name = mETLastName.getText().toString().trim();
         String gender = mETGender.getText().toString().trim();
@@ -213,22 +227,48 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         String Age = mETAge.getText().toString().trim();
         String AboutMe = mETAboutMe.getText().toString().trim();
 
-        User user = new User();
-        user.setFname(first_name);
-        user.setLname(last_name);
-        user.setGender(gender);
-        user.setDisplay_name(mDisplayName);
-        user.setCountry(country);
-        user.setAddress(TAddress);
-        user.setAge(Integer.parseInt(Age));
-        user.setAbout_me(AboutMe);
+
+        int err = 0;
+
+        if (!validateFields(first_name)) {
+
+            err++;
+            mETFirstName.setError("First Name should not be empty !");
+        }
+
+        if (!validateFields(last_name)) {
+
+            err++;
+            mETLastName.setError("Last Name should not be empty !");
+        }
+
+        if (gender.equalsIgnoreCase("Not Specified")) {
+
+            err++;
+            mETGender.setError("Gender should not be empty !");
+        }
+
+
+        if (err == 0) {
+
+
+            User user = new User();
+            user.setFname(first_name);
+            user.setLname(last_name);
+            user.setGender(gender);
+            user.setDisplay_name(mDisplayName);
+            user.setCountry(country);
+            user.setAddress(TAddress);
+            user.setAge(Integer.parseInt(Age));
+            user.setAbout_me(AboutMe);
 
 //        String g = getImageUri(this,myBitmap).toString();
 //        String pic [] ={g};
 //        user.setPhotos(pic);
 
 
-        updateProfile(user);
+            updateProfile(user);
+        }
 
     }
 
@@ -261,6 +301,11 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         }
         else
             mETGender.setText(user.getGender());
+
+        String pic = user.getProfile_img();
+        if(pic!=null&&!(pic.isEmpty()))
+            Picasso.get().load(pic).into(image);
+
 
     }
 

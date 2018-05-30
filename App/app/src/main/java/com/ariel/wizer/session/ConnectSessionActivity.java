@@ -1,8 +1,11 @@
 package com.ariel.wizer.session;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,12 +41,62 @@ public class ConnectSessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_session);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.scroll_view));
         initViews();
+
+        mEditTextSid.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(mEditTextSid.getText().toString().length() > 0 && mEditTextName.getText().toString().length() > 0) {
+                    mBtLogin.setTextColor(Color.parseColor("#ffffff"));
+                    mBtLogin.setEnabled(true);
+                }
+                else {
+                    mBtLogin.setTextColor(Color.parseColor("#CCCCCC"));
+                    mBtLogin.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mEditTextName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(mEditTextName.getText().toString().length() > 0 && mEditTextSid.getText().toString().length() > 0) {
+                    mBtLogin.setTextColor(Color.parseColor("#ffffff"));
+                    mBtLogin.setEnabled(true);
+                }
+                else {
+                    mBtLogin.setTextColor(Color.parseColor("#CCCCCC"));
+                    mBtLogin.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
     }
 
     private void initViews() {
@@ -65,35 +118,35 @@ public class ConnectSessionActivity extends AppCompatActivity {
 
     }
 
-    private void setError() {
-        mEditTextName.setError(null);
-        mEditTextSid.setError(null);
-    }
+//    private void setError() {
+//        mEditTextName.setError(null);
+//        mEditTextSid.setError(null);
+//    }
 
 
     private void login() {
 
-        setError();
+//        setError();
 
         sid = mEditTextSid.getText().toString().trim();
         String name = mEditTextName.getText().toString().trim();
 
-        int err = 0;
-
-        if (!validateFields(sid)) {
-            err++;
-            mEditTextSid.setError("Session should be valid !");
-        }
-
-        if (!validateFields(name)) {
-            err++;
-            mEditTextName.setError("User Name should be valid !");
-        }
-
-
-        if (err == 0) {
+//        int err = 0;
+//
+//        if (!validateFields(sid)) {
+//            err++;
+//            mEditTextSid.setError("Session should be valid !");
+//        }
+//
+//        if (!validateFields(name)) {
+//            err++;
+//            mEditTextName.setError("User Name should be valid !");
+//        }
+//
+//
+//        if (err == 0) {
             loginProcess(sid,name);
-        }
+//        }
     }
 
     private void loginProcess(String sid, String name) {

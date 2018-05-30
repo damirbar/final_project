@@ -32,19 +32,28 @@ public class DrawerHeader {
 
     private String displayName;
     private String email;
+    private String pic;
 
+    public ImageView getProfileImage() {
+        return profileImage;
+    }
 
-    public DrawerHeader(String _displayName, String _email) {
+    public TextView getNameTxt() {
+        return nameTxt;
+    }
+
+    public DrawerHeader(String _displayName, String _email, String _pic) {
         displayName = _displayName;
         email = _email;
+        pic = _pic;
     }
 
     @Resolve
     private void onResolved() {
         nameTxt.setText(displayName);
         emailTxt.setText(email);
-        Picasso.get().load("https://scontent.fsdv2-1.fna.fbcdn.net/v/t1.0-9/22730135_839880432861616_8306732533151605396_n.jpg?_nc_cat=0&oh=1597bce378ebaa853df982319d669bf5&oe=5B9303BC").into(profileImage);
-
+        if(pic!=null&&!(pic.isEmpty()))
+            Picasso.get().load(pic).into(profileImage);
     }
 
 }
