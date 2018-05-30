@@ -4,7 +4,7 @@ const student = require('../schemas/student');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const randomstring = require("randomstring");
-const config = require('../config/config.json');
+const config = require('../config/config.js');
 
 exports.changePassword = (mail, password, newPassword) =>
 

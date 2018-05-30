@@ -164,7 +164,7 @@ router.get("/rate-message", function (req, res) {
                     ratingUpdate.$pull = {likers: user._id};//removes the user id from the likers array
                     ratingUpdate.$inc = {likes: -1};
                     console.log('user has already liked this message. mess id:' + mess_id);
-                    return res.status(200).json({message: 'user has already liked this message. mess id:' + mess_id});
+                    // return res.status(200).json({message: 'user has already liked this message. mess id:' + mess_id});
                 } else if (disliked) { // user has already disliked the message.
                     ratingUpdate.$push = {likers: user._id};
                     ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
@@ -178,7 +178,7 @@ router.get("/rate-message", function (req, res) {
                     ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
                     ratingUpdate.$inc = {dislikes: -1};
                     console.log('user has already disliked this message. mess id:' + mess_id);
-                    return res.status(200).json({message: 'user has already disliked this message. mess id:' + mess_id});
+                    // return res.status(200).json({message: 'user has already disliked this message. mess id:' + mess_id});
                 } else if (liked) { // user has already liked the message.
                     ratingUpdate.$push = {dislikers: user._id};
                     ratingUpdate.$pull = {likers: user._id};//removes the user id from the likers array
@@ -307,10 +307,11 @@ const upload = multer({dest: 'upload/'});
 const type = upload.single('recfile');
 const cloudinary = require('cloudinary');
 const fs = require('fs');
+const config = require('../config/config');
 cloudinary.config({
-    cloud_name: 'wizeup',
-    api_key: '472734726483424',
-    api_secret: 'A2ZBcQsnU72oh7p9JI415BOR1ws'
+    cloud_name:config.cloudniary.cloud_name,
+    api_key: config.cloudniary.api_key,
+    api_secret: config.cloudniary.api_secret
 });
 
 let first = true;
@@ -366,17 +367,5 @@ router.post('/post-video', type, function (req, res) {
         }
     }
 });
-//
-// router.get('/get-video', function (req, res) {
-//     Session.findOne({sid: req.query.sid}, function (err, sess) {
-//         if (err) return err;
-//         if (sess) {
-//             res.status(200).json({url: sess.videoID});
-//         }
-//         else {
-//             res.status(400).json({error: 'no such session'});
-//         }
-//     });
-//
-// });
+
 module.exports = router;
