@@ -108,36 +108,11 @@ wizerApp.controller('sessionController',
 
         };
 
-        $scope.uploadVideo = function(){
-            var file = $scope.myFile;
-
-            console.log('file is ' );
-            console.dir(file);
-            
-            UploadService.uploadVideoToUrl(file, $scope.sessionID);
-        };
-
-        // $scope.getVideo = function () {
-        //
-        //     SessionService.getVideo("1234")
-        //         .then(function (data) {
-        //             console.log('\n\n\t\t\t'+JSON.stringify(data)+'\n\n');
-        //         })
-        //         .catch(function (err) {
-        //             console.log("Error with getting video");
-        //         });
-        //
-        // };
-        // $scope.getVideo();
 
         $scope.getToken = function() {
             return $window.localStorage.getItem('token');
         };
 
-        //damir!!!!
-        // $scope.getSid = function() {
-        //     return $window.localStorage.getItem('sid');
-        // };
 
         $scope.disconnect = function () {
 
@@ -164,24 +139,6 @@ wizerApp.controller('sessionController',
             }
         });
 
-        // $scope.$on("$destroy", function() {
-        //     console.log("DISCONNECTING FROM SESSION");
-        //     if($scope.isConnectedToSession) {
-        //         $scope.isConnectedToSession = false;
-        //         $scope.session = null;
-        //         // $scope.disconnect();
-        //     }
-        // });
-        //
-        // $scope.$$applicationDestroyed("$destroy", function() {
-        //     console.log("DISCONNECTING FROM SESSION");
-        //     if($scope.isConnectedToSession) {
-        //         $scope.isConnectedToSession = false;
-        //         $scope.session = null;
-        //         $scope.disconnect();
-        //     }
-        // });
-
         var getting = function () {
             // while(!$scope.isConnectedToSession);
             $scope.getMessages();
@@ -204,11 +161,6 @@ wizerApp.controller('sessionController',
                 });
         };
 
-        // $scope.assignReply = function(msg) {
-        //     console.log("MSG TO REPLY:" + JSON.stringify(msg))
-        //     $scope.message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[0]
-        // };
-
 
         $scope.onTimeUpdate = function () {
             var currTime = $element[0].currentTime;
@@ -224,7 +176,7 @@ wizerApp.controller('sessionController',
 
         $interval(function () {
             if ($scope.isConnectedToSession) {
-                // getting();
+                getting();
             }
         }, 3000);
 
@@ -235,9 +187,9 @@ wizerApp.controller('sessionController',
         $scope.uploadFile = function(){
 
             var file = $scope.myFile;
-            var uploadUrl = "/sessions/post-video";
+            var uploadUrl = "/sessions/post-video?sid=" + $scope.sessionID;
             var fd = new FormData();
-            fd.append('file', file);
+            fd.append('recfile', file);
 
             $http.post(uploadUrl,fd, {
                 transformRequest: angular.identity,
