@@ -235,9 +235,9 @@ wizerApp.controller('sessionController',
         $scope.uploadFile = function(){
 
             var file = $scope.myFile;
-            var uploadUrl = "/sessions/post-video";
+            var uploadUrl = "/sessions/post-video?sid=" + $scope.sessionID;
             var fd = new FormData();
-            fd.append('file', file);
+            fd.append('recfile', file);
 
             $http.post(uploadUrl,fd, {
                 transformRequest: angular.identity,

@@ -329,7 +329,7 @@ router.post('/post-video', type, function (req, res) {
             else {
                 res.status(200).json({message: 'received file'});
                 console.log(path);
-                Session.findOne({sid: req.body.sid}, function (err, sess) {
+                Session.findOne({sid: req.query.sid}, function (err, sess) {
                     if (err) return next(err);
                     console.log("starting to upload " + req.file.originalname);
                     cloudinary.v2.uploader.upload(path,
