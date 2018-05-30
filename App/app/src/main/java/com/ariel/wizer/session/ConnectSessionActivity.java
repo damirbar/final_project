@@ -107,7 +107,6 @@ public class ConnectSessionActivity extends AppCompatActivity {
         Intent intent = new Intent(getBaseContext(), SessionActivity.class);
         intent.putExtra("sid",sid);
         startActivity(intent);
-        mEditTextSid.setText("");
         finish();
 
     }
