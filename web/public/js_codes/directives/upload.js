@@ -12,4 +12,5 @@ wizerApp.directive('fileModel', ['$parse', function ($parse) {
             });
         }
     };
+
 }]);
