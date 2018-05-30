@@ -7,7 +7,7 @@ const register = require('../functions/register');
 const login = require('../functions/login');
 const profile = require('../functions/profile');
 const password = require('../functions/password');
-const config = require('../config/config.json');
+const config = require('../config/config.js');
 
 var Student = require("../schemas/student");
 
