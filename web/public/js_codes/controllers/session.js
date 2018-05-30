@@ -1,5 +1,5 @@
 wizerApp.controller('sessionController',
-    function ($scope, $rootScope, $routeParams, $location, $window, $interval, AuthService, SessionService, UploadService/*,socketIO*/) {
+    function ($scope, $rootScope, $routeParams, $location, $window, $interval, AuthService, SessionService, $http, UploadService/*,socketIO*/) {
 
         console.log("Hello from sessionController");
         $scope.sessionID = "";
@@ -227,5 +227,28 @@ wizerApp.controller('sessionController',
                 // getting();
             }
         }, 3000);
+
+
+
+
+
+        $scope.uploadFile = function(){
+
+            var file = $scope.myFile;
+            var uploadUrl = "/sessions/post-video";
+            var fd = new FormData();
+            fd.append('file', file);
+
+            $http.post(uploadUrl,fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+                .then(function(data){
+                    console.log("upload success!!!");
+                },
+                    function(){
+                        console.log("error!!");
+                    });
+        };
 
     });

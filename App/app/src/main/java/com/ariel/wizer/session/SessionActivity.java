@@ -34,7 +34,7 @@ public class SessionActivity extends AppCompatActivity {
     private RetrofitRequests mRetrofitRequests;
     private int stopPosition;
     private String sid;
-    private ProgressBar spinnerView;
+//    private ProgressBar spinnerView;
 
     private FullscreenVideoLayout vid;
 //    private MediaController mMediaController;
@@ -61,7 +61,7 @@ public class SessionActivity extends AppCompatActivity {
             else{
                 mvideoViewRelative.setVisibility(View.VISIBLE);
                 vid.seekTo(stopPosition);
-                vid.start();
+//                vid.start();
 //                vid.setMediaController(mMediaController);
             }
             buttonCloseVid.setRotation(buttonCloseVid.getRotation() + 180);
@@ -107,27 +107,27 @@ public class SessionActivity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         vid = (FullscreenVideoLayout) findViewById(R.id.videoView);
         mvideoViewRelative = findViewById(R.id.videoViewRelative);
-        spinnerView = (ProgressBar) findViewById(R.id.my_spinner);
-        vid.setOnInfoListener(onInfoToPlayStateListener);
+//        spinnerView = (ProgressBar) findViewById(R.id.my_spinner);
+//        vid.setOnInfoListener(onInfoToPlayStateListener);
 
     }
 
-    private final MediaPlayer.OnInfoListener onInfoToPlayStateListener = new MediaPlayer.OnInfoListener() {
-
-        @Override
-        public boolean onInfo(MediaPlayer mp, int what, int extra) {
-            if (MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START == what) {
-                spinnerView.setVisibility(View.GONE);
-            }
-            if (MediaPlayer.MEDIA_INFO_BUFFERING_START == what) {
-                spinnerView.setVisibility(View.VISIBLE);
-            }
-            if (MediaPlayer.MEDIA_INFO_BUFFERING_END == what) {
-                spinnerView.setVisibility(View.VISIBLE);
-            }
-            return false;
-        }
-    };
+//    private final MediaPlayer.OnInfoListener onInfoToPlayStateListener = new MediaPlayer.OnInfoListener() {
+//
+//        @Override
+//        public boolean onInfo(MediaPlayer mp, int what, int extra) {
+//            if (MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START == what) {
+//                spinnerView.setVisibility(View.GONE);
+//            }
+//            if (MediaPlayer.MEDIA_INFO_BUFFERING_START == what) {
+//                spinnerView.setVisibility(View.VISIBLE);
+//            }
+//            if (MediaPlayer.MEDIA_INFO_BUFFERING_END == what) {
+//                spinnerView.setVisibility(View.VISIBLE);
+//            }
+//            return false;
+//        }
+//    };
 
     private void playVideo() {
 
@@ -232,6 +232,13 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        vid.pause();
     }
 
 }
