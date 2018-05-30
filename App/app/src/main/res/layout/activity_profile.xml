@@ -159,7 +159,7 @@
                 android:textAlignment="center" />
 
             <TextView
-                android:id="@+id/edit_profile2"
+                android:id="@+id/change_pass"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
 

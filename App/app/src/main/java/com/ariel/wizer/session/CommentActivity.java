@@ -1,25 +1,21 @@
 package com.ariel.wizer.session;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
-import com.ariel.wizer.model.Session;
 import com.ariel.wizer.model.SessionMessage;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
+import com.ariel.wizer.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +39,8 @@ public class CommentActivity extends AppCompatActivity {
     private final String answer = "answer";
     private String sid;
     private String msid;
+    private String mId;
+
 
     private SessionCommentsAdapter mAdapter;
 
@@ -50,15 +48,17 @@ public class CommentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
-
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.activity_comment));
+
+        initSharedPreferences();
 
         if (!getData()) {
             finish();
         }
         initViews();
+
 
 //        SessionMessage msg = (SessionMessage) getIntent().getSerializableExtra("msg");
 
@@ -77,6 +77,11 @@ public class CommentActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void initSharedPreferences() {
+        mId = mRetrofitRequests.getmSharedPreferences().getString(Constants.ID,"");
+    }
+
 
     private void initViews() {
         commentsList = (ListView) findViewById(R.id.comments);
@@ -104,7 +109,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void pullComments(){
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getMessages(sid)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllMessages(sid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull,i -> mServerResponse.handleError(i)));
@@ -115,6 +120,21 @@ public class CommentActivity extends AppCompatActivity {
             ArrayList<SessionMessage> saveComments = new ArrayList<>(Arrays.asList(sessionMessages));
             Collections.reverse(saveComments);
             mAdapter = new SessionCommentsAdapter(this, new ArrayList<>(saveComments));
+
+            for(int i=0;i<mAdapter.getMessagesList().size();i++){
+                for(int j=0;j<mAdapter.getMessagesList().get(i).getLikers().length;j++){
+                    if(mAdapter.getMessagesList().get(i).getLikers()[j].equalsIgnoreCase(mId)) {
+                        mAdapter.getLikeCheckBoxState()[i] = true;
+                    }
+                }
+                for(int j=0;j<mAdapter.getMessagesList().get(i).getDislikers().length;j++){
+                    if(mAdapter.getMessagesList().get(i).getDislikers()[j].equalsIgnoreCase(mId)) {
+                        mAdapter.getDislikeCheckBoxState()[i] = true;
+                    }
+                }
+            }
+
+
             commentsList.setAdapter(mAdapter);
         }
     }

@@ -7,13 +7,22 @@ public class SessionMessage  {
     private int likes;
     private int dislikes;
 
-//    private String likers[];
-//    private String dislikers[];
+    private String likers[];
+    private String dislikers[];
 
     private String body[];
     private String type;
     private String _id;
     private String date;
+
+    public String[] getLikers() {
+        return likers;
+    }
+
+    public String[] getDislikers() {
+        return dislikers;
+    }
+
 
     public String get_id() {
         return _id;

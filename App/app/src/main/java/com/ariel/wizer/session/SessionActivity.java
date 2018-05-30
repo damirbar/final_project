@@ -1,5 +1,8 @@
 package com.ariel.wizer.session;
 
+import android.content.res.Configuration;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -8,34 +11,39 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.ariel.wizer.R;
-import com.ariel.wizer.fragments.LoginFragment;
 import com.ariel.wizer.network.RetrofitRequests;
+import com.github.rtoshiro.view.video.FullscreenVideoLayout;
+
+import java.io.IOException;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-public class SessionTabActivity extends AppCompatActivity {
+public class SessionActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ImageButton buttonBack;
     private ImageButton buttonCloseVid;
-    private FrameLayout frameVid;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
-    private VideoPlayerFragment mVideoPlayerFragment;
     private int stopPosition;
     private String sid;
+    private ProgressBar spinnerView;
 
+    private FullscreenVideoLayout vid;
+//    private MediaController mMediaController;
+    private RelativeLayout mvideoViewRelative;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_session_tab);
+        setContentView(R.layout.activity_session);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         if (!getData()) {
@@ -43,25 +51,21 @@ public class SessionTabActivity extends AppCompatActivity {
         }
         initViews();
 
-        buttonCloseVid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (frameVid.getVisibility() == View.VISIBLE) {
-                    frameVid.setVisibility(View.GONE);
-                    stopPosition = mVideoPlayerFragment.getVid().getCurrentPosition();
-                    mVideoPlayerFragment.getVid().pause();
-                    mVideoPlayerFragment.getVid().setMediaController(null);
-                    }
-                else{
-                    frameVid.setVisibility(View.VISIBLE);
-                    mVideoPlayerFragment.getVid().seekTo(stopPosition);
-                    mVideoPlayerFragment.getVid().start();
-                    mVideoPlayerFragment.getVid().setMediaController(mVideoPlayerFragment.getmMediaController());
-
-                }
-                buttonCloseVid.setRotation(buttonCloseVid.getRotation() + 180);
-
+        buttonCloseVid.setOnClickListener(v -> {
+            if (mvideoViewRelative.getVisibility() == View.VISIBLE) {
+                stopPosition = vid.getCurrentPosition();
+                vid.pause();
+//                vid.setMediaController(null);
+                mvideoViewRelative.setVisibility(View.GONE);
             }
+            else{
+                mvideoViewRelative.setVisibility(View.VISIBLE);
+                vid.seekTo(stopPosition);
+                vid.start();
+//                vid.setMediaController(mMediaController);
+            }
+            buttonCloseVid.setRotation(buttonCloseVid.getRotation() + 180);
+
         });
 
 
@@ -86,15 +90,12 @@ public class SessionTabActivity extends AppCompatActivity {
             }
         });
 
-        if (savedInstanceState == null) {
-
-            loadFragment();
-        }
+        playVideo();
 
     }
 
+
     private void initViews() {
-        frameVid = (FrameLayout) findViewById(R.id.frame_vid);
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         buttonBack.setOnClickListener(view -> goBack());
         buttonCloseVid= (ImageButton) findViewById(R.id.vid_button_close);
@@ -104,19 +105,71 @@ public class SessionTabActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Session"));
         tabLayout.addTab(tabLayout.newTab().setText("Updates"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        vid = (FullscreenVideoLayout) findViewById(R.id.videoView);
+        mvideoViewRelative = findViewById(R.id.videoViewRelative);
+        spinnerView = (ProgressBar) findViewById(R.id.my_spinner);
+        vid.setOnInfoListener(onInfoToPlayStateListener);
+
     }
 
-    private void loadFragment(){
+    private final MediaPlayer.OnInfoListener onInfoToPlayStateListener = new MediaPlayer.OnInfoListener() {
 
-        if (mVideoPlayerFragment == null) {
-            Bundle bundle = new Bundle();
-            mVideoPlayerFragment = new VideoPlayerFragment();
-            bundle.putString("sid", sid);
-            mVideoPlayerFragment.setArguments(bundle);
+        @Override
+        public boolean onInfo(MediaPlayer mp, int what, int extra) {
+            if (MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START == what) {
+                spinnerView.setVisibility(View.GONE);
+            }
+            if (MediaPlayer.MEDIA_INFO_BUFFERING_START == what) {
+                spinnerView.setVisibility(View.VISIBLE);
+            }
+            if (MediaPlayer.MEDIA_INFO_BUFFERING_END == what) {
+                spinnerView.setVisibility(View.VISIBLE);
+            }
+            return false;
         }
-        getFragmentManager().beginTransaction().replace(R.id.frame_vid,mVideoPlayerFragment,LoginFragment.TAG).commit();
-    }
+    };
 
+    private void playVideo() {
+
+        vid.setActivity(this);
+
+        Uri videoUri = Uri.parse("http://res.cloudinary.com/wizeup/video/upload/v1527153142/1234video.mp4");
+        try {
+            vid.setVideoURI(videoUri);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        String url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";//rm
+//
+//        Map<String, String> header = new HashMap<String, String>(1);
+//        header.put(Constants.TOKEN_HEADER, mRetrofitRequests.getmToken());
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            vid.setVideoURI(Uri.parse(url), header);
+//        } else {
+//            Method setVideoURIMethod = null;
+//            try {
+//                setVideoURIMethod = vid.getClass().getMethod("setVideoURI", Uri.class, Map.class);
+//            } catch (NoSuchMethodException e) {
+//                e.printStackTrace();
+//            }
+//            try {
+//                if (setVideoURIMethod != null) {
+//                    setVideoURIMethod.invoke(vid, Uri.parse(url), header);
+//                }
+//            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+//            } catch (InvocationTargetException e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+//        mMediaController = new MediaController(this);
+//        mMediaController.setAnchorView(vid);
+//        vid.setMediaController(mMediaController);
+    }
 
 
     @Override
@@ -174,6 +227,11 @@ public class SessionTabActivity extends AppCompatActivity {
         disconnectFromSession();
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
 }

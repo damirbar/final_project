@@ -2,37 +2,47 @@
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="55dp"
-    android:background="?attr/colorPrimaryDark">
+    android:layout_height="125dp"
+    android:background="?attr/colorPrimaryDark"
+    app:contentInsetLeft="0dp"
+    app:contentInsetStart="0dp"
+    app:contentInsetStartWithNavigation="0dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <LinearLayout
+        android:id="@+id/barLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <android.support.v7.widget.SearchView
-            android:id="@+id/searchView"
-            android:layout_width="180dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="7dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/edittext_search"
-            android:baselineAligned="false"
-            android:iconifiedByDefault="false"
-            app:queryHint="Search.." />
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/name_app"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="wizeUp"
             android:textColor="@color/white"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="15dp" />
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="@dimen/top_margin30"
+            android:background="@drawable/edittext_search"
+            android:inputType="none"
+            app:queryHint="Search.."
+            android:focusable="false"
+            app:iconifiedByDefault="true"/>
 
     </LinearLayout>
 

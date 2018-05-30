@@ -20,7 +20,7 @@ public class ServerResponse {
 
     private View layout;
 
-    public ServerResponse(View _layout){
+    public ServerResponse(View _layout) {
         this.layout = _layout;
     }
 
@@ -28,10 +28,12 @@ public class ServerResponse {
         return layout;
     }
 
-    public void setLayout(View layout) { this.layout = layout; }
+    public void setLayout(View layout) {
+        this.layout = layout;
+    }
 
     public void showSnackBarMessage(String message) {
-        TSnackbar snackbar = TSnackbar.make(layout,message,TSnackbar.LENGTH_LONG);
+        TSnackbar snackbar = TSnackbar.make(layout, message, TSnackbar.LENGTH_LONG);
         View snackbarView = snackbar.getView();
         snackbarView.setBackgroundColor(Color.parseColor("#ffffff"));
         TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
@@ -40,33 +42,30 @@ public class ServerResponse {
     }
 
     public void handleError(Throwable error) {
-        Log.d("tag",error.toString());
-        if (error instanceof HttpException) {
-
-            Gson gson = new GsonBuilder().setLenient().create();
-            try {
+        Log.d("error", error.toString());
+        try {
+            if (error instanceof HttpException) {
+                Gson gson = new GsonBuilder().setLenient().create();
                 String errorBody = ((HttpException) error).response().errorBody().string();
-                Response response = gson.fromJson(errorBody,Response.class);
+                Response response = gson.fromJson(errorBody, Response.class);
                 showSnackBarMessage(response.getMessage());
-
-            } catch (JsonSyntaxException|IOException e) {
-                e.printStackTrace();
-                showSnackBarMessage("Internal Server Error !");
+            } else {
+                showSnackBarMessage("Network Error !");
             }
-        } else {
-
-            showSnackBarMessage("Network Error !");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showSnackBarMessage("Internal Server Error !");
         }
     }
 
     public static void handleErrorRate(Throwable error) {
-        Log.d("tag",error.toString());
+        Log.d("tag", error.toString());
         if (error instanceof HttpException) {
             Gson gson = new GsonBuilder().setLenient().create();
             try {
                 String errorBody = ((HttpException) error).response().errorBody().string();
-                Response response = gson.fromJson(errorBody,Response.class);
-            } catch (JsonSyntaxException|IOException e) {
+                Response response = gson.fromJson(errorBody, Response.class);
+            } catch (JsonSyntaxException | IOException e) {
                 e.printStackTrace();
             }
         } else {

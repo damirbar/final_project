@@ -1,13 +1,14 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_session_feed"
+    android:id="@+id/activity_session_info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fdfdfe"
     android:fitsSystemWindows="true">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -30,7 +31,6 @@
 
 
                 <TextView
-                    android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Session Number"
@@ -38,7 +38,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvAboutMe"
+                    android:id="@+id/tvSid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -64,7 +64,6 @@
 
 
                 <TextView
-                    android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Creation Date"
@@ -72,7 +71,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvAboutMe"
+                    android:id="@+id/tvDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -98,7 +97,6 @@
 
 
                 <TextView
-                    android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Teacher"
@@ -106,7 +104,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvAboutMe"
+                    android:id="@+id/tvTeacher"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -132,7 +130,6 @@
 
 
                 <TextView
-                    android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Location"
@@ -140,7 +137,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvAboutMe"
+                    android:id="@+id/tvLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -166,7 +163,6 @@
 
 
                 <TextView
-                    android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="User Online"
@@ -174,7 +170,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvAboutMe"
+                    android:id="@+id/tvOnlineNum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -200,7 +196,6 @@
 
 
                 <TextView
-                    android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Rate The Session !"
@@ -215,7 +210,7 @@
                     android:background="@color/white">
 
                     <CheckBox
-                        android:id="@+id/dislike_cbx2"
+                        android:id="@+id/dislike_cbx"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -227,19 +222,19 @@
                         android:button="@drawable/dislike_checkbox" />
 
                     <TextView
-                        android:id="@+id/tvAboutMe4"
+                        android:id="@+id/tvRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:gravity="left|center"
                         android:paddingBottom="5dp"
-                        android:text="5"
+                        android:text="0"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="18sp" />
 
                     <CheckBox
-                        android:id="@+id/like_cbx2"
+                        android:id="@+id/like_cbx"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"

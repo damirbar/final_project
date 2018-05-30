@@ -1,302 +1,335 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/edit_profile"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/chat_me_window_background"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimaryDark"
+        app:layout_scrollFlags="enterAlways|scroll"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp">
 
 
+            <Button
+                android:id="@+id/save_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="Save"
+                android:textColor="@color/white" />
 
-    <RelativeLayout
+            <Button
+                android:id="@+id/cancel_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="Cancel"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
-        <Button
-            android:id="@+id/save_button"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="Save"
-            android:textColor="@color/black"
-            android:layout_alignParentEnd="true" />
 
-        <Button
-            android:id="@+id/cancel_button"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="Cancel"
-            android:textColor="@color/black"
-            android:layout_alignParentStart="true" />
-
-        <ImageView
-            android:id="@+id/header_cover_image"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/save_button"
-            android:scaleType="centerCrop"
-            android:src="@android:color/background_light"
-            android:layout_alignParentLeft="true" />
+            android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/user_profile_photo"
-            android:layout_width="135dp"
-            android:layout_height="126dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="54dp"
-            android:paddingBottom="3dp"
-            android:src="@drawable/default_user_image"
-            app:civ_border_color="?attr/colorAccent"
-            app:civ_border_width="2dp" />
-
-
-        <TextView
-            android:id="@+id/user_profile_change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="191dp"
-            android:adjustViewBounds="true"
-            android:text="Change Profile Photo"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
-
-        <TableRow
-            android:id="@+id/tR1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/header_cover_image"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-
-            <TextView
-                android:id="@+id/tVFirstName"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:gravity="left|center"
-                android:text="First Name"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/eTFirstName"
+            <ImageView
+                android:id="@+id/header_cover_image"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:ems="10"
-                android:hint="First Name"
-                android:inputType="textPersonName"
-                android:shadowColor="@color/black"
-                android:textColorLink="@android:color/black"
-                android:textSize="14sp" />
+                android:layout_height="170dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:scaleType="centerCrop"
+                android:src="@android:color/background_light" />
 
-        </TableRow>
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/user_profile_photo"
+                android:layout_width="135dp"
+                android:layout_height="126dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/default_user_image"
+                app:civ_border_color="?attr/colorAccent" />
 
-        <TableRow
-            android:id="@+id/tR2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tR1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
 
             <TextView
-                android:id="@+id/tVLastName"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:gravity="left|center"
-                android:text="Last Name"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/eTLastName"
-                android:layout_width="match_parent"
+                android:id="@+id/user_profile_change"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:ems="10"
-                android:hint="Last Name"
-                android:inputType="textPersonName"
-                android:textSize="14sp" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tR5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tR4"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-
-            <TextView
-                android:id="@+id/tVAddress"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:gravity="left|center"
-                android:text="Address"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/eTAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:ems="10"
-                android:hint="Address"
-                android:inputType="text"
-                android:textSize="14sp" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tR7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tR6"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-
-            <TextView
-                android:id="@+id/tVGender"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:gravity="left|center"
-                android:text="Gender"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/eTGender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:editable="false"
-                android:ems="10"
-                android:inputType="none"
-                android:text="Not Specified"
-                android:textSize="14sp" />
-
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tR3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tR2"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-
-            <TextView
-                android:id="@+id/tVDisplayName"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:gravity="left|center"
-                android:text="Display Name"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/eTDisplay_Name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:ems="10"
-                android:hint="Display Name"
-                android:inputType="textPersonName"
-                android:textSize="14sp" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tR4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tR3"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-
-            <TextView
-                android:id="@+id/tVcountry"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
                 android:layout_below="@+id/user_profile_photo"
-                android:gravity="left|center"
-                android:text="Country"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="2dp"
+                android:adjustViewBounds="true"
+                android:text="Change Profile Photo"
+                android:textColor="@android:color/black"
                 android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/eTCountry"
+            <TableRow
+                android:id="@+id/tR1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:ems="10"
-                android:hint="Country"
-                android:inputType="text"
-                android:textSize="14sp" />
+                android:layout_below="@+id/header_cover_image"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
 
-        </TableRow>
+                <TextView
+                    android:id="@+id/tVFirstName"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center"
+                    android:text="First Name"
+                    android:textSize="14sp" />
 
-        <TableRow
-            android:id="@+id/tR6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tR5"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+                <EditText
+                    android:id="@+id/eTFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:ems="10"
+                    android:hint="First Name"
+                    android:inputType="textPersonName"
+                    android:shadowColor="@color/black"
+                    android:textColorLink="@android:color/black"
+                    android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/tVAge"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:gravity="left|center"
-                android:text="Age"
-                android:textSize="14sp" />
+            </TableRow>
 
-            <EditText
-                android:id="@+id/eTAge"
+            <TableRow
+                android:id="@+id/tR2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:ems="10"
-                android:hint="Age"
-                android:inputType="none"
-                android:editable="false"
-                android:textSize="14sp" />
+                android:layout_below="@+id/tR1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
 
-        </TableRow>
+                <TextView
+                    android:id="@+id/tVLastName"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center"
+                    android:text="Last Name"
+                    android:textSize="14sp" />
 
-        <TableRow
-            android:id="@+id/tR8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tR7"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+                <EditText
+                    android:id="@+id/eTLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:ems="10"
+                    android:hint="Last Name"
+                    android:inputType="textPersonName"
+                    android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/tVAboutMe"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:gravity="left|center"
-                android:text="About Me"
-                android:textSize="14sp" />
+            </TableRow>
 
-            <EditText
-                android:id="@+id/eTAboutMe"
+            <TableRow
+                android:id="@+id/tR5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:ems="10"
-                android:hint="About Me"
-                android:inputType="text"
-                android:textSize="14sp" />
+                android:layout_below="@+id/tR4"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
 
-        </TableRow>
+                <TextView
+                    android:id="@+id/tVAddress"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center"
+                    android:text="Address"
+                    android:textSize="14sp" />
 
-    </RelativeLayout>
-</ScrollView>
+                <EditText
+                    android:id="@+id/eTAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:ems="10"
+                    android:hint="Address"
+                    android:inputType="text"
+                    android:textSize="14sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tR7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tR6"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <TextView
+                    android:id="@+id/tVGender"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center"
+                    android:text="Gender"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/eTGender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:editable="false"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:text="Not Specified"
+                    android:textSize="14sp" />
+
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tR3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tR2"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <TextView
+                    android:id="@+id/tVDisplayName"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center"
+                    android:text="Display Name"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/eTDisplay_Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:ems="10"
+                    android:hint="Display Name"
+                    android:inputType="textPersonName"
+                    android:textSize="14sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tR4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tR3"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <TextView
+                    android:id="@+id/tVcountry"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/user_profile_photo"
+                    android:gravity="left|center"
+                    android:text="Country"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/eTCountry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:ems="10"
+                    android:hint="Country"
+                    android:inputType="text"
+                    android:textSize="14sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tR6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tR5"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <TextView
+                    android:id="@+id/tVAge"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center"
+                    android:text="Age"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/eTAge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:editable="false"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:hint="Age"
+                    android:inputType="none"
+                    android:textSize="14sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tR8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tR7"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <TextView
+                    android:id="@+id/tVAboutMe"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:editable="false"
+                    android:ems="10"
+                    android:gravity="left|center"
+                    android:inputType="none"
+                    android:text="About Me"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/eTAboutMe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:hint="About Me"
+                    android:inputType="none"
+                    android:textSize="14sp" />
+
+            </TableRow>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

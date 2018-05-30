@@ -32,6 +32,7 @@ var studentRequests = require('./routes/students_request');
 var coursesRequests = require('./routes/courses_request');
 var mainRequests    = require('./routes/main_route');
 var sessionRequests = require('./routes/session_requests');
+var searchRequests = require('./routes/search_routes');
 
 
 
@@ -63,6 +64,8 @@ app.use('/teachers', teacherRequests);
 app.use('/students', studentRequests);
 app.use('/courses', coursesRequests);
 app.use('/sessions', sessionRequests);
+app.use('/search', searchRequests);
+
 
 var chatRequests = require('./routes/chat_request');///////shay chat
 app.use('/chat', chatRequests);////shay chat
@@ -75,12 +78,12 @@ app.use('/auth', authRouts);
 /////////////////////////
 
 
-// io.on('connect', function(socket) {
-//     console.log("SOMEBODY CONNECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//     socket.on('disconnect', function() {
-//         console.log("ERAN IS FUCKING GAY");
-//     });
-// });
+io.on('connect', function(socket) {
+    console.log("SOMEBODY CONNECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    socket.on('disconnect', function() {
+        console.log("ERAN IS FUCKING GAY");
+    });
+});
 
 
 http.listen(3000, function () {

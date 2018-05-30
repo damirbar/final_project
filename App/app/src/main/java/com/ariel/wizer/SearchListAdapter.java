@@ -7,24 +7,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ariel.wizer.model.CourseFile;
+import com.ariel.wizer.model.Session;
 import com.ariel.wizer.model.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchListAdapter extends ArrayAdapter<User> {
+public class SearchListAdapter extends ArrayAdapter<Object> {
     private Context mContext;
-    private List<User> searchList;
+    private List<Object> searchList;
 
-    public SearchListAdapter(Activity context, ArrayList<User> list) {
+    public SearchListAdapter(Activity context, ArrayList<Object> list) {
         super(context, 0, list);
         mContext = context;
         searchList = list;
     }
 
-    public List<User> getSearchList() {
+    public List<Object> getSearchList() {
         return searchList;
     }
 
@@ -32,17 +36,55 @@ public class SearchListAdapter extends ArrayAdapter<User> {
     @Override
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
-        User currentUser = searchList.get(position);
 
-        if (convertView == null) {
+//        if (convertView == null) {
+//
+//            listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_user, parent, false);
+//        }
 
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.row_search_item, parent, false);
+
+        Object a = (Object) getItem(position);
+
+        if(a instanceof User) {
+            User user = (User) a;
+
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_user, parent, false);
+            TextView mName = (TextView) listItem.findViewById(R.id.user_name);
+            ImageView profileImage = (ImageView) listItem.findViewById(R.id.user_image);;
+
+
+            String disName = user.getDisplay_name();
+            if(disName!=null && !(disName.isEmpty())){
+                mName.setText(user.getDisplay_name());
+            }
+            else{
+                mName.setText(user.getFname()+" " + user.getLname());
+            }
+
+//            Picasso.get().load(user.getPhotos()[0]).into(profileImage);
 
         }
-        TextView mSearchName = (TextView) listItem.findViewById(R.id.stringName);
 
-        mSearchName.setText(currentUser.getFname());
+        if(a instanceof Session) {
+            Session session = (Session) a;
 
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_session, parent, false);
+            TextView mName = (TextView) listItem.findViewById(R.id.sid_name);
+            TextView mDate = (TextView) listItem.findViewById(R.id.creation_date);
+            mName.setText(session.getSid());
+//            mDate.setText(session.getCreation_date());
+        }
+
+        if(a instanceof CourseFile) {
+            CourseFile file = (CourseFile) a;
+
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_file, parent, false);
+            TextView mName = (TextView) listItem.findViewById(R.id.file_name);
+            TextView mDate = (TextView) listItem.findViewById(R.id.creation_date);
+
+            mName.setText(file.getUrl());
+//            mDate.setText(file.getCreation_date());
+        }
 
         return listItem;
     }

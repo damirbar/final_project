@@ -46,7 +46,7 @@ public class MyCourseActivity extends AppCompatActivity {
         mServerResponse = new ServerResponse(findViewById(R.id.layout_my_classes));
         initSharedPreferences();
         initViews();
-        pullClasses();
+        pullCourses();
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -54,7 +54,7 @@ public class MyCourseActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        pullClasses();
+                        pullCourses();
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
                 }, 1000);
@@ -82,7 +82,7 @@ public class MyCourseActivity extends AppCompatActivity {
         buttonBack.setOnClickListener(view -> finish());
     }
 
-    private void pullClasses() {
+    private void pullCourses() {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllCoursesById(mId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -111,7 +111,7 @@ public class MyCourseActivity extends AppCompatActivity {
     public void onResume()
     {
         super.onResume();
-        pullClasses();
+        pullCourses();
     }
 
 

@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ariel.wizer.chat.ChatChannelsActivity;
 import com.ariel.wizer.course.MyCourseActivity;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.session.ConnectSessionActivity;
@@ -42,7 +41,7 @@ public class DrawerMenuItem {
     public DrawerMenuItem(Activity context, int menuPosition) {
         mContext = context;
         mMenuPosition = menuPosition;
-
+        mCallBack = (DrawerCallBack) context;
     }
 
     @Resolve
@@ -87,19 +86,16 @@ public class DrawerMenuItem {
     private void onMenuItemClick(){
         switch (mMenuPosition){
             case DRAWER_MENU_ITEM_PROFILE:
-                mContext.startActivity(new Intent (mContext, ProfileActivity.class));
                 if(mCallBack != null)mCallBack.onProfileMenuSelected();
                 break;
             case DRAWER_MENU_ITEM_SESSION:
-                mContext.startActivity(new Intent (mContext, ConnectSessionActivity.class));
                 if(mCallBack != null)mCallBack.onSessionMenuSelected();
                 break;
             case DRAWER_MENU_ITEM_MY_COURSES:
-                mContext.startActivity(new Intent (mContext, MyCourseActivity.class));
                 if(mCallBack != null)mCallBack.onMycoursesMenuSelected();
                 break;
             case DRAWER_MENU_ITEM_MESSAGE:
-                mContext.startActivity(new Intent (mContext, ChatChannelsActivity.class));
+                Toast.makeText(mContext, "Chat", Toast.LENGTH_SHORT).show();
                 if(mCallBack != null)mCallBack.onMessagesMenuSelected();
                 break;
             case DRAWER_MENU_ITEM_NOTIFICATIONS:
@@ -108,39 +104,22 @@ public class DrawerMenuItem {
                 break;
             case DRAWER_MENU_ITEM_SETTINGS:
                 Toast.makeText(mContext, "Settings", Toast.LENGTH_SHORT).show();
-                if(mCallBack != null)mCallBack.onSettingsMenuSelected();
+                mCallBack.onSettingsMenuSelected();
                 break;
             case DRAWER_MENU_ITEM_TERMS:
-                mContext.startActivity(new Intent (mContext, TermsActivity.class));
                 if(mCallBack != null)mCallBack.onTermsMenuSelected();
                 break;
             case DRAWER_MENU_ITEM_LOGOUT:
-                logout(mContext);
                 if(mCallBack != null)mCallBack.onLogoutMenuSelected();
                 break;
         }
 
     }
 
-    private void logout(Activity mActivity) {
-        RetrofitRequests mRetrofitRequests = new RetrofitRequests(mContext);
-        SharedPreferences.Editor editor = mRetrofitRequests.getmSharedPreferences().edit();
-        editor.putString(Constants.PASS,"");
-        editor.putString(Constants.TOKEN,"");
-        editor.putString(Constants.ID,"");
-        editor.putString(Constants.DISPLAY_NAME,"");
-        editor.putString(Constants.PROFILE_IMG,"");
-
-        editor.apply();
-        Intent intent = new Intent(mActivity, MainActivity.class);
-        mActivity.startActivity(intent);
-        mActivity.finish();
-    }
-
-
-    public void setDrawerCallBack(DrawerCallBack callBack) {
-        mCallBack = callBack;
-    }
+//    public void setDrawerCallBack(DrawerCallBack callBack) {
+//
+//        mCallBack = callBack;
+//    }
 
     public interface DrawerCallBack{
         void onProfileMenuSelected();

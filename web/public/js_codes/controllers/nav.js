@@ -1,5 +1,5 @@
-wizerApp.controller('navController', ['$scope','AuthService', '$location', '$timeout', 'ProfileService', '$rootScope', '$interval',
-    '$http', function ($scope, AuthService, $location, $timeout, ProfileService, $rootScope, $interval, $http) {
+wizerApp.controller('navController', ['$scope','AuthService', '$location', '$timeout', 'ProfileService', 'SearchService', '$rootScope', '$interval',
+    '$http', function ($scope, AuthService, $location, $timeout, ProfileService, SearchService, $rootScope, $interval, $http) {
 
         $scope.loggedUser = {};
         $scope.user = {};
@@ -110,7 +110,6 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
             //     }, function(err) {
             //         console.log("An error occurred in googleLogin()! " + JSON.stringify(err));
             //     });
-
         };
         $scope.onSignIn = function (googleUser) {
             var profile = googleUser.getBasicProfile();
@@ -166,10 +165,11 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
         $scope.checkLogin();
 
 
+        //Free text search
         $scope.searchTerm = {keywords: ""}; //keywords for the free text search
 
         $scope.freeTextSearch = function(){
             console.log($scope.searchTerm.keywords);
-            // SearchService.freeTextSearch($scope.searchTerm.keywords);
+            SearchService.freeTextSearch($scope.searchTerm.keywords);
         }
     }]);

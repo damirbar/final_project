@@ -1,23 +1,17 @@
 package com.ariel.wizer.demo;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 
+import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
-import com.ariel.wizer.network.RetrofitInterface;
-import com.google.gson.Gson;
+import com.ariel.wizer.network.RetrofitRequests;
+import com.ariel.wizer.network.ServerResponse;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,13 +20,9 @@ import java.io.InputStream;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-import com.ariel.wizer.R;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class FileUploadActivity extends AppCompatActivity {
 
@@ -40,20 +30,20 @@ public class FileUploadActivity extends AppCompatActivity {
 
     private static final int INTENT_REQUEST_CODE = 100;
 
-    public static final String URL = "http://10.0.2.2:8080";
+    private RetrofitRequests mRetrofitRequests;
+    private ServerResponse mServerResponse;
+    private CompositeSubscription mSubscriptions;
 
     private Button mBtImageSelect;
-    private Button mBtImageShow;
-    private ProgressBar mProgressBar;
-    private String mImageUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_upload);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
+        mSubscriptions = new CompositeSubscription();
+        mRetrofitRequests = new RetrofitRequests(this);
+        mServerResponse = new ServerResponse(findViewById(R.id.la));
         initViews();
 
     }
@@ -61,15 +51,12 @@ public class FileUploadActivity extends AppCompatActivity {
     private void initViews() {
 
         mBtImageSelect = findViewById(R.id.btn_select_image);
-        mBtImageShow = findViewById(R.id.btn_show_image);
-        mProgressBar = findViewById(R.id.progress);
 
         mBtImageSelect.setOnClickListener((View view) -> {
 
-            mBtImageShow.setVisibility(View.GONE);
 
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/jpeg");
+            intent.setType("*/*");
 
             try {
                 startActivityForResult(intent, INTENT_REQUEST_CODE);
@@ -81,13 +68,6 @@ public class FileUploadActivity extends AppCompatActivity {
 
         });
 
-        mBtImageShow.setOnClickListener(view -> {
-
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(mImageUrl));
-            startActivity(intent);
-
-        });
     }
 
     @Override
@@ -101,7 +81,7 @@ public class FileUploadActivity extends AppCompatActivity {
 
                     InputStream is = getContentResolver().openInputStream(data.getData());
 
-                    uploadImage(getBytes(is));
+                    uploadFile(getBytes(is));
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -124,56 +104,26 @@ public class FileUploadActivity extends AppCompatActivity {
         return byteBuff.toByteArray();
     }
 
-    private void uploadImage(byte[] imageBytes) {
+    private void uploadFile(byte[] bytes) {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        RetrofitInterface retrofitInterface = retrofit.create(RetrofitInterface.class);
-
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), imageBytes);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), bytes);
 
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", "image.jpg", requestFile);
-        Call<Response> call = retrofitInterface.uploadImage(body);
-        mProgressBar.setVisibility(View.VISIBLE);
-        call.enqueue(new Callback<Response>() {
-            @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-
-                mProgressBar.setVisibility(View.GONE);
-
-                if (response.isSuccessful()) {
-
-                    Response responseBody = response.body();
-                    mBtImageShow.setVisibility(View.VISIBLE);
-                    mImageUrl = URL + responseBody.getPath();
-                    Snackbar.make(findViewById(R.id.content), responseBody.getMessage(),Snackbar.LENGTH_SHORT).show();
-
-                } else {
-
-                    ResponseBody errorBody = response.errorBody();
-
-                    Gson gson = new Gson();
-
-                    try {
-
-                        Response errorResponse = gson.fromJson(errorBody.string(), Response.class);
-                        Snackbar.make(findViewById(R.id.content), errorResponse.getMessage(),Snackbar.LENGTH_SHORT).show();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Response> call, Throwable t) {
-
-                mProgressBar.setVisibility(View.GONE);
-                Log.d(TAG, "onFailure: "+t.getLocalizedMessage());
-            }
-        });
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
     }
+
+
+    private void handleResponse(Response response) {
+        mServerResponse.showSnackBarMessage("fix");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSubscriptions.unsubscribe();
+    }
+
 }

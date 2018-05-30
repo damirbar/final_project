@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:fitsSystemWindows">true</item>
@@ -9,7 +9,6 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="background">@color/chat_me_window_background</item>
-
         <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>
     </style>
 
@@ -37,6 +36,13 @@
         <item name="contentInsetEnd">0.0dip</item>
         <item name="contentInsetLeft">0.0dip</item>
         <item name="contentInsetRight">0.0dip</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/user_selected</item>
+        <item name="colorPrimaryDark">@color/user_selected</item>
+        <item name="android:windowBackground">@drawable/background_splash</item>
+        <item name="android:windowFullscreen" >true</item>
     </style>
 
 

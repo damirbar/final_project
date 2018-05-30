@@ -1,12 +1,11 @@
 package com.ariel.wizer.network;
 
-import android.net.Uri;
-
 import com.ariel.wizer.model.ChatChannel;
 import com.ariel.wizer.model.ChatMessage;
 import com.ariel.wizer.model.Course;
 import com.ariel.wizer.model.CourseFile;
 import com.ariel.wizer.model.Response;
+import com.ariel.wizer.model.Searchable;
 import com.ariel.wizer.model.Session;
 import com.ariel.wizer.model.SessionMessage;
 import com.ariel.wizer.model.User;
@@ -15,18 +14,16 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
 import rx.Observable;
-
-import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 public interface RetrofitInterface {
 
@@ -52,14 +49,15 @@ public interface RetrofitInterface {
     Observable<Response> resetPasswordFinish(@Body User user);
 
     /////Session/////
+    @FormUrlEncoded
     @POST("sessions/connect-session")
-    Observable<Response> connectSession(@Body Session session);
+    Observable<Response> connectSession(@Field("sid") String sid, @Field("name") String name);
 
-    @GET("sessions/create-session")
-    Observable<Session> createSession();
+    @POST("sessions/create-session")
+    Observable<Response> createSession(@Body Session session);
 
     @GET("sessions/change-val")
-    Observable<Response> changeVal(@Query("id") String id, @Query("val") String val);
+    Observable<Response> changeVal(@Query("id") String id, @Query("val") int val);
 
     @GET("sessions/rate-message")
     Observable<Response> rateMessage(@Query("sid") String sid, @Query("msgid") String msgid, @Query("rating") int rating);
@@ -71,7 +69,11 @@ public interface RetrofitInterface {
     Observable<Response> getStudentsRating(@Query("id") String id);
 
     @GET("sessions/get-all-messages")
-    Observable<SessionMessage []> getMessages(@Query("sid") String sid);
+    Observable<SessionMessage []> getAllMessages(@Query("sid") String sid);
+
+    @GET("sessions/get-all-user-messages")
+    Observable<SessionMessage []> getMyMessages(@Query("sid") String sid);
+
 
     @POST("sessions/messages")
     Observable<Response> publishSessionMessage(@Body SessionMessage message);
@@ -85,7 +87,7 @@ public interface RetrofitInterface {
     @Streaming
     Observable<ResponseBody> getVideo(@Query("sid") String sid);
 
-    /////Classes/////
+    /////Courses/////
 
     @GET("courses/get-all-courses")
     Observable<Course[]> getAllCourses();
@@ -93,11 +95,8 @@ public interface RetrofitInterface {
     @GET("courses/get-all-courses-by-id")
     Observable<Course[]> getAllCoursesById(@Query("id") String id);
 
-
     @GET("courses/get-all-Files")
     Observable<CourseFile[]> getAllFiles();
-
-
 
     ////////////////////////////Demo//////////////////////////////////////
     @GET("files/Node-Android-Chat.zip")
@@ -105,14 +104,14 @@ public interface RetrofitInterface {
     Call<ResponseBody> downloadFile();
 
     @Multipart
-    @POST("/images/upload")
-    Call<Response> uploadImage(@Part MultipartBody.Part image);
+    @POST("sessions/post-video")
+    Observable<Response> uploadFile(@Part MultipartBody.Part file);
     ///////////////////////////////////////////////////////////////////////
 
 
     /////search/////
     @GET("search/free-text-search")
-    Observable<User[]> getSearch(@Query("keywords") String keywords);
+    Observable<Searchable> getSearch(@Query("keyword") String keyword);
 
 
 

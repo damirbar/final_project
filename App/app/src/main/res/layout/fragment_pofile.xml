@@ -35,7 +35,7 @@ android:fillViewport="true">
             </android.support.v7.widget.Toolbar>
 
             <Button
-                android:id="@+id/btn_change_password"
+                android:id="@+id/change_pass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"

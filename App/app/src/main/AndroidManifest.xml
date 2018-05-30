@@ -7,20 +7,20 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:configChanges="keyboardHidden|orientation|screenSize"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.LoginRegister"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.SEARCH" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -31,18 +31,22 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="wizup"
+                    android:host="wizeup"
                     android:scheme="http" />
             </intent-filter>
         </activity>
+
+        <service android:name=".demo.DownloadService" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".EditProfileActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name=".chat.ChatActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name=".chat.ChatChannelsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".imageCrop.ImageCropActivity"
@@ -50,16 +54,11 @@
         <activity
             android:name=".session.PostActivity"
             android:configChanges="orientation|screenSize" />
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-
         <activity
             android:name=".session.CommentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".session.SessionTabActivity"
+            android:name=".session.SessionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".BaseActivity"
@@ -82,13 +81,18 @@
         <activity
             android:name=".demo.FileDownActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-
-        <service android:name=".demo.DownloadService" />
-
         <activity
             android:name=".demo.FileUploadActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-
+        <activity
+            android:name=".session.CreateSessionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".BioActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".SearchActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

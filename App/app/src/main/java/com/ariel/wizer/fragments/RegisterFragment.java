@@ -4,23 +4,19 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.FragmentManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.ariel.wizer.BaseActivity;
 import com.ariel.wizer.network.RetrofitRequests;
@@ -34,11 +30,10 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.ariel.wizer.utils.Constants.DISPLAY_NAME;
+import static com.ariel.wizer.utils.Constants.USER_NAME;
 import static com.ariel.wizer.utils.Constants.EMAIL;
 import static com.ariel.wizer.utils.Constants.ID;
 import static com.ariel.wizer.utils.Constants.PASS;
-import static com.ariel.wizer.utils.Constants.PROFILE_IMG;
 import static com.ariel.wizer.utils.Validation.validateEmail;
 import static com.ariel.wizer.utils.Validation.validateFields;
 
@@ -228,7 +223,7 @@ public class RegisterFragment extends Fragment {
         editor.putString(Constants.TOKEN,user.getToken());
         editor.putString(EMAIL,mEmail);
         editor.putString(PASS,mPass);
-        editor.putString(DISPLAY_NAME,user.getFname() + " " + user.getLname());
+        editor.putString(USER_NAME,user.getFname() + " " + user.getLname());
         editor.putString(ID,user.getId_num());
 //        editor.putString(PROFILE_IMG,user.getPhotos()[0]);
         editor.apply();

@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:fillViewport="true">
 
     <LinearLayout
@@ -91,7 +93,8 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginEnd="0dp"
                     android:layout_toRightOf="@+id/ti_first_name"
-                    app:hintEnabled="false">
+                    app:hintEnabled="false"
+                    android:layout_marginRight="0dp">
 
                     <EditText
                         android:id="@+id/et_last_name"

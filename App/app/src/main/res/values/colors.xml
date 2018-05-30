@@ -54,7 +54,7 @@
     <color name="black">#222222</color>
     <color name="black21">#f5f5f5</color>
     <color name="blackBackground">#000000</color>
-    <color name="blue">#ff0000ff</color>
+    <color name="blue">#0000ff</color>
     <color name="blueBackground">#ff1865a9</color>
     <color name="box_item_delete_bg">#ff3b30</color>
     <color name="box_item_dismiss_bg">#fd6654</color>
