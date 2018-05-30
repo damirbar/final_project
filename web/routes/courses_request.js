@@ -76,7 +76,7 @@ router.get('/get-all-courses-by-id', function(req,res){ // You get: Array of IDs
     const id = req.query.id;
         Course.find({students: id },function (err,courses) {
             if (err) return err;
-            res.status(200).json({"courses": courses});
+            res.status(200).json(courses);
         });
 });
 
