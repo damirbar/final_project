@@ -11,7 +11,7 @@ var UserSchema = new mongoose.Schema({
     about_me: String,
     country: String,
     address: String,
-    age: Number,
+    age: Number,//change to date
     gender: String,
     photos: Array,
     profile_img: String,
