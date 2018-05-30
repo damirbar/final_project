@@ -11,14 +11,18 @@ router.post("/connect-session", function (req, res) {
     const name = req.body.name;
 
     Session.findOne({sid: sid}, function (err, sess) {
-        if (err) throw err;
-        if (sess) {
-            let exists = false;
-            sess.students.forEach(function (user) {
-                if (user.email === decoded) {
-                    exists = true;
-                }
-            });
+        if (err) {
+            console.log('session ' + sid + 'dose not exist sorry');
+            res.status(404).json({message: 'session ' + sid + 'dose not exist sorry'});
+        }
+        else {
+            if (sess) {
+                let exists = false;
+                sess.students.forEach(function (user) {
+                    if (user.email === decoded) {
+                        exists = true;
+                    }
+                });
                 if (!exists) {
                     sess.students.push({
                         rating_val: 1,
@@ -26,7 +30,7 @@ router.post("/connect-session", function (req, res) {
                         display_name: name,
                     });
                     const newArray = sess.students;
-                    sess.update({students:newArray}).then(function (item) {
+                    sess.update({students: newArray}).then(function (item) {
                         console.log("Saved " + decoded + " to session: " + sid);
                         res.status(200).json({message: 'Welcome to Class !', session: sess});
                     }).catch(function (err) {
@@ -34,12 +38,13 @@ router.post("/connect-session", function (req, res) {
                     });
                 }
                 else {
-                    console.log('Welcome back to Class '+ decoded+'!');
+                    console.log('Welcome back to Class ' + decoded + '!');
                     res.status(200).json({message: 'Welcome back to Class !', session: sess});
                 }
-        }
-        else {
-            res.status(404).json({message: 'session' + sid + 'dose not exist sorry'});
+            }
+            else {
+                res.status(404).json({message: 'session' + sid + 'dose not exist sorry'});
+            }
         }
     });
 });
@@ -113,19 +118,19 @@ router.post("/create-session", function (req, res) {
         if (err) {
             if (err.name === 'MongoError' && err.code === 11000) {
                 // Duplicate username
-                console.log('Session ' + sess.name + " cannot be added id" + sess.sid + ' already exists!');
-                return res.status(200).json({message: 'Session ' + sess.name + " cannot be added id" + sess.sid + ' already exists!'});
+                console.log('Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!');
+                return res.status(500).json({message: 'Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!'});
             }
             if (err.name === 'ValidationError') {
                 //ValidationError
                 for (field in err.errors) {
                     console.log("you must provide: " + field + " field");
-                    return res.status(200).json({message: "you must provide: " + field + " field"});
+                    return res.status(500).json({message: "you must provide: " + field + " field"});
                 }
             }
             // Some other error
             console.log(err);
-            return res.status(200).send(err);
+            return res.status(500).send(err);
         }
         res.status(200).json({message: "successfully added session " + sess.name + " to db"});
         console.log("successfully added session " + sess.name + " to db");
@@ -156,6 +161,8 @@ router.get("/rate-message", function (req, res) {
 
             if (rating === 1) { // user likes the message
                 if (liked) { // user has already liked the message
+                    ratingUpdate.$pull = {likers: user._id};//removes the user id from the likers array
+                    ratingUpdate.$inc = {likes: -1};
                     console.log('user has already liked this message. mess id:' + mess_id);
                     return res.status(200).json({message: 'user has already liked this message. mess id:' + mess_id});
                 } else if (disliked) { // user has already disliked the message.
@@ -168,6 +175,8 @@ router.get("/rate-message", function (req, res) {
                 }
             } else {// user likes the message
                 if (disliked) {// user has already disliked the message
+                    ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
+                    ratingUpdate.$inc = {dislikes: -1};
                     console.log('user has already disliked this message. mess id:' + mess_id);
                     return res.status(200).json({message: 'user has already disliked this message. mess id:' + mess_id});
                 } else if (liked) { // user has already liked the message.

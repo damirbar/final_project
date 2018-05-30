@@ -24,12 +24,12 @@ router.post("/edit-profile",function (req, res, next) {
         if(user) {
             user.first_name = updatedUser.first_name ? updatedUser.first_name : user.first_name;
             user.last_name = updatedUser.last_name ? updatedUser.last_name : user.last_name;
-            user.display_name = updatedUser.display_name ? updatedUser.display_name : user.display_name;
-            user.country = updatedUser.country ? updatedUser.country : user.country;
-            user.address = updatedUser.address ? updatedUser.address : user.address;
+            user.display_name = updatedUser.display_name;// ? updatedUser.display_name : user.display_name;
+            user.country = updatedUser.country ;//? updatedUser.country : user.country;
+            user.address = updatedUser.address ;//? updatedUser.address : user.address;
             user.age = updatedUser.age ? updatedUser.age : user.age;
             user.gender = updatedUser.gender ? updatedUser.gender : user.gender;
-            user.about_me = updatedUser.about_me ? updatedUser.about_me : user.about_me;
+            user.about_me = updatedUser.about_me ;//? updatedUser.about_me : user.about_me;
 
             user.last_modified = Date.now();
             user.save();
