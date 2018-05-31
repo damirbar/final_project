@@ -139,7 +139,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
     private void handleResponseProfile(User user) {
         mDrawerHeader.getNameTxt().setText(user.getFname() + " " + user.getLname());
-        String pic = user.getPhotos()[0];
+        String pic = user.getProfile_img();
         if(pic!=null&&!(pic.isEmpty()))
             Picasso.get().load(pic).into(mDrawerHeader.getProfileImage());
 

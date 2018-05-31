@@ -71,20 +71,6 @@
                     android:visibility="visible"
                     app:backgroundTint="@android:color/holo_red_dark" />
 
-                <TextView
-                    android:id="@+id/tv_no_results"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="248dp"
-                    android:foregroundGravity="center"
-                    android:gravity="center"
-                    android:text="No Results"
-                    android:textSize="16sp"
-                    android:visibility="gone" />
-
                 <android.support.v4.widget.SwipeRefreshLayout
                     android:id="@+id/activity_main_swipe_refresh_layout"
                     android:layout_width="match_parent"
@@ -105,6 +91,20 @@
                         android:scrollbarThumbVertical="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" />
 
                 </android.support.v4.widget.SwipeRefreshLayout>
+
+                <TextView
+                    android:id="@+id/tv_no_results"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="248dp"
+                    android:foregroundGravity="center"
+                    android:gravity="center"
+                    android:text="No Results"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
 
 
             </RelativeLayout>
