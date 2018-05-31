@@ -1,21 +1,13 @@
 package com.ariel.wizer;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ariel.wizer.network.ServerResponse;
-import com.ariel.wizer.utils.Constants;
 import com.mindorks.placeholderview.annotations.Layout;
 import com.mindorks.placeholderview.annotations.NonReusable;
 import com.mindorks.placeholderview.annotations.Resolve;
 import com.mindorks.placeholderview.annotations.View;
 import com.squareup.picasso.Picasso;
-
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 @NonReusable
 @Layout(R.layout.drawer_header)

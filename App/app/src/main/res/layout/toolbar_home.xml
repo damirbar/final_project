@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="125dp"
     android:background="?attr/colorPrimaryDark"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     app:contentInsetLeft="0dp"
     app:contentInsetStart="0dp"
-    app:contentInsetStartWithNavigation="0dp"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
+    app:contentInsetStartWithNavigation="0dp">
 
     <LinearLayout
         android:id="@+id/barLayout"
@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginEnd="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif"
@@ -28,8 +29,7 @@
             android:text="wizeUp"
             android:textColor="@color/white"
             android:textSize="30sp"
-            android:textStyle="bold"
-            android:layout_marginEnd="15dp" />
+            android:textStyle="bold" />
 
         <android.support.v7.widget.SearchView
             android:id="@+id/searchView"
@@ -39,10 +39,10 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="@dimen/top_margin30"
             android:background="@drawable/edittext_search"
-            android:inputType="none"
-            app:queryHint="Search.."
             android:focusable="false"
-            app:iconifiedByDefault="true"/>
+            android:inputType="none"
+            app:iconifiedByDefault="true"
+            app:queryHint="Search.." />
 
     </LinearLayout>
 

@@ -60,7 +60,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         setContentView(R.layout.activity_base);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
-        mServerResponse = new ServerResponse(findViewById(R.id.frame));
+        mServerResponse = new ServerResponse(findViewById(R.id.drawerLayout));
         initSharedPreferences();
         initViews();
         setupDrawer();
@@ -110,7 +110,8 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 //                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_NOTIFICATIONS))
                 .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_TERMS))
 //                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_SETTINGS))
-                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_LOGOUT));
+                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_LOGOUT))
+                .addView(new DrawerEnd());
 
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.open_drawer, R.string.close_drawer){
             @Override
@@ -138,7 +139,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
     private void handleResponseProfile(User user) {
         mDrawerHeader.getNameTxt().setText(user.getFname() + " " + user.getLname());
-        String pic = user.getProfile_img();
+        String pic = user.getPhotos()[0];
         if(pic!=null&&!(pic.isEmpty()))
             Picasso.get().load(pic).into(mDrawerHeader.getProfileImage());
 
