@@ -380,17 +380,25 @@ router.post("/reply", function (req, res) {
             date: Date.now()
         }
     );
-    msg.save(function (err) {
 
-        Session_Message.update({sid: msg.mid}, {$push: {replies: msg}}, function (err) {
-            console.log('pushing message to messages');
+        // Session_Message.update({_id: mess_id}, ratingUpdate, function (err) {
+        //     console.log('updating session message');
+        //     if (err) {
+        //         console.log(err);
+        //         return err;
+        //     }
+        // });
+
+        Session_Message.update({_id: req.body.mid}, {$push: {replies: msg}}, function (err, msg) {
+            // console.log('pushing reply to messages');
             if (err) {
                 return console.log(err);
             }
+            console.log('success pushing reply to messages');
+            res.status(200).json({message: "successfully added reply " + msg.body + " to db"});
+            console.log("successfully added message " + msg.body + " to db");
         });
-        res.status(200).json({message: "successfully added reply " + msg.body + " to db"});
-        console.log("successfully added message " + msg.body + " to db");
-    });
+
 });
 
 router.get("/get-message", function (req, res) {

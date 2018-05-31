@@ -8,10 +8,13 @@ wizerApp.controller('sessionController',
         $scope.isConnectedToSession = false;
         $scope.session = null;
         $scope.message = {type: "question", body: "", replyTo: ""};
-        $scope.reply   = {type: "question", body: "", replyTo: "", msgID: ""};
+
         $scope.sessionMessages = [];
         $scope.msgLikes = [];
         $scope.msgHates = [];
+
+        $scope.reply   = {type: "question", body: "", replyTo: "", msgID: ""};
+        $scope.messageToReply = {};
 
         $scope.firstConnectionTry = true;
 
@@ -224,8 +227,19 @@ wizerApp.controller('sessionController',
 
 
 
-        $scope.setMsgIdToReply = function(id) {
+        $scope.setMsgIdToReplyAndGetMessage = function(id) {
             $scope.reply.msgID = id;
+
+            SessionService.getMessage(id)
+                .then(function (data) {
+                    console.log("Got message: " + JSON.stringify(data));
+                    $scope.messageToReply = data;
+
+                })
+                .catch(function (err) {
+                    console.log(err);
+                });
+
         };
 
 
