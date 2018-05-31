@@ -59,7 +59,7 @@
 
         <div class="row">
 
-            <div class="col-6 session-vid" ng-show="isConnectedToSession && session.videoID != ''">
+            <div class="col-6 session-vid" ng-if="isConnectedToSession && session.videoID != ''">
                 <video width="640" height="480"
                        poster="{{session.picID}}" controls>
                     <source ng-src="{{session.videoID}}"
