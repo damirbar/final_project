@@ -16,17 +16,21 @@ public class CourseTabActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ImageButton buttonBack;
+    private String cid;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_tab);
+        if (!getData()) {
+            finish();
+        }
 
         initViews();
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final CoursePagerAdapter adapter = new CoursePagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),"1234");
+        final CoursePagerAdapter adapter = new CoursePagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),cid);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -58,6 +62,20 @@ public class CourseTabActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Files"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
+
+    private boolean getData() {
+        if (getIntent().getExtras() != null) {
+            String _cid = getIntent().getExtras().getString("cid");
+            if(_cid != null) {
+                cid = _cid;
+                return true;
+            } else
+                return false;
+        }
+        else
+            return false;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

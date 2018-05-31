@@ -38,11 +38,13 @@ public class CourseFilesFragment extends Fragment {
     private FloatingActionButton mFBAddFile;
 
     private CourseFilesAdapter mAdapter;
+    private String cid;
 
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_files, container, false);
+        getData();
         initViews(view);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
@@ -73,11 +75,19 @@ public class CourseFilesFragment extends Fragment {
         mFBAddFile.setOnClickListener(view -> addFile());
     }
 
+    private void getData() {
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            cid = bundle.getString("cid");
+        }
+    }
+
+
     private void addFile(){
     }
 
     private void pullFiles(){
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllFiles()
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllFilesById(cid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull,i -> mServerResponse.handleError(i)));

@@ -95,8 +95,8 @@ public interface RetrofitInterface {
     @GET("courses/get-all-courses-by-id")
     Observable<Course[]> getAllCoursesById(@Query("id") String id);
 
-    @GET("courses/get-all-Files")
-    Observable<CourseFile[]> getAllFiles();
+    @GET("courses/get-all-files-by-id")
+    Observable<CourseFile[]> getAllFilesById(@Query("id") String id);
 
     ////////////////////////////Demo//////////////////////////////////////
     @GET("files/Node-Android-Chat.zip")

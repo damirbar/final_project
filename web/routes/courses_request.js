@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Course = require("../schemas/course");
 var File = require("../schemas/file");
+var SystemFile = require("../schemas/file");
 
 router.post("/add-course", function (req, res) {
     const course = new Course(req.body);
@@ -165,6 +166,15 @@ router.get('/file-system/download-file',function(req,res){
                     res.status(200).send(file.url);
         });
 });
+
+router.get('/get-all-files-by-id', function(req,res){
+    const id = req.query.id;
+    SystemFile.find({course_id: id },function (err,files) {
+        if (err) return err;
+        res.status(200).json(files);
+    });
+});
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

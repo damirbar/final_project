@@ -10,12 +10,12 @@ import com.ariel.wizer.session.SessionInfoFragment;
 
 public class CoursePagerAdapter extends FragmentStatePagerAdapter {
     private int mNumOfTabs;
-    private String sid;
+    private String cid;
 
-    public CoursePagerAdapter(FragmentManager fm, int NumOfTabs, String _sid) {
+    public CoursePagerAdapter(FragmentManager fm, int NumOfTabs, String _cid) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
-        this.sid = _sid;
+        this.cid = _cid;
     }
 
     @Override
@@ -24,12 +24,12 @@ public class CoursePagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 CourseInfoFragment tab1 = new CourseInfoFragment();
-                bundle.putString("sid", sid);
+                bundle.putString("cid", cid);
                 tab1.setArguments(bundle);
                 return tab1;
             case 1:
                 CourseFilesFragment tab2 = new CourseFilesFragment();
-                bundle.putString("sid", sid);
+                bundle.putString("cid", cid);
                 tab2.setArguments(bundle);
                 return tab2;
             default:

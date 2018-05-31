@@ -34,8 +34,7 @@ public class MyCourseActivity extends AppCompatActivity {
     private TextView mTvNoResults;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoursesAdapter mAdapter;
-    private  String mId;
-
+    private String mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,10 @@ public class MyCourseActivity extends AppCompatActivity {
         });
 
         coursesList.setOnItemClickListener((parent, view1, position, id) -> {
+            Course  C = mAdapter.getItem(position);
+
             Intent intent = new Intent(this,CourseTabActivity.class);
+            intent.putExtra("cid", String.valueOf(coursesList.getId()));
             startActivity(intent);
         });
 
