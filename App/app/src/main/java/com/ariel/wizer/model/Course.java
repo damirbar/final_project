@@ -2,12 +2,21 @@ package com.ariel.wizer.model;
 
 public class Course {
 
+    private String _id;
     private String name;
     private String department_id;
     private String teacher_id;
     private String location;
     private int points;
     private String creation_date;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public String getName() {
         return name;

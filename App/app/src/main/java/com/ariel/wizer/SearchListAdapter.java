@@ -84,7 +84,7 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
             TextView mName = (TextView) listItem.findViewById(R.id.file_name);
             TextView mDate = (TextView) listItem.findViewById(R.id.creation_date);
 
-            mName.setText(file.getUrl());
+            mName.setText(file.getName());
 //            mDate.setText(file.getCreation_date());
         }
 
