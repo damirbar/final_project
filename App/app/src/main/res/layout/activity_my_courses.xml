@@ -43,7 +43,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tool_bar"
-        android:background="#fdfdfe"
         android:fitsSystemWindows="true">
 
         <LinearLayout
@@ -84,8 +83,8 @@
                         android:layout_alignParentStart="true"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:background="#fdfdfe"
-                        android:divider="#fdfdfe"
+                        android:background="@color/def_background"
+                        android:divider="@color/def_background"
                         android:listSelector="@android:color/transparent"
                         android:scrollbarSize="2dp"
                         android:scrollbarThumbVertical="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" />

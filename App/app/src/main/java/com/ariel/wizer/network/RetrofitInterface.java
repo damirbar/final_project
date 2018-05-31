@@ -39,6 +39,11 @@ public interface RetrofitInterface {
     @POST("students/edit-profile")
     Observable<Response> updateProfile(@Body User user);
 
+    @Multipart
+    @POST("students/post-profile-image")
+    Observable<Response> uploadProfileImage(@Part MultipartBody.Part file, @Query("sid") String sid);
+
+
     @PUT("auth/change-password")
     Observable<Response> changePassword(@Body User user);
 

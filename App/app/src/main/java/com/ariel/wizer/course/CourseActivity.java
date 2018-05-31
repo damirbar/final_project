@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 
 import com.ariel.wizer.R;
 
-public class CourseTabActivity extends AppCompatActivity {
+public class CourseActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -22,7 +22,7 @@ public class CourseTabActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_tab);
+        setContentView(R.layout.activity_course);
         if (!getData()) {
             finish();
         }

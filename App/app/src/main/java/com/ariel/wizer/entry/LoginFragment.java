@@ -1,4 +1,4 @@
-package com.ariel.wizer.fragments;
+package com.ariel.wizer.entry;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -14,15 +14,14 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.ariel.wizer.BaseActivity;
+import com.ariel.wizer.base.BaseActivity;
 import com.ariel.wizer.R;
-import com.ariel.wizer.demo.FileUploadActivity;
+import com.ariel.wizer.dialogs.ResetPasswordDialog;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;

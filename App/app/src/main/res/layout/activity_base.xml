@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fdfdfe"
+    android:background="@color/def_background"
     android:focusable="true"
     android:focusableInTouchMode="true">
 
@@ -11,7 +11,7 @@
         android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fdfdfe">
+        android:background="@color/def_background">
 
         <LinearLayout
             android:id="@+id/layout"
@@ -24,6 +24,18 @@
                 android:id="@+id/toolbar"
                 layout="@layout/toolbar_home" />
 
+            <ListView
+                android:id="@+id/search_List"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/def_background"
+                android:divider="@color/def_background"
+                android:listSelector="@android:color/transparent"
+                android:scrollbarSize="2dp"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/tv_no_results"
                 android:layout_width="match_parent"
@@ -35,18 +47,6 @@
                 android:textSize="16sp"
                 android:visibility="gone" />
 
-            <ListView
-                android:id="@+id/search_List"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@color/documets_divider"
-                android:divider="@color/documets_divider"
-                android:listSelector="@android:color/transparent"
-                android:scrollbarSize="2dp"
-                android:visibility="gone" />
-
         </LinearLayout>
 
         <FrameLayout
@@ -54,13 +54,13 @@
             android:layout_width="250dp"
             android:layout_height="match_parent"
             android:layout_gravity="left"
-            android:background="#fdfdfe">
+            android:background="@color/def_background">
 
             <com.mindorks.placeholderview.PlaceHolderView
                 android:id="@+id/drawerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/chat_me_window_background"
+                android:background="@color/def_background"
                 android:scrollbars="vertical" />
         </FrameLayout>
 

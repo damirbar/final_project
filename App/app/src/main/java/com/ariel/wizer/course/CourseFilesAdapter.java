@@ -37,13 +37,13 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
 
         if (convertView == null) {
 
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.feed_course_file_item, parent, false);
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_file, parent, false);
 
         }
         TextView mFileName = (TextView) listItem.findViewById(R.id.file_name);
         TextView mFileDatee = (TextView) listItem.findViewById(R.id.creation_date);
 
-        mFileName.setText(currentFile.getUrl());///change to file name
+        mFileName.setText(currentFile.getName());
         mFileDatee.setText(currentFile.getCreation_date());
 
 

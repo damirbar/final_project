@@ -2,10 +2,12 @@ package com.ariel.wizer.course;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,6 +37,7 @@ public class MyCourseActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoursesAdapter mAdapter;
     private String mId;
+    private FloatingActionButton mFB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +65,32 @@ public class MyCourseActivity extends AppCompatActivity {
 
         coursesList.setOnItemClickListener((parent, view1, position, id) -> {
             Course  C = mAdapter.getItem(position);
-
-            Intent intent = new Intent(this,CourseTabActivity.class);
-            intent.putExtra("cid", String.valueOf(coursesList.getId()));
+            Intent intent = new Intent(this,CourseActivity.class);
+            intent.putExtra("cid", String.valueOf(C.get_id()));
             startActivity(intent);
+        });
+
+
+        coursesList.setOnScrollListener(new AbsListView.OnScrollListener(){
+            private int mLastFirstVisibleItem;
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+
+                if(mLastFirstVisibleItem<firstVisibleItem)
+                {
+                    mFB.hide();
+                }
+                if(mLastFirstVisibleItem>firstVisibleItem)
+                {
+                    mFB.show();
+                }
+                mLastFirstVisibleItem=firstVisibleItem;
+            }
         });
 
     }
@@ -80,7 +105,7 @@ public class MyCourseActivity extends AppCompatActivity {
         mTvNoResults = (TextView) findViewById(R.id.tv_no_results);
         coursesList = (ListView) findViewById(R.id.myClassesList);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
-
+        mFB = (FloatingActionButton) findViewById(R.id.fb_add_corse);
         buttonBack.setOnClickListener(view -> finish());
     }
 

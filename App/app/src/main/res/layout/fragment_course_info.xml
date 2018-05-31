@@ -4,7 +4,7 @@
     android:id="@+id/activity_session_feed"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fdfdfe"
+    android:background="@color/def_background"
     android:fitsSystemWindows="true">
 
     <ScrollView
@@ -14,7 +14,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#fdfdfe"
             android:orientation="vertical">
 
             <LinearLayout
@@ -23,7 +22,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
-                android:background="#fdfdfe"
                 android:divider="@drawable/divider"
                 android:orientation="vertical"
                 android:showDividers="none|end">
@@ -57,7 +55,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#fdfdfe"
                 android:divider="@drawable/divider"
                 android:orientation="vertical"
                 android:showDividers="none|end">
@@ -91,7 +88,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#fdfdfe"
                 android:divider="@drawable/divider"
                 android:orientation="vertical"
                 android:showDividers="none|end">
@@ -125,7 +121,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#fdfdfe"
                 android:divider="@drawable/divider"
                 android:orientation="vertical"
                 android:showDividers="none|end">

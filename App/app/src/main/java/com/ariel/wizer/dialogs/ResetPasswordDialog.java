@@ -1,4 +1,4 @@
-package com.ariel.wizer.fragments;
+package com.ariel.wizer.dialogs;
 
 
 import android.app.Dialog;
@@ -18,9 +18,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.ariel.wizer.entry.EntryActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ariel.wizer.MainActivity;
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
@@ -113,7 +113,7 @@ public class ResetPasswordDialog extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mListner = (MainActivity)context;
+        mListner = (EntryActivity)context;
     }
 
     private void setEmptyFields() {

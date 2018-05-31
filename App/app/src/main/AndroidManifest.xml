@@ -43,10 +43,10 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".entry.EntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".profile.EditProfileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".imageCrop.ImageCropActivity"
@@ -61,7 +61,7 @@
             android:name=".session.SessionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".BaseActivity"
+            android:name=".base.BaseActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".session.ConnectSessionActivity"
@@ -70,10 +70,10 @@
             android:name=".TermsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".profile.ProfileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".course.CourseTabActivity"
+            android:name=".course.CourseActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".course.MyCourseActivity"
@@ -88,10 +88,10 @@
             android:name=".session.CreateSessionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".BioActivity"
+            android:name=".profile.BioActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".search.SearchActivity"
             android:configChanges="orientation|screenSize" />
     </application>
 

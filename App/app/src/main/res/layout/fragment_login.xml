@@ -5,20 +5,20 @@
     android:id="@+id/mainConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/chat_me_window_background"
+    android:background="@color/def_background"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.ariel.wizer.MainActivity">
+    tools:context="com.ariel.wizer.entry.EntryActivity">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/chat_me_window_background">
+        android:background="@color/def_background">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/chat_me_window_background"
+            android:background="@color/def_background"
             android:orientation="vertical">
 
             <ImageView

@@ -1,4 +1,4 @@
-package com.ariel.wizer;
+package com.ariel.wizer.profile;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,8 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ariel.wizer.course.MyCourseActivity;
-import com.ariel.wizer.fragments.MyDateDialog;
+import com.ariel.wizer.R;
+import com.ariel.wizer.dialogs.MyDateDialog;
 import com.ariel.wizer.imageCrop.ImageCropActivity;
 import com.ariel.wizer.imageCrop.IntentExtras;
 import com.ariel.wizer.imageCrop.PicModeSelectDialogFragment;
@@ -26,7 +26,6 @@ import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
-import com.ariel.wizer.session.ConnectSessionActivity;
 import com.ariel.wizer.utils.Constants;
 import com.squareup.picasso.Picasso;
 

@@ -1,17 +1,16 @@
-package com.ariel.wizer;
+package com.ariel.wizer.entry;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.WindowManager;
 
-import com.ariel.wizer.fragments.LoginFragment;
-import com.ariel.wizer.fragments.ResetPasswordDialog;
+import com.ariel.wizer.R;
+import com.ariel.wizer.dialogs.ResetPasswordDialog;
 import com.ariel.wizer.network.ServerResponse;
 
-public class MainActivity extends AppCompatActivity implements ResetPasswordDialog.Listener {
+public class EntryActivity extends AppCompatActivity implements ResetPasswordDialog.Listener {
 
-    public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String TAG = EntryActivity.class.getSimpleName();
 
     private LoginFragment mLoginFragment;
     private ResetPasswordDialog mResetPasswordDialog;

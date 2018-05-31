@@ -12,8 +12,8 @@
 //import android.widget.Button;
 //import android.widget.TextView;
 //
-//import com.ariel.wizer.EditProfileActivity;
-//import com.ariel.wizer.MainActivity;
+//import com.ariel.wizer.profile.EditProfileActivity;
+//import com.ariel.wizer.login_register.EntryActivity;
 //import com.ariel.wizer.R;
 //import com.ariel.wizer.chat.ChatChannelsActivity;
 //import com.ariel.wizer.model.User;
@@ -91,7 +91,7 @@
 //        editor.putString(Constants.TOKEN,"");
 //        editor.apply();
 //
-//        Intent intent = new Intent(getActivity(), MainActivity.class);
+//        Intent intent = new Intent(getActivity(), EntryActivity.class);
 //        startActivity(intent);
 //
 //        getActivity().finish();

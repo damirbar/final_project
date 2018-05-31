@@ -1,19 +1,19 @@
-package com.ariel.wizer;
+package com.ariel.wizer.search;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.ariel.wizer.R;
 import com.ariel.wizer.model.Searchable;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
-import com.ariel.wizer.session.CommentActivity;
+import com.ariel.wizer.profile.ProfileActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;

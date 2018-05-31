@@ -6,9 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -36,7 +38,6 @@ public class CourseFilesFragment extends Fragment {
     private TextView mTvNoResults;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private FloatingActionButton mFBAddFile;
-
     private CourseFilesAdapter mAdapter;
     private String cid;
 
@@ -51,16 +52,34 @@ public class CourseFilesFragment extends Fragment {
         mServerResponse = new ServerResponse(view.findViewById(R.id.activity_files_feed));
         pullFiles();
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(new Runnable() {
             @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        pullFiles();
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 1000);
+            public void run() {
+                pullFiles();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 1000));
+
+        filesList.setOnScrollListener(new AbsListView.OnScrollListener(){
+            private int mLastFirstVisibleItem;
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+
+                if(mLastFirstVisibleItem<firstVisibleItem)
+                {
+                    mFBAddFile.hide();
+                }
+                if(mLastFirstVisibleItem>firstVisibleItem)
+                {
+                    mFBAddFile.show();
+                }
+                mLastFirstVisibleItem=firstVisibleItem;
+
             }
         });
 

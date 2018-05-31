@@ -1,4 +1,4 @@
-package com.ariel.wizer;
+package com.ariel.wizer.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ariel.wizer.fragments.ChangePasswordDialog;
+import com.ariel.wizer.R;
+import com.ariel.wizer.dialogs.ChangePasswordDialog;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;

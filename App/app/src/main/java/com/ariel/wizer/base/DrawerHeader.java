@@ -1,8 +1,9 @@
-package com.ariel.wizer;
+package com.ariel.wizer.base;
 
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ariel.wizer.R;
 import com.mindorks.placeholderview.annotations.Layout;
 import com.mindorks.placeholderview.annotations.NonReusable;
 import com.mindorks.placeholderview.annotations.Resolve;

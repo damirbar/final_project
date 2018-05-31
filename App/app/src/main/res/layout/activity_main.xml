@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/chat_me_window_background"
-    tools:context="com.ariel.wizer.MainActivity">
+    tools:context="com.ariel.wizer.entry.EntryActivity">
 
     <FrameLayout
         android:id="@+id/fragmentFrame"

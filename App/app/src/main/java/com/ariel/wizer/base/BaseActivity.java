@@ -1,4 +1,4 @@
-package com.ariel.wizer;
+package com.ariel.wizer.base;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,10 +15,16 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.ariel.wizer.entry.EntryActivity;
+import com.ariel.wizer.R;
+import com.ariel.wizer.TermsActivity;
 import com.ariel.wizer.course.MyCourseActivity;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
+import com.ariel.wizer.profile.ProfileActivity;
+import com.ariel.wizer.search.SearchActivity;
+import com.ariel.wizer.search.SearchListAdapter;
 import com.ariel.wizer.session.ConnectSessionActivity;
 import com.ariel.wizer.utils.Constants;
 import com.mindorks.placeholderview.PlaceHolderView;
@@ -208,7 +214,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         editor.putString(Constants.PROFILE_IMG,"");
 
         editor.apply();
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, EntryActivity.class);
         this.startActivity(intent);
         this.finish();
     }

@@ -1,4 +1,4 @@
-package com.ariel.wizer;
+package com.ariel.wizer.search;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ariel.wizer.R;
 import com.ariel.wizer.model.CourseFile;
 import com.ariel.wizer.model.Session;
 import com.ariel.wizer.model.User;

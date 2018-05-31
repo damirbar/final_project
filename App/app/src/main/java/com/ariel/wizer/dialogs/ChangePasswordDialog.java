@@ -1,4 +1,4 @@
-package com.ariel.wizer.fragments;
+package com.ariel.wizer.dialogs;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

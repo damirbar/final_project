@@ -1,4 +1,4 @@
-package com.ariel.wizer.fragments;
+package com.ariel.wizer.entry;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ariel.wizer.BaseActivity;
+import com.ariel.wizer.base.BaseActivity;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.utils.Constants;

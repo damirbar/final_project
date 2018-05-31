@@ -1,16 +1,11 @@
-package com.ariel.wizer;
+package com.ariel.wizer.base;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ariel.wizer.course.MyCourseActivity;
-import com.ariel.wizer.network.RetrofitRequests;
-import com.ariel.wizer.session.ConnectSessionActivity;
-import com.ariel.wizer.utils.Constants;
+import com.ariel.wizer.R;
 import com.mindorks.placeholderview.annotations.Click;
 import com.mindorks.placeholderview.annotations.Layout;
 import com.mindorks.placeholderview.annotations.Resolve;

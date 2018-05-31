@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ultra_dark"
-    tools:context=".MainActivity">
+    tools:context=".entry.EntryActivity">
 
     <com.albinmathew.photocrop.photoview.PhotoView
         android:id="@+id/iv_photo"

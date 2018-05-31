@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="178dp"
-    android:background="@color/chat_me_window_background"
+    android:background="@color/def_background"
     android:orientation="vertical"
     android:paddingLeft="30dp"
     tools:targetApi="lollipop">

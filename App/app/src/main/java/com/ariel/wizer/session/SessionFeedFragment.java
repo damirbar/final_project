@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -87,6 +88,27 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
                 intent.putExtra("sid", sid);
                 intent.putExtra("msid", mAdapter.getMessagesList().get(position).get_id());
                 startActivity(intent);
+            }
+        });
+
+        messagesList.setOnScrollListener(new AbsListView.OnScrollListener(){
+            private int mLastFirstVisibleItem;
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                if(mLastFirstVisibleItem<firstVisibleItem)
+                {
+                    mFBPost.hide();
+                }
+                if(mLastFirstVisibleItem>firstVisibleItem)
+                {
+                    mFBPost.show();
+                }
+                mLastFirstVisibleItem=firstVisibleItem;
             }
         });
 
