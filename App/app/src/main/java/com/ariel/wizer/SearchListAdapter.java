@@ -61,7 +61,7 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
                 mName.setText(user.getFname()+" " + user.getLname());
             }
 
-            String pic = user.getProfile_img();
+            String pic = user.getPhotos()[0];
             if(pic!=null&&!(pic.isEmpty()))
                 Picasso.get().load(pic).into(profileImage);
 

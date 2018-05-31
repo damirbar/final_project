@@ -228,7 +228,7 @@ public class LoginFragment extends Fragment{
         editor.putString(PASS,mPass);
         editor.putString(USER_NAME,user.getFname() + " " + user.getLname());
         editor.putString(ID,user.getId_num());
-        editor.putString(PROFILE_IMG,user.getProfile_img());
+        editor.putString(PROFILE_IMG,user.getPhotos()[0]);
         editor.apply();
 
         Intent intent = new Intent(getActivity(), BaseActivity.class);

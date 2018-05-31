@@ -163,7 +163,8 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Rating</th>
+                    <th>Likes</th>
+                    <th>Dislikes</th>
                     <th>Question / Answer</th>
                     <th>Message</th>
                     <th>Action</th>
@@ -171,7 +172,8 @@
                 </thead>
                 <tbody class="messages-table-body">
                 <tr ng-repeat="msg in sessionMessages | reverse">
-                    <td scope="row">{{msg.rating}}</td>
+                    <td scope="row">{{msg.likes}}</td>
+                    <td scope="row">{{msg.dislikes}}</td>
                     <td>{{msg.type.charAt(0).toUpperCase() + msg.type.slice(1)}}</td>
                     <td>
                         <div class="col-8 message-content-quote" ng-if="msg.body[0].length == 0"></div>
@@ -183,18 +185,29 @@
                     <td class="">
                         <div class="message-content">
 
-                            <button type="button" class="btn btn-outline-success"
+                            <button type="button"
+                                    ng-class="msgLikes[msgLikes.length - $index - 1] ? 'active btn btn-outline-success' : 'btn btn-outline-success'"
+
                                     ng-click="rateMessage(msg.sid, msg._id, 1)">Like
                             </button>
-                            <button type="button" class="btn btn-outline-danger"
+                            <button type="button"
+                                    ng-class="msgHates[msgLikes.length - $index - 1] ? 'active btn btn-outline-danger' : 'btn btn-outline-danger'"
                                     ng-click="rateMessage(msg.sid, msg._id, 0)">Hate
                             </button>
                             <!--<button type="button" class="btn btn-outline-dark float-right" ng-click="assignReply(msg)">-->
-                            <button type="button" class="btn btn-outline-dark"
-                                    ng-click="message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[1]">
 
-                                Reply
+                            <button type="button" class="reply btn btn-outline-dark" data-toggle="modal"
+                                    data-target="#replyModal"
+                                    style="cursor: pointer" ng-click="setMsgIdToReplyAndGetMessage(msg._id)">
+                                Replies
+                                <div class="underlined"></div>
                             </button>
+
+                            <!--<button type="button" class="btn btn-outline-dark"-->
+                            <!--ng-click="message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[1]">-->
+
+                            <!--Reply-->
+                            <!--</button>-->
                         </div>
                     </td>
                 </tr>
@@ -210,3 +223,106 @@
 
 
 </div>
+
+
+<div id="replyModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-width">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="container modal-container">
+
+
+                <form>
+                    <div class="form-group row">
+                        <label for="inputReply" class="col-sm-1 col-form-label">Enter reply</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-model="reply.body" id="inputReply"
+                                   placeholder="">
+                        </div>
+
+                        <div class="form-group col-sm-3">
+
+                            <div class="dropdown btn-group col-sm-6">
+                                <button class="btn btn-secondary dropdown-toggle msg-type-dropdown-header"
+                                        type="button" id="dropdownRply" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    Type
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <div class="dropdown-item" ng-click="typeChoose('question')">Question</div>
+                                    <div class="dropdown-item" ng-click="typeChoose('answer')">Answer</div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <button type="submit" class="btn btn-primary" ng-click="sendReply()">Send</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+
+                <div class="replies" ng-if="repliesWindowOpen">
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Likes</th>
+                            <th>Dislikes</th>
+                            <th>Question / Answer</th>
+                            <th>Message</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody class="messages-table-body">
+
+                        <tr ng-repeat="rpl in messageToReply.replies | reverse">
+
+                            <td scope="row">{{rpl.likes}}</td>
+                            <td scope="row">{{rpl.dislikes}}</td>
+                            <td>{{rpl.type.charAt(0).toUpperCase() + rpl.type.slice(1)}}</td>
+                            <td>
+                                <div class="col-8 message-content-quote" ng-if="rpl.body[0].length == 0"></div>
+                                <div class="col-8 message-content-quote" ng-if="rpl.body[0].length != 0">
+                                    {{rpl.body[0]}}
+                                </div>
+                                <div class="col-4 message-fix-place"></div>
+                                <div class="message-text col-8">{{rpl.body[1]}}</div>
+                                <div class="col-4 message-fix-place"></div>
+                            </td>
+                            <td class="">
+                                <div class="message-content">
+
+                                    <button type="button"
+                                            ng-class="msgLikes[msgLikes.length - $index - 1] ? 'active btn btn-outline-success' : 'btn btn-outline-success'"
+
+                                            ng-click="rateMessage(rpl.sid, rpl._id, 1)">Like
+                                    </button>
+                                    <button type="button"
+                                            ng-class="msgHates[msgLikes.length - $index - 1] ? 'active btn btn-outline-danger' : 'btn btn-outline-danger'"
+                                            ng-click="rateMessage(rpl.sid, rpl._id, 0)">Hate
+                                    </button>
+
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="repliesWindowOpen=false">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

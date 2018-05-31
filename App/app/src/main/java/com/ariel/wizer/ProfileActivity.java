@@ -107,7 +107,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
         mCountry.setText(user.getCountry());
         mAboutMe.setText(user.getAbout_me());
-        String pic = user.getProfile_img();
+        String pic = user.getPhotos()[0];
         if(pic!=null&&!(pic.isEmpty()))
             Picasso.get().load(pic).into(image);
     }

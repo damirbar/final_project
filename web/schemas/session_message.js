@@ -11,6 +11,7 @@ var SessionMessageSchema = new mongoose.Schema({
     body: Array,
     name: String,
     date:Date,
-});
+    replies: Array
+}, {usePushEach: true});
 
 module.exports = mongoose.model('Session_Message', SessionMessageSchema);
