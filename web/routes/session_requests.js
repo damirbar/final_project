@@ -309,7 +309,7 @@ const cloudinary = require('cloudinary');
 const fs = require('fs');
 const config = require('../config/config');
 cloudinary.config({
-    cloud_name:config.cloudniary.cloud_name,
+    cloud_name: config.cloudniary.cloud_name,
     api_key: config.cloudniary.api_key,
     api_secret: config.cloudniary.api_secret
 });
@@ -367,5 +367,42 @@ router.post('/post-video', type, function (req, res) {
         }
     }
 });
+
+
+router.post("/reply", function (req, res) {
+    const decoded = req.verifiedEmail;
+    const msg = new Session_Message({
+            mid: req.body.mid,
+            sid: req.body.sid,
+            type: req.body.type,
+            body: req.body.body,
+            email: decoded,
+            date: Date.now()
+        }
+    );
+    msg.save(function (err) {
+
+        Session_Message.update({sid: msg.mid}, {$push: {replies: msg}}, function (err) {
+            console.log('pushing message to messages');
+            if (err) {
+                return console.log(err);
+            }
+        });
+        res.status(200).json({message: "successfully added reply " + msg.body + " to db"});
+        console.log("successfully added message " + msg.body + " to db");
+    });
+});
+
+router.get("/get-message", function (req, res) {
+
+    var msg_id = req.query.mid;
+
+    Session_Message.findOne({_id: msg_id}, function (err, msg) {
+        if (err) return next(err);
+
+        res.status(200).json(msg);
+    });
+});
+
 
 module.exports = router;
