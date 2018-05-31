@@ -39,8 +39,28 @@ wizerApp.service('SessionService', function ($http) {
     };
 
 
+    this.sendReply = function(sessionId, type, message, message_id) {
+        return $http.post('/sessions/reply', {sid: sessionId, type: type, body: message, mid: message_id})
+            .then(function (data) {
+                return data.data;
+            }, function () {
+                console.log("Error sending message to session with ID = " + sessionId);
+            });
+    };
+
+
     this.getMessages = function(sessionId) {
         return $http.get('/sessions/get-all-messages?sid=' + sessionId)
+            .then(function (data) {
+                return data.data;
+            }, function () {
+                console.log("Error getting messages from session with ID = " + sessionId);
+            });
+    };
+
+
+    this.getMessage = function(msg_id) {
+        return $http.get('/sessions/get-message?mid=' + msg_id)
             .then(function (data) {
                 return data.data;
             }, function () {

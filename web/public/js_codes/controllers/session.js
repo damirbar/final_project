@@ -8,7 +8,14 @@ wizerApp.controller('sessionController',
         $scope.isConnectedToSession = false;
         $scope.session = null;
         $scope.message = {type: "question", body: "", replyTo: ""};
+
         $scope.sessionMessages = [];
+        $scope.msgLikes = [];
+        $scope.msgHates = [];
+
+        $scope.reply   = {type: "question", body: "", replyTo: "", msgID: ""};
+        $scope.messageToReply = {};
+        $scope.repliesWindowOpen = false;
 
         $scope.firstConnectionTry = true;
 
@@ -101,6 +108,20 @@ wizerApp.controller('sessionController',
                     if (oldMessagesLength != $scope.sessionMessages.length) {
                         $("#msg-cnt").animate({scrollTop: 0}, 1000);
                     }
+                    $scope.msgLikes = [];
+                    $scope.msgHates = [];
+                    for (let i = 0; i < $scope.sessionMessages.length; ++i) {
+                        if ($scope.sessionMessages[i].likers.includes($rootScope.loggedUser._id)) {
+                            $scope.msgLikes.push(true);
+                        } else {
+                            $scope.msgLikes.push(false);
+                        }
+                        if ($scope.sessionMessages[i].dislikers.includes($rootScope.loggedUser._id)) {
+                            $scope.msgHates.push(true);
+                        } else {
+                            $scope.msgHates.push(false);
+                        }
+                    }
                 })
                 .catch(function (err) {
                     console.log("Error with getting messages");
@@ -148,6 +169,7 @@ wizerApp.controller('sessionController',
         $scope.typeChoose = function (type) {
             $('.msg-type-dropdown-header').text(type.charAt(0).toUpperCase() + type.slice(1));
             $scope.message.type = type;
+            $scope.reply.type = type;
         };
 
         $scope.rateMessage = function (sid, mid, rate) {
@@ -202,5 +224,39 @@ wizerApp.controller('sessionController',
                         console.log("error!!");
                     });
         };
+
+
+
+
+        $scope.setMsgIdToReplyAndGetMessage = function(id) {
+            $scope.reply.msgID = id;
+
+            SessionService.getMessage(id)
+                .then(function (data) {
+                    console.log("Got message: " + JSON.stringify(data));
+                    $scope.messageToReply = data;
+                    $scope.repliesWindowOpen = true;
+
+                })
+                .catch(function (err) {
+                    console.log(err);
+                });
+
+        };
+
+
+        $scope.sendReply = function(){
+
+            SessionService.sendReply($scope.sessionID, $scope.reply.type, [$scope.reply.replyTo, $scope.reply.body], $scope.reply.msgID)
+                .then(function (data) {
+                    console.log("Sent message");
+                    $scope.getMessages();
+                    $scope.message = {type: "question", body: "", replyTo: ""};
+                })
+                .catch(function (err) {
+                    console.log(err);
+                });
+
+        }
 
     });
