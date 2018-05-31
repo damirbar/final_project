@@ -31,7 +31,17 @@
                 <div class="profile-picture-and-name">
                     <!--<img class="profile-picture" src="https://www.w3schools.com/w3images/avatar_hat.jpg"-->
                     <!--style="width:100%" alt="Avatar">-->
-                    <img class="profile-picture" ng-src="{{getPhoto()}}" style="width: 100%;">
+                    <div class="profile-picture-div">
+                        <!--<img class="profile-picture" ng-src="{{getPhoto()}}" style="width: 100%;">-->
+
+                        <label for="file-profile-image">
+                            <img class="profile-picture" ng-src="{{getPhoto()}}" style="width: 100%;">
+                        </label>
+
+                        <input id="file-profile-image" type="file" name='recfile' file-model="myFile"/><br><br>
+                        <button ng-click="uploadPhoto()">Upload</button>
+                    </div>
+
                     <h2>{{profile.display_name}}</h2>
                 </div>
                 <div class="basic-details container">

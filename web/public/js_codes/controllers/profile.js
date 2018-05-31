@@ -1,5 +1,5 @@
 wizerApp.controller('profileController',
-    function ($scope, $routeParams, ProfileService, CourseService) {
+    function ($scope, $routeParams, $http, ProfileService, CourseService) {
 
         console.log("Hello from profileController");
         var defaultProfilePicture = "https://images.youtrendit.com/1487525287/desktop/avatar-600/youtrendit_Australopitekus.jpg";
@@ -28,7 +28,7 @@ wizerApp.controller('profileController',
             });
 
         $scope.getPhoto = function() {
-            return $scope.profile.photos ? ($scope.profile.photos.length == 0 ? defaultProfilePicture : $scope.profile.photos[0]) : defaultProfilePicture;
+            return $scope.profile.photos ? ($scope.profile.profile_img == '' ? defaultProfilePicture : $scope.profile.profile_img) : defaultProfilePicture;
         };
 
         $scope.readMoreButton = function() {
@@ -46,5 +46,23 @@ wizerApp.controller('profileController',
                 });
         };
 
+        $scope.uploadPhoto = function(){
+
+            var file = $scope.myFile;
+            var uploadUrl = "/students/post-profile-image";
+            var fd = new FormData();
+            fd.append('recfile', file);
+
+            $http.post(uploadUrl,fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+                .then(function(data){
+                        console.log("upload success!!!");
+                    },
+                    function(){
+                        console.log("error!!");
+                    });
+        };
 
     });
