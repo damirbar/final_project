@@ -87,8 +87,6 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
         mLikeNum.setText(String.valueOf(currentMessage.getLikes()));
         mDislikeNum.setText(String.valueOf(currentMessage.getDislikes()));
 
-
-
         comView.setOnClickListener(v -> {
             ((ListView) parent).performItemClick(v, position, 0); // Let the event be handled in onItemClick()
         });

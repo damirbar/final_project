@@ -33,19 +33,16 @@ public class FileUploadActivity extends AppCompatActivity {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
-
     private Button mBtImageSelect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_upload);
-
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.la));
         initViews();
-
     }
 
     private void initViews() {
@@ -92,7 +89,6 @@ public class FileUploadActivity extends AppCompatActivity {
 
     public byte[] getBytes(InputStream is) throws IOException {
         ByteArrayOutputStream byteBuff = new ByteArrayOutputStream();
-
         int buffSize = 1024;
         byte[] buff = new byte[buffSize];
 
@@ -100,16 +96,13 @@ public class FileUploadActivity extends AppCompatActivity {
         while ((len = is.read(buff)) != -1) {
             byteBuff.write(buff, 0, len);
         }
-
         return byteBuff.toByteArray();
     }
 
     private void uploadFile(byte[] bytes) {
-
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), bytes);
-
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", "image.jpg", requestFile);
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body)
+        RequestBody requestFile = RequestBody.create(MediaType.parse("video/mp4"), bytes);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", "video.mp4", requestFile);
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body,"1")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));

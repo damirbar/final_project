@@ -106,6 +106,14 @@ public class RegisterFragment extends Fragment {
 
         int err = 0;
 
+        if (password.length()<6) {
+
+            err++;
+            mTiPassword.setError("Password must be at least 6 characters !");
+            mTiPassword2.setError("Password must be at least 6 characters !");
+
+        }
+
         if (!validateFields(password)) {
 
             err++;
@@ -124,6 +132,8 @@ public class RegisterFragment extends Fragment {
             mTiPassword.setError("Passwords don't match !");
             mTiPassword2.setError("Passwords don't match !");
         }
+
+
 
         if (!validateFields(first_name)) {
 
@@ -158,9 +168,6 @@ public class RegisterFragment extends Fragment {
             mProgressbar.setVisibility(View.VISIBLE);
             registerProcess(user);
 
-        } else {
-
-            showMessage("Enter Valid Details !");
         }
     }
 

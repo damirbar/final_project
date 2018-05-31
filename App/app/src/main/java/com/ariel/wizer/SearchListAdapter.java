@@ -61,7 +61,9 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
                 mName.setText(user.getFname()+" " + user.getLname());
             }
 
-//            Picasso.get().load(user.getPhotos()[0]).into(profileImage);
+            String pic = user.getProfile_img();
+            if(pic!=null&&!(pic.isEmpty()))
+                Picasso.get().load(pic).into(profileImage);
 
         }
 
@@ -71,7 +73,7 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
             listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_session, parent, false);
             TextView mName = (TextView) listItem.findViewById(R.id.sid_name);
             TextView mDate = (TextView) listItem.findViewById(R.id.creation_date);
-            mName.setText(session.getSid());
+            mName.setText(session.getName());
 //            mDate.setText(session.getCreation_date());
         }
 

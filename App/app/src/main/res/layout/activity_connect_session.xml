@@ -93,9 +93,10 @@
                 android:layout_marginRight="70dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/buttonshape"
+                android:enabled="false"
                 android:foregroundGravity="center"
                 android:text="Enter"
-                android:textColor="@color/white"
+                android:textColor="#CCCCCC"
                 android:textColorHighlight="@color/white" />
 
             <TextView

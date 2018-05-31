@@ -107,7 +107,9 @@ public class ProfileActivity extends AppCompatActivity {
         }
         mCountry.setText(user.getCountry());
         mAboutMe.setText(user.getAbout_me());
-        Picasso.get().load("https://scontent.fsdv2-1.fna.fbcdn.net/v/t1.0-9/22730135_839880432861616_8306732533151605396_n.jpg?_nc_cat=0&oh=1597bce378ebaa853df982319d669bf5&oe=5B9303BC").into(image);
+        String pic = user.getProfile_img();
+        if(pic!=null&&!(pic.isEmpty()))
+            Picasso.get().load(pic).into(image);
     }
 
     private void showDialog(){
