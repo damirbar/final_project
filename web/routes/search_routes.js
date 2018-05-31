@@ -12,101 +12,101 @@ var Department = require("../schemas/department");
 
 router.get('/free-text-search', function (req, res) {
 
-    let keywords =  req.query.keyword;
+    let keywords = req.query.keyword;
 
-    let numOfCollections = 3;
+    let numOfCollections = 6;
     let doneCounter = 0;
 
     let searchResults = {};
 
-    let sendSearchResults = function(){
+    let sendSearchResults = function () {
         // doneCounter = 0;
         res.status(200).json(searchResults);
     };
 
     User.find({$text: {$search: keywords}}, function (err, results) {
-        if(err){
-            doneCounter++;
+        if (err) {
             console.log(err);
-
-        }else{
+        }else if(results != []){
             searchResults.users = results;
-            doneCounter++;
-            if(doneCounter == numOfCollections){
-                sendSearchResults();
-            }
+        }
+        doneCounter++;
+        if (doneCounter == numOfCollections) {
+            sendSearchResults();
         }
     });
 
     File.find({$text: {$search: keywords}}, function (err, results) {
-        if(err){
+        if (err) {
             console.log(err);
-            doneCounter++;
-        }else{
+        }else if(results != []){
             searchResults.files = results;
-            doneCounter++;
-            if(doneCounter == numOfCollections){
-                sendSearchResults();
-            }
+        }
+        doneCounter++;
+        if (doneCounter == numOfCollections) {
+            sendSearchResults();
         }
     });
 
     Session.find({$text: {$search: keywords}}, function (err, results) {
-        if(err){
+        if (err) {
             console.log(err);
-            doneCounter++;
-        }else{
+        }else if(results != []){
             searchResults.sessions = results;
-            doneCounter++;
-            if(doneCounter == numOfCollections){
-                sendSearchResults();
-            }
+        }
+        doneCounter++;
+        if (doneCounter == numOfCollections) {
+            sendSearchResults();
         }
     });
 
-    // User.find({$text: {$search: keywords}}, function (err, results) {
-    //     if(err){
+    University.find({$text: {$search: keywords}}, function (err, results) {
+        if (err) {
+            console.log(err);
+        }else if(results != []){
+            searchResults.universities = results;
+        }
+        doneCounter++;
+        if (doneCounter == numOfCollections) {
+            sendSearchResults();
+        }
+    });
+
+    // Faculty.find({$text: {$search: keywords}}, function (err, results) {
+    //     if (err) {
     //         console.log(err);
-    //     }else{
-    //         doneCounter++;
-    //         if(doneCounter == 7){
-    //             sendSearchResults();
-    //         }
+    //     }else if(results != []){
+    //         searchResults.faculties = results;
+    //     }
+    //     doneCounter++;
+    //     if (doneCounter == numOfCollections) {
+    //         sendSearchResults();
     //     }
     // });
 
-    // User.find({$text: {$search: keywords}}, function (err, results) {
-    //     if(err){
-    //         console.log(err);
-    //     }else{
-    //         doneCounter++;
-    //         if(doneCounter == 7){
-    //             sendSearchResults();
-    //         }
-    //     }
-    // });
-    //
-    // User.find({$text: {$search: keywords}}, function (err, results) {
-    //     if(err){
-    //         console.log(err);
-    //     }else{
-    //         doneCounter++;
-    //         if(doneCounter == 7){
-    //             sendSearchResults();
-    //         }
-    //     }
-    // });
-    //
-    // User.find({$text: {$search: keywords}}, function (err, results) {
-    //     if(err){
-    //         console.log(err);
-    //     }else{
-    //         doneCounter++;
-    //         if(doneCounter == 7){
-    //             sendSearchResults();
-    //         }
-    //     }
-    // });
+    Course.find({$text: {$search: keywords}}, function (err, results) {
+        if (err) {
+            console.log(err);
+        }else if(results != []){
+            searchResults.courses = results;
+        }
+        doneCounter++;
+        if (doneCounter == numOfCollections) {
+            sendSearchResults();
+        }
+    });
+
+    Department.find({$text: {$search: keywords}}, function (err, results) {
+        if (err) {
+            console.log(err);
+        }else if(results != []){
+            searchResults.departments = results;
+        }
+        doneCounter++;
+        if (doneCounter == numOfCollections) {
+            sendSearchResults();
+        }
+    });
 });
 
 
