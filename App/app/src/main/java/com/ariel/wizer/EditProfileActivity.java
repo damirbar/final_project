@@ -302,7 +302,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         else
             mETGender.setText(user.getGender());
 
-        String pic = user.getProfile_img();
+        String pic = user.getPhotos()[0];
         if(pic!=null&&!(pic.isEmpty()))
             Picasso.get().load(pic).into(image);
 
