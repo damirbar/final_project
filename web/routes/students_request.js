@@ -92,4 +92,67 @@ router.post("/edit-profile",function (req, res, next) {
 //     }
 // });
 
+
+const multer = require('multer');
+const upload = multer({dest: 'upload/'});
+const type = upload.single('recfile');
+const cloudinary = require('cloudinary');
+const fs = require('fs');
+const config = require('../config/config');
+cloudinary.config({
+    cloud_name:config.cloudniary.cloud_name,
+    api_key: config.cloudniary.api_key,
+    api_secret: config.cloudniary.api_secret
+});
+
+let first = true;
+router.post('/post-profile-image', type, function (req, res) {
+    if (!req.file) {
+        res.status(400).json({message: 'no file'});
+    }
+    else {
+        const path = req.file.path;
+        if (first) {
+            first = false;
+            if (!req.file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+                fs.unlinkSync(path);
+                res.status(400).json({message: 'wrong file'});
+            }
+            else {
+                res.status(200).json({message: 'received file'});
+                console.log(path);
+                User.findOne({email: req.verifiedEmail}, function (err, user) {
+                    if (err) return next(err);
+                    console.log("starting to upload " + req.file.originalname);
+                    // cloudinary.v2.image(path,
+                    //     {
+                    //         secure: true, transformation: [
+                    //             { width: 150, height: 150, crop: 'thumb', gravity: 'face', radius: 20, effect: 'sepia' },
+                    //             { overlay: 'cloudinary_icon', gravity: 'south_east', x: 5, y: 5, opacity: 60,
+                    //                 effect: 'brightness:200' },
+                    //             { angle: 10 }
+                    //         ]
+                    //     },
+                    cloudinary.v2.uploader.upload(path,
+                        {
+                            public_id: user.id + "profile"
+                        },
+                        function (err, result) {
+                            fs.unlinkSync(path);
+                            if (err) return err;
+                            console.log("uploaded " + req.file.originalname);
+                            console.log(result);
+                            user.profile_img = result.url;
+                            user.save();
+                            first = true;
+                        });
+                });
+            }
+        }
+        else {
+            fs.unlinkSync(path);
+        }
+    }
+});
+
 module.exports = router;
