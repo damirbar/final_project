@@ -33,6 +33,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.ariel.wizer.R.id.langTextView;
+import static com.ariel.wizer.utils.Constants.PROFILE_IMG;
 import static com.ariel.wizer.utils.Constants.USER_NAME;
 import static com.ariel.wizer.utils.Constants.EMAIL;
 import static com.ariel.wizer.utils.Constants.ID;
@@ -71,10 +72,10 @@ public class LoginFragment extends Fragment{
 
         initSharedPreferences();
         autoLogin();
-//
+
         View view = inflater.inflate(R.layout.fragment_login,container,false);
         super.onCreate(savedInstanceState);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         mSubscriptions = new CompositeSubscription();
         mServerResponse = new ServerResponse(getActivity().findViewById(R.id.activity_main));
         initViews(view);
@@ -227,7 +228,7 @@ public class LoginFragment extends Fragment{
         editor.putString(PASS,mPass);
         editor.putString(USER_NAME,user.getFname() + " " + user.getLname());
         editor.putString(ID,user.getId_num());
-//        editor.putString(PROFILE_IMG,user.getPhotos()[0]);
+        editor.putString(PROFILE_IMG,user.getProfile_img());
         editor.apply();
 
         Intent intent = new Intent(getActivity(), BaseActivity.class);
