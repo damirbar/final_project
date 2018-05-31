@@ -163,7 +163,8 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Rating</th>
+                    <th>Likes</th>
+                    <th>Dislikes</th>
                     <th>Question / Answer</th>
                     <th>Message</th>
                     <th>Action</th>
@@ -171,7 +172,8 @@
                 </thead>
                 <tbody class="messages-table-body">
                 <tr ng-repeat="msg in sessionMessages | reverse">
-                    <td scope="row">{{msg.rating}}</td>
+                    <td scope="row">{{msg.likes}}</td>
+                    <td scope="row">{{msg.dislikes}}</td>
                     <td>{{msg.type.charAt(0).toUpperCase() + msg.type.slice(1)}}</td>
                     <td>
                         <div class="col-8 message-content-quote" ng-if="msg.body[0].length == 0"></div>
@@ -261,22 +263,24 @@
                 </form>
 
 
-                <div class="replies">
+                <div class="replies" ng-if="repliesWindowOpen">
 
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>Rating</th>
+                            <th>Likes</th>
+                            <th>Dislikes</th>
                             <th>Question / Answer</th>
                             <th>Message</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody class="messages-table-body">
-                        {{messageToReply.replies}}
+
                         <tr ng-repeat="rpl in messageToReply.replies | reverse">
 
-                            <td scope="row">{{rpl.rating}}</td>
+                            <td scope="row">{{rpl.likes}}</td>
+                            <td scope="row">{{rpl.dislikes}}</td>
                             <td>{{rpl.type.charAt(0).toUpperCase() + rpl.type.slice(1)}}</td>
                             <td>
                                 <div class="col-8 message-content-quote" ng-if="rpl.body[0].length == 0"></div>
@@ -313,7 +317,7 @@
 
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="repliesWindowOpen=false">Close</button>
                 </div>
             </div>
         </div>

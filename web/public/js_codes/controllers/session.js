@@ -15,6 +15,7 @@ wizerApp.controller('sessionController',
 
         $scope.reply   = {type: "question", body: "", replyTo: "", msgID: ""};
         $scope.messageToReply = {};
+        $scope.repliesWindowOpen = false;
 
         $scope.firstConnectionTry = true;
 
@@ -234,6 +235,7 @@ wizerApp.controller('sessionController',
                 .then(function (data) {
                     console.log("Got message: " + JSON.stringify(data));
                     $scope.messageToReply = data;
+                    $scope.repliesWindowOpen = true;
 
                 })
                 .catch(function (err) {
