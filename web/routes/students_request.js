@@ -2,12 +2,12 @@ var express = require('express');
 var router = express.Router();
 var User = require("../schemas/user");
 
-router.get("/get-profile",function (req, res, next) {
+router.get("/get-profile", function (req, res, next) {
     const id = req.query.id;
 
     User.findOne({_id: id}, function (err, user) {
         if (err) return next(err);
-        if(user) {
+        if (user) {
             res.status(200).json(user);
         }
         else {
@@ -16,20 +16,20 @@ router.get("/get-profile",function (req, res, next) {
     });
 });
 
-router.post("/edit-profile",function (req, res, next) {
+router.post("/edit-profile", function (req, res, next) {
     const verified = req.verifiedEmail;
     const updatedUser = req.body.user || req.body;
     User.findOne({email: verified}, function (err, user) {
         if (err) return next(err);
-        if(user) {
+        if (user) {
             user.first_name = updatedUser.first_name ? updatedUser.first_name : user.first_name;
             user.last_name = updatedUser.last_name ? updatedUser.last_name : user.last_name;
             user.display_name = updatedUser.display_name;// ? updatedUser.display_name : user.display_name;
-            user.country = updatedUser.country ;//? updatedUser.country : user.country;
-            user.address = updatedUser.address ;//? updatedUser.address : user.address;
+            user.country = updatedUser.country;//? updatedUser.country : user.country;
+            user.address = updatedUser.address;//? updatedUser.address : user.address;
             user.age = updatedUser.age ? updatedUser.age : user.age;
             user.gender = updatedUser.gender ? updatedUser.gender : user.gender;
-            user.about_me = updatedUser.about_me ;//? updatedUser.about_me : user.about_me;
+            user.about_me = updatedUser.about_me;//? updatedUser.about_me : user.about_me;
 
             user.last_modified = Date.now();
             user.save();
@@ -100,7 +100,7 @@ const cloudinary = require('cloudinary');
 const fs = require('fs');
 const config = require('../config/config');
 cloudinary.config({
-    cloud_name:config.cloudniary.cloud_name,
+    cloud_name: config.cloudniary.cloud_name,
     api_key: config.cloudniary.api_key,
     api_secret: config.cloudniary.api_secret
 });
@@ -124,18 +124,14 @@ router.post('/post-profile-image', type, function (req, res) {
                 User.findOne({email: req.verifiedEmail}, function (err, user) {
                     if (err) return next(err);
                     console.log("starting to upload " + req.file.originalname);
-                    // cloudinary.v2.image(path,
-                    //     {
-                    //         secure: true, transformation: [
-                    //             { width: 150, height: 150, crop: 'thumb', gravity: 'face', radius: 20, effect: 'sepia' },
-                    //             { overlay: 'cloudinary_icon', gravity: 'south_east', x: 5, y: 5, opacity: 60,
-                    //                 effect: 'brightness:200' },
-                    //             { angle: 10 }
-                    //         ]
-                    //     },
                     cloudinary.v2.uploader.upload(path,
                         {
-                            public_id: user.id + "profile"
+                            public_id: user.id + "profile",
+                            width: 1000,
+                            height: 1000,
+                            crop: 'thumb',
+                            gravity: 'face',
+                            radius: 20
                         },
                         function (err, result) {
                             fs.unlinkSync(path);
