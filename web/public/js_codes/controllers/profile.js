@@ -13,7 +13,7 @@ wizerApp.controller('profileController',
             CourseService.getCoursesById($routeParams.id)
                 .then(function (data) {
                     console.log("got courses");
-                    $scope.courses = data.courses;
+                    $scope.courses = data;
                     console.log(JSON.stringify(data));
                 });
         };
