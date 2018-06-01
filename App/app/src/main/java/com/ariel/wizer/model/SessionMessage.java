@@ -6,14 +6,38 @@ public class SessionMessage  {
     private String email;
     private int likes;
     private int dislikes;
-
+    private SessionMessage replies[];
     private String likers[];
     private String dislikers[];
-
     private String body[];
     private String type;
     private String _id;
     private String date;
+    private String mid;//Id of the Message to reply
+
+    public String getMid() {
+        return mid;
+    }
+
+    public void setMid(String mid) {
+        this.mid = mid;
+    }
+
+    public SessionMessage[] getReplies() {
+        return replies;
+    }
+
+    public void setReplies(SessionMessage[] replies) {
+        this.replies = replies;
+    }
+
+    public void setLikers(String[] likers) {
+        this.likers = likers;
+    }
+
+    public void setDislikers(String[] dislikers) {
+        this.dislikers = dislikers;
+    }
 
     public String[] getLikers() {
         return likers;

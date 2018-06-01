@@ -58,12 +58,9 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     private ServerResponse mServerResponse;
     private String mId;
     private String mDisplayName;
-
     public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
     public static final int REQUEST_CODE_UPDATE_PIC = 0x1;
     public static final int REQUEST_CODE_UPDATE_BIO = 0x2;
-
-
     private ImageView image;
     private Button mBSave;
     private Button mBcancel;
@@ -95,13 +92,11 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mETFirstName = (EditText) findViewById(R.id.eTFirstName);
         mETLastName = (EditText) findViewById(R.id.eTLastName);
         mETGender = (EditText) findViewById(R.id.eTGender);
-
         mETDisplayName = (EditText) findViewById(R.id.eTDisplay_Name);
         mETCountry = (EditText) findViewById(R.id.eTCountry);
         mETAddress = (EditText) findViewById(R.id.eTAddress);
         mETAge = (EditText) findViewById(R.id.eTAge);
         mETAboutMe = (EditText) findViewById(R.id.eTAboutMe);
-
         mProfileChange = (TextView) findViewById(R.id.user_profile_change);
         image = (ImageView) findViewById(R.id.user_profile_photo);
         mBSave = (Button) findViewById(R.id.save_button);
@@ -110,10 +105,9 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mBcancel.setOnClickListener(view -> finish());
         mETGender.setOnClickListener(view -> genderViewClick());
         mProfileChange.setOnClickListener(view -> showAddProfilePicDialog());
+        image.setOnClickListener(view -> showAddProfilePicDialog());
         mETAge.setOnClickListener(view -> showDialog());
-
         mETAboutMe.setOnClickListener(view -> setBio());
-
     }
 
     private void setBio() {
@@ -237,7 +231,6 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         String Age = mETAge.getText().toString().trim();
         String AboutMe = mETAboutMe.getText().toString().trim();
 
-
         int err = 0;
 
         if (!validateFields(first_name)) {
@@ -350,17 +343,13 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
                 .subscribe(this::handleResponseUpdate, i -> mServerResponse.handleError(i)));
     }
 
-
     public void Update(String date) {
         mETAge.setText(date);
     }
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mSubscriptions.unsubscribe();
-
     }
-
 }

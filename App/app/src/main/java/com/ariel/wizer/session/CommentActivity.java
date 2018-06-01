@@ -32,16 +32,12 @@ public class CommentActivity extends AppCompatActivity {
     private CompositeSubscription mSubscriptions;
     private ListView commentsList;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-
     private EditText mComtText;
     private ImageButton buttonBack;
     private TextView buttonSend;
-    private final String answer = "answer";
     private String sid;
-    private String msid;
+    private String mid;
     private String mId;
-
-
     private SessionCommentsAdapter mAdapter;
 
     @Override
@@ -51,35 +47,21 @@ public class CommentActivity extends AppCompatActivity {
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.activity_comment));
-
         initSharedPreferences();
-
         if (!getData()) {
             finish();
         }
         initViews();
 
-
-//        SessionMessage msg = (SessionMessage) getIntent().getSerializableExtra("msg");
-
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        pullComments();
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 1000);
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+            pullComments();
+            mSwipeRefreshLayout.setRefreshing(false);
+        }, 1000));
     }
 
     private void initSharedPreferences() {
         mId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID,"");
     }
-
 
     private void initViews() {
         commentsList = (ListView) findViewById(R.id.comments);
@@ -88,16 +70,16 @@ public class CommentActivity extends AppCompatActivity {
         buttonSend = (TextView) findViewById(R.id.send_btn);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
         buttonSend.setOnClickListener(view -> attemptSendCom());
-        buttonBack.setOnClickListener(view -> goBack());
+        buttonBack.setOnClickListener(view -> finish());
     }
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
             String _sid = getIntent().getExtras().getString("sid");
-            String _msid = getIntent().getExtras().getString("msid");
-            if(_sid != null||_msid != null) {
+            String _mid = getIntent().getExtras().getString("mid");
+            if(_sid != null && _mid != null) {
                 sid = _sid;
-                msid = _msid;
+                mid = _mid;
                 return true;
             } else
                 return false;
@@ -107,18 +89,17 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void pullComments(){
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllMessages(sid)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getMessage(mid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull,i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponsePull(SessionMessage sessionMessages[]) {
-        if(! (sessionMessages.length == 0)){
-            ArrayList<SessionMessage> saveComments = new ArrayList<>(Arrays.asList(sessionMessages));
+    private void handleResponsePull(SessionMessage sessionMessages) {
+        if(!(sessionMessages.getReplies().length == 0)){
+            ArrayList<SessionMessage> saveComments = new ArrayList<>(Arrays.asList(sessionMessages.getReplies()));
             Collections.reverse(saveComments);
             mAdapter = new SessionCommentsAdapter(this, new ArrayList<>(saveComments));
-
             for(int i=0;i<mAdapter.getMessagesList().size();i++){
                 for(int j=0;j<mAdapter.getMessagesList().get(i).getLikers().length;j++){
                     if(mAdapter.getMessagesList().get(i).getLikers()[j].equalsIgnoreCase(mId)) {
@@ -131,14 +112,8 @@ public class CommentActivity extends AppCompatActivity {
                     }
                 }
             }
-
-
             commentsList.setAdapter(mAdapter);
         }
-    }
-
-    private void goBack() {
-        finish();
     }
 
     private void attemptSendCom() {
@@ -147,15 +122,16 @@ public class CommentActivity extends AppCompatActivity {
             return;
         }
         SessionMessage message = new  SessionMessage();
+        message.setMid(mid);
         message.setSid(sid);
-        message.setType(answer);
+        message.setType("answer");
         String Body[]={"",strMessage};
         message.setBody(Body);
         sendCom(message);
     }
 
     private void sendCom(SessionMessage  message) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().publishSessionMessage(message)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().publishReply(message)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseSendCom,i -> mServerResponse.handleError(i)));
@@ -172,8 +148,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume(){
         super.onResume();
         pullComments();
     }

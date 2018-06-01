@@ -63,6 +63,15 @@ public class SessionInfoFragment extends Fragment {
 
         initViews(view);
 
+        //        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable(){
+//            public void run(){
+//                classAvgProcess();
+//                handler.postDelayed(this, delay);
+//            }
+//        }, delay);
+
+
 
         likeCbx.setOnCheckedChangeListener((buttonView, isChecked) -> {
             int currentRating =Integer.parseInt(mRatingNum.getText().toString().trim());

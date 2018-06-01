@@ -40,9 +40,6 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
     private SessionPostsAdapter mAdapter;
     private String mId;
 
-//    private final int delay = 5000; //milliseconds
-
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_session_feed,container,false);
@@ -54,17 +51,6 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
         getData();
         initViews(view);
 
-//        mSocket.on(Socket.EVENT_CONNECT,onConnect);
-//        mSocket.connect();
-
-//        classAvgProcess();
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable(){
-//            public void run(){
-//                classAvgProcess();
-//                handler.postDelayed(this, delay);
-//            }
-//        }, delay);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -81,10 +67,9 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
         messagesList.setOnItemClickListener((parent, view1, position, id) -> {
             long viewId = view1.getId();
             if (viewId == R.id.comment_btn) {
-//                SessionMessage msg = mAdapter.getItem(position);
                 Intent intent = new Intent(getActivity(), CommentActivity.class);
                 intent.putExtra("sid", sid);
-                intent.putExtra("msid", mAdapter.getMessagesList().get(position).get_id());
+                intent.putExtra("mid", mAdapter.getMessagesList().get(position).get_id());
                 startActivity(intent);
             }
         });
@@ -109,34 +94,21 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
                 mLastFirstVisibleItem=firstVisibleItem;
             }
         });
-
         return view;
     }
 
     private void initSharedPreferences() {
         mId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID,"");
-//        mId = "5af33ce49a714e30547168dd";
     }
 
 
     private void initViews(View v) {
-//        mTvClassAvg = (TextView) findViewById(R.id.tVclassAvg);
         mTvNoResults = (TextView) v.findViewById(R.id.tv_no_results);
         messagesList = (ListView) v.findViewById(R.id.sessionMessagesList);
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.activity_main_swipe_refresh_layout);
         mFBPost = (FloatingActionButton) v.findViewById(R.id.fb_post);
         mFBPost.setOnClickListener(view -> openPost());
     }
-
-
-//    private Socket mSocket;
-//    {
-//        try {
-//            mSocket = IO.socket(Constants.BASE_URL);
-//        } catch (URISyntaxException e) {}
-//    }
-
-
 
     private void openPost(){
         Intent intent = new Intent(getActivity(), PostActivity.class);
@@ -151,38 +123,6 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
             sid = bundle.getString("sid");
         }
     }
-
-//    private void classAvgProcess() {
-//        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getStudentsCount(pin)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(this::handleResponseAvg,i -> mServerResponse.handleError(i)));
-//    }
-//
-//    private void handleResponseAvg(Response response) {
-//        mTvClassAvg.setText("Rating:" + response.getMessage());
-//    }
-
-
-//    private void rateClass() {
-//        String rate =  Integer.toString((int)simpleRatingBar.getRating());
-//        String rating = "Rating :: " + simpleRatingBar.getRating();
-//        Toast.makeText(getApplicationContext(), rating, Toast.LENGTH_LONG).show();
-//        rateProcess(rate);
-//
-//    }
-//
-//    private void rateProcess(String rate) {
-//        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().changeVal(pin,rate)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(this::handleResponseRateProcess,i -> mServerResponse.handleError(i)));
-//    }
-//
-//    private void handleResponseRateProcess(Response response) {
-//        mServerResponse.showSnackBarMessage(response.getMessage());
-//    }
-//
     private void pullMessages(){
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllMessages(sid)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -209,13 +149,11 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
                     }
                 }
             }
-
             messagesList.setAdapter(mAdapter);
 
         }
         else{
             mTvNoResults.setVisibility(View.VISIBLE);
-
         }
     }
 
@@ -228,10 +166,8 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume(){
         super.onResume();
         pullMessages();
     }
-
 }

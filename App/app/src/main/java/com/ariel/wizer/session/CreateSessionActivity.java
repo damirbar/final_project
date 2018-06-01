@@ -37,6 +37,7 @@ public class CreateSessionActivity extends AppCompatActivity {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private ImageButton buttonBack;
+    private Session session;
 
 
 
@@ -74,7 +75,7 @@ public class CreateSessionActivity extends AppCompatActivity {
 
     private void handleResponseCreateSession(Response response) {
         Intent intent = new Intent(getBaseContext(),SessionActivity.class);
-        intent.putExtra("sid",sid);
+        intent.putExtra("session",session);
         startActivity(intent);
         finish();
     }
@@ -113,7 +114,7 @@ public class CreateSessionActivity extends AppCompatActivity {
 
         if (err == 0) {
 
-            Session session = new Session();
+            session = new Session();
             session.setSid(sid);
             session.setLocation(loc);
             session.setName(name);

@@ -1,7 +1,12 @@
 package com.ariel.wizer.model;
 
 
-public class Session {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Session implements Parcelable {
 
     private String sid;
     private String name;
@@ -14,6 +19,29 @@ public class Session {
     //private int curr_rating;
     //private String creation_date;
 
+    public Session(){}
+
+    public Session(Parcel in) {
+        sid = in.readString();
+        name = in.readString();
+        admin = in.readString();
+        teacher_id = in.readString();
+        location = in.readString();
+        videoID = in.readString();
+        picID = in.readString();
+    }
+
+    public static final Creator<Session> CREATOR = new Creator<Session>() {
+        @Override
+        public Session createFromParcel(Parcel in) {
+            return new Session(in);
+        }
+
+        @Override
+        public Session[] newArray(int size) {
+            return new Session[size];
+        }
+    };
 
     public String getAdmin() {
         return admin;
@@ -78,5 +106,22 @@ public class Session {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(sid);
+        parcel.writeString(name);
+        parcel.writeString(admin);
+        parcel.writeString(teacher_id);
+        parcel.writeString(location);
+        parcel.writeString(videoID);
+        parcel.writeString(picID);
     }
 }

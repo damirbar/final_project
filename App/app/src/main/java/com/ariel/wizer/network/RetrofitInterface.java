@@ -56,7 +56,7 @@ public interface RetrofitInterface {
     /////Session/////
     @FormUrlEncoded
     @POST("sessions/connect-session")
-    Observable<Response> connectSession(@Field("sid") String sid, @Field("name") String name);
+    Observable<Session> connectSession(@Field("sid") String sid, @Field("name") String name);
 
     @POST("sessions/create-session")
     Observable<Response> createSession(@Body Session session);
@@ -76,12 +76,15 @@ public interface RetrofitInterface {
     @GET("sessions/get-all-messages")
     Observable<SessionMessage []> getAllMessages(@Query("sid") String sid);
 
-    @GET("sessions/get-all-user-messages")
-    Observable<SessionMessage []> getMyMessages(@Query("sid") String sid);
-
+    @GET("sessions/get-message")
+    Observable<SessionMessage> getMessage(@Query("mid") String mid);
 
     @POST("sessions/messages")
     Observable<Response> publishSessionMessage(@Body SessionMessage message);
+
+    @POST("sessions/reply")
+    Observable<Response> publishReply(@Body SessionMessage message);
+
 
     @GET("sessions/disconnect")
     Observable<Response> disconnect(@Query("sid") String sid);

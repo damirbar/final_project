@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
+import com.ariel.wizer.model.Session;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 
@@ -61,8 +62,6 @@ public class ConnectSessionActivity extends AppCompatActivity {
         mBtLogin.setOnClickListener(view -> login());
         mCreateSessionButton.setOnClickListener(view -> createSession());
         buttonBack.setOnClickListener(view -> finish());
-
-
     }
 
 
@@ -96,7 +95,6 @@ public class ConnectSessionActivity extends AppCompatActivity {
             mTiName.setError("User Name should not be empty.");
         }
 
-
         if (err == 0) {
             loginProcess(sid,name);
         }
@@ -109,12 +107,11 @@ public class ConnectSessionActivity extends AppCompatActivity {
                 .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponse(Response response) {
+    private void handleResponse(Session session) {
         Intent intent = new Intent(getBaseContext(), SessionActivity.class);
-        intent.putExtra("sid",sid);
+        intent.putExtra("session",session);
         startActivity(intent);
         finish();
-
     }
 
     @Override
@@ -122,6 +119,4 @@ public class ConnectSessionActivity extends AppCompatActivity {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
-
-
 }

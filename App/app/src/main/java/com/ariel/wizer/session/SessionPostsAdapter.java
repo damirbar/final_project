@@ -79,7 +79,8 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
         TextView mEmail = (TextView) listItem.findViewById(R.id.user_name);
         TextView msg = (TextView) listItem.findViewById(R.id.content);
         ImageView comView = (ImageView) listItem.findViewById(R.id.comment_btn);
-
+        TextView comCount = (TextView) listItem.findViewById(R.id.comments_num);
+        comCount.setText(String.valueOf(currentMessage.getReplies().length));
         mEmail.setText(currentMessage.getEmail());
         msg.setText(currentMessage.getBody()[1]);
         mLikeNum.setText(String.valueOf(currentMessage.getLikes()));
