@@ -1,5 +1,6 @@
 package com.ariel.wizer.session;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,8 +15,10 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.ariel.wizer.R;
+import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.Session;
 import com.ariel.wizer.network.RetrofitRequests;
+import com.ariel.wizer.network.ServerResponse;
 import com.github.rtoshiro.view.video.FullscreenVideoLayout;
 
 import java.io.IOException;
@@ -31,10 +34,12 @@ public class SessionActivity extends AppCompatActivity {
     private ImageButton buttonVid;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
+    private ServerResponse mServerResponse;
     private int stopPosition;
     private Session session;
     private FullscreenVideoLayout vid;
     private RelativeLayout mVideoViewRelative;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,8 @@ public class SessionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_session);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
+        mServerResponse = new ServerResponse(findViewById(R.id.main_layout));
+
         if (!getData()) {
             finish();
         }
@@ -68,15 +75,10 @@ public class SessionActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
             }
-
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
+            public void onTabUnselected(TabLayout.Tab tab) { }
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
+            public void onTabReselected(TabLayout.Tab tab) { }
         });
 
 //        if (session.getVideoID() != null && !(session.getVideoID().isEmpty()))
@@ -149,10 +151,8 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings1) {
-            return true;
-        }
-        if (id == R.id.action_settings2) {
+        if (id == R.id.action_settings) {
+            sendSidSms();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -161,6 +161,14 @@ public class SessionActivity extends AppCompatActivity {
     private void goBack() {
         disconnectFromSession();
         finish();
+    }
+
+    private void sendSidSms() {
+        String smsBody="Hi, please join my session.\nSession ID: "+session.getSid();
+        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+        sendIntent.putExtra("sms_body", smsBody);
+        sendIntent.setType("vnd.android-dir/mms-sms");
+        startActivity(sendIntent);
     }
 
     private boolean getData() {
@@ -179,7 +187,10 @@ public class SessionActivity extends AppCompatActivity {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().disconnect(session.getSid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe());
+                .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
+    }
+
+    private void handleResponse(Response response) {
     }
 
     @Override

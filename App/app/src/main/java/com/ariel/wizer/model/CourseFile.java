@@ -1,10 +1,12 @@
 package com.ariel.wizer.model;
 
+import java.util.Date;
+
 public class CourseFile {
 
     private String course_id;
     private String url;
-    private String creation_date;
+    private Date creation_date;
     private String name;
 
     public String getName() {
@@ -31,11 +33,11 @@ public class CourseFile {
         this.url = url;
     }
 
-    public String getCreation_date() {
+    public Date getCreation_date() {
         return creation_date;
     }
 
-    public void setCreation_date(String creation_date) {
+    public void setCreation_date(Date creation_date) {
         this.creation_date = creation_date;
     }
 }

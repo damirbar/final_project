@@ -26,7 +26,6 @@ public class CourseActivity extends AppCompatActivity {
         if (!getData()) {
             finish();
         }
-
         initViews();
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
@@ -86,10 +85,7 @@ public class CourseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings1) {
-            return true;
-        }
-        if (id == R.id.action_settings2) {
+        if (id == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);

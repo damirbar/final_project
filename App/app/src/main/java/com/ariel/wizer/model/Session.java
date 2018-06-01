@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Session implements Parcelable {
 
@@ -14,10 +15,10 @@ public class Session implements Parcelable {
     private String teacher_id;
     private String location;
     private String videoID;
-//    private SessionMessage messages[];
+    //    private SessionMessage messages[];
     private String picID;
     //private int curr_rating;
-    //private String creation_date;
+    private Date creation_date;
 
     public Session(){}
 
@@ -42,6 +43,14 @@ public class Session implements Parcelable {
             return new Session[size];
         }
     };
+
+    public Date getCreation_date() {
+        return creation_date;
+    }
+
+    public void setCreation_date(Date creation_date) {
+        this.creation_date = creation_date;
+    }
 
     public String getAdmin() {
         return admin;

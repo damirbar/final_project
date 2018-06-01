@@ -107,9 +107,9 @@ public class ConnectSessionActivity extends AppCompatActivity {
                 .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponse(Session session) {
+    private void handleResponse(Response response){
         Intent intent = new Intent(getBaseContext(), SessionActivity.class);
-        intent.putExtra("session",session);
+        intent.putExtra("session",response.getSession());
         startActivity(intent);
         finish();
     }

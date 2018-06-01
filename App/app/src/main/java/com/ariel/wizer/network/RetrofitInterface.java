@@ -56,7 +56,7 @@ public interface RetrofitInterface {
     /////Session/////
     @FormUrlEncoded
     @POST("sessions/connect-session")
-    Observable<Session> connectSession(@Field("sid") String sid, @Field("name") String name);
+    Observable<Response> connectSession(@Field("sid") String sid, @Field("name") String name);
 
     @POST("sessions/create-session")
     Observable<Response> createSession(@Body Session session);

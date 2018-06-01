@@ -12,7 +12,10 @@ import android.widget.TextView;
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.CourseFile;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
@@ -44,7 +47,14 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
         TextView mFileDatee = (TextView) listItem.findViewById(R.id.creation_date);
 
         mFileName.setText(currentFile.getName());
-        mFileDatee.setText(currentFile.getCreation_date());
+
+        //Date
+        Date date = currentFile.getCreation_date();
+        if(date!=null){
+            Format formatter = new SimpleDateFormat("dd/MM/yyyy");
+            String s = formatter.format(date);
+            mFileDatee.setText(s);
+        }
 
 
         return listItem;

@@ -20,7 +20,7 @@ public class EntryActivity extends AppCompatActivity implements ResetPasswordDia
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_entry);
         mServerResponse = new ServerResponse(findViewById(R.id.activity_main));
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

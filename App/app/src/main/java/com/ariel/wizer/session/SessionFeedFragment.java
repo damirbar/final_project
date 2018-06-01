@@ -51,18 +51,10 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
         getData();
         initViews(view);
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        pullMessages();
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 1000);
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+            pullMessages();
+            mSwipeRefreshLayout.setRefreshing(false);
+        }, 1000));
 
         messagesList.setOnItemClickListener((parent, view1, position, id) -> {
             long viewId = view1.getId();
@@ -151,8 +143,7 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
             }
             messagesList.setAdapter(mAdapter);
 
-        }
-        else{
+        } else {
             mTvNoResults.setVisibility(View.VISIBLE);
         }
     }

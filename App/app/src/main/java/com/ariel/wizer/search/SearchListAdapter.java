@@ -16,7 +16,10 @@ import com.ariel.wizer.model.Session;
 import com.ariel.wizer.model.User;
 import com.squareup.picasso.Picasso;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SearchListAdapter extends ArrayAdapter<Object> {
@@ -38,47 +41,50 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
 
-//        if (convertView == null) {
-//
-//            listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_user, parent, false);
-//        }
-
-
         Object a = (Object) getItem(position);
 
-        if(a instanceof User) {
+        if (a instanceof User) {
             User user = (User) a;
 
             listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_user, parent, false);
             TextView mName = (TextView) listItem.findViewById(R.id.user_name);
-            ImageView profileImage = (ImageView) listItem.findViewById(R.id.user_image);;
+            ImageView profileImage = (ImageView) listItem.findViewById(R.id.user_image);
+            ;
 
 
             String disName = user.getDisplay_name();
-            if(disName!=null && !(disName.isEmpty())){
+            if (disName != null && !(disName.isEmpty())) {
                 mName.setText(user.getDisplay_name());
-            }
-            else{
-                mName.setText(user.getFname()+" " + user.getLname());
+            } else {
+                mName.setText(user.getFname() + " " + user.getLname());
             }
 
             String pic = user.getProfile_img();
-            if(pic!=null&&!(pic.isEmpty()))
+            if (pic != null && !(pic.isEmpty()))
                 Picasso.get().load(pic).into(profileImage);
 
         }
 
-        if(a instanceof Session) {
+        if (a instanceof Session) {
             Session session = (Session) a;
 
             listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_session, parent, false);
             TextView mName = (TextView) listItem.findViewById(R.id.sid_name);
             TextView mDate = (TextView) listItem.findViewById(R.id.creation_date);
             mName.setText(session.getName());
-//            mDate.setText(session.getCreation_date());
+
+
+            //Date
+            Date date = session.getCreation_date();
+            if (date != null) {
+                Format formatter = new SimpleDateFormat("dd/MM/yyyy");
+                String s = formatter.format(date);
+                mDate.setText(s);
+            }
+
         }
 
-        if(a instanceof CourseFile) {
+        if (a instanceof CourseFile) {
             CourseFile file = (CourseFile) a;
 
             listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_file, parent, false);
@@ -86,9 +92,16 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
             TextView mDate = (TextView) listItem.findViewById(R.id.creation_date);
 
             mName.setText(file.getName());
-//            mDate.setText(file.getCreation_date());
-        }
 
+            //Date
+            Date date = file.getCreation_date();
+            if (date != null) {
+                Format formatter = new SimpleDateFormat("dd/MM/yyyy");
+                String s = formatter.format(date);
+                mDate.setText(s);
+            }
+
+        }
         return listItem;
     }
 }

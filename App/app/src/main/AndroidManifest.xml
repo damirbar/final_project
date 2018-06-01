@@ -82,9 +82,6 @@
             android:name=".demo.FileDownActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".demo.FileUploadActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
             android:name=".session.CreateSessionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity

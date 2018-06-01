@@ -72,34 +72,29 @@ public class SessionInfoFragment extends Fragment {
 //        }, delay);
 
 
-
         likeCbx.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            int currentRating =Integer.parseInt(mRatingNum.getText().toString().trim());
-            if(isChecked) {
+            int currentRating = Integer.parseInt(mRatingNum.getText().toString().trim());
+            if (isChecked) {
                 if (dislikeCbx.isChecked()) {
                     dislikeCbx.setChecked(false);
-                    mRatingNum.setText(String.valueOf(currentRating+2));
-                }
-                else
-                    mRatingNum.setText(String.valueOf(currentRating+1));
-            }
-            else
-                mRatingNum.setText(String.valueOf(currentRating-1));
+                    mRatingNum.setText(String.valueOf(currentRating + 2));
+                } else
+                    mRatingNum.setText(String.valueOf(currentRating + 1));
+            } else
+                mRatingNum.setText(String.valueOf(currentRating - 1));
             tryChangeVal(LIKE);
         });
 
         dislikeCbx.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            int currentRating =Integer.parseInt(mRatingNum.getText().toString().trim());
-            if(isChecked) {
+            int currentRating = Integer.parseInt(mRatingNum.getText().toString().trim());
+            if (isChecked) {
                 if (likeCbx.isChecked()) {
                     likeCbx.setChecked(false);
-                    mRatingNum.setText(String.valueOf(currentRating-2));
-                }
-                else
-                    mRatingNum.setText(String.valueOf(currentRating-1));
-            }
-            else
-                mRatingNum.setText(String.valueOf(currentRating+1));
+                    mRatingNum.setText(String.valueOf(currentRating - 2));
+                } else
+                    mRatingNum.setText(String.valueOf(currentRating - 1));
+            } else
+                mRatingNum.setText(String.valueOf(currentRating + 1));
             tryChangeVal(DISLIKE);
         });
 
@@ -158,11 +153,10 @@ public class SessionInfoFragment extends Fragment {
         }
     }
 
-
     private void tryUploadVid(byte[] bytes) {
         RequestBody requestFile = RequestBody.create(MediaType.parse("video/mp4"), bytes);
         MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", "video.mp4", requestFile);
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body,sid)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body, sid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseUploadVid, i -> mServerResponse.handleError(i)));
@@ -174,27 +168,26 @@ public class SessionInfoFragment extends Fragment {
     }
 
 
-    private void tryChangeVal(int val){
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().changeVal(sid,val)
+    private void tryChangeVal(int val) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().changeVal(sid, val)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseChangeVal,i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseChangeVal, i -> mServerResponse.handleError(i)));
     }
 
-    private void tryGetStudentsCount(){
+    private void tryGetStudentsCount() {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getStudentsCount(sid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseCount,i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseCount, i -> mServerResponse.handleError(i)));
     }
 
-    private void tryGetStudentsRating(){
+    private void tryGetStudentsRating() {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getStudentsRating(sid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseRating,i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseRating, i -> mServerResponse.handleError(i)));
     }
-
 
 
     private void handleResponseChangeVal(Response response) {
@@ -209,14 +202,11 @@ public class SessionInfoFragment extends Fragment {
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
 //        tryGetStudentsCount();
 //        tryGetStudentsRating();
     }
-
-
 
 
 }

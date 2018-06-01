@@ -1,5 +1,7 @@
 package com.ariel.wizer.model;
 
+import java.util.Date;
+
 public class Course {
 
     private String _id;
@@ -8,7 +10,7 @@ public class Course {
     private String teacher_id;
     private String location;
     private int points;
-    private String creation_date;
+    private Date creation_date;
 
     public String get_id() {
         return _id;
@@ -58,12 +60,11 @@ public class Course {
         this.points = points;
     }
 
-    public String getCreation_date() {
+    public Date getCreation_date() {
         return creation_date;
     }
 
-    public void setCreation_date(String creation_date) {
+    public void setCreation_date(Date creation_date) {
         this.creation_date = creation_date;
     }
-
 }

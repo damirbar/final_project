@@ -4,7 +4,11 @@ public class Response {
 
     private String message;
     private String token;
-    private String path;
+    private Session session;
+
+    public Session getSession() {
+        return session;
+    }
 
     public String getMessage() {
         return message;
@@ -14,7 +18,4 @@ public class Response {
         return token;
     }
 
-    public String getPath() {
-        return path;
-    }
 }
