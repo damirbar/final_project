@@ -60,41 +60,67 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/edit_text_sid"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_edit_text_sid"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="70dp"
                 android:layout_marginRight="70dp"
                 android:layout_marginTop="50dp"
-                android:background="@drawable/dark_edittext"
-                android:gravity="center"
-                android:hint="PIN"
-                android:textSize="14sp" />
+                app:hintEnabled="false">
 
-            <EditText
-                android:id="@+id/edit_text_name"
+                <EditText
+                    android:id="@+id/edit_text_sid"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/dark_edittext"
+                    android:gravity="center"
+                    android:hint="PIN"
+                    android:textSize="14sp" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_edit_text_name"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="70dp"
                 android:layout_marginRight="70dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/dark_edittext"
-                android:gravity="center"
-                android:hint="Name"
-                android:textSize="14sp" />
+                app:hintEnabled="false">
 
-            <EditText
-                android:id="@+id/edit_text_loc"
+
+                <EditText
+                    android:id="@+id/edit_text_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/dark_edittext"
+                    android:gravity="center"
+                    android:hint="Name"
+                    android:textSize="14sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_edit_text_loc"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="70dp"
                 android:layout_marginRight="70dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/dark_edittext"
-                android:gravity="center"
-                android:hint="Location"
-                android:textSize="14sp" />
+                app:hintEnabled="false">
+
+                <EditText
+                    android:id="@+id/edit_text_loc"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/dark_edittext"
+                    android:gravity="center"
+                    android:hint="Location"
+                    android:textSize="14sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
 
             <Button
                 android:id="@+id/create_session_button"

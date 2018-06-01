@@ -3,7 +3,6 @@ package com.ariel.wizer.session;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -156,7 +154,7 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().rateMessage(sid,msgid,rate)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, ServerResponse::handleErrorRate));
+                .subscribe(this::handleResponse, ServerResponse::handleErrorQuiet));
     }
 
     private void handleResponse(Response response) { }

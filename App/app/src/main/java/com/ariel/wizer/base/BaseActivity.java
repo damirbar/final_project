@@ -15,16 +15,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.ariel.wizer.entry.EntryActivity;
 import com.ariel.wizer.R;
 import com.ariel.wizer.TermsActivity;
 import com.ariel.wizer.course.MyCourseActivity;
+import com.ariel.wizer.entry.EntryActivity;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.profile.ProfileActivity;
 import com.ariel.wizer.search.SearchActivity;
-import com.ariel.wizer.search.SearchListAdapter;
 import com.ariel.wizer.session.ConnectSessionActivity;
 import com.ariel.wizer.utils.Constants;
 import com.mindorks.placeholderview.PlaceHolderView;
@@ -35,28 +34,20 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.ariel.wizer.utils.Constants.EMAIL;
-import static com.ariel.wizer.utils.Constants.PROFILE_IMG;
-import static com.ariel.wizer.utils.Constants.USER_NAME;
 
 public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.DrawerCallBack {
 
     private RetrofitRequests mRetrofitRequests;
-    private ServerResponse mServerResponse;
+//    private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
-
     private ListView searchList;
     private TextView mTvNoResults;
-    private SearchListAdapter mAdapter;
-
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
     private String mEmail;
-    private String mDisplayName;
-    private String mPic;
     private String mId;
     private SearchView editSearch;
-    private DrawerMenuItem.DrawerCallBack callBack;
     private DrawerHeader mDrawerHeader;
 
 
@@ -66,12 +57,11 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         setContentView(R.layout.activity_base);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
-        mServerResponse = new ServerResponse(findViewById(R.id.drawerLayout));
+//        mServerResponse = new ServerResponse(findViewById(R.id.search_List));
         initSharedPreferences();
         initViews();
         setupDrawer();
-
-        }
+    }
 
     private void initViews() {
         mDrawer = (DrawerLayout)findViewById(R.id.drawerLayout);
@@ -97,16 +87,12 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     private void initSharedPreferences() {
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEmail = mSharedPreferences.getString(EMAIL,"");
-        mDisplayName = mSharedPreferences.getString(USER_NAME,"");
-        mPic =  mSharedPreferences.getString(PROFILE_IMG,"");
-        mId = mRetrofitRequests.getmSharedPreferences().getString(Constants.ID,"");
-
+        mId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID,"");
     }
 
     private void setupDrawer(){
 
-        mDrawerHeader = new DrawerHeader(mDisplayName,mEmail,mPic);
-
+        mDrawerHeader = new DrawerHeader(mEmail);
         mDrawerView
                 .addView(mDrawerHeader)
                 .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_PROFILE))
@@ -140,7 +126,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getProfile(mId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseProfile,i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseProfile, ServerResponse::handleErrorQuiet));
     }
 
     private void handleResponseProfile(User user) {
@@ -148,10 +134,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         String pic = user.getProfile_img();
         if(pic!=null&&!(pic.isEmpty()))
             Picasso.get().load(pic).into(mDrawerHeader.getProfileImage());
-
     }
-
-
 
     @Override
     protected void onDestroy() {
@@ -173,24 +156,21 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     }
 
     @Override
-    public void onMycoursesMenuSelected() {
+    public void onMyCoursesMenuSelected() {
         this.startActivity(new Intent (this, MyCourseActivity.class));
         mDrawer.closeDrawer(Gravity.START, false);
     }
 
     @Override
     public void onMessagesMenuSelected() {
-
     }
 
     @Override
     public void onNotificationsMenuSelected() {
-
     }
 
     @Override
     public void onSettingsMenuSelected() {
-
     }
 
     @Override
@@ -206,7 +186,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
     private void logout() {
         RetrofitRequests mRetrofitRequests = new RetrofitRequests(this);
-        SharedPreferences.Editor editor = mRetrofitRequests.getmSharedPreferences().edit();
+        SharedPreferences.Editor editor = mRetrofitRequests.getSharedPreferences().edit();
         editor.putString(Constants.PASS,"");
         editor.putString(Constants.TOKEN,"");
         editor.putString(Constants.ID,"");
@@ -220,8 +200,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume(){
         super.onResume();
         loadProfile();
     }

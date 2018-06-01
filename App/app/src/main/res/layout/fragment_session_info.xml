@@ -243,7 +243,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/button_vid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="25dp"
@@ -251,7 +251,7 @@
                 android:layout_marginRight="100dp"
                 android:layout_marginTop="@dimen/top_margin30"
                 android:background="@drawable/buttonshape"
-                android:text="Stream Session"
+                android:text="Upload Video"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>

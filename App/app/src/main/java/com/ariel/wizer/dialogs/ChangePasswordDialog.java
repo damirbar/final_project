@@ -96,7 +96,7 @@ public class ChangePasswordDialog extends DialogFragment {
     }
 
     private void initSharedPreferences() {
-        mPass = mRetrofitRequests.getmSharedPreferences().getString(Constants.PASS,"");
+        mPass = mRetrofitRequests.getSharedPreferences().getString(Constants.PASS,"");
     }
 
 
@@ -164,7 +164,7 @@ public class ChangePasswordDialog extends DialogFragment {
 
         mProgressBar.setVisibility(View.GONE);
 
-        SharedPreferences.Editor editor = mRetrofitRequests.getmSharedPreferences().edit();
+        SharedPreferences.Editor editor = mRetrofitRequests.getSharedPreferences().edit();
         editor.putString(PASS,mPass);
         editor.apply();
 

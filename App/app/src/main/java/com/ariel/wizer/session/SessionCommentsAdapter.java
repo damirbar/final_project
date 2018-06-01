@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ariel.wizer.R;
@@ -146,7 +144,7 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().rateMessage(sid,msgid,rate)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, ServerResponse::handleErrorRate));
+                .subscribe(this::handleResponse, ServerResponse::handleErrorQuiet));
     }
 
     private void handleResponse(Response response) { }

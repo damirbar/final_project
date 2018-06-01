@@ -1,24 +1,16 @@
 package com.ariel.wizer.demo;
 
 import android.app.Fragment;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.MediaController;
-import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
 import com.ariel.wizer.R;
@@ -87,7 +79,7 @@ public class VideoPlayerFragment extends Fragment {
         url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";//rm
 
         Map<String, String> header = new HashMap<String, String>(1);
-        header.put(Constants.TOKEN_HEADER, mRetrofitRequests.getmToken());
+        header.put(Constants.TOKEN_HEADER, mRetrofitRequests.getToken());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             vid.setVideoURI(Uri.parse(url), header);

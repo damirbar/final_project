@@ -48,7 +48,6 @@ public class MyCourseActivity extends AppCompatActivity {
         mServerResponse = new ServerResponse(findViewById(R.id.layout_my_classes));
         initSharedPreferences();
         initViews();
-        pullCourses();
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -96,7 +95,7 @@ public class MyCourseActivity extends AppCompatActivity {
     }
 
     private void initSharedPreferences() {
-        mId = mRetrofitRequests.getmSharedPreferences().getString(Constants.ID,"");
+        mId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID,"");
     }
 
 
@@ -135,8 +134,7 @@ public class MyCourseActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         pullCourses();
     }

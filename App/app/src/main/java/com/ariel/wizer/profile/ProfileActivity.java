@@ -51,12 +51,10 @@ public class ProfileActivity extends AppCompatActivity {
             mBtEditProfile.setVisibility(View.GONE);
             mBtChangePassword.setVisibility(View.GONE);
         }
-
-        loadProfile();
     }
 
     private void initSharedPreferences() {
-        mId = mRetrofitRequests.getmSharedPreferences().getString(Constants.ID,"");
+        mId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID,"");
     }
 
     private void initViews() {
@@ -120,14 +118,13 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume(){
         super.onResume();
         loadProfile();
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroy(){
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }

@@ -18,22 +18,22 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.ariel.wizer.R;
 import com.ariel.wizer.base.BaseActivity;
+import com.ariel.wizer.model.Response;
+import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.utils.Constants;
-import com.ariel.wizer.R;
-import com.ariel.wizer.model.Response;
-import com.ariel.wizer.model.User;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.ariel.wizer.utils.Constants.USER_NAME;
 import static com.ariel.wizer.utils.Constants.EMAIL;
 import static com.ariel.wizer.utils.Constants.ID;
 import static com.ariel.wizer.utils.Constants.PASS;
+import static com.ariel.wizer.utils.Constants.USER_NAME;
 import static com.ariel.wizer.utils.Validation.validateEmail;
 import static com.ariel.wizer.utils.Validation.validateFields;
 
@@ -109,28 +109,27 @@ public class RegisterFragment extends Fragment {
         if (password.length()<6) {
 
             err++;
-            mTiPassword.setError("Password must be at least 6 characters !");
-            mTiPassword2.setError("Password must be at least 6 characters !");
-
+            mTiPassword.setError("Password must be at least 6 characters.");
+            mTiPassword2.setError("Password must be at least 6 characters.");
         }
 
         if (!validateFields(password)) {
 
             err++;
-            mTiPassword.setError("Password should not be empty !");
+            mTiPassword.setError("Password should not be empty.");
         }
 
         if (!validateFields(password2)) {
 
             err++;
-            mTiPassword2.setError("Password should not be empty !");
+            mTiPassword2.setError("Password should not be empty.");
         }
 
         if (!password.equals(password2) && err == 0) {
 
             err++;
-            mTiPassword.setError("Passwords don't match !");
-            mTiPassword2.setError("Passwords don't match !");
+            mTiPassword.setError("Passwords don't match.");
+            mTiPassword2.setError("Passwords don't match.");
         }
 
 
@@ -138,19 +137,19 @@ public class RegisterFragment extends Fragment {
         if (!validateFields(first_name)) {
 
             err++;
-            mTiFName.setError("First Name should not be empty !");
+            mTiFName.setError("First Name should not be empty.");
         }
 
         if (!validateFields(last_name)) {
 
             err++;
-            mTiLName.setError("Last Name should not be empty !");
+            mTiLName.setError("Last Name should not be empty.");
         }
 
         if (!validateEmail(email)) {
 
             err++;
-            mTiEmail.setError("Email should be valid !");
+            mTiEmail.setError("Email should be valid.");
         }
 
 
@@ -190,16 +189,11 @@ public class RegisterFragment extends Fragment {
     private void handleResponse(Response response) {
         mProgressbar.setVisibility(View.GONE);
         loginProcess(mEmail,mPass);
-//        SharedPreferences.Editor editor = mSharedPreferences.edit();
-//        editor.putString(Constants.TOKEN,response.getToken());
-//        editor.putString(EMAIL,mEmail);
-//        editor.putString(PASS,mPass);
-//        editor.apply();
     }
 
     private void handleError(Throwable error) {
-        mProgressbar.setVisibility(View.GONE);
         mServerResponse.handleError(error);
+        mProgressbar.setVisibility(View.GONE);
     }
 
     private void showMessage(String message) {

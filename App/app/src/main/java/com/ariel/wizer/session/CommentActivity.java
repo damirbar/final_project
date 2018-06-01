@@ -62,8 +62,6 @@ public class CommentActivity extends AppCompatActivity {
 
 //        SessionMessage msg = (SessionMessage) getIntent().getSerializableExtra("msg");
 
-        pullComments();
-
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -79,7 +77,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void initSharedPreferences() {
-        mId = mRetrofitRequests.getmSharedPreferences().getString(Constants.ID,"");
+        mId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID,"");
     }
 
 

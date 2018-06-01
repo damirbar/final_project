@@ -53,7 +53,7 @@ public class FileUploadActivity extends AppCompatActivity {
 
 
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("*/*");
+            intent.setType("video/mp4*");
 
             try {
                 startActivityForResult(intent, INTENT_REQUEST_CODE);
@@ -78,7 +78,7 @@ public class FileUploadActivity extends AppCompatActivity {
 
                     InputStream is = getContentResolver().openInputStream(data.getData());
 
-                    uploadFile(getBytes(is));
+                    uploadFile(RetrofitRequests.getBytes(is));
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -87,17 +87,6 @@ public class FileUploadActivity extends AppCompatActivity {
         }
     }
 
-    public byte[] getBytes(InputStream is) throws IOException {
-        ByteArrayOutputStream byteBuff = new ByteArrayOutputStream();
-        int buffSize = 1024;
-        byte[] buff = new byte[buffSize];
-
-        int len = 0;
-        while ((len = is.read(buff)) != -1) {
-            byteBuff.write(buff, 0, len);
-        }
-        return byteBuff.toByteArray();
-    }
 
     private void uploadFile(byte[] bytes) {
         RequestBody requestFile = RequestBody.create(MediaType.parse("video/mp4"), bytes);

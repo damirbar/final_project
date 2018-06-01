@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,15 @@ import android.widget.TextView;
 import com.ariel.wizer.base.BaseActivity;
 import com.ariel.wizer.R;
 import com.ariel.wizer.dialogs.ResetPasswordDialog;
+import com.ariel.wizer.model.Response;
 import com.ariel.wizer.model.User;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.utils.Constants;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -215,7 +220,7 @@ public class LoginFragment extends Fragment{
         mSubscriptions.add(RetrofitRequests.getRetrofit(email, password).login()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponse,this::handleError));
     }
 
     private void handleResponse(User user) {
@@ -233,6 +238,11 @@ public class LoginFragment extends Fragment{
         Intent intent = new Intent(getActivity(), BaseActivity.class);
         startActivity(intent);
         getActivity().finish();
+    }
+
+    public void handleError(Throwable error) {
+      mServerResponse.handleError(error);
+      mProgressBar.setVisibility(View.GONE);
     }
 
     private void showMessage(String message) {

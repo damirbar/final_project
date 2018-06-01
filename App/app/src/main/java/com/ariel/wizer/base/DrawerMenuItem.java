@@ -87,7 +87,7 @@ public class DrawerMenuItem {
                 if(mCallBack != null)mCallBack.onSessionMenuSelected();
                 break;
             case DRAWER_MENU_ITEM_MY_COURSES:
-                if(mCallBack != null)mCallBack.onMycoursesMenuSelected();
+                if(mCallBack != null)mCallBack.onMyCoursesMenuSelected();
                 break;
             case DRAWER_MENU_ITEM_MESSAGE:
                 Toast.makeText(mContext, "Chat", Toast.LENGTH_SHORT).show();
@@ -119,7 +119,7 @@ public class DrawerMenuItem {
     public interface DrawerCallBack{
         void onProfileMenuSelected();
         void onSessionMenuSelected();
-        void onMycoursesMenuSelected();
+        void onMyCoursesMenuSelected();
         void onMessagesMenuSelected();
         void onNotificationsMenuSelected();
         void onSettingsMenuSelected();

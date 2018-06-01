@@ -3,7 +3,6 @@ package com.ariel.wizer.profile;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -29,10 +28,18 @@ import com.ariel.wizer.network.ServerResponse;
 import com.ariel.wizer.utils.Constants;
 import com.squareup.picasso.Picasso;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.ariel.wizer.network.RetrofitRequests.getBytes;
 import static com.ariel.wizer.utils.Validation.validateFields;
 
 public class EditProfileActivity extends AppCompatActivity implements MyDateDialog.OnCallbackReceived, PicModeSelectDialogFragment.IPicModeSelectListener {
@@ -61,6 +68,9 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     private Button mBSave;
     private Button mBcancel;
     private Bitmap myBitmap;
+    private String imagePath;
+    private int actions;
+    private User startUser;
 
 
     @Override
@@ -75,10 +85,10 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         initSharedPreferences();
         initViews();
         loadProfile();
-        }
+    }
 
     private void initSharedPreferences() {
-        mId = mRetrofitRequests.getmSharedPreferences().getString(Constants.ID,"");
+        mId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID, "");
     }
 
     private void initViews() {
@@ -93,7 +103,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mETAboutMe = (EditText) findViewById(R.id.eTAboutMe);
 
         mProfileChange = (TextView) findViewById(R.id.user_profile_change);
-        image = (ImageView)findViewById(R.id.user_profile_photo);
+        image = (ImageView) findViewById(R.id.user_profile_photo);
         mBSave = (Button) findViewById(R.id.save_button);
         mBcancel = (Button) findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveButton());
@@ -124,8 +134,9 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
         if (requestCode == REQUEST_CODE_UPDATE_PIC) {
             if (resultCode == RESULT_OK) {
-                String imagePath = result.getStringExtra(IntentExtras.IMAGE_PATH);
+                imagePath = result.getStringExtra(IntentExtras.IMAGE_PATH);
                 showCroppedImage(imagePath);
+
             } else if (resultCode == RESULT_CANCELED) {
 
             } else {
@@ -184,7 +195,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     }
 
     public void genderViewClick() {
-        final String[] items = { "Male", "Female", "Not Specified" };
+        final String[] items = {"Male", "Female", "Not Specified"};
         AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
@@ -212,7 +223,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     }
 
 
-    private void saveButton(){
+    private void saveButton() {
 
         setError();
 
@@ -232,21 +243,20 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         if (!validateFields(first_name)) {
 
             err++;
-            mETFirstName.setError("First Name should not be empty !");
+            mServerResponse.showSnackBarMessage("First Name should not be empty.");
         }
 
         if (!validateFields(last_name)) {
 
             err++;
-            mETLastName.setError("Last Name should not be empty !");
+            mServerResponse.showSnackBarMessage("Last Name should not be empty.");
         }
 
         if (gender.equalsIgnoreCase("Not Specified")) {
 
             err++;
-            mETGender.setError("Gender should not be empty !");
+            mServerResponse.showSnackBarMessage("Gender should not be empty.");
         }
-
 
         if (err == 0) {
 
@@ -261,33 +271,42 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
             user.setAge(Integer.parseInt(Age));
             user.setAbout_me(AboutMe);
 
-//        String g = getImageUri(this,myBitmap).toString();
-//        String pic [] ={g};
-//        user.setPhotos(pic);
+            boolean newUser = false;
+            if (!(startUser.equals(user))) {
+                actions++;
+                newUser = true;
+            }
 
 
-            updateProfile(user);
+            if (imagePath != null && !(imagePath.isEmpty())) {
+                actions++;
+                try {
+                    InputStream is = new FileInputStream(imagePath);
+                    tryUploadPic(getBytes(is));
+                    is.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(newUser)
+                updateProfile(user);
+
+            if (actions  == 0)
+                finish();
         }
-
     }
-
-//    public Uri getImageUri(Context inContext, Bitmap inImage) {
-//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-//        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-//        return Uri.parse(path);
-//    }
 
     private void loadProfile() {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getProfile(mId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseProfile,i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseProfile, i -> mServerResponse.handleError(i)));
     }
 
     private void handleResponseProfile(User user) {
-        mETFirstName.setText(user.getLname());
-        mETLastName.setText(user.getFname());
+        mETFirstName.setText(user.getFname());
+        mETLastName.setText(user.getLname());
         mETDisplayName.setText(user.getDisplay_name());
         mETCountry.setText(user.getCountry());
         mETAddress.setText(user.getAddress());
@@ -295,39 +314,46 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mETAboutMe.setText(user.getAbout_me());
 
         String g = user.getGender();
-        if(g == null || g.isEmpty()){
+        if (g == null || g.isEmpty()) {
             mETGender.setText("Not Specified");
-        }
-        else
+        } else
             mETGender.setText(user.getGender());
 
         String pic = user.getProfile_img();
-        if(pic!=null&&!(pic.isEmpty()))
+        if (pic != null && !(pic.isEmpty()))
             Picasso.get().load(pic).into(image);
 
-
+        startUser = user;
     }
 
     private void updateProfile(User user) {
-
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().updateProfile(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseUpdate,i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseUpdate, i -> mServerResponse.handleError(i)));
     }
 
     private void handleResponseUpdate(Response response) {
-        SharedPreferences.Editor editor = mRetrofitRequests.getmSharedPreferences().edit();
-        editor.putString(Constants.USER_NAME,mDisplayName);
-//        editor.putString(Constants.PROFILE_IMG,mEmail);
-        editor.apply();
-        finish();
-        }
+        if (actions - 1 == 0) {
+            finish();
+        } else
+            actions -= 1;
+    }
+
+    private void tryUploadPic(byte[] bytes) {
+        String filename = imagePath.substring(imagePath.lastIndexOf("/") + 1);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), bytes);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", filename, requestFile);
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadProfileImage(body)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseUpdate, i -> mServerResponse.handleError(i)));
+    }
+
 
     public void Update(String date) {
         mETAge.setText(date);
     }
-
 
 
     @Override

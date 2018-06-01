@@ -1,6 +1,7 @@
 package com.ariel.wizer.session;
 
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
@@ -27,6 +28,10 @@ public class CreateSessionActivity extends AppCompatActivity {
     private EditText mEditTextSid;
     private EditText mEditTextName;
     private EditText mEditTextLoc;
+    private TextInputLayout mTiSid;
+    private TextInputLayout mTiName;
+    private TextInputLayout mTiLoc;
+
     private Button mBtLogin;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
@@ -39,7 +44,6 @@ public class CreateSessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_session);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.scroll_view));
@@ -48,6 +52,9 @@ public class CreateSessionActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        mTiSid  = (TextInputLayout) findViewById(R.id.input_edit_text_sid);
+        mTiName  = (TextInputLayout) findViewById(R.id.input_edit_text_name);
+        mTiLoc  = (TextInputLayout) findViewById(R.id.input_edit_text_loc);
         mBtLogin = (Button) findViewById(R.id.create_session_button);
         mEditTextSid = (EditText) findViewById(R.id.edit_text_sid);
         mEditTextName = (EditText) findViewById(R.id.edit_text_name);
@@ -73,9 +80,9 @@ public class CreateSessionActivity extends AppCompatActivity {
     }
 
     private void setError() {
-        mEditTextSid.setError(null);
-        mEditTextLoc.setError(null);
-        mEditTextName.setError(null);
+        mTiSid.setError(null);
+        mTiName.setError(null);
+        mTiLoc.setError(null);
     }
 
 
@@ -91,17 +98,17 @@ public class CreateSessionActivity extends AppCompatActivity {
 
         if (!validateFields(sid)) {
             err++;
-            mEditTextSid.setError("Session Id should be valid !");
+            mTiSid.setError("Session Id should not be empty.");
         }
 
         if (!validateFields(name)) {
             err++;
-            mEditTextName.setError("Session Name should be valid !");
+            mTiName.setError("Session Name should not be empty.");
         }
 
         if (!validateFields(name)) {
             err++;
-            mEditTextLoc.setError("Session Location should be valid !");
+            mTiLoc.setError("Session Location should not be empty.");
         }
 
         if (err == 0) {

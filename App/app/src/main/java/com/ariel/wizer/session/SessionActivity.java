@@ -144,7 +144,7 @@ public class SessionActivity extends AppCompatActivity {
 //        String url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";//rm
 //
 //        Map<String, String> header = new HashMap<String, String>(1);
-//        header.put(Constants.TOKEN_HEADER, mRetrofitRequests.getmToken());
+//        header.put(Constants.TOKEN_HEADER, mRetrofitRequests.getToken());
 //
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            vid.setVideoURI(Uri.parse(url), header);

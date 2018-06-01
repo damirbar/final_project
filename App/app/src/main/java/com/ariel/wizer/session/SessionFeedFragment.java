@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -58,7 +57,6 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
 //        mSocket.on(Socket.EVENT_CONNECT,onConnect);
 //        mSocket.connect();
 
-        pullMessages();
 //        classAvgProcess();
 //        Handler handler = new Handler();
 //        handler.postDelayed(new Runnable(){
@@ -116,7 +114,7 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
     }
 
     private void initSharedPreferences() {
-        mId = mRetrofitRequests.getmSharedPreferences().getString(Constants.ID,"");
+        mId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID,"");
 //        mId = "5af33ce49a714e30547168dd";
     }
 
