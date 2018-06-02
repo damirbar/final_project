@@ -336,7 +336,7 @@ router.post('/post-video', type, function (req, res) {
                     cloudinary.v2.uploader.upload(path,
                         {
                             resource_type: "video",
-                            public_id: sess.sid + 'video',
+                            public_id: "sessionVideos/" + sess.sid + 'video',
                             eager: [
                                 {
                                     width: 300, height: 300,
