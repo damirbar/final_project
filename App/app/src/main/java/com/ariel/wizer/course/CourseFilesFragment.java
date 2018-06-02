@@ -1,5 +1,8 @@
 package com.ariel.wizer.course;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -15,16 +18,26 @@ import android.widget.TextView;
 
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.CourseFile;
+import com.ariel.wizer.model.Response;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+
+import static android.app.Activity.RESULT_OK;
+import static com.ariel.wizer.network.RetrofitRequests.getBytes;
 
 public class CourseFilesFragment extends Fragment {
 
@@ -37,6 +50,7 @@ public class CourseFilesFragment extends Fragment {
     private FloatingActionButton mFBAddFile;
     private CourseFilesAdapter mAdapter;
     private String cid;
+    private static final int INTENT_REQUEST_CODE = 100;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,9 +107,49 @@ public class CourseFilesFragment extends Fragment {
         }
     }
 
-
     private void addFile() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("application/pdf");
+        try {
+            startActivityForResult(intent, INTENT_REQUEST_CODE);
+
+        } catch (ActivityNotFoundException e) {
+
+            e.printStackTrace();
+        }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == INTENT_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                try {
+                    Uri uri= data.getData();
+                    File file= new File(uri.getPath());
+                    InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
+                    tryUploadFile(getBytes(is),file.getName().trim());
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void tryUploadFile(byte[] bytes,String fileName) {
+        RequestBody requestFile = RequestBody.create(MediaType.parse("application/pdf"), bytes);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", fileName, requestFile);
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body, cid)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseUploadFile, i -> mServerResponse.handleError(i)));
+    }
+
+
+    private void handleResponseUploadFile(Response response) {
+        mServerResponse.showSnackBarMessage(response.getMessage());
+    }
+
 
     private void pullFiles() {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllFilesById(cid)

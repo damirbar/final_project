@@ -2,7 +2,6 @@ package com.ariel.wizer.course;
 
 import android.content.Intent;
 import android.os.Handler;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -103,6 +102,13 @@ public class MyCourseActivity extends AppCompatActivity {
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
         mFB = (FloatingActionButton) findViewById(R.id.fb_add_corse);
         buttonBack.setOnClickListener(view -> finish());
+        mFB.setOnClickListener(view -> addCourse());
+
+    }
+
+    private void addCourse() {
+        Intent intent = new Intent(this,CreateCourseActivity.class);
+        startActivity(intent);
     }
 
     private void pullCourses() {

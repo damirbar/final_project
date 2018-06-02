@@ -35,6 +35,7 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -84,6 +85,10 @@
         <activity
             android:name=".search.SearchActivity"
             android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".course.CreateCourseActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+
     </application>
 
 </manifest>

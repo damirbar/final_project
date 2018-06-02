@@ -98,7 +98,7 @@ public interface RetrofitInterface {
 
     @Multipart
     @POST("sessions/post-video")
-    Observable<Response> uploadFile(@Part MultipartBody.Part file, @Query("sid") String sid);
+    Observable<Response> uploadVid(@Part MultipartBody.Part file, @Query("sid") String sid);
 
     //////////////////Courses//////////////////
 
@@ -111,7 +111,12 @@ public interface RetrofitInterface {
     @GET("courses/get-all-files-by-id")
     Observable<CourseFile[]> getAllFilesById(@Query("id") String id);
 
+    @Multipart
+    @POST("courses/post-file")
+    Observable<Response> uploadFile(@Part MultipartBody.Part file, @Query("num") String num);
 
+    @POST("courses/add-course")
+    Observable<Response> createCourse(@Body Course course);
 
 
 //    /////chat/////
