@@ -3,7 +3,6 @@ package com.ariel.wizer.session;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +19,10 @@ import com.ariel.wizer.model.SessionMessage;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -81,7 +82,18 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
         TextView mEmail = (TextView) listItem.findViewById(R.id.user_name);
         TextView msg = (TextView) listItem.findViewById(R.id.content);
         ImageView comView = (ImageView) listItem.findViewById(R.id.comment_btn);
+        TextView comCount = (TextView) listItem.findViewById(R.id.comments_num);
+        TextView mDate = (TextView) listItem.findViewById(R.id.creation_date);
 
+        //Date
+        Date date = currentMessage.getDate();
+        if(date!=null){
+            Format formatter = new SimpleDateFormat("HH:mm\ndd/MM/yyyy");
+            String s = formatter.format(date);
+            mDate.setText(s);
+        }
+
+        comCount.setText(String.valueOf(currentMessage.getReplies().length));
         mEmail.setText(currentMessage.getEmail());
         msg.setText(currentMessage.getBody()[1]);
         mLikeNum.setText(String.valueOf(currentMessage.getLikes()));
@@ -103,24 +115,22 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
         else
             likeCbx.setChecked(false);
 
-        likeCbx.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Integer pos = (Integer)buttonView.getTag();
-                if(isChecked){
-                    if(dislikeCheckBoxState[pos]) {
-                        messagesList.get(position).setDislikes(messagesList.get(position).getDislikes()-1);
-                        dislikeCheckBoxState[pos]= false;
-                    }
-                    messagesList.get(position).setLikes(messagesList.get(position).getLikes() + 1);
-                    likeCheckBoxState[pos]= true;
+        likeCbx.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            Integer pos = (Integer)buttonView.getTag();
+            if(isChecked){
+                if(dislikeCheckBoxState[pos]) {
+                    messagesList.get(position).setDislikes(messagesList.get(position).getDislikes()-1);
+                    dislikeCheckBoxState[pos]= false;
                 }
-                else{
-                    likeCheckBoxState[pos] = false;
-                    messagesList.get(position).setLikes(messagesList.get(position).getLikes() - 1);
-                }
-                addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),1);
-                notifyDataSetChanged();
+                messagesList.get(position).setLikes(messagesList.get(position).getLikes() + 1);
+                likeCheckBoxState[pos]= true;
             }
+            else{
+                likeCheckBoxState[pos] = false;
+                messagesList.get(position).setLikes(messagesList.get(position).getLikes() - 1);
+            }
+            addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),1);
+            notifyDataSetChanged();
         });
 
         dislikeCbx.setTag(position);
@@ -129,25 +139,23 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
             dislikeCbx.setChecked(true);
         else
             dislikeCbx.setChecked(false);
-        dislikeCbx.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Integer pos = (Integer)buttonView.getTag();
-                if(isChecked){
-                    if(likeCheckBoxState[pos]){
-                        messagesList.get(position).setLikes(messagesList.get(position).getLikes() - 1);
-                        likeCheckBoxState[pos] = false;
-                    }
-                    messagesList.get(position).setDislikes(messagesList.get(position).getDislikes() + 1);
-                    dislikeCheckBoxState[pos]= true;
+        dislikeCbx.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            Integer pos = (Integer)buttonView.getTag();
+            if(isChecked){
+                if(likeCheckBoxState[pos]){
+                    messagesList.get(position).setLikes(messagesList.get(position).getLikes() - 1);
+                    likeCheckBoxState[pos] = false;
+                }
+                messagesList.get(position).setDislikes(messagesList.get(position).getDislikes() + 1);
+                dislikeCheckBoxState[pos]= true;
 
-                }
-                else{
-                    dislikeCheckBoxState[pos] = false;
-                    messagesList.get(position).setDislikes(messagesList.get(position).getDislikes() - 1);
-                }
-                addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),0);
-                notifyDataSetChanged();
             }
+            else{
+                dislikeCheckBoxState[pos] = false;
+                messagesList.get(position).setDislikes(messagesList.get(position).getDislikes() - 1);
+            }
+            addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),0);
+            notifyDataSetChanged();
         });
         return listItem;
     }
@@ -156,7 +164,7 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().rateMessage(sid,msgid,rate)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, ServerResponse::handleErrorRate));
+                .subscribe(this::handleResponse, ServerResponse::handleErrorQuiet));
     }
 
     private void handleResponse(Response response) { }

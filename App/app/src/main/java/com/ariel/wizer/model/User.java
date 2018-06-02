@@ -9,8 +9,6 @@ public class User {
     private String password;
     private String role = "teacher";
     private String accessToken;
-
-
     private String display_name;
     private String about_me;
     private String country;
@@ -175,4 +173,22 @@ public class User {
     public void setToken(String token) {
         this.accessToken = token;
     }
+
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof User)) {
+            return false;
+        }
+        User u = (User) other;
+        return this.getFname().equals(u.getFname()) &&
+                this.getLname().equals(u.getLname()) &&
+                this.getDisplay_name().equals(u.getDisplay_name()) &&
+                this.getCountry().equals(u.getCountry()) &&
+                this.getAddress().equals(u.getAddress()) &&
+                this.getAge() == u.getAge() &&
+                this.getGender().equals(u.getGender()) &&
+                this.getAbout_me().equals(u.getAbout_me());
+    }
+
 }

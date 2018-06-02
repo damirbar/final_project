@@ -1,19 +1,53 @@
 package com.ariel.wizer.model;
 
+import java.util.Date;
+
 public class SessionMessage  {
 
     private String sid;
     private String email;
     private int likes;
     private int dislikes;
-
+    private SessionMessage replies[];
     private String likers[];
     private String dislikers[];
-
     private String body[];
     private String type;
     private String _id;
-    private String date;
+    private Date date;
+    private String mid;//Id of the Message to reply
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public String getMid() {
+        return mid;
+    }
+
+    public void setMid(String mid) {
+        this.mid = mid;
+    }
+
+    public SessionMessage[] getReplies() {
+        return replies;
+    }
+
+    public void setReplies(SessionMessage[] replies) {
+        this.replies = replies;
+    }
+
+    public void setLikers(String[] likers) {
+        this.likers = likers;
+    }
+
+    public void setDislikers(String[] dislikers) {
+        this.dislikers = dislikers;
+    }
 
     public String[] getLikers() {
         return likers;
@@ -80,11 +114,4 @@ public class SessionMessage  {
         this.dislikes = dislikes;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 }

@@ -39,6 +39,11 @@ public interface RetrofitInterface {
     @POST("students/edit-profile")
     Observable<Response> updateProfile(@Body User user);
 
+    @Multipart
+    @POST("students/post-profile-image")
+    Observable<Response> uploadProfileImage(@Part MultipartBody.Part file);
+
+
     @PUT("auth/change-password")
     Observable<Response> changePassword(@Body User user);
 
@@ -71,12 +76,15 @@ public interface RetrofitInterface {
     @GET("sessions/get-all-messages")
     Observable<SessionMessage []> getAllMessages(@Query("sid") String sid);
 
-    @GET("sessions/get-all-user-messages")
-    Observable<SessionMessage []> getMyMessages(@Query("sid") String sid);
-
+    @GET("sessions/get-message")
+    Observable<SessionMessage> getMessage(@Query("mid") String mid);
 
     @POST("sessions/messages")
     Observable<Response> publishSessionMessage(@Body SessionMessage message);
+
+    @POST("sessions/reply")
+    Observable<Response> publishReply(@Body SessionMessage message);
+
 
     @GET("sessions/disconnect")
     Observable<Response> disconnect(@Query("sid") String sid);

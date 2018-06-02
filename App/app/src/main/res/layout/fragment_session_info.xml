@@ -4,7 +4,7 @@
     android:id="@+id/activity_session_info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fdfdfe"
+    android:background="@color/def_background"
     android:fitsSystemWindows="true">
 
     <ScrollView
@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#fdfdfe"
+            android:background="@color/def_background"
             android:orientation="vertical">
 
             <LinearLayout
@@ -24,7 +24,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
-                android:background="#fdfdfe"
                 android:divider="@drawable/divider"
                 android:orientation="vertical"
                 android:showDividers="none|end">
@@ -57,7 +56,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#fdfdfe"
                 android:divider="@drawable/divider"
                 android:orientation="vertical"
                 android:showDividers="none|end">
@@ -90,7 +88,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#fdfdfe"
                 android:divider="@drawable/divider"
                 android:orientation="vertical"
                 android:showDividers="none|end">
@@ -123,7 +120,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#fdfdfe"
                 android:divider="@drawable/divider"
                 android:orientation="vertical"
                 android:showDividers="none|end">
@@ -156,7 +152,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#fdfdfe"
                 android:divider="@drawable/divider"
                 android:orientation="vertical"
                 android:showDividers="none|end">
@@ -189,7 +184,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#fdfdfe"
                 android:divider="@drawable/divider"
                 android:orientation="vertical"
                 android:showDividers="none|end">
@@ -206,8 +200,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="30dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/white">
+                    android:layout_marginTop="10dp">
 
                     <CheckBox
                         android:id="@+id/dislike_cbx"
@@ -250,7 +243,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/button_vid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="25dp"
@@ -258,7 +251,7 @@
                 android:layout_marginRight="100dp"
                 android:layout_marginTop="@dimen/top_margin30"
                 android:background="@drawable/buttonshape"
-                android:text="Stream Session"
+                android:text="Upload Video"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_search"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#fdfdfe">
+    android:layout_height="match_parent">
 
 
     <android.support.v7.widget.Toolbar
@@ -66,8 +65,8 @@
         android:layout_below="@+id/toolbar"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:background="#fdfdfe"
-        android:divider="@color/documets_divider"
+        android:background="@color/def_background"
+        android:divider="@color/def_background"
         android:listSelector="@android:color/transparent"
         android:scrollbarSize="2dp"
         android:visibility="visible" />

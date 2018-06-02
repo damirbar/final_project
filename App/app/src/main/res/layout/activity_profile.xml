@@ -5,7 +5,7 @@
     android:id="@+id/layout_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fdfdfe">
+    android:background="@color/def_background">
 
 
     <android.support.v7.widget.Toolbar
@@ -50,7 +50,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fdfdfe"
             android:orientation="vertical">
 
 
@@ -116,7 +115,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
-                android:background="#fdfdfe"
                 android:divider="@drawable/divider"
                 android:orientation="vertical"
                 android:showDividers="none|end">

@@ -3,25 +3,17 @@ package com.ariel.wizer.network;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.util.Base64;
 
-import com.ariel.wizer.R;
-import com.ariel.wizer.model.Response;
-import com.ariel.wizer.model.User;
 import com.ariel.wizer.utils.Constants;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.HttpException;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.schedulers.Schedulers;
@@ -29,8 +21,8 @@ import rx.schedulers.Schedulers;
 public class RetrofitRequests {
 
     private Activity activity;
-    private SharedPreferences mSharedPreferences;
-    private String mToken;
+    private SharedPreferences sharedPreferences;
+    private String token;
 
 
     public RetrofitRequests(Activity _activity){
@@ -40,15 +32,15 @@ public class RetrofitRequests {
 
     }
 
-    public String getmToken() {
-        return mToken;
+    public String getToken() {
+        return token;
     }
 
-    public SharedPreferences getmSharedPreferences() {return mSharedPreferences; }
+    public SharedPreferences getSharedPreferences() {return sharedPreferences; }
 
     private void initSharedPreferences() {
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.activity);
-        mToken = mSharedPreferences.getString(Constants.TOKEN,"");
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.activity);
+        token = sharedPreferences.getString(Constants.TOKEN,"");
     }
 
 
@@ -98,7 +90,7 @@ public class RetrofitRequests {
 
             Request original = chain.request();
             Request.Builder builder = original.newBuilder()
-                    .addHeader(Constants.TOKEN_HEADER, this.mToken)
+                    .addHeader(Constants.TOKEN_HEADER, this.token)
                     .method(original.method(),original.body());
             return  chain.proceed(builder.build());
 
@@ -112,6 +104,18 @@ public class RetrofitRequests {
                 .addCallAdapterFactory(rxAdapter)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(RetrofitInterface.class);
+    }
+
+    public static byte[] getBytes(InputStream is) throws IOException {
+        ByteArrayOutputStream byteBuff = new ByteArrayOutputStream();
+        int buffSize = 1024;
+        byte[] buff = new byte[buffSize];
+
+        int len;
+        while ((len = is.read(buff)) != -1) {
+            byteBuff.write(buff, 0, len);
+        }
+        return byteBuff.toByteArray();
     }
 
 

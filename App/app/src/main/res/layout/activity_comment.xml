@@ -7,6 +7,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
         android:layout_width="fill_parent"
@@ -31,11 +32,13 @@
                 android:layout_centerVertical="true"
                 android:background="@null"
                 android:contentDescription="TODO"
-                app:srcCompat="@drawable/intercom_back" />
+                app:srcCompat="@drawable/intercom_back"
+                android:layout_alignParentLeft="true" />
 
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
+
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/activity_main_swipe_refresh_layout"
@@ -54,9 +57,9 @@
             android:layout_below="@+id/tool_bar"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@color/documets_divider"
+            android:background="@color/def_background"
             android:choiceMode="singleChoice"
-            android:divider="@color/documets_divider"
+            android:divider="@color/def_background"
             android:fastScrollEnabled="true"
             android:focusableInTouchMode="false"
             android:listSelector="@android:color/transparent"
@@ -64,13 +67,11 @@
             android:scrollbarThumbVertical="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-
     <LinearLayout
         android:id="@+id/button_panel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/black21"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/top_margin8"
         android:paddingTop="@dimen/top_margin8">

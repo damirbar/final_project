@@ -9,15 +9,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.CourseFile;
-import com.ariel.wizer.model.SessionMessage;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
-import com.ariel.wizer.session.SessionPostsAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +35,6 @@ public class CourseFilesFragment extends Fragment {
     private TextView mTvNoResults;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private FloatingActionButton mFBAddFile;
-
     private CourseFilesAdapter mAdapter;
     private String cid;
 
@@ -49,18 +47,35 @@ public class CourseFilesFragment extends Fragment {
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
         mServerResponse = new ServerResponse(view.findViewById(R.id.activity_files_feed));
-        pullFiles();
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(new Runnable() {
             @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        pullFiles();
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 1000);
+            public void run() {
+                pullFiles();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 1000));
+
+        filesList.setOnScrollListener(new AbsListView.OnScrollListener(){
+            private int mLastFirstVisibleItem;
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+
+                if(mLastFirstVisibleItem<firstVisibleItem)
+                {
+                    mFBAddFile.hide();
+                }
+                if(mLastFirstVisibleItem>firstVisibleItem)
+                {
+                    mFBAddFile.show();
+                }
+                mLastFirstVisibleItem=firstVisibleItem;
+
             }
         });
 
@@ -110,8 +125,7 @@ public class CourseFilesFragment extends Fragment {
 
 
     @Override
-    public void onResume()
-    {
+    public void onResume(){
         super.onResume();
         pullFiles();
     }

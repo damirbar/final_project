@@ -368,7 +368,7 @@
     <color name="whiteBackground">#ffffffff</color>
     <color name="whiteText">#ffffffff</color>
     <color name="whiteTwo">#ffdadada</color>
-
+    <color name="def_background">#fdfdfe</color>
 
 
 </resources>

@@ -2,6 +2,7 @@ package com.ariel.wizer.session;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +14,7 @@ import android.widget.ImageButton;
 
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
+import com.ariel.wizer.model.Session;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 
@@ -27,7 +29,8 @@ public class ConnectSessionActivity extends AppCompatActivity {
     private String sid;
     private EditText mEditTextSid;
     private EditText mEditTextName;
-
+    private TextInputLayout mTiSid;
+    private TextInputLayout mTiName;
     private Button mBtLogin;
     private Button mCreateSessionButton;
     private CompositeSubscription mSubscriptions;
@@ -41,65 +44,16 @@ public class ConnectSessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_session);
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.scroll_view));
         initViews();
 
-        mEditTextSid.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(mEditTextSid.getText().toString().length() > 0 && mEditTextName.getText().toString().length() > 0) {
-                    mBtLogin.setTextColor(Color.parseColor("#ffffff"));
-                    mBtLogin.setEnabled(true);
-                }
-                else {
-                    mBtLogin.setTextColor(Color.parseColor("#CCCCCC"));
-                    mBtLogin.setEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        mEditTextName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(mEditTextName.getText().toString().length() > 0 && mEditTextSid.getText().toString().length() > 0) {
-                    mBtLogin.setTextColor(Color.parseColor("#ffffff"));
-                    mBtLogin.setEnabled(true);
-                }
-                else {
-                    mBtLogin.setTextColor(Color.parseColor("#CCCCCC"));
-                    mBtLogin.setEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-
     }
 
     private void initViews() {
+        mTiSid  = (TextInputLayout) findViewById(R.id.input_edit_text_sid);
+        mTiName  = (TextInputLayout) findViewById(R.id.input_edit_text_name);
         mBtLogin = (Button) findViewById(R.id.classloginButton);
         mCreateSessionButton = (Button) findViewById(R.id.create_session_button);
         mEditTextSid = (EditText) findViewById(R.id.edit_text_sid);
@@ -108,8 +62,6 @@ public class ConnectSessionActivity extends AppCompatActivity {
         mBtLogin.setOnClickListener(view -> login());
         mCreateSessionButton.setOnClickListener(view -> createSession());
         buttonBack.setOnClickListener(view -> finish());
-
-
     }
 
 
@@ -118,35 +70,34 @@ public class ConnectSessionActivity extends AppCompatActivity {
 
     }
 
-//    private void setError() {
-//        mEditTextName.setError(null);
-//        mEditTextSid.setError(null);
-//    }
+    private void setError() {
+        mTiSid.setError(null);
+        mTiName.setError(null);
+    }
 
 
     private void login() {
 
-//        setError();
+        setError();
 
         sid = mEditTextSid.getText().toString().trim();
         String name = mEditTextName.getText().toString().trim();
 
-//        int err = 0;
-//
-//        if (!validateFields(sid)) {
-//            err++;
-//            mEditTextSid.setError("Session should be valid !");
-//        }
-//
-//        if (!validateFields(name)) {
-//            err++;
-//            mEditTextName.setError("User Name should be valid !");
-//        }
-//
-//
-//        if (err == 0) {
+        int err = 0;
+
+        if (!validateFields(sid)) {
+            err++;
+            mTiSid.setError("Session Id should not be empty.");
+        }
+
+        if (!validateFields(name)) {
+            err++;
+            mTiName.setError("User Name should not be empty.");
+        }
+
+        if (err == 0) {
             loginProcess(sid,name);
-//        }
+        }
     }
 
     private void loginProcess(String sid, String name) {
@@ -156,12 +107,11 @@ public class ConnectSessionActivity extends AppCompatActivity {
                 .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponse(Response response) {
+    private void handleResponse(Response response){
         Intent intent = new Intent(getBaseContext(), SessionActivity.class);
-        intent.putExtra("sid",sid);
+        intent.putExtra("session",response.getSession());
         startActivity(intent);
         finish();
-
     }
 
     @Override
@@ -169,6 +119,4 @@ public class ConnectSessionActivity extends AppCompatActivity {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
-
-
 }
