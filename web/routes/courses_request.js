@@ -128,33 +128,33 @@ router.get('/file-system', function(req,res){
         });
 });
 
-router.post('/upload-file',function(req,res){
-    const course_id = req.query.course_id;
-    const file = new File(req.body);
-    file.course_id = course_id;
-    file.save(function (err){
-        if (err) {
-            if (err.name === 'MongoError' && err.code === 11000) {
-                // Duplicate username
-                console.log('Failed adding file Error 11000 ' + file.name);
-                return res.status(500).send('Failed adding course Error 11000 ' + file.name);
-            }
-
-            if (err.name === 'ValidationError') {
-                //ValidationError
-                for (field in err.errors) {
-                    console.log("Validation Error!");
-                    return res.status(500).send("validation Error!");
-                }
-            }
-            // Some other error
-            console.log(err);
-            return res.status(500).send(err);
-        }
-        res.send("successfully added " + file.name + " to db");
-        console.log("successfully added " + file.name + " to db");
-    });
-});
+// router.post('/upload-file',function(req,res){
+//     const course_id = req.query.course_id;
+//     const file = new File(req.body);
+//     file.course_id = course_id;
+//     file.save(function (err){
+//         if (err) {
+//             if (err.name === 'MongoError' && err.code === 11000) {
+//                 // Duplicate username
+//                 console.log('Failed adding file Error 11000 ' + file.name);
+//                 return res.status(500).send('Failed adding course Error 11000 ' + file.name);
+//             }
+//
+//             if (err.name === 'ValidationError') {
+//                 //ValidationError
+//                 for (field in err.errors) {
+//                     console.log("Validation Error!");
+//                     return res.status(500).send("validation Error!");
+//                 }
+//             }
+//             // Some other error
+//             console.log(err);
+//             return res.status(500).send(err);
+//         }
+//         res.send("successfully added " + file.name + " to db");
+//         console.log("successfully added " + file.name + " to db");
+//     });
+// });
 
 
 router.get('/file-system/download-file',function(req,res){
@@ -185,6 +185,7 @@ const type = upload.single('recfile');
 const cloudinary = require('cloudinary');
 const fs = require('fs');
 const config = require('../config/config');
+
 cloudinary.config({
     cloud_name: config.cloudniary.cloud_name,
     api_key: config.cloudniary.api_key,
@@ -192,7 +193,7 @@ cloudinary.config({
 });
 
 let first = true;
-router.post('/post-video', type, function (req, res) {
+router.post('/post-file', type, function (req, res) {
     if (!req.file) {
         res.status(400).json({message: 'no file'});
     }
@@ -207,22 +208,29 @@ router.post('/post-video', type, function (req, res) {
             else {
                 res.status(200).json({message: 'received file'});
                 console.log(path);
-                Course.findOne({course_no: req.query.num}, function (err, course) {
+                Course.findOne({course_no: 12512343}, function (err, course) {
                     if (err) return next(err);
-                    console.log("starting to upload " + req.file.originalname);
-                    cloudinary.v2.uploader.upload(path,
-                        {
-                            public_id: course.course_no + "1",
-                        },
-                        function (err, result) {
-                            fs.unlinkSync(path);
-                            if (err) return err;
-                            console.log("uploaded " + req.file.originalname);
-                            console.log(result);
-                            course.files.push(result.url);
-                            course.save();
-                            first = true;
-                        });
+                    if (course) {
+                        console.log("starting to upload " + req.file.originalname);
+                        cloudinary.v2.uploader.upload(path,
+                            {
+                                // public_id: "course" + course.course_num + "/" + req.file.path
+                                public_id: "course" + req.query.num + "/" + req.file.filename
+                            },
+                            function (err, result) {
+                                fs.unlinkSync(path);
+                                if (err) return err;
+                                console.log("uploaded " + req.file.originalname);
+                                console.log(result);
+                                course.files.push(result.url);
+                                course.save();
+                                first = true;
+                            });
+                    }
+                    else{
+                        console.log("no such course");
+                        fs.unlinkSync(path);
+                    }
                 });
             }
         }
