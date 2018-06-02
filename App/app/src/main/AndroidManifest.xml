@@ -35,9 +35,6 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-
-        <service android:name=".demo.DownloadService" />
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -77,9 +74,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".course.MyCourseActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name=".demo.FileDownActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".session.CreateSessionActivity"

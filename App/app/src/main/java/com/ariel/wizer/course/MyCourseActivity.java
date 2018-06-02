@@ -2,6 +2,7 @@ package com.ariel.wizer.course;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ariel.wizer.R;
@@ -38,6 +40,7 @@ public class MyCourseActivity extends AppCompatActivity {
     private CoursesAdapter mAdapter;
     private String mId;
     private FloatingActionButton mFB;
+    private RelativeLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,18 +52,10 @@ public class MyCourseActivity extends AppCompatActivity {
         initSharedPreferences();
         initViews();
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        pullCourses();
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 1000);
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+            pullCourses();
+            mSwipeRefreshLayout.setRefreshing(false);
+        }, 1000));
 
         coursesList.setOnItemClickListener((parent, view1, position, id) -> {
             Course  C = mAdapter.getItem(position);
@@ -100,6 +95,8 @@ public class MyCourseActivity extends AppCompatActivity {
 
 
     private void initViews() {
+        layout =  findViewById(R.id.relative);
+        layout.setVisibility(View.GONE);
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         mTvNoResults = (TextView) findViewById(R.id.tv_no_results);
         coursesList = (ListView) findViewById(R.id.myClassesList);
@@ -125,6 +122,9 @@ public class MyCourseActivity extends AppCompatActivity {
             mTvNoResults.setVisibility(View.VISIBLE);
 
         }
+
+        layout.setVisibility(View.VISIBLE);
+
     }
 
     @Override

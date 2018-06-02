@@ -39,13 +39,21 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tool_bar">
+        android:layout_below="@+id/tool_bar"
+        android:background="@color/def_background">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,7 +71,7 @@
                 <ImageView
                     android:id="@+id/image"
                     android:layout_width="match_parent"
-                    android:layout_height="230dp"
+                    android:layout_height="240dp"
                     android:scaleType="fitXY"
                     android:src="?android:attr/colorAccent" />
 
@@ -79,6 +87,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="126dp"
                         android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
                         android:paddingBottom="3dp"
                         android:src="@drawable/default_user_image"
                         app:civ_border_color="?android:attr/colorAccent"
@@ -121,7 +130,7 @@
 
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/textViewBio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="About me"
@@ -148,13 +157,14 @@
                 android:layout_height="wrap_content"
 
                 android:layout_gravity="center"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="35dp"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/rounded"
+                android:background="@drawable/dark_buttonshape"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="EDIT PROFILE"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/change_pass"
@@ -163,12 +173,13 @@
 
                 android:layout_gravity="center"
                 android:layout_marginBottom="30dp"
-                android:background="@drawable/rounded"
+                android:background="@drawable/dark_buttonshape"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="Change Password"
                 android:textAlignment="center"
-                android:textAllCaps="true" />
+                android:textAllCaps="true"
+                android:textColor="@color/white" />
 
 
         </LinearLayout>

@@ -101,7 +101,7 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
         //Date
         Date date = currentMessage.getDate();
         if(date!=null){
-            Format formatter = new SimpleDateFormat("HH:mm\ndd/MM/yyyy");
+            Format formatter = new SimpleDateFormat("HH:mm EEE, d MMM yyyy");
             String s = formatter.format(date);
             mDate.setText(s);
         }

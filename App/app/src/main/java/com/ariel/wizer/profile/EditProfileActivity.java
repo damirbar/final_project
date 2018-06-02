@@ -8,10 +8,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.WindowManager;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,11 @@ import com.squareup.picasso.Picasso;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -63,19 +69,17 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     public static final int REQUEST_CODE_UPDATE_BIO = 0x2;
     private ImageView image;
     private Button mBSave;
-    private Button mBcancel;
+    private Button mBCancel;
     private Bitmap myBitmap;
     private String imagePath;
     private int actions;
     private User startUser;
-
+    private ScrollView layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.layout));
@@ -89,6 +93,8 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     }
 
     private void initViews() {
+        layout = findViewById(R.id.scroll);
+        layout.setVisibility(View.GONE);
         mETFirstName = (EditText) findViewById(R.id.eTFirstName);
         mETLastName = (EditText) findViewById(R.id.eTLastName);
         mETGender = (EditText) findViewById(R.id.eTGender);
@@ -100,9 +106,9 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mProfileChange = (TextView) findViewById(R.id.user_profile_change);
         image = (ImageView) findViewById(R.id.user_profile_photo);
         mBSave = (Button) findViewById(R.id.save_button);
-        mBcancel = (Button) findViewById(R.id.cancel_button);
+        mBCancel = (Button) findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveButton());
-        mBcancel.setOnClickListener(view -> finish());
+        mBCancel.setOnClickListener(view -> finish());
         mETGender.setOnClickListener(view -> genderViewClick());
         mProfileChange.setOnClickListener(view -> showAddProfilePicDialog());
         image.setOnClickListener(view -> showAddProfilePicDialog());
@@ -121,6 +127,12 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
     private void showDialog() {
         MyDateDialog newFragment = new MyDateDialog();
+        String date = mETAge.getText().toString().trim();
+        if(!(date.isEmpty())) {
+            Bundle bundle = new Bundle();
+            bundle.putString("date", mETAge.getText().toString().trim());
+            newFragment.setArguments(bundle);
+        }
         newFragment.show(getSupportFragmentManager(), MyDateDialog.TAG);
     }
 
@@ -261,8 +273,15 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
             user.setDisplay_name(mDisplayName);
             user.setCountry(country);
             user.setAddress(TAddress);
-            user.setAge(Integer.parseInt(Age));
             user.setAbout_me(AboutMe);
+
+            DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                Date date = format.parse(Age);
+                user.setBirthday(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
             boolean newUser = false;
             if (!(startUser.equals(user))) {
@@ -282,10 +301,10 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
                     e.printStackTrace();
                 }
             }
-            if(newUser)
+            if (newUser)
                 updateProfile(user);
 
-            if (actions  == 0)
+            if (actions == 0)
                 finish();
         }
     }
@@ -303,7 +322,15 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mETDisplayName.setText(user.getDisplay_name());
         mETCountry.setText(user.getCountry());
         mETAddress.setText(user.getAddress());
-        mETAge.setText(String.valueOf(user.getAge()));
+
+        //Date
+        Date date = user.getBirthday();
+        if(date!=null) {
+            Format formatter = new SimpleDateFormat("dd/MM/yyyy");
+            String s = formatter.format(date);
+            mETAge.setText(s);
+        }
+
         mETAboutMe.setText(user.getAbout_me());
 
         String g = user.getGender();
@@ -314,8 +341,12 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
         String pic = user.getProfile_img();
         if (pic != null && !(pic.isEmpty()))
-            Picasso.get().load(pic).into(image);
+            Picasso.get()
+                    .load(pic)
+                    .error(R.drawable.default_user_image)
+                    .into(image);
 
+        layout.setVisibility(View.VISIBLE);
         startUser = user;
     }
 

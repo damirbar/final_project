@@ -98,6 +98,7 @@ public class SearchActivity extends AppCompatActivity {
             saveItems.addAll(Arrays.asList(items.getUsers()));
             saveItems.addAll(Arrays.asList(items.getSessions()));
             saveItems.addAll(Arrays.asList(items.getFiles()));
+            saveItems.addAll(Arrays.asList(items.getCourses()));
 
             mTvNoResults.setVisibility(View.GONE);
             mAdapter = new SearchListAdapter(this, new ArrayList<>(saveItems));

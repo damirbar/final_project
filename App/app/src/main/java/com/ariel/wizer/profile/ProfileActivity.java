@@ -1,11 +1,18 @@
 package com.ariel.wizer.profile;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.ariel.wizer.R;
@@ -34,6 +41,8 @@ public class ProfileActivity extends AppCompatActivity {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private String mId;
+    private ScrollView layout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +67,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        layout = findViewById(R.id.scroll);
+        layout.setVisibility(View.GONE);
         image = findViewById(R.id.user_profile_photo);
         mDisplayName = findViewById(R.id.tvdisName);
         mCountry = findViewById(R.id.tvcountry_);
@@ -107,8 +118,12 @@ public class ProfileActivity extends AppCompatActivity {
         mCountry.setText(user.getCountry());
         mAboutMe.setText(user.getAbout_me());
         String pic = user.getProfile_img();
-        if(pic!=null&&!(pic.isEmpty()))
-            Picasso.get().load(pic).into(image);
+        if (pic != null && !(pic.isEmpty()))
+            Picasso.get()
+                    .load(pic)
+                    .error(R.drawable.default_user_image)
+                    .into(image);
+        layout.setVisibility(View.VISIBLE);
     }
 
     private void showDialog(){

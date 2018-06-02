@@ -73,6 +73,7 @@ public class CommentActivity extends AppCompatActivity {
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         buttonSend = (TextView) findViewById(R.id.send_btn);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
+        mSwipeRefreshLayout.setVisibility(View.GONE);
         buttonSend.setOnClickListener(view -> attemptSendCom());
         buttonBack.setOnClickListener(view -> finish());
     }
@@ -116,6 +117,8 @@ public class CommentActivity extends AppCompatActivity {
             }
         }
         commentsList.setAdapter(mAdapter);
+        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+
     }
 
     private void attemptSendCom() {

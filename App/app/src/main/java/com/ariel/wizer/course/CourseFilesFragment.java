@@ -38,26 +38,24 @@ public class CourseFilesFragment extends Fragment {
     private CourseFilesAdapter mAdapter;
     private String cid;
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_files, container, false);
         getData();
         initViews(view);
+
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
         mServerResponse = new ServerResponse(view.findViewById(R.id.activity_files_feed));
 
-        mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                pullFiles();
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
+        mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+            pullFiles();
+            mSwipeRefreshLayout.setRefreshing(false);
         }, 1000));
 
-        filesList.setOnScrollListener(new AbsListView.OnScrollListener(){
+        filesList.setOnScrollListener(new AbsListView.OnScrollListener() {
             private int mLastFirstVisibleItem;
+
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
             }
@@ -66,19 +64,17 @@ public class CourseFilesFragment extends Fragment {
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
 
-                if(mLastFirstVisibleItem<firstVisibleItem)
-                {
+                if (mLastFirstVisibleItem < firstVisibleItem) {
                     mFBAddFile.hide();
                 }
-                if(mLastFirstVisibleItem>firstVisibleItem)
-                {
+                if (mLastFirstVisibleItem > firstVisibleItem) {
                     mFBAddFile.show();
                 }
-                mLastFirstVisibleItem=firstVisibleItem;
+                mLastFirstVisibleItem = firstVisibleItem;
 
             }
         });
-
+        pullFiles();
         return view;
     }
 
@@ -98,36 +94,26 @@ public class CourseFilesFragment extends Fragment {
     }
 
 
-    private void addFile(){
+    private void addFile() {
     }
 
-    private void pullFiles(){
+    private void pullFiles() {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllFilesById(cid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponsePull,i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponsePull, i -> mServerResponse.handleError(i)));
     }
 
     private void handleResponsePull(CourseFile courseFiles[]) {
-        if(!(courseFiles.length == 0)){
+        if (!(courseFiles.length == 0)) {
             ArrayList<CourseFile> saveFiles = new ArrayList<>(Arrays.asList(courseFiles));
             Collections.reverse(saveFiles);
             mTvNoResults.setVisibility(View.GONE);
             mAdapter = new CourseFilesAdapter(this.getActivity(), new ArrayList<>(saveFiles));
             filesList.setAdapter(mAdapter);
-        }
-        else{
+        } else {
             mTvNoResults.setVisibility(View.VISIBLE);
-
         }
-    }
-
-
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        pullFiles();
     }
 
     @Override

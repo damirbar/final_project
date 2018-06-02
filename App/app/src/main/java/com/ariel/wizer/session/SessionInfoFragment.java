@@ -127,7 +127,6 @@ public class SessionInfoFragment extends Fragment {
     private void uploadVid() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("video/mp4");
-
         try {
             startActivityForResult(intent, INTENT_REQUEST_CODE);
 
@@ -135,7 +134,6 @@ public class SessionInfoFragment extends Fragment {
 
             e.printStackTrace();
         }
-
     }
 
     @Override

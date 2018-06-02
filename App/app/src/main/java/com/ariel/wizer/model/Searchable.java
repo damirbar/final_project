@@ -5,6 +5,15 @@ public class Searchable {
     private User users[];
     private Session sessions[];
     private CourseFile files[];
+    private Course courses[];
+
+    public Course[] getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Course[] courses) {
+        this.courses = courses;
+    }
 
     public User[] getUsers() {
         return users;
