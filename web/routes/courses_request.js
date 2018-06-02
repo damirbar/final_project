@@ -178,4 +178,58 @@ router.get('/get-all-files-by-id', function(req,res){
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+
+const multer = require('multer');
+const upload = multer({dest: 'upload/'});
+const type = upload.single('recfile');
+const cloudinary = require('cloudinary');
+const fs = require('fs');
+const config = require('../config/config');
+cloudinary.config({
+    cloud_name: config.cloudniary.cloud_name,
+    api_key: config.cloudniary.api_key,
+    api_secret: config.cloudniary.api_secret
+});
+
+let first = true;
+router.post('/post-video', type, function (req, res) {
+    if (!req.file) {
+        res.status(400).json({message: 'no file'});
+    }
+    else {
+        const path = req.file.path;
+        if (first) {
+            first = false;
+            if (!req.file.originalname.match(/\.(pdf)$/)) {
+                fs.unlinkSync(path);
+                res.status(400).json({message: 'wrong file'});
+            }
+            else {
+                res.status(200).json({message: 'received file'});
+                console.log(path);
+                Course.findOne({course_no: req.query.num}, function (err, course) {
+                    if (err) return next(err);
+                    console.log("starting to upload " + req.file.originalname);
+                    cloudinary.v2.uploader.upload(path,
+                        {
+                            public_id: course.course_no + "1",
+                        },
+                        function (err, result) {
+                            fs.unlinkSync(path);
+                            if (err) return err;
+                            console.log("uploaded " + req.file.originalname);
+                            console.log(result);
+                            course.files.push(result.url);
+                            course.save();
+                            first = true;
+                        });
+                });
+            }
+        }
+        else {
+            fs.unlinkSync(path);
+        }
+    }
+});
+
 module.exports = router;

@@ -126,7 +126,7 @@ router.post('/post-profile-image', type, function (req, res) {
                     console.log("starting to upload " + req.file.originalname);
                     cloudinary.v2.uploader.upload(path,
                         {
-                            public_id: user.id + "profile",
+                            public_id: "profiles/" + user.id + "profile",
                             width: 1000,
                             height: 1000,
                             crop: 'thumb',

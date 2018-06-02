@@ -8,6 +8,7 @@ var CourseSchema = new mongoose.Schema({
     creation_date: {type: Date, default: Date.now()},
     last_modified: Date,
     hidden: Boolean,
-    students:[String]
+    students:[String],
+    files:[String]
 });
 module.exports = mongoose.model('Course', CourseSchema);
