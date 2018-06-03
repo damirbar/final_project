@@ -48,9 +48,17 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible" />
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tool_bar"
@@ -60,7 +68,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light">
 
             <ImageView
                 android:id="@+id/header_cover_image"
@@ -69,7 +78,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:scaleType="centerCrop"
-                android:src="@android:color/background_light" />
+                android:src="@color/account_status_bar" />
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/user_profile_photo"
@@ -100,7 +109,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/header_cover_image"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/tVFirstName"
@@ -130,7 +140,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tR1"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/tVLastName"
@@ -158,7 +169,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tR4"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/tVAddress"
@@ -186,7 +198,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tR6"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/tVGender"
@@ -217,7 +230,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tR2"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/tVDisplayName"
@@ -245,7 +259,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tR3"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/tVcountry"
@@ -274,14 +289,15 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tR5"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/tVAge"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:gravity="left|center"
-                    android:text="Age"
+                    android:text="Birthday"
                     android:textSize="14sp" />
 
                 <EditText
@@ -292,7 +308,7 @@
                     android:editable="false"
                     android:ems="10"
                     android:focusable="false"
-                    android:hint="Age"
+                    android:hint="Birthday"
                     android:inputType="none"
                     android:textSize="14sp" />
 
@@ -303,8 +319,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tR7"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/tVAboutMe"
@@ -332,4 +350,5 @@
 
         </RelativeLayout>
     </ScrollView>
+
 </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.ariel.wizer.model;
 
 
+import java.util.Date;
+
 public class User {
     private String _id;
     private String first_name;
@@ -13,7 +15,7 @@ public class User {
     private String about_me;
     private String country;
     private String address;
-    private int age;
+    private Date birthday;
     private String gender;
     private String photos[];
     private String profile_img;
@@ -25,6 +27,14 @@ public class User {
     private String temp_password_time;
 //    private String courses[];
 
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
 
     public String getId_num() {
         return _id;
@@ -126,14 +136,6 @@ public class User {
         this.gender = gender;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int  age) {
-        this.age = age;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -186,7 +188,7 @@ public class User {
                 this.getDisplay_name().equals(u.getDisplay_name()) &&
                 this.getCountry().equals(u.getCountry()) &&
                 this.getAddress().equals(u.getAddress()) &&
-                this.getAge() == u.getAge() &&
+//                this.getBirthday().equals(u.getBirthday()) &&
                 this.getGender().equals(u.getGender()) &&
                 this.getAbout_me().equals(u.getAbout_me());
     }

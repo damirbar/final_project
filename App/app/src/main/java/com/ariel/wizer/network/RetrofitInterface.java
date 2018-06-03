@@ -1,7 +1,5 @@
 package com.ariel.wizer.network;
 
-import com.ariel.wizer.model.ChatChannel;
-import com.ariel.wizer.model.ChatMessage;
 import com.ariel.wizer.model.Course;
 import com.ariel.wizer.model.CourseFile;
 import com.ariel.wizer.model.Response;
@@ -12,7 +10,6 @@ import com.ariel.wizer.model.User;
 
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -26,6 +23,13 @@ import retrofit2.http.Streaming;
 import rx.Observable;
 
 public interface RetrofitInterface {
+
+    //////////////////search//////////////////
+
+    @GET("search/free-text-search")
+    Observable<Searchable> getSearch(@Query("keyword") String keyword);
+
+    //////////////////USER//////////////////
 
     @POST("auth/new-user")
     Observable<Response> register(@Body User user);
@@ -43,7 +47,6 @@ public interface RetrofitInterface {
     @POST("students/post-profile-image")
     Observable<Response> uploadProfileImage(@Part MultipartBody.Part file);
 
-
     @PUT("auth/change-password")
     Observable<Response> changePassword(@Body User user);
 
@@ -53,7 +56,8 @@ public interface RetrofitInterface {
     @POST("auth/reset-pass-finish")
     Observable<Response> resetPasswordFinish(@Body User user);
 
-    /////Session/////
+    //////////////////Session//////////////////
+
     @FormUrlEncoded
     @POST("sessions/connect-session")
     Observable<Response> connectSession(@Field("sid") String sid, @Field("name") String name);
@@ -85,17 +89,18 @@ public interface RetrofitInterface {
     @POST("sessions/reply")
     Observable<Response> publishReply(@Body SessionMessage message);
 
-
     @GET("sessions/disconnect")
     Observable<Response> disconnect(@Query("sid") String sid);
-
-    /////Session-video/////
 
     @GET("sessions/get-video")
     @Streaming
     Observable<ResponseBody> getVideo(@Query("sid") String sid);
 
-    /////Courses/////
+    @Multipart
+    @POST("sessions/post-video")
+    Observable<Response> uploadVid(@Part MultipartBody.Part file, @Query("sid") String sid);
+
+    //////////////////Courses//////////////////
 
     @GET("courses/get-all-courses")
     Observable<Course[]> getAllCourses();
@@ -106,31 +111,22 @@ public interface RetrofitInterface {
     @GET("courses/get-all-files-by-id")
     Observable<CourseFile[]> getAllFilesById(@Query("id") String id);
 
-    ////////////////////////////Demo//////////////////////////////////////
-    @GET("files/Node-Android-Chat.zip")
-    @Streaming
-    Call<ResponseBody> downloadFile();
-
     @Multipart
-    @POST("sessions/post-video")
-    Observable<Response> uploadFile(@Part MultipartBody.Part file, @Query("sid") String sid);
-    ///////////////////////////////////////////////////////////////////////
+    @POST("courses/post-file")
+    Observable<Response> uploadFile(@Part MultipartBody.Part file, @Query("num") String num);
+
+    @POST("courses/add-course")
+    Observable<Response> createCourse(@Body Course course);
 
 
-    /////search/////
-    @GET("search/free-text-search")
-    Observable<Searchable> getSearch(@Query("keyword") String keyword);
-
-
-
-    /////chat/////
-    @GET("chat/get-channels")
-    Observable<ChatChannel[]> getChannels();
-
-    @GET("chat/get-messages")
-    Observable<ChatMessage[]> getChannelMessages(@Query("uid") String uid);
-
-    @POST("chat/publish-message")
-    Observable<Response> publishMessage(@Body ChatMessage message);
+//    /////chat/////
+//    @GET("chat/get-channels")
+//    Observable<ChatChannel[]> getChannels();
+//
+//    @GET("chat/get-messages")
+//    Observable<ChatMessage[]> getChannelMessages(@Query("uid") String uid);
+//
+//    @POST("chat/publish-message")
+//    Observable<Response> publishMessage(@Body ChatMessage message);
 
 }

@@ -17,7 +17,6 @@ import com.ariel.wizer.model.Response;
 import com.ariel.wizer.network.RetrofitRequests;
 import com.ariel.wizer.network.ServerResponse;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -127,7 +126,6 @@ public class SessionInfoFragment extends Fragment {
     private void uploadVid() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("video/mp4");
-
         try {
             startActivityForResult(intent, INTENT_REQUEST_CODE);
 
@@ -135,7 +133,6 @@ public class SessionInfoFragment extends Fragment {
 
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -156,7 +153,7 @@ public class SessionInfoFragment extends Fragment {
     private void tryUploadVid(byte[] bytes) {
         RequestBody requestFile = RequestBody.create(MediaType.parse("video/mp4"), bytes);
         MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", "video.mp4", requestFile);
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body, sid)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadVid(body, sid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseUploadVid, i -> mServerResponse.handleError(i)));

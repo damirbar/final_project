@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ariel.wizer.R;
@@ -38,6 +39,7 @@ public class MyCourseActivity extends AppCompatActivity {
     private CoursesAdapter mAdapter;
     private String mId;
     private FloatingActionButton mFB;
+    private RelativeLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,18 +51,10 @@ public class MyCourseActivity extends AppCompatActivity {
         initSharedPreferences();
         initViews();
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        pullCourses();
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 1000);
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+            pullCourses();
+            mSwipeRefreshLayout.setRefreshing(false);
+        }, 1000));
 
         coursesList.setOnItemClickListener((parent, view1, position, id) -> {
             Course  C = mAdapter.getItem(position);
@@ -100,12 +94,21 @@ public class MyCourseActivity extends AppCompatActivity {
 
 
     private void initViews() {
+        layout =  findViewById(R.id.relative);
+        layout.setVisibility(View.GONE);
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         mTvNoResults = (TextView) findViewById(R.id.tv_no_results);
         coursesList = (ListView) findViewById(R.id.myClassesList);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
         mFB = (FloatingActionButton) findViewById(R.id.fb_add_corse);
         buttonBack.setOnClickListener(view -> finish());
+        mFB.setOnClickListener(view -> addCourse());
+
+    }
+
+    private void addCourse() {
+        Intent intent = new Intent(this,CreateCourseActivity.class);
+        startActivity(intent);
     }
 
     private void pullCourses() {
@@ -125,6 +128,9 @@ public class MyCourseActivity extends AppCompatActivity {
             mTvNoResults.setVisibility(View.VISIBLE);
 
         }
+
+        layout.setVisibility(View.VISIBLE);
+
     }
 
     @Override
