@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:fitsSystemWindows">true</item>
@@ -15,27 +15,9 @@
     <style name="MaterialDrawer.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">false</item>
         <item name="color">@android:color/white</item>
-    </style>
-
-    <style name="AppTheme.LoginRegister" parent="AppTheme">
-    </style>
-
-    <style name="intercom_floating_action_button_style">
-        <item name="android:layout_marginRight">8.0dip</item>
+        <item name="android:layout_marginRight">0.0dip</item>
+        <item name="android:layout_marginLeft">0.0dip</item>
         <item name="android:layout_marginBottom">0.0dip</item>
-    </style>
-
-    <style name="intercom_toolbar_style">
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">true</item>
-        <item name="android:clickable">true</item>
-        <item name="android:descendantFocusability">beforeDescendants</item>
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">@dimen/intercom_toolbar_height</item>
-        <item name="contentInsetStart">0.0dip</item>
-        <item name="contentInsetEnd">0.0dip</item>
-        <item name="contentInsetLeft">0.0dip</item>
-        <item name="contentInsetRight">0.0dip</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
@@ -45,7 +27,13 @@
         <item name="android:windowFullscreen" >true</item>
     </style>
 
-
-
+    <style name="Theme_Report_Dialog_Alert" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+    </style>
 
 </resources>

@@ -70,8 +70,8 @@ public class ProfileActivity extends AppCompatActivity {
         layout = findViewById(R.id.scroll);
         layout.setVisibility(View.GONE);
         image = findViewById(R.id.user_profile_photo);
-        mDisplayName = findViewById(R.id.tvdisName);
-        mCountry = findViewById(R.id.tvcountry_);
+        mDisplayName = findViewById(R.id.tvdName);
+        mCountry = findViewById(R.id.tvCountry);
         mAboutMe = findViewById(R.id.tvAboutMe);
         mBtEditProfile = findViewById(R.id.edit_profile);
         buttonBack = findViewById(R.id.image_Button_back);

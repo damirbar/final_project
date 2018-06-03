@@ -93,13 +93,12 @@
                     android:id="@+id/like_cbx"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_alignParentTop="true"
                     android:layout_marginLeft="25dp"
-                    android:layout_toEndOf="@+id/view_text_new_post"
                     android:background="@null"
                     android:button="@drawable/like_checkbox"
                     android:scaleX="0.7"
-                    android:scaleY="0.7" />
+                    android:scaleY="0.7"
+                    android:layout_marginStart="25dp" />
 
                 <TextView
                     android:id="@+id/like_num"
@@ -114,13 +113,12 @@
                     android:id="@+id/dislike_cbx"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_alignParentTop="true"
                     android:layout_marginLeft="25dp"
-                    android:layout_toEndOf="@+id/view_text_new_post"
                     android:background="@null"
                     android:button="@drawable/dislike_checkbox"
                     android:scaleX="0.7"
-                    android:scaleY="0.7" />
+                    android:scaleY="0.7"
+                    android:layout_marginStart="25dp" />
 
                 <TextView
                     android:id="@+id/dislike_num"
@@ -145,6 +143,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:visibility="gone"
-        app:srcCompat="@color/black21" />
+        app:srcCompat="@color/black21"
+        android:layout_alignParentLeft="true" />
 
 </RelativeLayout>

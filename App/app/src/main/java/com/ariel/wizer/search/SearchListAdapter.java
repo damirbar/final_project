@@ -5,11 +5,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -124,7 +126,7 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
             TextView progressInfo = (TextView) listItem.findViewById(R.id.textViewProgress);
             Button btStart = (Button) listItem.findViewById(R.id.buttonStart);
             ProgressBar progressBar = (ProgressBar) listItem.findViewById(R.id.progressBar);
-
+            ImageButton menu = listItem.findViewById(R.id.feed_item_menu);
 
             mName.setText(file.getName());
 
@@ -212,6 +214,35 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
                 }
             });
 
+            try {
+                menu.setOnClickListener(v -> {
+                    switch (v.getId()) {
+                        case R.id.feed_item_menu:
+                            PopupMenu popup = new PopupMenu(mContext, v);
+                            popup.getMenuInflater().inflate(R.menu.file_clipboard_popup,
+                                    popup.getMenu());
+                            popup.show();
+                            popup.setOnMenuItemClickListener(item -> {
+                                switch (item.getItemId()) {
+                                    case R.id.report:
+                                        Toast.makeText(mContext, " Report Clicked at position " + " : " + position, Toast.LENGTH_LONG).show();
+                                        break;
+                                    case R.id.addtowishlist:
+                                        Toast.makeText(mContext, "Delete File Clicked at position " + " : " + position, Toast.LENGTH_LONG).show();
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                return true;
+                            });
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
 

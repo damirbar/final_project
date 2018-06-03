@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +25,6 @@ import com.downloader.OnPauseListener;
 import com.downloader.OnProgressListener;
 import com.downloader.OnStartOrResumeListener;
 import com.downloader.PRDownloader;
-import com.downloader.PRDownloaderConfig;
 import com.downloader.Progress;
 
 import java.io.File;
@@ -59,13 +60,15 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
         TextView progressInfo;
         Button btStart;
         ProgressBar progressBar;
+        ImageButton menu;
 
         public MyHolder(View v) {
-            mFileName = (TextView) v.findViewById(R.id.file_name);
-            mFileDate = (TextView) v.findViewById(R.id.creation_date);
-            progressInfo = (TextView) v.findViewById(R.id.textViewProgress);
-            btStart = (Button) v.findViewById(R.id.buttonStart);
-            progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+            mFileName = v.findViewById(R.id.file_name);
+            mFileDate = v.findViewById(R.id.creation_date);
+            progressInfo = v.findViewById(R.id.textViewProgress);
+            btStart = v.findViewById(R.id.buttonStart);
+            progressBar = v.findViewById(R.id.progressBar);
+            menu = v.findViewById(R.id.feed_item_menu);
         }
     }
 
@@ -85,10 +88,10 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
 
         }
 
-        if(progressState[position]){
+        if (progressState[position]) {
             holder.progressBar.setVisibility(View.VISIBLE);
 
-        }else{
+        } else {
             holder.progressBar.setVisibility(View.GONE);
             holder.progressInfo.setText("");
         }
@@ -110,7 +113,7 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
 
                 File file = new File(dirPath(mContext) + "/" + fileName);
                 if (file.exists()) {
-                    openFile(file,mContext);
+                    openFile(file, mContext);
                     return;
                 }
 
@@ -153,7 +156,7 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
                                 holder.progressInfo.setText("");
                                 progressState[position] = false;
                                 File file = new File(dirPath(mContext) + "/" + fileName);
-                                openFile(file,mContext);
+                                openFile(file, mContext);
                             }
 
                             @Override
@@ -168,6 +171,35 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
                         });
             }
         });
+        try {
+            holder.menu.setOnClickListener(v -> {
+                switch (v.getId()) {
+                    case R.id.feed_item_menu:
+                        PopupMenu popup = new PopupMenu(mContext, v);
+                        popup.getMenuInflater().inflate(R.menu.file_clipboard_popup,
+                                popup.getMenu());
+                        popup.show();
+                        popup.setOnMenuItemClickListener(item -> {
+                            switch (item.getItemId()) {
+                                case R.id.report:
+                                    Toast.makeText(mContext, " Report Clicked at position " + " : " + position, Toast.LENGTH_LONG).show();
+                                    break;
+                                case R.id.addtowishlist:
+                                    Toast.makeText(mContext, "Delete File Clicked at position " + " : " + position, Toast.LENGTH_LONG).show();
+                                    break;
+                                default:
+                                    break;
+                            }
+                            return true;
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return view;
     }

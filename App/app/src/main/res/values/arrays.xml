@@ -6,6 +6,10 @@
         <item>Teacher</item>
     </string-array>
 
-
+    <string-array name="Gender_Type">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Not Specified</item>
+    </string-array>
 
 </resources>

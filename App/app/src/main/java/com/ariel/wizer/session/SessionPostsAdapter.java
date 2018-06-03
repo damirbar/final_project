@@ -1,17 +1,22 @@
 package com.ariel.wizer.session;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
@@ -84,6 +89,8 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
         ImageView comView = (ImageView) listItem.findViewById(R.id.comment_btn);
         TextView comCount = (TextView) listItem.findViewById(R.id.comments_num);
         TextView mDate = (TextView) listItem.findViewById(R.id.creation_date);
+        ImageButton menu = listItem.findViewById(R.id.feed_item_menu);
+
 
         //Date
         Date date = currentMessage.getDate();
@@ -157,11 +164,43 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
             addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),0);
             notifyDataSetChanged();
         });
+
+        try {
+            menu.setOnClickListener(v -> {
+                switch (v.getId()) {
+                    case R.id.feed_item_menu:
+                        PopupMenu popup = new PopupMenu(mContext, v);
+                        popup.getMenuInflater().inflate(R.menu.file_clipboard_popup,
+                                popup.getMenu());
+                        popup.show();
+                        popup.setOnMenuItemClickListener(item -> {
+                            switch (item.getItemId()) {
+                                case R.id.report:
+                                    AlertDialogTheme();
+                                    break;
+                                case R.id.addtowishlist:
+                                    Toast.makeText(mContext, "Delete File Clicked at position " + " : " + position, Toast.LENGTH_LONG).show();
+                                    break;
+                                default:
+                                    break;
+                            }
+                            return true;
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         return listItem;
     }
 
-    private void addRate(String sid, String msgid,int rate) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().rateMessage(sid,msgid,rate)
+    private void addRate(String sid, String msgId,int rate) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().rateMessage(sid,msgId,rate)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, ServerResponse::handleErrorQuiet));
@@ -174,5 +213,26 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
         mSubscriptions.unsubscribe();
     }
 
+
+    public void AlertDialogTheme() {
+        AlertDialog.Builder AlertBuilder = new AlertDialog.Builder(
+                mContext,R.style.Theme_Report_Dialog_Alert);
+        AlertBuilder.setTitle("Report");
+        AlertBuilder.setMessage("Would you like to report this post?");
+        AlertBuilder.setCancelable(false);
+        AlertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(mContext, "You Have Selected YES.", Toast.LENGTH_LONG).show();
+            }
+        });
+        AlertBuilder.setNegativeButton("N0", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = AlertBuilder.create();
+        dialog.show();
+    }
 
 }

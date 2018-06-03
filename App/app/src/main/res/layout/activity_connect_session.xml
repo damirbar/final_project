@@ -74,7 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:background="@drawable/dark_edittext"
+                    android:background="@drawable/dark_edit_text"
                     android:gravity="center"
                     android:hint="PIN"
                     android:textSize="14sp" />
@@ -94,7 +94,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:background="@drawable/dark_edittext"
+                    android:background="@drawable/dark_edit_text"
                     android:gravity="center"
                     android:hint="User Name"
                     android:text="Anon"
