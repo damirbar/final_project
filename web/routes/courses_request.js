@@ -1,32 +1,55 @@
 var express = require('express');
 var router = express.Router();
 var Course = require("../schemas/course");
-var File = require("../schemas/file");
 var SystemFile = require("../schemas/file");
 
-router.post("/add-course", function (req, res) {
-    const course = new Course(req.body);
+router.post("/create-course", function (req, res) {
+
+    // const course = new Course({
+    //     name: req.body.name,
+    //     course_num: req.body.course_num,
+    //     department: req.body.department,
+    //     teacher: req.body.teacher,
+    //     location: req.body.location,
+    //     points: req.body.points,
+    //     creation_date: Date.now(),
+    //     last_modified: Date.now(),
+    //     hidden: false
+    // });
+
+    const course = new Course({
+        name: "test",
+        course_num: "123321",
+        department: "test",
+        teacher: "test",
+        location: "test",
+        points: 10,
+        creation_date: Date.now(),
+        last_modified: Date.now(),
+        hidden: false
+    });
+
     course.save(function (err) {
         if (err) {
             if (err.name === 'MongoError' && err.code === 11000) {
                 // Duplicate username
-                console.log('Failed adding course Error 11000' + course.name);
-                return res.status(500).send('Failed adding course Error 11000' + course.name);
+                console.log('Course ' + course.name + " cannot be added id " + course.course_num + ' already exists!');
+                return res.status(500).json({message: 'Course ' + course.name + " cannot be added id " + course.course_num + ' already exists!'});
             }
             if (err.name === 'ValidationError') {
                 //ValidationError
                 for (field in err.errors) {
-                    console.log("Validation Error!");
-                    return res.status(500).send("validation Error!");
+                    console.log("you must provide: " + field + " field");
+                    return res.status(500).json({message: "you must provide: " + field + " field"});
                 }
             }
             // Some other error
             console.log(err);
             return res.status(500).send(err);
         }
-        res.send("successfully added " + course.name + " to db");
-        console.log("successfully added " + course.name + " to db");
-    });
+        res.status(200).json({message: "successfully added course " + course.name + " to db"});
+        console.log("successfully added course " + course.name + " to db");
+    })
 });
 
 
@@ -108,64 +131,15 @@ router.get('/search-by-name', function(req,res,next){
 });
 
 
-
-router.get('/file-system', function(req,res){
-    const id = req.query.id;
-        console.log("Got " + id);
-        Course.findOne({_id: id},function(err,course){
-            console.log("finding one");
-           if(err) throw err;
-           File.find({},function(err,filesys){
-               console.log("finding");
-               if(err) throw err;
-               console.log("filtering");
-               const ans = filesys.filter(function(file){
-                    return file.course_id === id;
-                });
-               console.log(ans);
-               res.status(200).send(ans);
-           });
-        });
-});
-
-// router.post('/upload-file',function(req,res){
+// router.get('/file-system/download-file',function(req,res){
+//     const file_id = req.query.file_id;
 //     const course_id = req.query.course_id;
-//     const file = new File(req.body);
-//     file.course_id = course_id;
-//     file.save(function (err){
-//         if (err) {
-//             if (err.name === 'MongoError' && err.code === 11000) {
-//                 // Duplicate username
-//                 console.log('Failed adding file Error 11000 ' + file.name);
-//                 return res.status(500).send('Failed adding course Error 11000 ' + file.name);
-//             }
-//
-//             if (err.name === 'ValidationError') {
-//                 //ValidationError
-//                 for (field in err.errors) {
-//                     console.log("Validation Error!");
-//                     return res.status(500).send("validation Error!");
-//                 }
-//             }
-//             // Some other error
-//             console.log(err);
-//             return res.status(500).send(err);
-//         }
-//         res.send("successfully added " + file.name + " to db");
-//         console.log("successfully added " + file.name + " to db");
-//     });
+//         File.findOne({_id:file_id,course_id:course_id},function (err,file) {
+//                     if(err) throw err;
+//                     console.log("found " + file.url);
+//                     res.status(200).send(file.url);
+//         });
 // });
-
-
-router.get('/file-system/download-file',function(req,res){
-    const file_id = req.query.file_id;
-    const course_id = req.query.course_id;
-        File.findOne({_id:file_id,course_id:course_id},function (err,file) {
-                    if(err) throw err;
-                    console.log("found " + file.url);
-                    res.status(200).send(file.url);
-        });
-});
 
 router.get('/get-all-files-by-id', function(req,res){
     const id = req.query.id;
@@ -208,22 +182,26 @@ router.post('/post-file', type, function (req, res) {
             else {
                 res.status(200).json({message: 'received file'});
                 console.log(path);
-                Course.findOne({course_no: 12512343}, function (err, course) {
+                Course.findOne({course_num: "123321"}, function (err, course) {
                     if (err) return next(err);
                     if (course) {
                         console.log("starting to upload " + req.file.originalname);
                         cloudinary.v2.uploader.upload(path,
                             {
                                 // public_id: "course" + course.course_num + "/" + req.file.path
-                                public_id: "course" + req.query.num + "/" + req.file.filename
+                                public_id: "courses/" + course.course_num + "/" + req.file.filename
                             },
                             function (err, result) {
                                 fs.unlinkSync(path);
                                 if (err) return err;
-                                console.log("uploaded " + req.file.originalname);
                                 console.log(result);
-                                course.files.push(result.url);
+                                const ans = {
+                                    originalName:req.file.originalname,
+                                    url:result.url,
+                                };
+                                course.files.push(ans);
                                 course.save();
+                                console.log("uploaded " + req.file.originalname);
                                 first = true;
                             });
                     }
