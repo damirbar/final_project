@@ -10,10 +10,6 @@ import java.util.Locale;
 
 public final class DownloadFile {
 
-    private DownloadFile() {
-        // no instance
-    }
-
     public static String getRootDirPath(Context context) {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             File file = ContextCompat.getExternalFilesDirs(context.getApplicationContext(),

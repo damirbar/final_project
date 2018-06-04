@@ -30,7 +30,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:background="@null"
-                app:srcCompat="@drawable/intercom_back" />
+                app:srcCompat="@drawable/intercom_back"
+                android:layout_alignParentLeft="true" />
 
             <TextView
                 android:id="@+id/view_text_new_post"
@@ -41,7 +42,9 @@
                 android:layout_marginStart="61dp"
                 android:text="@string/add_new_post"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="61dp" />
 
             <ImageButton
                 android:id="@+id/imageButton"

@@ -73,7 +73,7 @@
                     android:id="@+id/edit_text_name"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/dark_edittext"
+                    android:background="@drawable/dark_edit_text"
                     android:gravity="center"
                     android:hint="Name"
                     android:textSize="14sp" />
@@ -94,7 +94,7 @@
                     android:id="@+id/edit_text_teacher_name"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/dark_edittext"
+                    android:background="@drawable/dark_edit_text"
                     android:gravity="center"
                     android:hint="Teacher"
                     android:textSize="14sp" />
@@ -114,7 +114,7 @@
                     android:id="@+id/edit_text_loc"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/dark_edittext"
+                    android:background="@drawable/dark_edit_text"
                     android:gravity="center"
                     android:hint="Location"
                     android:textSize="14sp" />

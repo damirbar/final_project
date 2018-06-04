@@ -19,34 +19,6 @@
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/feed_item_menu"
-            android:layout_width="48.0dip"
-            android:layout_height="36.0dip"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="2.0dip"
-            android:background="@null"
-            android:focusable="false"
-            android:rotation="90"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_more_vert_black_24dp" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/file_d"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/user_image"
-            android:layout_toStartOf="@+id/feed_item_menu"
-            android:padding="5dp"
-            android:rotation="270"
-            android:src="@drawable/ic_arrow_back_black_24dp"
-            android:visibility="gone"
-            app:siBorderColor="#cccccc"
-            app:siBorderWidth="2dp"
-            android:layout_toLeftOf="@+id/feed_item_menu" />
-
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_image"
             android:layout_width="42.0dip"
@@ -62,6 +34,20 @@
             android:src="@drawable/ic_add_file_48dp"
             app:siBorderColor="#cccccc"
             app:siBorderWidth="2dp" />
+
+        <ImageButton
+            android:id="@+id/feed_item_menu"
+            android:layout_width="48.0dip"
+            android:layout_height="36.0dip"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="2.0dip"
+            android:background="@null"
+            android:focusable="false"
+            android:rotation="90"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_more_vert_black_24dp" />
 
         <LinearLayout
             android:id="@+id/author_details"
@@ -132,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_weight="1"
-                        android:progressTint="@color/colorPrimaryDark" />
+                        android:progressTint="@color/default_circle_indicator_page_color" />
 
                     <TextView
                         android:id="@+id/textViewProgress"

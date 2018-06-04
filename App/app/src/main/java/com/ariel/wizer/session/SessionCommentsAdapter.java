@@ -3,14 +3,16 @@ package com.ariel.wizer.session;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ariel.wizer.R;
 import com.ariel.wizer.model.Response;
@@ -85,6 +87,8 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
         final CheckBox likeCbx = (CheckBox) listItem.findViewById(R.id.like_cbx);
         final CheckBox dislikeCbx = (CheckBox) listItem.findViewById(R.id.dislike_cbx);
         ImageView divView = (ImageView) listItem.findViewById(R.id.divider_img);
+        ImageButton menu = listItem.findViewById(R.id.feed_item_menu);
+
 
         mEmail.setText(currentMessage.getEmail());
         mLikeNum.setText(String.valueOf(currentMessage.getLikes()));
@@ -153,11 +157,42 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
             addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),0);
             notifyDataSetChanged();
         });
+
+        try {
+            menu.setOnClickListener(v -> {
+                switch (v.getId()) {
+                    case R.id.feed_item_menu:
+                        PopupMenu popup = new PopupMenu(mContext, v);
+                        popup.getMenuInflater().inflate(R.menu.file_clipboard_popup,
+                                popup.getMenu());
+                        popup.show();
+                        popup.setOnMenuItemClickListener(item -> {
+                            switch (item.getItemId()) {
+                                case R.id.report:
+                                    Toast.makeText(mContext, " Report Clicked at position " + " : " + position, Toast.LENGTH_LONG).show();
+                                    break;
+                                case R.id.addtowishlist:
+                                    Toast.makeText(mContext, "Delete File Clicked at position " + " : " + position, Toast.LENGTH_LONG).show();
+                                    break;
+                                default:
+                                    break;
+                            }
+                            return true;
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return listItem;
     }
 
-    private void addRate(String sid, String msgid,int rate) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().rateMessage(sid,msgid,rate)
+    private void addRate(String sid, String msgId,int rate) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().rateMessage(sid,msgId,rate)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, ServerResponse::handleErrorQuiet));
