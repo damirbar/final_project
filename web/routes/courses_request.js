@@ -1,40 +1,29 @@
 var express = require('express');
 var router = express.Router();
 var Course = require("../schemas/course");
-var SystemFile = require("../schemas/file");
 
 router.post("/create-course", function (req, res) {
 
-    // const course = new Course({
-    //     name: req.body.name,
-    //     course_num: req.body.course_num,
-    //     department: req.body.department,
-    //     teacher: req.body.teacher,
-    //     location: req.body.location,
-    //     points: req.body.points,
-    //     creation_date: Date.now(),
-    //     last_modified: Date.now(),
-    //     hidden: false
-    // });
 
     const course = new Course({
-        name: "test",
-        course_num: "123321",
-        department: "test",
-        teacher: "test",
-        location: "test",
-        points: 10,
+        cid: req.body.course_num,
+        name: req.body.name,
+        department: req.body.department,
+        teacher: req.body.teacher,
+        location: req.body.location,
+        points: req.body.points,
         creation_date: Date.now(),
         last_modified: Date.now(),
         hidden: false
     });
 
+
     course.save(function (err) {
         if (err) {
             if (err.name === 'MongoError' && err.code === 11000) {
                 // Duplicate username
-                console.log('Course ' + course.name + " cannot be added id " + course.course_num + ' already exists!');
-                return res.status(500).json({message: 'Course ' + course.name + " cannot be added id " + course.course_num + ' already exists!'});
+                console.log('Course ' + course.name + " cannot be added id " + course.cid + ' already exists!');
+                return res.status(500).json({message: 'Course ' + course.name + " cannot be added id " + course.cid + ' already exists!'});
             }
             if (err.name === 'ValidationError') {
                 //ValidationError
@@ -49,7 +38,7 @@ router.post("/create-course", function (req, res) {
         }
         res.status(200).json({message: "successfully added course " + course.name + " to db"});
         console.log("successfully added course " + course.name + " to db");
-    })
+    });
 });
 
 
@@ -141,13 +130,13 @@ router.get('/search-by-name', function(req,res,next){
 //         });
 // });
 
-router.get('/get-all-files-by-id', function(req,res){
-    const id = req.query.id;
-    SystemFile.find({course_id: id },function (err,files) {
-        if (err) return err;
-        res.status(200).json(files);
-    });
-});
+// router.get('/get-all-files-by-id', function(req,res){
+//     const id = req.query.id;
+//     SystemFile.find({course_id: id },function (err,files) {
+//         if (err) return err;
+//         res.status(200).json(files);
+//     });
+// });
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,14 +171,13 @@ router.post('/post-file', type, function (req, res) {
             else {
                 res.status(200).json({message: 'received file'});
                 console.log(path);
-                Course.findOne({course_num: "123321"}, function (err, course) {
+                Course.findOne({cid: "654321"}, function (err, course) {
                     if (err) return next(err);
                     if (course) {
                         console.log("starting to upload " + req.file.originalname);
                         cloudinary.v2.uploader.upload(path,
                             {
-                                // public_id: "course" + course.course_num + "/" + req.file.path
-                                public_id: "courses/" + course.course_num + "/" + req.file.filename
+                                public_id: "courses/" + course.cid + "/" + req.file.filename
                             },
                             function (err, result) {
                                 fs.unlinkSync(path);
