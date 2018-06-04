@@ -209,7 +209,9 @@ wizerApp.controller('sessionController',
         $scope.uploadFile = function(){
 
             var file = $scope.myFile;
-            var uploadUrl = "/sessions/post-video?sid=" + $scope.sessionID;
+            // var uploadUrl = "/sessions/post-video?sid=" + $scope.sessionID;
+            var uploadUrl = "/courses/post-file";
+
             var fd = new FormData();
             fd.append('recfile', file);
 
