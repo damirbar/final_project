@@ -22,7 +22,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp">
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp">
 
 
             <Button
@@ -116,7 +117,6 @@
                     android:id="@+id/tVFirstName"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:gravity="left|center"
                     android:text="First Name"
                     android:textSize="14sp" />
 
@@ -124,7 +124,6 @@
                     android:id="@+id/eTFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
                     android:ems="10"
                     android:hint="First Name"
                     android:inputType="textPersonName"
@@ -147,7 +146,6 @@
                     android:id="@+id/tVLastName"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:gravity="left|center"
                     android:text="Last Name"
                     android:textSize="14sp" />
 
@@ -155,7 +153,6 @@
                     android:id="@+id/eTLastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
                     android:ems="10"
                     android:hint="Last Name"
                     android:inputType="textPersonName"
@@ -176,7 +173,6 @@
                     android:id="@+id/tVAddress"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:gravity="left|center"
                     android:text="Address"
                     android:textSize="14sp" />
 
@@ -184,7 +180,6 @@
                     android:id="@+id/eTAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
                     android:ems="10"
                     android:hint="Address"
                     android:inputType="text"
@@ -205,7 +200,6 @@
                     android:id="@+id/tVGender"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:gravity="left|center"
                     android:text="Gender"
                     android:textSize="14sp" />
 
@@ -213,8 +207,6 @@
                     android:id="@+id/eTGender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:editable="false"
                     android:ems="10"
                     android:focusable="false"
                     android:inputType="none"
@@ -237,7 +229,6 @@
                     android:id="@+id/tVDisplayName"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:gravity="left|center"
                     android:text="Display Name"
                     android:textSize="14sp" />
 
@@ -245,7 +236,6 @@
                     android:id="@+id/eTDisplay_Name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
                     android:ems="10"
                     android:hint="Display Name"
                     android:inputType="textPersonName"
@@ -266,8 +256,6 @@
                     android:id="@+id/tVcountry"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/user_profile_photo"
-                    android:gravity="left|center"
                     android:text="Country"
                     android:textSize="14sp" />
 
@@ -275,7 +263,6 @@
                     android:id="@+id/eTCountry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
                     android:ems="10"
                     android:hint="Country"
                     android:inputType="text"
@@ -296,7 +283,6 @@
                     android:id="@+id/tVAge"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:gravity="left|center"
                     android:text="Birthday"
                     android:textSize="14sp" />
 
@@ -304,8 +290,6 @@
                     android:id="@+id/eTAge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:editable="false"
                     android:ems="10"
                     android:focusable="false"
                     android:hint="Birthday"
@@ -328,9 +312,7 @@
                     android:id="@+id/tVAboutMe"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:editable="false"
                     android:ems="10"
-                    android:gravity="left|center"
                     android:inputType="none"
                     android:text="About Me"
                     android:textSize="14sp" />
@@ -339,8 +321,6 @@
                     android:id="@+id/eTAboutMe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:editable="false"
                     android:focusable="false"
                     android:hint="About Me"
                     android:inputType="none"

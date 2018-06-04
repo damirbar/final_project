@@ -63,9 +63,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
-                <!-- Cover Image -->
-
                 <ImageView
                     android:id="@+id/image"
                     android:layout_width="match_parent"
@@ -143,9 +140,7 @@
                     android:paddingBottom="5dp"
                     android:textSize="14sp" />
 
-
             </LinearLayout>
-
 
             <TextView
                 android:id="@+id/edit_profile"
@@ -165,7 +160,6 @@
                 android:id="@+id/change_pass"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-
                 android:layout_gravity="center"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/dark_edit_text"
@@ -177,11 +171,7 @@
                 android:textColor="@color/default_circle_indicator_page_color" />
 
         </LinearLayout>
-
-
     </ScrollView>
-
-
 </RelativeLayout>
 
 

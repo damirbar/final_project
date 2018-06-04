@@ -1,6 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/def_background">
@@ -62,7 +61,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="30dp"
                 android:fontFamily="sans-serif-smallcaps"
-                android:gravity="left"
+                android:gravity="start"
                 android:text="@string/info"
                 android:textAllCaps="false"
                 android:textColor="?attr/colorPrimary"

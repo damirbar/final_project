@@ -58,7 +58,6 @@
                 android:focusable="false"
                 android:gravity="start"
                 android:maxLines="2"
-                android:text="sid"
                 android:textAlignment="viewStart"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/subhead_size" />
@@ -68,7 +67,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:focusable="false"
-                android:text="3/3/18"
                 android:textColor="@color/secondary_post_text"
                 android:textSize="@dimen/caption_size" />
 

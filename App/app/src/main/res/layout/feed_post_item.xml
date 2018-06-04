@@ -93,7 +93,6 @@
                 android:layout_marginTop="@dimen/box_feed_text_offset"
                 android:focusable="false"
                 android:textColor="@color/primary_text"
-                android:textColorLink="@color/groovy_blue"
                 android:textSize="@dimen/feed_font_size" />
 
             <LinearLayout
@@ -130,13 +129,11 @@
                     android:id="@+id/like_cbx"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_alignParentTop="true"
                     android:layout_marginLeft="25dp"
-                    android:layout_toEndOf="@+id/view_text_new_post"
                     android:background="@null"
                     android:button="@drawable/like_checkbox"
                     android:scaleX="0.7"
-                    android:scaleY="0.7" />
+                    android:scaleY="0.7"/>
 
                 <TextView
                     android:id="@+id/like_num"
@@ -152,9 +149,7 @@
                     android:id="@+id/dislike_cbx"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_alignParentTop="true"
                     android:layout_marginLeft="25dp"
-                    android:layout_toEndOf="@+id/view_text_new_post"
                     android:background="@null"
                     android:button="@drawable/dislike_checkbox"
                     android:scaleX="0.7"
@@ -190,7 +185,6 @@
                 android:id="@+id/last_answer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/author_details"
                 android:background="#ffe5e5e5"
                 android:descendantFocusability="blocksDescendants" />
         </LinearLayout>

@@ -79,7 +79,6 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="@dimen/box_feed_text_offset"
                 android:textColor="@color/primary_text"
-                android:textColorLink="@color/groovy_blue"
                 android:textSize="@dimen/feed_font_size" />
 
             <LinearLayout

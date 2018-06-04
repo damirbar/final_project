@@ -25,5 +25,7 @@
                         to thrive using a scoring system.
                         wizeStream will make teaching and
                         learning easier, faster and better.</string>
+    <string name="log_in">Log In</string>
+    <string name="register">Register</string>
 
 </resources>

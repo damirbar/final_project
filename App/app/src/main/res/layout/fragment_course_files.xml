@@ -32,7 +32,7 @@
                     android:divider="@color/def_background"
                     android:listSelector="@android:color/transparent"
                     android:scrollbarSize="2dp"
-                    android:scrollbarThumbVertical="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" />
+                    android:scrollbarThumbVertical="@color/highlight_default_color" />
 
             </android.support.v4.widget.SwipeRefreshLayout>
 

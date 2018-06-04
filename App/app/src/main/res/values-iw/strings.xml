@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">wizeUp</string>
+
+    <string name="add_new_post">Add New Post</string>
+    <string name="send">Send</string>
+    <string name="add_comment">Add comment</string>
+    <string name="open_drawer">Drawer Open</string>
+    <string name="close_drawer">Drawer Close</string>
+    <string name="about_me">About me</string>
+    <string name="edit_profile">EDIT PROFILE</string>
+    <string name="change_password">Change Password</string>
+
+    <string name="info">היי</string>
+    <string name="log_in">התחברות</string>
+    <string name="register">הירשם</string>
+
+</resources>

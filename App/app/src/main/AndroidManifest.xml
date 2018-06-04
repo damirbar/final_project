@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ariel.wizer">
+    package="com.ariel.wizeup">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -21,21 +21,20 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SEARCH" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="wizeup"
                     android:scheme="http" />
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
         <activity
             android:name=".entry.EntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
@@ -84,5 +83,7 @@
         <activity
             android:name=".course.CreateCourseActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity android:name=".settings.SettingsActivity"></activity>
     </application>
+
 </manifest>

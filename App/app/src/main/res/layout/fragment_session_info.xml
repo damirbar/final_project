@@ -1,6 +1,4 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_session_info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,7 +12,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/def_background"
             android:orientation="vertical">
 
@@ -41,12 +39,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:gravity="left|center"
+                    android:gravity="start|center"
                     android:paddingBottom="5dp"
                     android:text="1234"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp" />
-
 
             </LinearLayout>
 
@@ -73,7 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:gravity="left|center"
+                    android:gravity="start|center"
                     android:paddingBottom="5dp"
                     android:text="1/1/18"
                     android:textColor="@android:color/darker_gray"
@@ -105,7 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:gravity="left|center"
+                    android:gravity="start|center"
                     android:paddingBottom="5dp"
                     android:text="Shay cohen"
                     android:textColor="@android:color/darker_gray"
@@ -137,7 +134,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:gravity="left|center"
+                    android:gravity="start|center"
                     android:paddingBottom="5dp"
                     android:text="4.4.4"
                     android:textColor="@android:color/darker_gray"
@@ -169,7 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:gravity="left|center"
+                    android:gravity="start|center"
                     android:paddingBottom="5dp"
                     android:text="5"
                     android:textColor="@android:color/darker_gray"
@@ -220,7 +217,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                        android:gravity="left|center"
+                        android:gravity="start|center"
                         android:paddingBottom="5dp"
                         android:text="0"
                         android:textColor="@android:color/darker_gray"
