@@ -35,7 +35,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@null"
-                android:rotationY="@integer/angle_rtl_180"
                 app:srcCompat="@drawable/intercom_back" />
 
             <TextView
@@ -84,7 +83,7 @@
                 android:drawableEnd="@drawable/expand_arrow"
                 android:drawableRight="@drawable/expand_arrow"
                 android:fontFamily="sans-serif"
-                android:gravity="center|start|end"
+                android:gravity="left|center"
                 android:text="@string/language"
                 android:textAllCaps="false"
                 android:textSize="15sp" />
@@ -111,7 +110,7 @@
                 android:drawableEnd="@drawable/expand_arrow"
                 android:drawableRight="@drawable/expand_arrow"
                 android:fontFamily="sans-serif"
-                android:gravity="center|start|end"
+                android:gravity="left|center"
                 android:text="@string/change_password"
                 android:textAllCaps="false"
                 android:textSize="15sp" />
@@ -146,7 +145,7 @@
                 android:drawableEnd="@drawable/expand_arrow"
                 android:drawableRight="@drawable/expand_arrow"
                 android:fontFamily="sans-serif"
-                android:gravity="center|start|end"
+                android:gravity="left|center"
                 android:text="Report a Problem"
                 android:textAllCaps="false"
                 android:textSize="15sp" />

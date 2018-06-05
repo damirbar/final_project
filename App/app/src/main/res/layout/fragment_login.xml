@@ -57,6 +57,8 @@
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:paddingLeft="10dp"
+                    android:gravity="left|center"
+                    android:maxLength="@integer/def_max"
                     android:paddingRight="10dp" />
 
             </android.support.design.widget.TextInputLayout>
@@ -81,7 +83,9 @@
                     android:background="@drawable/dark_edit_text"
                     android:hint="@string/password"
                     android:inputType="textPassword"
+                    android:gravity="left|center"
                     android:paddingLeft="10dp"
+                    android:maxLength="@integer/def_max"
                     android:paddingRight="10dp" />
 
             </android.support.design.widget.TextInputLayout>

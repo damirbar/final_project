@@ -39,22 +39,29 @@
     <string name="close_drawer">Drawer Close</string>
     <string name="about_me">About me</string>
     <string name="edit_profile">EDIT PROFILE</string>
-    <string name="info">wizeUp is a tool to help students get better
+    <string name="info1">Improve yourself. Be Wizer.</string>
+
+    <string name="info2">wizeUp is a tool to help students better
                         at their studies and to help teachers have a better
-                        perspective on their class. wizeUp allows teachers
+                        perspective on their class.\n\nwizeUp allows teachers
                         to upload relevant files, answer students\' questions and
-                        improve their teaching methods using wizeUp feedback.
-                        With wizeUp students can communicate with their classmates,
+                        improve their teaching methods using wizeUp feedback.With wizeUp students can communicate with their classmates,
                         share files and enjoy live video streaming, providing
-                        the option of live feedback.
-                        wizeUp is the best way to gather statistical information
+                        the option of live feedback.\n\nwizeUp is the best way to gather statistical information
                         for the use of both parties, students and teachers,
-                        as well as any department chosen.
-                        wizeStream will drive both sides, students and teachers,
-                        to thrive using a scoring system.
-                        wizeStream will make teaching and
+                        as well as any department chosen.\n\nwizeStream will drive both sides, students and teachers,
+                        to thrive using a scoring system.</string>
+
+    <string name="info2_bold">wizeUp will make teaching and
                         learning easier, faster and better.</string>
+
+
+    <string name="info3">Email: contact@wizeup.com\nPhone: +972 052 555 2222\nHours: Monday-Thursday: 9AM - 8PM </string>
+
+    <string name="info4">© Copyright 2017 WizeUp - All Rights Reserved</string>
+
     <string name="general_feedback">Briefly explain what you love, or what could improve.</string>
+    <string name="no_results_found">No results found</string>
 
 
 </resources>

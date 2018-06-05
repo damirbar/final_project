@@ -36,7 +36,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@null"
-                android:rotationY="@integer/angle_rtl_180"
                 app:srcCompat="@drawable/intercom_back" />
 
             <TextView

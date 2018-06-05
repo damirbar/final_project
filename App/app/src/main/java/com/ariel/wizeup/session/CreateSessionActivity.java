@@ -36,7 +36,7 @@ public class CreateSessionActivity extends AppCompatActivity {
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
-    private ImageButton buttonBack;
+    private Button buttonBack;
     private Session session;
 
 
@@ -56,11 +56,11 @@ public class CreateSessionActivity extends AppCompatActivity {
         mTiSid  = (TextInputLayout) findViewById(R.id.input_edit_text_sid);
         mTiName  = (TextInputLayout) findViewById(R.id.input_edit_text_name);
         mTiLoc  = (TextInputLayout) findViewById(R.id.input_edit_text_loc);
-        mBtLogin = (Button) findViewById(R.id.create_session_button);
+        mBtLogin = (Button) findViewById(R.id.save_button);
         mEditTextSid = (EditText) findViewById(R.id.edit_text_sid);
         mEditTextName = (EditText) findViewById(R.id.edit_text_name);
         mEditTextLoc = (EditText) findViewById(R.id.edit_text_loc);
-        buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
+        buttonBack = (Button) findViewById(R.id.cancel_button);
         mBtLogin.setOnClickListener(view -> login());
         buttonBack.setOnClickListener(view -> finish());
 

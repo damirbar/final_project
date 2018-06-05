@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="angle_rtl_180">0</integer>
+    <integer name="def_max">100</integer>
+    <integer name="bio_max">300</integer>
+    <integer name="post_max">500</integer>
+    <integer name="comment_max">500</integer>
+    <integer name="feedback_max">500</integer>
+
 
 
 </resources>

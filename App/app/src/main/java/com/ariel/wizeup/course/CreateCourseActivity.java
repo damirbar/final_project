@@ -34,7 +34,7 @@ public class CreateCourseActivity extends AppCompatActivity {
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
-    private ImageButton buttonBack;
+    private Button buttonBack;
     private Course course;
 
 
@@ -51,14 +51,14 @@ public class CreateCourseActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mTiName = (TextInputLayout) findViewById(R.id.input_edit_text_name);
-        mTiTeacher = (TextInputLayout) findViewById(R.id.input_edit_text_teacher_name);
-        mTiLoc  = (TextInputLayout) findViewById(R.id.input_edit_text_loc);
-        mBtLogin = (Button) findViewById(R.id.create_button);
-        mEditTextName = (EditText) findViewById(R.id.edit_text_name);
-        mTeacherName = (EditText) findViewById(R.id.edit_text_teacher_name);
-        mEditTextLoc = (EditText) findViewById(R.id.edit_text_loc);
-        buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
+        mTiName = findViewById(R.id.input_edit_text_name);
+        mTiTeacher = findViewById(R.id.input_edit_text_teacher_name);
+        mTiLoc  = findViewById(R.id.input_edit_text_loc);
+        mBtLogin = findViewById(R.id.save_button);
+        mEditTextName = findViewById(R.id.edit_text_name);
+        mTeacherName = findViewById(R.id.edit_text_teacher_name);
+        mEditTextLoc = findViewById(R.id.edit_text_loc);
+        buttonBack = findViewById(R.id.cancel_button);
         mBtLogin.setOnClickListener(view -> login());
         buttonBack.setOnClickListener(view -> finish());
 

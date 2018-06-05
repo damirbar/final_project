@@ -1,13 +1,18 @@
 package com.ariel.wizeup.session;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.Response;
@@ -26,11 +31,12 @@ public class PostActivity extends AppCompatActivity {
     private CompositeSubscription mSubscriptions;
 
     private EditText mPostText;
-    private ImageButton buttonBack;
-    private ImageButton buttonSend;
+    private Button buttonBack;
+    private Button buttonSend;
     private final String question = "question";
     private String sid;
-
+    private TextView mTextCount;
+    private final int MAX_COUNT = 400;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +52,14 @@ public class PostActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mPostText = (EditText) findViewById(R.id.post_text);
-        buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
-        buttonSend = (ImageButton) findViewById(R.id.imageButton);
+        mTextCount = findViewById(R.id.count_num);
+        mPostText = findViewById(R.id.post_text);
+        buttonBack = findViewById(R.id.cancel_button);
+        buttonSend = findViewById(R.id.save_button);
         buttonSend.setOnClickListener(view -> attemptSendPost());
         buttonBack.setOnClickListener(view -> finish());
+        mPostText.addTextChangedListener(mTextEditorWatcher);
+
     }
 
     private boolean getData() {
@@ -90,6 +99,28 @@ public class PostActivity extends AppCompatActivity {
         finish();
     }
 
+
+    private final TextWatcher mTextEditorWatcher = new TextWatcher() {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            int num = MAX_COUNT - s.length();
+            mTextCount.setText(String.valueOf(num));
+            if (num < 0) {
+                buttonSend.setEnabled(false);
+                buttonSend.setTextColor(Color.parseColor("#CCCCCC"));
+                mTextCount.setTextColor(Color.RED);
+            }
+            else{
+                buttonSend.setEnabled(true);
+                mTextCount.setTextColor(Color.parseColor("#808080"));
+                buttonSend.setTextColor(Color.WHITE);
+            }
+        }
+        public void afterTextChanged(Editable s) {
+        }
+    };
 
 
     @Override

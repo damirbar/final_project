@@ -2,8 +2,10 @@ package com.ariel.wizeup.settings;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +40,7 @@ public class SettingsActivity extends AppCompatActivity {
             ChangeLanguage changeLanguage = new ChangeLanguage(this);
             if (l != null && !(l.getKey().equalsIgnoreCase(currentLang))) {
                 changeLanguage.setLocale(l.getKey());
-                Intent settings = new Intent(this,SettingsActivity.class);
+                Intent settings = new Intent(this, SettingsActivity.class);
                 Intent base = new Intent(SettingsActivity.this, BaseActivity.class);
                 base.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(base);
@@ -62,12 +64,12 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void OpenReport() {
-        Intent i = new Intent(this,FeedbackActivity.class);
+        Intent i = new Intent(this, FeedbackActivity.class);
         startActivity(i);
     }
 
     private void OpenChangePass() {
-        Intent i = new Intent(this,ChangePasswordActivity.class);
+        Intent i = new Intent(this, ChangePasswordActivity.class);
         startActivity(i);
     }
 
@@ -80,17 +82,16 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void initListView() {
         final ArrayList<Language> saveLanguages = new ArrayList<>();
-        saveLanguages.add(new Language("English", "en",getString(R.string.english)));
-        saveLanguages.add(new Language("עברית", "iw",getString(R.string.hebrew)));
+        saveLanguages.add(new Language("English", "en", getString(R.string.english)));
+        saveLanguages.add(new Language("עברית", "iw", getString(R.string.hebrew)));
         mAdapter = new LanguageAdapter(this, new ArrayList<>(saveLanguages));
         langListView.setAdapter(mAdapter);
     }
 
     private void initSharedPreferences() {
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        currentLang = mSharedPreferences.getString(Constants.LANG,"");
+        currentLang = mSharedPreferences.getString(Constants.LANG, "");
     }
-
 
 
 }

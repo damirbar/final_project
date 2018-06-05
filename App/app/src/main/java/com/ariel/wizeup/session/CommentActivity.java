@@ -18,12 +18,9 @@ import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.utils.Constants;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -36,7 +33,7 @@ public class CommentActivity extends AppCompatActivity {
     private CompositeSubscription mSubscriptions;
     private ListView commentsList;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private EditText mComtText;
+    private EditText mCommentText;
     private ImageButton buttonBack;
     private TextView buttonSend;
     private String sid;
@@ -69,7 +66,7 @@ public class CommentActivity extends AppCompatActivity {
 
     private void initViews() {
         commentsList = (ListView) findViewById(R.id.comments);
-        mComtText = (EditText) findViewById(R.id.com_text);
+        mCommentText = (EditText) findViewById(R.id.com_text);
         buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         buttonSend = (TextView) findViewById(R.id.send_btn);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
@@ -122,7 +119,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void attemptSendCom() {
-        String strMessage = mComtText.getText().toString().trim();
+        String strMessage = mCommentText.getText().toString().trim();
         if (TextUtils.isEmpty(strMessage)) {
             return;
         }
@@ -143,7 +140,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void handleResponseSendCom(Response response) {
-        mComtText.setText("");
+        mCommentText.setText("");
         pullComments();
     }
 

@@ -2,10 +2,14 @@ package com.ariel.wizeup.profile;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.ariel.wizeup.R;
 
@@ -13,7 +17,8 @@ public class BioActivity extends AppCompatActivity {
 
     private EditText mBioText;
     private Button mBSave;
-    private Button mBcancel;
+    private TextView mTextCount;
+    private final int MAX_COUNT = 150;
 
 
     @Override
@@ -28,26 +33,26 @@ public class BioActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mBioText = (EditText) findViewById(R.id.bio_text);
-        mBSave = (Button) findViewById(R.id.save_button);
-        mBcancel = (Button) findViewById(R.id.cancel_button);
+        mTextCount = findViewById(R.id.count_num);
+        mBioText = findViewById(R.id.bio_text);
+        mBSave = findViewById(R.id.save_button);
+        Button mBCancel = findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveButton());
-        mBcancel.setOnClickListener(view -> finish());
+        mBCancel.setOnClickListener(view -> finish());
+        mBioText.addTextChangedListener(mTextEditorWatcher);
     }
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
             String _bio = getIntent().getExtras().getString("bio");
-            if(_bio != null) {
+            if (_bio != null) {
                 mBioText.setText(_bio);
                 return true;
             } else
                 return false;
-        }
-        else
+        } else
             return false;
     }
-
 
 
     public void saveButton() {
@@ -59,7 +64,29 @@ public class BioActivity extends AppCompatActivity {
         i.putExtras(extra);
         setResult(Activity.RESULT_OK, i);
         finish();
+    }
+
+    private final TextWatcher mTextEditorWatcher = new TextWatcher() {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            int num = MAX_COUNT - s.length();
+            mTextCount.setText(String.valueOf(num));
+            if (num < 0) {
+                mBSave.setEnabled(false);
+                mBSave.setTextColor(Color.parseColor("#CCCCCC"));
+                mTextCount.setTextColor(Color.RED);
+            }
+            else{
+                mBSave.setEnabled(true);
+                mTextCount.setTextColor(Color.parseColor("#808080"));
+                mBSave.setTextColor(Color.WHITE);
+            }
+        }
+        public void afterTextChanged(Editable s) {
+        }
+    };
 
 
 }

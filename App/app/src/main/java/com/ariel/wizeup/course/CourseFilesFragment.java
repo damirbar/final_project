@@ -97,6 +97,7 @@ public class CourseFilesFragment extends Fragment {
         filesList = (ListView) v.findViewById(R.id.files_list);
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.activity_main_swipe_refresh_layout);
         mFBAddFile = (FloatingActionButton) v.findViewById(R.id.fb_add_file);
+        mSwipeRefreshLayout.setVisibility(View.GONE);
         mFBAddFile.setOnClickListener(view -> addFile());
     }
 
@@ -168,6 +169,7 @@ public class CourseFilesFragment extends Fragment {
         } else {
             mTvNoResults.setVisibility(View.VISIBLE);
         }
+        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -101,11 +101,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/user_profile_photo"
-                android:layout_width="135dp"
-                android:layout_height="126dp"
+                android:layout_width="130dp"
+                android:layout_height="110dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:src="@drawable/default_user_image"
                 app:civ_border_color="?attr/colorAccent" />
 
@@ -116,11 +116,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/user_profile_photo"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="3dp"
                 android:adjustViewBounds="true"
                 android:text="Change Profile Photo"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -136,6 +137,8 @@
                     android:layout_below="@+id/tR8"
                     android:layout_marginTop="10dp"
                     android:text="Private Information"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TableRow
@@ -156,6 +159,7 @@
                         android:id="@+id/eTFirstName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLength="@integer/def_max"
                         android:ems="10"
                         android:hint="First Name"
                         android:inputType="textPersonName"
@@ -185,6 +189,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="Last Name"
+                        android:maxLength="@integer/def_max"
                         app:backgroundTint="@color/edit_text"
                         android:inputType="textPersonName"
                         android:textSize="16sp" />
@@ -195,7 +200,7 @@
                     android:id="@+id/tR5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tR4"
+                    android:layout_below="@+id/info"
                     android:layout_marginTop="10dp">
 
                     <TextView
@@ -212,9 +217,10 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="Address"
-                        app:backgroundTint="@color/edit_text"
+                        android:maxLength="@integer/def_max"
                         android:inputType="text"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        app:backgroundTint="@color/edit_text" />
 
                 </TableRow>
 
@@ -241,6 +247,7 @@
                         android:ems="10"
                         android:focusable="false"
                         android:inputType="none"
+                        android:maxLength="@integer/def_max"
                         android:text="Not Specified"
                         android:textSize="16sp"
                         app:backgroundTint="@color/edit_text" />
@@ -269,6 +276,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="Display Name"
+                        android:maxLength="@integer/def_max"
                         android:inputType="textPersonName"
                         app:backgroundTint="@color/edit_text"
                         android:textSize="16sp" />
@@ -279,7 +287,7 @@
                     android:id="@+id/tR4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/info"
+                    android:layout_below="@+id/tR3"
                     android:layout_marginTop="10dp">
 
                     <TextView
@@ -296,6 +304,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="Country"
+                        android:maxLength="@integer/def_max"
                         android:inputType="text"
                         android:textSize="16sp"
                         app:backgroundTint="@color/edit_text" />
@@ -324,6 +333,7 @@
                         android:ems="10"
                         android:focusable="false"
                         android:hint="Birthday"
+                        android:maxLength="@integer/def_max"
                         android:inputType="none"
                         app:backgroundTint="@color/edit_text"
                         android:textSize="16sp" />
@@ -334,7 +344,7 @@
                     android:id="@+id/tR8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tR3"
+                    android:layout_below="@+id/tR4"
                     android:layout_marginTop="10dp">
 
                     <TextView
@@ -352,6 +362,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
+                        android:maxLength="@integer/def_max"
                         android:hint="About Me"
                         android:inputType="none"
                         android:textSize="16sp"

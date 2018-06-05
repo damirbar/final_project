@@ -57,7 +57,7 @@ public class LoginFragment extends Fragment{
     private String mEmail;
     private String mToken;
     private String mPass;
-    private ChangeLanguage ChangeLanguage;
+    private ChangeLanguage changeLanguage;
 
     @Nullable
     @Override
@@ -68,7 +68,7 @@ public class LoginFragment extends Fragment{
 //        startActivity(intent);//remove
 //        getActivity().finish(); //remove
 
-        ChangeLanguage =new ChangeLanguage(getActivity());
+        changeLanguage =new ChangeLanguage(getActivity());
         initSharedPreferences();
         autoLogin();
         View view = inflater.inflate(R.layout.fragment_login,container,false);
@@ -93,7 +93,7 @@ public class LoginFragment extends Fragment{
         mNewAccountButton.setOnClickListener(view -> goToRegister());
         mBtLogin.setOnClickListener(view -> login());
         mTvForgotPassword.setOnClickListener(view -> resetPassDialog());
-        mLangTextView.setOnClickListener(view -> ChangeLanguage.changeLanguageDialog());
+        mLangTextView.setOnClickListener(view -> changeLanguage.changeLanguageDialog());
 
 
         mEtEmail.addTextChangedListener(new TextWatcher() {
@@ -105,7 +105,7 @@ public class LoginFragment extends Fragment{
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(mEtEmail.getText().toString().length() > 0 && mEtPassword.getText().toString().length() > 0) {
-                    mBtLogin.setTextColor(Color.parseColor("#ffffff"));
+                    mBtLogin.setTextColor(Color.WHITE);
                     mBtLogin.setEnabled(true);
                 }
                 else {
@@ -167,7 +167,7 @@ public class LoginFragment extends Fragment{
         mEmail = mSharedPreferences.getString(Constants.EMAIL,"");
         mToken = mSharedPreferences.getString(Constants.TOKEN,"");
         String lang = mSharedPreferences.getString(Constants.LANG,"");
-        ChangeLanguage.setLocale(lang);
+        changeLanguage.setLocale(lang);
     }
 
     private void login() {

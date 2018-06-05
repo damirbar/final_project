@@ -95,6 +95,7 @@
         android:background="@color/def_background"
         android:gravity="start|center|top"
         android:inputType="textLongMessage|textMultiLine"
+        android:maxLength="@integer/feedback_max"
         android:padding="@dimen/activity_vertical_margin"
         android:scrollbarStyle="insideOverlay"
         android:scrollbars="vertical"

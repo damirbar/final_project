@@ -96,11 +96,11 @@ public class MyCourseActivity extends AppCompatActivity {
     private void initViews() {
         layout =  findViewById(R.id.relative);
         layout.setVisibility(View.GONE);
-        buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
-        mTvNoResults = (TextView) findViewById(R.id.tv_no_results);
-        coursesList = (ListView) findViewById(R.id.myClassesList);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
-        mFB = (FloatingActionButton) findViewById(R.id.fb_add_corse);
+        buttonBack = findViewById(R.id.image_Button_back);
+        mTvNoResults = findViewById(R.id.tv_no_results);
+        coursesList = findViewById(R.id.myClassesList);
+        mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
+        mFB = findViewById(R.id.fb_add_corse);
         buttonBack.setOnClickListener(view -> finish());
         mFB.setOnClickListener(view -> addCourse());
 

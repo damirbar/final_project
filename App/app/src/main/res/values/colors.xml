@@ -5,10 +5,12 @@
     <color name="default_circle_indicator_page_color">#3e4a5b</color>
     <color name="black">#222222</color>
     <color name="primary_text">#ff222222</color>
-    <color name="ultra_dark">#29303F</color>
+    <color name="ultra_dark">#29303f</color>
+    <color name="def_text">#808080</color>
+
     <color name="highlight_default_color">#2196f3</color>
     <color name="secondary_post_text">#989898</color>
-    <color name="steelGrey">#ff888b8e</color>
+    <color name="steelGrey">#888b8e</color>
     <color name="secondary_comment_text">#ff727272</color>
     <color name="def_background">#fdfdfe</color>
     <color name="white">#ffffff</color>
