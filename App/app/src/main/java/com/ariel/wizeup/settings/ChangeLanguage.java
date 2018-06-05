@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.preference.PreferenceManager;
-import android.view.View;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.utils.Constants;
@@ -46,15 +44,14 @@ public class ChangeLanguage {
         mBuilder.setTitle(R.string.choose_language);
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
         String lang = mSharedPreferences.getString(Constants.LANG, "");
-        mBuilder.setSingleChoiceItems(listItems, -1, (dialogInterface, i) -> {
-            if (i == 0 && !(lang.equalsIgnoreCase("en"))) {
+        mBuilder.setItems(listItems, (dialog, item) -> {
+            if (item == 0 && !(lang.equalsIgnoreCase("en"))) {
                 setLocale("en");
                 activity.recreate();
-            } else if (i == 1 && !(lang.equalsIgnoreCase("iw"))) {
+            } else if (item == 1 && !(lang.equalsIgnoreCase("iw"))) {
                 setLocale("iw");
                 activity.recreate();
             }
-            dialogInterface.dismiss();
         });
         AlertDialog mDialog = mBuilder.create();
         mDialog.show();

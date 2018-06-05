@@ -3,7 +3,7 @@
     <string name="log_in">התחבר</string>
     <string name="register">הרשם</string>
     <string name="multi_language_support">עברית • אנגלית • עוד…</string>
-    <string name="email">מייל</string>
+    <string name="email">דוא\"ל</string>
     <string name="password">סיסמה</string>
     <string name="forgot_password">שכחת את הסיסמה?</string>
     <string name="sign_up">הרשם</string>
@@ -48,7 +48,7 @@
     <string name="my_courses">הקורסים שלי</string>
     <string name="messages">הודעות</string>
     <string name="notifications">התראות</string>
-    <string name="about">על אודות</string>
+    <string name="about">אודות</string>
     <string name="logout">להתנתק</string>
     <string name="no_results_found">לא נמצאו תוצאות</string>
     <string name="add_new_post">הוסף פוסט חדש</string>
@@ -56,6 +56,11 @@
     <string name="about_me">עליי</string>
     <string name="edit_profile">ערוך פרופיל</string>
     <string name="general_feedback">בקצרה להסביר מה אתה אוהב, או מה אפשר לשפר.</string>
+    <string name="ok">אשר</string>
+    <string name="save">שמור</string>
+    <string name="post">פרסם</string>
+
+
 
 
 

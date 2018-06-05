@@ -25,7 +25,7 @@
         android:layout_alignLeft="@+id/datePicker"
         android:layout_alignStart="@+id/datePicker"
         android:layout_below="@+id/datePicker"
-        android:text="Cancel" />
+        android:text="@string/cancel" />
 
     <Button
         android:id="@+id/button_ok"
@@ -35,6 +35,6 @@
         android:layout_alignEnd="@+id/datePicker"
         android:layout_alignRight="@+id/datePicker"
         android:layout_below="@+id/datePicker"
-        android:text="Ok" />
+        android:text="@string/ok" />
 
 </RelativeLayout>

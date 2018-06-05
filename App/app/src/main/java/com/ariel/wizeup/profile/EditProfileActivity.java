@@ -201,20 +201,18 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     public void genderViewClick() {
         final String[] items = {"Male", "Female", "Not Specified"};
         AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this,R.style.Theme_Report_Dialog_Alert);
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                switch (items[item]) {
-                    case "Male":
-                        mETGender.setText(items[item]);
-                        break;
-                    case "Female":
-                        mETGender.setText(items[item]);
-                        break;
-                    case "Not Specified":
-                        mETGender.setText(items[item]);
-                        break;
-                }
+        builder.setTitle("choose gender");
+        builder.setItems(items, (dialog, item) -> {
+            switch (items[item]) {
+                case "Male":
+                    mETGender.setText(items[item]);
+                    break;
+                case "Female":
+                    mETGender.setText(items[item]);
+                    break;
+                case "Not Specified":
+                    mETGender.setText(items[item]);
+                    break;
             }
         });
         builder.show();
