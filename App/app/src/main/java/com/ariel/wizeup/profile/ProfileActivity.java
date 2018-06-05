@@ -1,22 +1,16 @@
 package com.ariel.wizeup.profile;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.ariel.wizeup.R;
-import com.ariel.wizeup.dialogs.ChangePasswordDialog;
+import com.ariel.wizeup.settings.ChangePasswordActivity;
 import com.ariel.wizeup.model.User;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
@@ -35,8 +29,6 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView mAboutMe;
     private TextView mBtEditProfile;
     private ImageView image;
-    private TextView mBtChangePassword;
-
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
@@ -58,7 +50,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
         else{
             mBtEditProfile.setVisibility(View.GONE);
-            mBtChangePassword.setVisibility(View.GONE);
         }
     }
 
@@ -75,10 +66,8 @@ public class ProfileActivity extends AppCompatActivity {
         mAboutMe = findViewById(R.id.tvAboutMe);
         mBtEditProfile = findViewById(R.id.edit_profile);
         buttonBack = findViewById(R.id.image_Button_back);
-        mBtChangePassword = findViewById(R.id.change_pass);
         buttonBack.setOnClickListener(view ->finish());
         mBtEditProfile.setOnClickListener(view ->  editProfile());
-        mBtChangePassword.setOnClickListener(view -> showDialog());
     }
 
     private boolean getData() {
@@ -124,11 +113,6 @@ public class ProfileActivity extends AppCompatActivity {
                     .error(R.drawable.default_user_image)
                     .into(image);
         layout.setVisibility(View.VISIBLE);
-    }
-
-    private void showDialog(){
-        ChangePasswordDialog fragment = new ChangePasswordDialog();
-        fragment.show(getFragmentManager(), ChangePasswordDialog.TAG);
     }
 
 

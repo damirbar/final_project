@@ -2,7 +2,6 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
@@ -34,9 +33,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/dark_edit_text"
-                    android:hint="Confirm password"
+                    android:hint="@string/confirm_password"
                     android:inputType="textPassword"
-                    android:paddingLeft="10dp" />
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -56,7 +56,7 @@
                 android:layout_below="@+id/img_logo"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
-                android:text="Hebrew &#8226; Russian &#8226; More..." />
+                android:text="@string/multi_language_support" />
 
             <RelativeLayout
                 android:id="@+id/rel_name"
@@ -75,14 +75,15 @@
                         android:id="@+id/et_first_name"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
+                        android:layout_marginEnd="1dp"
                         android:layout_marginRight="1dp"
                         android:background="@drawable/dark_edit_text"
-                        android:hint="First Name"
+                        android:hint="@string/first_name"
                         android:inputType="text"
                         android:paddingLeft="10dp"
-                        android:textStyle="normal"
-                        android:layout_marginEnd="1dp"
-                        android:paddingStart="10dp" />
+                        android:paddingRight="10dp"
+                        android:paddingStart="10dp"
+                        android:textStyle="normal" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -96,16 +97,18 @@
                     android:layout_marginEnd="0dp"
                     android:layout_marginRight="0dp"
                     android:layout_toRightOf="@+id/ti_first_name"
-                    app:hintEnabled="false">
+                    app:hintEnabled="false"
+                    android:layout_toEndOf="@+id/ti_first_name">
 
                     <EditText
                         android:id="@+id/et_last_name"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@drawable/dark_edit_text"
-                        android:hint="Last Name"
+                        android:hint="@string/last_name"
                         android:inputType="text"
                         android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:textStyle="normal" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -125,9 +128,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/dark_edit_text"
-                    android:hint="Email"
+                    android:hint="@string/email"
                     android:inputType="textEmailAddress"
-                    android:paddingLeft="10dp" />
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -145,9 +149,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/dark_edit_text"
-                    android:hint="Password"
+                    android:hint="@string/password"
                     android:inputType="textPassword"
-                    android:paddingLeft="10dp" />
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -159,11 +164,8 @@
                 android:layout_below="@+id/type_spinner"
                 android:layout_marginTop="45dp"
                 android:background="@drawable/buttonshape"
-                android:drawableRight="@drawable/ic_arrow_forward"
-                android:paddingLeft="@dimen/button_padding"
                 android:text="@string/register"
-                android:textColor="@color/white"
-                android:drawableEnd="@drawable/ic_arrow_forward" />
+                android:textColor="@color/white"/>
 
             <TextView
                 android:id="@+id/tv_login"
@@ -175,7 +177,7 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:paddingTop="@dimen/card_items_margin"
-                android:text="Already Registered? "
+                android:text="@string/already_registered"
                 android:textAlignment="center" />
 
             <Spinner

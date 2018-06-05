@@ -68,7 +68,7 @@ public class DrawerMenuItem {
                 break;
             case DRAWER_MENU_ITEM_TERMS:
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_book_black_18dp));
-                itemNameTxt.setText("Terms");
+                itemNameTxt.setText("About");
                 break;
             case DRAWER_MENU_ITEM_LOGOUT:
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_exit_to_app_black_18dp));

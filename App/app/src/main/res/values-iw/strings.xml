@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">wizeUp</string>
+    <string name="log_in">התחבר</string>
+    <string name="register">הרשם</string>
+    <string name="multi_language_support">עברית • אנגלית • עוד…</string>
+    <string name="email">מייל</string>
+    <string name="password">סיסמה</string>
+    <string name="forgot_password">שכחת את הסיסמה?</string>
+    <string name="sign_up">הרשם</string>
+    <string name="first_name">שם פרטי</string>
+    <string name="confirm_password">אשר סיסמה</string>
+    <string name="already_registered">כבר יש לך חשבון?</string>
+    <string name="last_name">שם משפחה</string>
+    <string name="token">קוד אישי</string>
+    <string name="new_password">סיסמה חדשה</string>
+    <string name="reset_password">אפס את הסיסמה</string>
+    <string name="email_should_be_valid">כתובת האימייל צריכה להיות תקפה.</string>
+    <string name="password_should_not_be_empty">הסיסמה לא צריכה להיות ריקה.</string>
+    <string name="enter_valid_details">הזן פרטים חוקיים.</string>
+    <string name="password_must_be_at_least_6_characters">סיסמא חייבת להיות לפחות בת 6 תווים.</string>
+    <string name="passwords_dont_match">סיסמאות אינן תואמות.</string>
+    <string name="first_name_should_not_be_empty">השם הפרטי אינו יכול להיות ריק.</string>
+    <string name="last_name_should_not_be_empty">שם משפחה לא צריך להיות ריק.</string>
+    <string name="token_should_not_be_empty">הקוד אינו יכול להיות ריק.</string>
+    <string name="internal_server_error">שגיאת שרת פנימית.</string>
+    <string name="network_error">בעיה בהתחברות לאינטרנט.</string>
+    <string name="hebrew">עברית</string>
+    <string name="english">אנגלית</string>
+    <string name="choose_language">בחר שפה</string>
+    <string name="change_password">שנה סיסמה</string>
+    <string name="language">שפה</string>
 
-    <string name="add_new_post">Add New Post</string>
-    <string name="send">Send</string>
-    <string name="add_comment">Add comment</string>
-    <string name="open_drawer">Drawer Open</string>
-    <string name="close_drawer">Drawer Close</string>
-    <string name="about_me">About me</string>
-    <string name="edit_profile">EDIT PROFILE</string>
-    <string name="change_password">Change Password</string>
 
-    <string name="info">היי</string>
-    <string name="log_in">התחברות</string>
-    <string name="register">הירשם</string>
+
 
 </resources>

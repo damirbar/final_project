@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">wizeUp</string>
+    <string name="log_in">Log In</string>
+    <string name="register">Register</string>
+    <string name="multi_language_support">Hebrew • English • More…</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="first_name">First Name</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="already_registered">Already Registered?</string>
+    <string name="last_name">Last Name</string>
+    <string name="token">Token</string>
+    <string name="new_password">New Password</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="email_should_be_valid">Email should be valid.</string>
+    <string name="password_should_not_be_empty">Password should not be empty.</string>
+    <string name="enter_valid_details">Enter Valid Details.</string>
+    <string name="password_must_be_at_least_6_characters">Password must be at least 6 characters.</string>
+    <string name="passwords_dont_match">Passwords don\'t match.</string>
+    <string name="first_name_should_not_be_empty">First Name should not be empty.</string>
+    <string name="last_name_should_not_be_empty">Last Name should not be empty.</string>
+    <string name="token_should_not_be_empty">Token Should not be empty.</string>
+    <string name="internal_server_error">Internal Server Error.</string>
+    <string name="network_error">Network Error.</string>
+    <string name="hebrew">Hebrew</string>
+    <string name="english">English</string>
+    <string name="choose_language">Choose Language</string>
+    <string name="change_password">Change Password</string>
+    <string name="language">Language</string>
+
 
     <string name="add_new_post">Add New Post</string>
     <string name="send">Send</string>
@@ -9,7 +39,6 @@
     <string name="close_drawer">Drawer Close</string>
     <string name="about_me">About me</string>
     <string name="edit_profile">EDIT PROFILE</string>
-    <string name="change_password">Change Password</string>
     <string name="info">wizeUp is a tool to help students get better
                         at their studies and to help teachers have a better
                         perspective on their class. wizeUp allows teachers
@@ -25,7 +54,7 @@
                         to thrive using a scoring system.
                         wizeStream will make teaching and
                         learning easier, faster and better.</string>
-    <string name="log_in">Log In</string>
-    <string name="register">Register</string>
+    <string name="general_feedback">Briefly explain what you love, or what could improve.</string>
+
 
 </resources>

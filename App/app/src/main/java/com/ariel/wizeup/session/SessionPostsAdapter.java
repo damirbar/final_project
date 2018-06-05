@@ -178,9 +178,6 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
                                 case R.id.report:
                                     AlertDialogTheme();
                                     break;
-                                case R.id.addtowishlist:
-                                    Toast.makeText(mContext, "Delete File Clicked at position " + " : " + position, Toast.LENGTH_LONG).show();
-                                    break;
                                 default:
                                     break;
                             }

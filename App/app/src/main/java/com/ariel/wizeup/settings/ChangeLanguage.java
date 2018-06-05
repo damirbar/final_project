@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 
+import com.ariel.wizeup.R;
+import com.ariel.wizeup.utils.Constants;
+
 import java.util.Locale;
 
 import static com.ariel.wizeup.utils.Constants.LANG;
@@ -31,16 +34,18 @@ public class ChangeLanguage {
     }
 
     public void changeLanguageDialog() {
-        final String[] listItems ={"Hebrew", "English"};
+        final String[] listItems ={activity.getString(R.string.english), activity.getString(R.string.hebrew)};
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(activity);
-        mBuilder.setTitle("Choose ChangeLanguage...");
+        mBuilder.setTitle(R.string.choose_language);
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        String lang = mSharedPreferences.getString(Constants.LANG,"");
         mBuilder.setSingleChoiceItems(listItems, -1, (dialogInterface, i) -> {
-            if(i == 0){
-                setLocale("iw");
+            if(i == 0 && !(lang.equalsIgnoreCase("en"))){
+                setLocale("en");
                 activity.recreate();
             }
-            else if(i == 1){
-                setLocale("en");
+            else if(i == 1 && !(lang.equalsIgnoreCase("iw"))){
+                setLocale("iw");
                 activity.recreate();
             }
             dialogInterface.dismiss();

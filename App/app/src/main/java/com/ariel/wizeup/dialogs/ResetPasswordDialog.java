@@ -81,17 +81,17 @@ public class ResetPasswordDialog extends DialogFragment {
 
     private void initViews(View v) {
 
-        mEtEmail = (EditText) v.findViewById(R.id.et_email);
-        mEtToken = (EditText) v.findViewById(R.id.et_token);
-        mEtPassword = (EditText) v.findViewById(R.id.et_password);
-        mEtPassword2 = (EditText) v.findViewById(R.id.et_password2);
-        mBtResetPassword = (Button) v.findViewById(R.id.btn_reset_password);
-        mProgressBar = (ProgressBar) v.findViewById(R.id.progress);
-        mTvMessage = (TextView) v.findViewById(R.id.tv_message);
-        mTiEmail = (TextInputLayout) v.findViewById(R.id.ti_email);
-        mTiToken = (TextInputLayout) v.findViewById(R.id.ti_token);
-        mTiPassword = (TextInputLayout) v.findViewById(R.id.ti_password);
-        mTiPassword2 = (TextInputLayout) v.findViewById(R.id.ti_password2);
+        mEtEmail = v.findViewById(R.id.et_email);
+        mEtToken = v.findViewById(R.id.et_token);
+        mEtPassword = v.findViewById(R.id.et_password);
+        mEtPassword2 = v.findViewById(R.id.et_password2);
+        mBtResetPassword = v.findViewById(R.id.btn_reset_password);
+        mProgressBar = v.findViewById(R.id.progress);
+        mTvMessage = v.findViewById(R.id.tv_message);
+        mTiEmail = v.findViewById(R.id.ti_email);
+        mTiToken = v.findViewById(R.id.ti_token);
+        mTiPassword = v.findViewById(R.id.ti_password);
+        mTiPassword2 = v.findViewById(R.id.ti_password2);
 
 
         mBtResetPassword.setOnClickListener(view -> {
@@ -141,7 +141,7 @@ public class ResetPasswordDialog extends DialogFragment {
         if (!validateEmail(mEmail)) {
 
             err++;
-            mTiEmail.setError("Email Should be Valid !");
+            mTiEmail.setError(getString(R.string.email_should_be_valid));
         }
 
         if (err == 0) {
@@ -164,27 +164,27 @@ public class ResetPasswordDialog extends DialogFragment {
         if (!validateFields(password)) {
 
             err++;
-            mTiPassword.setError("Password Should not be empty !");
+            mTiPassword.setError(getString(R.string.password_should_not_be_empty));
         }
 
         if (!validateFields(password2)) {
 
             err++;
-            mTiPassword2.setError("Password Should not be empty !");
+            mTiPassword2.setError(getString(R.string.password_should_not_be_empty));
         }
 
         if (!password.equals(password2) && err == 0) {
 
             err++;
-            mTiPassword.setError("Passwords don't match !");
-            mTiPassword2.setError("Passwords don't match !");
+            mTiPassword.setError(getString(R.string.passwords_dont_match));
+            mTiPassword2.setError(getString(R.string.passwords_dont_match));
         }
 
 
         if (!validateFields(token)) {
 
             err++;
-            mTiToken.setError("Token Should not be empty !");
+            mTiToken.setError(getString(R.string.token_should_not_be_empty));
         }
 
         if (err == 0) {
@@ -256,11 +256,11 @@ public class ResetPasswordDialog extends DialogFragment {
 
             } catch (JsonSyntaxException | IOException e) {
                 e.printStackTrace();
-                showMessage("Internal Server Error !");
+                showMessage(getString(R.string.internal_server_error));
             }
         } else {
 
-            showMessage("Network Error !");
+            showMessage(getString(R.string.network_error));
         }
     }
 

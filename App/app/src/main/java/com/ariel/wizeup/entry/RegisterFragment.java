@@ -114,27 +114,27 @@ public class RegisterFragment extends Fragment {
         if (password.length()<6) {
 
             err++;
-            mTiPassword.setError("Password must be at least 6 characters.");
-            mTiPassword2.setError("Password must be at least 6 characters.");
+            mTiPassword.setError(getString(R.string.password_must_be_at_least_6_characters));
+            mTiPassword2.setError(getString(R.string.password_must_be_at_least_6_characters));
         }
 
         if (!validateFields(password)) {
 
             err++;
-            mTiPassword.setError("Password should not be empty.");
+            mTiPassword.setError(getString(R.string.password_should_not_be_empty));
         }
 
         if (!validateFields(password2)) {
 
             err++;
-            mTiPassword2.setError("Password should not be empty.");
+            mTiPassword2.setError(getString(R.string.password_should_not_be_empty));
         }
 
         if (!password.equals(password2) && err == 0) {
 
             err++;
-            mTiPassword.setError("Passwords don't match.");
-            mTiPassword2.setError("Passwords don't match.");
+            mTiPassword.setError(getString(R.string.passwords_dont_match));
+            mTiPassword2.setError(getString(R.string.passwords_dont_match));
         }
 
 
@@ -142,19 +142,19 @@ public class RegisterFragment extends Fragment {
         if (!validateFields(first_name)) {
 
             err++;
-            mTiFName.setError("First Name should not be empty.");
+            mTiFName.setError(getString(R.string.first_name_should_not_be_empty));
         }
 
         if (!validateFields(last_name)) {
 
             err++;
-            mTiLName.setError("Last Name should not be empty.");
+            mTiLName.setError(getString(R.string.last_name_should_not_be_empty));
         }
 
         if (!validateEmail(email)) {
 
             err++;
-            mTiEmail.setError("Email should be valid.");
+            mTiEmail.setError(getString(R.string.email_should_be_valid));
         }
 
 

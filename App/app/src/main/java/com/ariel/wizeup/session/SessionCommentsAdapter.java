@@ -171,9 +171,6 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
                                 case R.id.report:
                                     Toast.makeText(mContext, " Report Clicked at position " + " : " + position, Toast.LENGTH_LONG).show();
                                     break;
-                                case R.id.addtowishlist:
-                                    Toast.makeText(mContext, "Delete File Clicked at position " + " : " + position, Toast.LENGTH_LONG).show();
-                                    break;
                                 default:
                                     break;
                             }

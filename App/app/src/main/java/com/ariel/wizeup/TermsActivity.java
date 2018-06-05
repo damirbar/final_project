@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageButton;
 
 public class TermsActivity extends AppCompatActivity {
-    private ImageButton buttonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +14,7 @@ public class TermsActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
+        ImageButton buttonBack = findViewById(R.id.image_Button_back);
         buttonBack.setOnClickListener(view ->finish());
 
     }

@@ -68,8 +68,6 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     public static final int REQUEST_CODE_UPDATE_PIC = 0x1;
     public static final int REQUEST_CODE_UPDATE_BIO = 0x2;
     private ImageView image;
-    private Button mBSave;
-    private Button mBCancel;
     private Bitmap myBitmap;
     private String imagePath;
     private int actions;
@@ -105,8 +103,8 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mETAboutMe = (EditText) findViewById(R.id.eTAboutMe);
         mProfileChange = (TextView) findViewById(R.id.user_profile_change);
         image = (ImageView) findViewById(R.id.user_profile_photo);
-        mBSave = (Button) findViewById(R.id.save_button);
-        mBCancel = (Button) findViewById(R.id.cancel_button);
+        Button mBSave = (Button) findViewById(R.id.save_button);
+        Button mBCancel = (Button) findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveButton());
         mBCancel.setOnClickListener(view -> finish());
         mETGender.setOnClickListener(view -> genderViewClick());

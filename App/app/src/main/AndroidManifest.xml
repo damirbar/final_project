@@ -83,7 +83,16 @@
         <activity
             android:name=".course.CreateCourseActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity android:name=".settings.SettingsActivity"></activity>
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".settings.ChangePasswordActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".settings.FeedbackActivity"
+            android:configChanges="orientation|screenSize" />
+
     </application>
 
 </manifest>

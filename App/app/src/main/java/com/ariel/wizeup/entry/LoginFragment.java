@@ -45,12 +45,9 @@ public class LoginFragment extends Fragment{
 
     public static final String TAG = LoginFragment.class.getSimpleName();
 
-    private TextView mLangTextView;
     private EditText mEtEmail;
     private EditText mEtPassword;
     private Button mBtLogin;
-    private Button mNewAccountButton;
-    private TextView mTvForgotPassword;
     private TextInputLayout mTiEmail;
     private TextInputLayout mTiPassword;
     private ProgressBar mProgressBar;
@@ -70,6 +67,7 @@ public class LoginFragment extends Fragment{
 //        Intent intent = new Intent(getActivity(),FileUploadActivity.class);//remove
 //        startActivity(intent);//remove
 //        getActivity().finish(); //remove
+
         ChangeLanguage =new ChangeLanguage(getActivity());
         initSharedPreferences();
         autoLogin();
@@ -83,15 +81,15 @@ public class LoginFragment extends Fragment{
 
     private void initViews(View v) {
 
-        mEtEmail = (EditText) v.findViewById(R.id.et_email);
-        mEtPassword = (EditText) v.findViewById(R.id.et_password);
-        mNewAccountButton = (Button) v.findViewById(R.id.newAccountButton);
-        mBtLogin = (Button) v.findViewById(R.id.loginButton);
-        mTiEmail = (TextInputLayout) v.findViewById(R.id.ti_email);
-        mTiPassword = (TextInputLayout) v.findViewById(R.id.ti_password);
-        mLangTextView = (TextView) v.findViewById(R.id.langTextView);
-        mProgressBar = (ProgressBar) v.findViewById(R.id.progress);
-        mTvForgotPassword = (TextView) v.findViewById(R.id.forgotPswTextView);
+        mEtEmail = v.findViewById(R.id.et_email);
+        mEtPassword = v.findViewById(R.id.et_password);
+        Button mNewAccountButton = v.findViewById(R.id.newAccountButton);
+        mBtLogin = v.findViewById(R.id.loginButton);
+        mTiEmail = v.findViewById(R.id.ti_email);
+        mTiPassword = v.findViewById(R.id.ti_password);
+        TextView mLangTextView = v.findViewById(R.id.langTextView);
+        mProgressBar = v.findViewById(R.id.progress);
+        TextView mTvForgotPassword = v.findViewById(R.id.forgotPswTextView);
         mNewAccountButton.setOnClickListener(view -> goToRegister());
         mBtLogin.setOnClickListener(view -> login());
         mTvForgotPassword.setOnClickListener(view -> resetPassDialog());
@@ -184,13 +182,13 @@ public class LoginFragment extends Fragment{
         if (!validateEmail(mEmail)) {
 
             err++;
-            mTiEmail.setError("Email should be valid !");
+            mTiEmail.setError(getString(R.string.email_should_be_valid));
         }
 
         if (!validateFields(mPass)) {
 
             err++;
-            mTiPassword.setError("Password should not be empty !");
+            mTiPassword.setError(getString(R.string.password_should_not_be_empty));
         }
 
         if (err == 0) {
@@ -200,7 +198,7 @@ public class LoginFragment extends Fragment{
 
         } else {
 
-            showMessage("Enter Valid Details !");
+            showMessage(getString(R.string.enter_valid_details));
         }
     }
 

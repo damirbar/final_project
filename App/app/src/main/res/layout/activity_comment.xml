@@ -39,6 +39,7 @@
                 android:background="@null"
                 android:contentDescription="TODO"
                 app:srcCompat="@drawable/intercom_back"
+                android:rotationY="@integer/angle_rtl_180"
                 android:layout_alignParentLeft="true" />
 
         </RelativeLayout>
@@ -99,7 +100,8 @@
             android:paddingRight="10.0dip"
             android:textColor="@color/steelGrey"
             android:textColorHint="@color/secondary_comment_text"
-            android:textSize="@dimen/button_font_size" />
+            android:textSize="@dimen/button_font_size"
+            android:layout_marginStart="5dp" />
 
         <TextView
             android:id="@+id/send_btn"
