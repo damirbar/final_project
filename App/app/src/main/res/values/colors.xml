@@ -2,6 +2,8 @@
 <resources>
 
     <color name="user_selected">#eb5d62</color>
+    <color name="user_selected2">#ec8b8e</color>
+
     <color name="default_circle_indicator_page_color">#3e4a5b</color>
     <color name="black">#222222</color>
     <color name="primary_text">#ff222222</color>
@@ -18,5 +20,6 @@
     <color name="comment_btn_contor">#d7d9da</color>
     <color name="black21">#f5f5f5</color>
     <color name="edit_text">#dbdbdb</color>
+    <color name="text_dis">#e7dada</color>
 
 </resources>

@@ -68,14 +68,14 @@
         android:id="@+id/bio_text"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/tool_bar"
+        android:layout_below="@+id/tool_bar"
         android:background="@color/def_background"
         android:gravity="start|center|top"
         android:inputType="textLongMessage|textMultiLine"
+        android:maxLength="@integer/bio_max"
         android:padding="@dimen/activity_vertical_margin"
         android:scrollbarStyle="insideOverlay"
         android:scrollbars="vertical"
-        android:maxLength="@integer/bio_max"
         android:textColor="@color/primary_text" />
 
     <TextView

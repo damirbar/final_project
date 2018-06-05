@@ -99,9 +99,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/dark_edit_text"
                     android:gravity="center"
+                    android:hint="Nickname (default  Anon)"
                     android:maxLength="@integer/def_max"
-                    android:hint="User Name"
-                    android:text="Anon"
                     android:textSize="14sp" />
             </android.support.design.widget.TextInputLayout>
 
@@ -115,15 +114,16 @@
                 android:background="@drawable/buttonshape"
                 android:foregroundGravity="center"
                 android:text="Enter"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textColorHighlight="@color/white" />
 
             <TextView
-                android:id="@+id/textView_or"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:layout_marginTop="30dp"
+                android:drawablePadding="100dp"
                 android:gravity="center"
                 android:text="OR" />
 
@@ -137,6 +137,7 @@
                 android:background="@drawable/dark_buttonshape"
                 android:foregroundGravity="center"
                 android:text="Create Session"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textColorHighlight="@color/white" />
         </LinearLayout>

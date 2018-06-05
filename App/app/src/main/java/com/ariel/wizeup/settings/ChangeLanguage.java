@@ -41,7 +41,8 @@ public class ChangeLanguage {
 
     public void changeLanguageDialog() {
         final String[] listItems = {activity.getString(R.string.english), activity.getString(R.string.hebrew)};
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(
+                activity,R.style.Theme_Report_Dialog_Alert);
         mBuilder.setTitle(R.string.choose_language);
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
         String lang = mSharedPreferences.getString(Constants.LANG, "");

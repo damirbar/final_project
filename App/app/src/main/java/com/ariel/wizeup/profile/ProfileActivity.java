@@ -23,11 +23,10 @@ import rx.subscriptions.CompositeSubscription;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private ImageButton buttonBack;
     private TextView mDisplayName;
     private TextView mCountry;
     private TextView mAboutMe;
-    private TextView mBtEditProfile;
+    private ImageButton mBtEditProfile;
     private ImageView image;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
@@ -64,8 +63,8 @@ public class ProfileActivity extends AppCompatActivity {
         mDisplayName = findViewById(R.id.tvdName);
         mCountry = findViewById(R.id.tvCountry);
         mAboutMe = findViewById(R.id.tvAboutMe);
-        mBtEditProfile = findViewById(R.id.edit_profile);
-        buttonBack = findViewById(R.id.image_Button_back);
+        mBtEditProfile = findViewById(R.id.image_edit);
+        ImageButton buttonBack = findViewById(R.id.image_Button_back);
         buttonBack.setOnClickListener(view ->finish());
         mBtEditProfile.setOnClickListener(view ->  editProfile());
     }

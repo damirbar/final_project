@@ -43,8 +43,8 @@
                 android:id="@+id/ti_email"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginTop="@dimen/top_margin30"
                 app:hintAnimationEnabled="false"
                 app:hintEnabled="false">
@@ -54,12 +54,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/dark_edit_text"
+                    android:gravity="start|center"
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
-                    android:paddingLeft="10dp"
-                    android:gravity="left|center"
                     android:maxLength="@integer/def_max"
-                    android:paddingRight="10dp" />
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textSize="14sp" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -67,13 +68,13 @@
                 android:id="@+id/ti_password"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
                 app:hintAnimationEnabled="false"
+                app:passwordToggleEnabled="false"
                 app:hintEnabled="false"
-                app:layout_constraintTop_toBottomOf="@+id/ti_email"
-                app:passwordToggleEnabled="true">
+                app:layout_constraintTop_toBottomOf="@+id/ti_email">
 
 
                 <EditText
@@ -81,33 +82,36 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/dark_edit_text"
+                    android:gravity="start|center"
                     android:hint="@string/password"
                     android:inputType="textPassword"
-                    android:gravity="left|center"
-                    android:paddingLeft="10dp"
                     android:maxLength="@integer/def_max"
-                    android:paddingRight="10dp" />
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textSize="14sp" />
 
             </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/buttonshape"
+                android:layout_height="45dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="45dp"
+                android:background="@drawable/buttonshape_dis"
                 android:enabled="false"
                 android:text="@string/log_in"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
+                android:textSize="12sp"
                 app:layout_constraintTop_toBottomOf="@+id/ti_password" />
 
             <TextView
                 android:id="@+id/forgotPswTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="@string/forgot_password"
                 app:layout_constraintTop_toBottomOf="@+id/loginButton" />
@@ -115,14 +119,16 @@
             <Button
                 android:id="@+id/newAccountButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_marginBottom="5dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/dark_buttonshape"
                 android:text="@string/sign_up"
+                android:textAllCaps="false"
                 android:textColor="@android:color/white"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
             <ProgressBar

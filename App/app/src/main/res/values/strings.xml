@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="info1">Improve yourself. Be Wizer.</string>
+    <string name="info2">wizeUp is a tool to help students better
+                        at their studies and to help teachers have a better
+                        perspective on their class.\n\nwizeUp allows teachers
+                        to upload relevant files, answer students\' questions and
+                        improve their teaching methods using wizeUp feedback.With wizeUp students can communicate with their classmates,
+                        share files and enjoy live video streaming, providing
+                        the option of live feedback.\n\nwizeUp is the best way to gather statistical information
+                        for the use of both parties, students and teachers,
+                        as well as any department chosen.\n\nwizeStream will drive both sides, students and teachers,
+                        to thrive using a scoring system.</string>
+    <string name="info2_bold">wizeUp will make teaching and
+                        learning easier, faster and better.</string>
+    <string name="info3">Email: contact@wizeup.com\nPhone: +972 052 555 2222\nHours: Monday-Thursday: 9AM - 8PM </string>
+    <string name="info4">© Copyright 2017 WizeUp - All Rights Reserved</string>
+    <string name="open_drawer">Drawer Open</string>
+    <string name="close_drawer">Drawer Close</string>
+
+
+
     <string name="app_name">wizeUp</string>
     <string name="log_in">Log In</string>
     <string name="register">Register</string>
@@ -7,7 +27,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot Password?</string>
-    <string name="sign_up">SIGN UP</string>
+    <string name="sign_up">Sign Up</string>
     <string name="first_name">First Name</string>
     <string name="confirm_password">Confirm password</string>
     <string name="already_registered">Already Registered?</string>
@@ -30,38 +50,34 @@
     <string name="choose_language">Choose Language</string>
     <string name="change_password">Change Password</string>
     <string name="language">Language</string>
-
-
-    <string name="add_new_post">Add New Post</string>
     <string name="send">Send</string>
-    <string name="add_comment">Add comment</string>
-    <string name="open_drawer">Drawer Open</string>
-    <string name="close_drawer">Drawer Close</string>
-    <string name="about_me">About me</string>
-    <string name="edit_profile">EDIT PROFILE</string>
-    <string name="info1">Improve yourself. Be Wizer.</string>
-
-    <string name="info2">wizeUp is a tool to help students better
-                        at their studies and to help teachers have a better
-                        perspective on their class.\n\nwizeUp allows teachers
-                        to upload relevant files, answer students\' questions and
-                        improve their teaching methods using wizeUp feedback.With wizeUp students can communicate with their classmates,
-                        share files and enjoy live video streaming, providing
-                        the option of live feedback.\n\nwizeUp is the best way to gather statistical information
-                        for the use of both parties, students and teachers,
-                        as well as any department chosen.\n\nwizeStream will drive both sides, students and teachers,
-                        to thrive using a scoring system.</string>
-
-    <string name="info2_bold">wizeUp will make teaching and
-                        learning easier, faster and better.</string>
-
-
-    <string name="info3">Email: contact@wizeup.com\nPhone: +972 052 555 2222\nHours: Monday-Thursday: 9AM - 8PM </string>
-
-    <string name="info4">© Copyright 2017 WizeUp - All Rights Reserved</string>
-
-    <string name="general_feedback">Briefly explain what you love, or what could improve.</string>
+    <string name="account">Account</string>
+    <string name="support">Support</string>
+    <string name="report_a_problem">Report a Problem</string>
+    <string name="settings">Settings</string>
+    <string name="done">Done</string>
+    <string name="current">Current</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_str">New</string>
+    <string name="verify">Verify</string>
+    <string name="new_password_again">New password, again</string>
+    <string name="feedback">FeedBack</string>
+    <string name="cancel">Cancel</string>
+    <string name="general_feedback_capital">GENERAL FEEDBACK</string>
+    <string name="profile">Profile</string>
+    <string name="session">Session</string>
+    <string name="my_courses">My Courses</string>
+    <string name="messages">Messages</string>
+    <string name="notifications">Notifications</string>
+    <string name="about">About</string>
+    <string name="logout">Logout</string>
     <string name="no_results_found">No results found</string>
+    <string name="add_new_post">Add New Post</string>
+    <string name="add_comment">Add comment</string>
+    <string name="about_me">About me</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="general_feedback">Briefly explain what you love, or what could improve.</string>
+
 
 
 </resources>

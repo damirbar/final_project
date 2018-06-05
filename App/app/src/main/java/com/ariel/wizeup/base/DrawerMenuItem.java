@@ -43,36 +43,36 @@ public class DrawerMenuItem {
     private void onResolved() {
         switch (mMenuPosition){
             case DRAWER_MENU_ITEM_PROFILE:
-                itemNameTxt.setText("Profile");
+                itemNameTxt.setText(R.string.profile);
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_account_circle_black_18dp));
                 break;
             case DRAWER_MENU_ITEM_SESSION:
-                itemNameTxt.setText("Session");
+                itemNameTxt.setText(R.string.session);
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_compare_arrows_black_18dp));
                 break;
             case DRAWER_MENU_ITEM_MY_COURSES:
-                itemNameTxt.setText("My Courses ");
+                itemNameTxt.setText(R.string.my_courses);
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_group_work_black_18dp));
                 break;
             case DRAWER_MENU_ITEM_MESSAGE:
-                itemNameTxt.setText("Messages");
+                itemNameTxt.setText(R.string.messages);
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_email_black_18dp));
                 break;
             case DRAWER_MENU_ITEM_NOTIFICATIONS:
-                itemNameTxt.setText("Notifications");
+                itemNameTxt.setText(R.string.notifications);
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_notifications_black_18dp));
                 break;
             case DRAWER_MENU_ITEM_SETTINGS:
-                itemNameTxt.setText("Settings");
+                itemNameTxt.setText(R.string.settings);
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_settings_black_18dp));
                 break;
             case DRAWER_MENU_ITEM_TERMS:
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_book_black_18dp));
-                itemNameTxt.setText("About");
+                itemNameTxt.setText(R.string.about);
                 break;
             case DRAWER_MENU_ITEM_LOGOUT:
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_exit_to_app_black_18dp));
-                itemNameTxt.setText("Logout");
+                itemNameTxt.setText(R.string.logout);
                 break;
         }
     }

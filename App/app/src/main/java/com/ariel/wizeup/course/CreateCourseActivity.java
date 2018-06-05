@@ -78,47 +78,39 @@ public class CreateCourseActivity extends AppCompatActivity {
         finish();
     }
 
-    private void setError() {
-        mTiName.setError(null);
-        mTiTeacher.setError(null);
-        mTiLoc.setError(null);
-    }
 
 
     private void login() {
-
-        setError();
 
         String loc = mEditTextLoc.getText().toString().trim();
         String name = mEditTextName.getText().toString().trim();
         String teacher = mTeacherName.getText().toString().trim();
 
-        int err = 0;
 
         if (!validateFields(cid)) {
-            err++;
-            mTiName.setError("Course Name should not be empty.");
+            mServerResponse.showSnackBarMessage("Course Name should not be empty.");
+            return;
+
         }
 
         if (!validateFields(name)) {
-            err++;
-            mTiTeacher.setError("Teacher Name should not be empty.");
+            mServerResponse.showSnackBarMessage("Teacher Name should not be empty.");
+            return;
+
         }
 
         if (!validateFields(name)) {
-            err++;
-            mTiLoc.setError("Course Location should not be empty.");
+            mServerResponse.showSnackBarMessage("Course Location should not be empty.");
+            return;
+
         }
 
-        if (err == 0) {
 
             Course course = new Course();
             course.setName(name);
             course.setLocation(loc);
             course.setTeacher_id(teacher);
-
             createCourse(course);
-        }
     }
 
     @Override

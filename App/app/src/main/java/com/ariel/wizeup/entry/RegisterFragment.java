@@ -4,10 +4,14 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,13 +53,6 @@ public class RegisterFragment extends Fragment {
     private EditText mEtPassword2;
     private Button mBtRegister;
     private Spinner mTypeSpinner;
-    private TextView mLangTextView;
-    private TextView mTvLogin;
-    private TextInputLayout mTiFName;
-    private TextInputLayout mTiLName;
-    private TextInputLayout mTiEmail;
-    private TextInputLayout mTiPassword;
-    private TextInputLayout mTiPassword2;
     private ProgressBar mProgressbar;
     private ServerResponse mServerResponse;
     private String mEmail;
@@ -67,8 +64,8 @@ public class RegisterFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register,container,false);
-        ChangeLanguage =new ChangeLanguage(getActivity());
+        View view = inflater.inflate(R.layout.fragment_register, container, false);
+        ChangeLanguage = new ChangeLanguage(getActivity());
         mSubscriptions = new CompositeSubscription();
         mServerResponse = new ServerResponse(getActivity().findViewById(R.id.activity_entry));
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
@@ -76,32 +73,28 @@ public class RegisterFragment extends Fragment {
         return view;
     }
 
+
     private void initViews(View v) {
 
-        mTypeSpinner = (Spinner) v.findViewById(R.id.type_spinner);
-        mEtFName = (EditText) v.findViewById(R.id.et_first_name);
-        mEtLName = (EditText) v.findViewById(R.id.et_last_name);
-        mEtEmail = (EditText) v.findViewById(R.id.et_email);
-        mEtPassword = (EditText) v.findViewById(R.id.et_password);
-        mEtPassword2 = (EditText) v.findViewById(R.id.et_password2);
-        mBtRegister = (Button) v.findViewById(R.id.btn_register);
-        mTvLogin = (TextView) v.findViewById(R.id.tv_login);
-        mTiFName = (TextInputLayout) v.findViewById(R.id.ti_first_name);
-        mTiLName = (TextInputLayout) v.findViewById(R.id.ti_last_name);
-        mTiEmail = (TextInputLayout) v.findViewById(R.id.ti_email);
-        mTiPassword = (TextInputLayout) v.findViewById(R.id.ti_password);
-        mTiPassword2 = (TextInputLayout) v.findViewById(R.id.ti_password2);
-        mProgressbar = (ProgressBar) v.findViewById(R.id.progress);
-        mLangTextView = (TextView) v.findViewById(R.id.langTextView);
+        mTypeSpinner = v.findViewById(R.id.type_spinner);
+        mEtFName = v.findViewById(R.id.et_first_name);
+        mEtLName = v.findViewById(R.id.et_last_name);
+        mEtEmail = v.findViewById(R.id.et_email);
+        mEtPassword = v.findViewById(R.id.et_password);
+        mEtPassword2 = v.findViewById(R.id.et_password2);
+        mBtRegister = v.findViewById(R.id.btn_register);
+        TextView mTvLogin = v.findViewById(R.id.tv_login);
+        mProgressbar = v.findViewById(R.id.progress);
+        TextView mLangTextView = v.findViewById(R.id.langTextView);
         mLangTextView.setOnClickListener(view -> ChangeLanguage.changeLanguageDialog());
-
         mBtRegister.setOnClickListener(view -> register());
         mTvLogin.setOnClickListener(view -> goToLogin());
+        textChangedListener();
+
     }
 
     private void register() {
 
-        setError();
 
         String first_name = mEtFName.getText().toString().trim();
         String last_name = mEtLName.getText().toString().trim();
@@ -109,78 +102,37 @@ public class RegisterFragment extends Fragment {
         String password = mEtPassword.getText().toString().trim();
         String password2 = mEtPassword2.getText().toString().trim();
 
-        int err = 0;
-
-        if (password.length()<6) {
-
-            err++;
-            mTiPassword.setError(getString(R.string.password_must_be_at_least_6_characters));
-            mTiPassword2.setError(getString(R.string.password_must_be_at_least_6_characters));
-        }
-
-        if (!validateFields(password)) {
-
-            err++;
-            mTiPassword.setError(getString(R.string.password_should_not_be_empty));
-        }
-
-        if (!validateFields(password2)) {
-
-            err++;
-            mTiPassword2.setError(getString(R.string.password_should_not_be_empty));
-        }
-
-        if (!password.equals(password2) && err == 0) {
-
-            err++;
-            mTiPassword.setError(getString(R.string.passwords_dont_match));
-            mTiPassword2.setError(getString(R.string.passwords_dont_match));
-        }
-
-
-
-        if (!validateFields(first_name)) {
-
-            err++;
-            mTiFName.setError(getString(R.string.first_name_should_not_be_empty));
-        }
-
-        if (!validateFields(last_name)) {
-
-            err++;
-            mTiLName.setError(getString(R.string.last_name_should_not_be_empty));
-        }
-
         if (!validateEmail(email)) {
 
-            err++;
-            mTiEmail.setError(getString(R.string.email_should_be_valid));
+            showMessage(getString(R.string.email_should_be_valid));
+            return;
+        }
+
+        if (password.length() < 6) {
+
+            showMessage(getString(R.string.password_must_be_at_least_6_characters));
+            return;
+        }
+
+        if (!password.equals(password2)) {
+
+            showMessage(getString(R.string.passwords_dont_match));
+            return;
         }
 
 
-        if (err == 0) {
+        mPass = password;
+        mEmail = email;
 
-            mPass = password;
-            mEmail = email;
+        User user = new User();
+        user.setFname(first_name);
+        user.setLname(last_name);
+        user.setEmail(email);
+        user.setPassword(password);
 
-            User user = new User();
-            user.setFname(first_name);
-            user.setLname(last_name);
-            user.setEmail(email);
-            user.setPassword(password);
+        mProgressbar.setVisibility(View.VISIBLE);
+        registerProcess(user);
 
-            mProgressbar.setVisibility(View.VISIBLE);
-            registerProcess(user);
-
-        }
-    }
-
-    private void setError() {
-        mTiFName.setError(null);
-        mTiLName.setError(null);
-        mTiEmail.setError(null);
-        mTiPassword.setError(null);
-        mTiPassword2.setError(null);
     }
 
     private void
@@ -188,12 +140,12 @@ public class RegisterFragment extends Fragment {
         mSubscriptions.add(RetrofitRequests.getRetrofit().register(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse,this::handleError));
+                .subscribe(this::handleResponse, this::handleError));
     }
 
     private void handleResponse(Response response) {
         mProgressbar.setVisibility(View.GONE);
-        loginProcess(mEmail,mPass);
+        loginProcess(mEmail, mPass);
     }
 
     private void handleError(Throwable error) {
@@ -209,7 +161,7 @@ public class RegisterFragment extends Fragment {
         }
     }
 
-    private void goToLogin(){
+    private void goToLogin() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         LoginFragment fragment = new LoginFragment();
         ft.replace(R.id.fragmentFrame, fragment, LoginFragment.TAG);
@@ -220,23 +172,152 @@ public class RegisterFragment extends Fragment {
         mSubscriptions.add(RetrofitRequests.getRetrofit(email, password).login()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseLogin,i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseLogin, i -> mServerResponse.handleError(i)));
     }
 
 
     private void handleResponseLogin(User user) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(Constants.TOKEN,user.getToken());
-        editor.putString(EMAIL,mEmail);
-        editor.putString(PASS,mPass);
-        editor.putString(USER_NAME,user.getFname() + " " + user.getLname());
-        editor.putString(ID,user.getId_num());
+        editor.putString(Constants.TOKEN, user.getToken());
+        editor.putString(EMAIL, mEmail);
+        editor.putString(PASS, mPass);
+        editor.putString(USER_NAME, user.getFname() + " " + user.getLname());
+        editor.putString(ID, user.getId_num());
 //        editor.putString(PROFILE_IMG,user.getPhotos()[0]);
         editor.apply();
 
         Intent intent = new Intent(getActivity(), BaseActivity.class);
         startActivity(intent);
         getActivity().finish();
+    }
+
+    private boolean isComplete() {
+        return mEtEmail.getText().toString().length() > 0 &&
+                mEtFName.getText().toString().length() > 0 &&
+                mEtLName.getText().toString().length() > 0 &&
+                mEtPassword.getText().toString().length() > 0 &&
+                mEtPassword2.getText().toString().length() > 0;
+
+    }
+
+    private void textChangedListener() {
+
+        mEtFName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isComplete()) {
+                    mBtRegister.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.buttonshape));
+                    mBtRegister.setEnabled(true);
+                } else {
+                    mBtRegister.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.buttonshape_dis));
+                    mBtRegister.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mEtLName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isComplete()) {
+                    mBtRegister.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.buttonshape));
+                    mBtRegister.setEnabled(true);
+                } else {
+                    mBtRegister.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.buttonshape_dis));
+                    mBtRegister.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mEtEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isComplete()) {
+                    mBtRegister.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.buttonshape));
+                    mBtRegister.setEnabled(true);
+                } else {
+                    mBtRegister.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.buttonshape_dis));
+                    mBtRegister.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mEtPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isComplete()) {
+                    mBtRegister.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.buttonshape));
+                    mBtRegister.setEnabled(true);
+                } else {
+                    mBtRegister.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.buttonshape_dis));
+                    mBtRegister.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mEtPassword2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isComplete()) {
+                    mBtRegister.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.buttonshape));
+                    mBtRegister.setEnabled(true);
+                } else {
+                    mBtRegister.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.buttonshape_dis));
+                    mBtRegister.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
     }
 
 
@@ -257,7 +338,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     LoginFragment fragment = new LoginFragment();

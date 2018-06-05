@@ -200,7 +200,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
     public void genderViewClick() {
         final String[] items = {"Male", "Female", "Not Specified"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this,R.style.Theme_Report_Dialog_Alert);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -220,16 +220,8 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         builder.show();
     }
 
-    private void setError() {
-        mETFirstName.setError(null);
-        mETLastName.setError(null);
-        mETGender.setError(null);
-    }
-
 
     private void saveButton() {
-
-        setError();
 
 
         String first_name = mETFirstName.getText().toString().trim();
@@ -241,28 +233,24 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         String Age = mETAge.getText().toString().trim();
         String AboutMe = mETAboutMe.getText().toString().trim();
 
-        int err = 0;
 
         if (!validateFields(first_name)) {
 
-            err++;
             mServerResponse.showSnackBarMessage("First Name should not be empty.");
+            return;
         }
 
         if (!validateFields(last_name)) {
 
-            err++;
             mServerResponse.showSnackBarMessage("Last Name should not be empty.");
+            return;
         }
 
         if (gender.equalsIgnoreCase("Not Specified")) {
 
-            err++;
             mServerResponse.showSnackBarMessage("Gender should not be empty.");
+            return;
         }
-
-        if (err == 0) {
-
 
             User user = new User();
             user.setFname(first_name);
@@ -305,7 +293,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
             if (actions == 0)
                 finish();
         }
-    }
+
 
     private void loadProfile() {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getProfile(mId)

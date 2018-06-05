@@ -33,7 +33,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:fontFamily="sans-serif"
-                android:text="Send"
+                android:text="@string/send"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="17sp" />
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="FeedBack"
+                android:text="@string/feedback"
                 android:textColor="@color/white"
                 android:textSize="19sp"
                 android:textStyle="bold" />
@@ -55,7 +55,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:fontFamily="sans-serif"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="17sp" />
@@ -72,7 +72,7 @@
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
         android:layout_marginTop="10dp"
-        android:text="GENERAL FEEDBACK"
+        android:text="@string/general_feedback_capital"
         android:textStyle="bold" />
 
     <TextView

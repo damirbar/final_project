@@ -135,7 +135,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tR8"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="20dp"
                     android:text="Private Information"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
@@ -145,7 +146,7 @@
                     android:id="@+id/tR1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="15dp">
 
                     <TextView
                         android:id="@+id/tVFirstName"
@@ -159,12 +160,13 @@
                         android:id="@+id/eTFirstName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLength="@integer/def_max"
+                        android:background="@drawable/edt_bg_selected"
                         android:ems="10"
                         android:hint="First Name"
                         android:inputType="textPersonName"
-                        app:backgroundTint="@color/edit_text"
-                        android:textSize="16sp" />
+                        android:maxLength="@integer/def_max"
+                        android:textSize="16sp"
+                        app:backgroundTint="@color/edit_text" />
 
                 </TableRow>
 
@@ -173,7 +175,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tR1"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="15dp">
 
                     <TextView
                         android:id="@+id/tVLastName"
@@ -187,12 +189,13 @@
                         android:id="@+id/eTLastName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
                         android:ems="10"
                         android:hint="Last Name"
-                        android:maxLength="@integer/def_max"
-                        app:backgroundTint="@color/edit_text"
                         android:inputType="textPersonName"
-                        android:textSize="16sp" />
+                        android:maxLength="@integer/def_max"
+                        android:textSize="16sp"
+                        app:backgroundTint="@color/edit_text" />
 
                 </TableRow>
 
@@ -201,7 +204,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/info"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="15dp">
 
                     <TextView
                         android:id="@+id/tVAddress"
@@ -215,10 +218,11 @@
                         android:id="@+id/eTAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
                         android:ems="10"
                         android:hint="Address"
-                        android:maxLength="@integer/def_max"
                         android:inputType="text"
+                        android:maxLength="@integer/def_max"
                         android:textSize="16sp"
                         app:backgroundTint="@color/edit_text" />
 
@@ -229,8 +233,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tR6"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp">
 
                     <TextView
                         android:id="@+id/tVGender"
@@ -244,6 +248,7 @@
                         android:id="@+id/eTGender"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
                         android:ems="10"
                         android:focusable="false"
                         android:inputType="none"
@@ -260,7 +265,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tR2"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="15dp">
 
                     <TextView
                         android:id="@+id/tVDisplayName"
@@ -274,12 +279,13 @@
                         android:id="@+id/eTDisplay_Name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
                         android:ems="10"
                         android:hint="Display Name"
-                        android:maxLength="@integer/def_max"
                         android:inputType="textPersonName"
-                        app:backgroundTint="@color/edit_text"
-                        android:textSize="16sp" />
+                        android:maxLength="@integer/def_max"
+                        android:textSize="16sp"
+                        app:backgroundTint="@color/edit_text" />
 
                 </TableRow>
 
@@ -288,7 +294,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tR3"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="15dp">
 
                     <TextView
                         android:id="@+id/tVcountry"
@@ -302,10 +308,11 @@
                         android:id="@+id/eTCountry"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
                         android:ems="10"
                         android:hint="Country"
-                        android:maxLength="@integer/def_max"
                         android:inputType="text"
+                        android:maxLength="@integer/def_max"
                         android:textSize="16sp"
                         app:backgroundTint="@color/edit_text" />
 
@@ -316,7 +323,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tR5"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="15dp">
 
                     <TextView
                         android:id="@+id/tVAge"
@@ -330,13 +337,14 @@
                         android:id="@+id/eTAge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
                         android:ems="10"
                         android:focusable="false"
                         android:hint="Birthday"
-                        android:maxLength="@integer/def_max"
                         android:inputType="none"
-                        app:backgroundTint="@color/edit_text"
-                        android:textSize="16sp" />
+                        android:maxLength="@integer/def_max"
+                        android:textSize="16sp"
+                        app:backgroundTint="@color/edit_text" />
 
                 </TableRow>
 
@@ -345,7 +353,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tR4"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="15dp">
 
                     <TextView
                         android:id="@+id/tVAboutMe"
@@ -361,10 +369,11 @@
                         android:id="@+id/eTAboutMe"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
                         android:focusable="false"
-                        android:maxLength="@integer/def_max"
                         android:hint="About Me"
                         android:inputType="none"
+                        android:maxLength="@integer/def_max"
                         android:textSize="16sp"
                         app:backgroundTint="@color/edit_text" />
 

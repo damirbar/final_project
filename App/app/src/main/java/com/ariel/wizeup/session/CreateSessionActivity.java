@@ -53,14 +53,14 @@ public class CreateSessionActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mTiSid  = (TextInputLayout) findViewById(R.id.input_edit_text_sid);
-        mTiName  = (TextInputLayout) findViewById(R.id.input_edit_text_name);
-        mTiLoc  = (TextInputLayout) findViewById(R.id.input_edit_text_loc);
-        mBtLogin = (Button) findViewById(R.id.save_button);
-        mEditTextSid = (EditText) findViewById(R.id.edit_text_sid);
-        mEditTextName = (EditText) findViewById(R.id.edit_text_name);
-        mEditTextLoc = (EditText) findViewById(R.id.edit_text_loc);
-        buttonBack = (Button) findViewById(R.id.cancel_button);
+        mTiSid  = findViewById(R.id.input_edit_text_sid);
+        mTiName  = findViewById(R.id.input_edit_text_name);
+        mTiLoc  = findViewById(R.id.input_edit_text_loc);
+        mBtLogin = findViewById(R.id.save_button);
+        mEditTextSid = findViewById(R.id.edit_text_sid);
+        mEditTextName = findViewById(R.id.edit_text_name);
+        mEditTextLoc = findViewById(R.id.edit_text_loc);
+        buttonBack = findViewById(R.id.cancel_button);
         mBtLogin.setOnClickListener(view -> login());
         buttonBack.setOnClickListener(view -> finish());
 
@@ -80,39 +80,31 @@ public class CreateSessionActivity extends AppCompatActivity {
         finish();
     }
 
-    private void setError() {
-        mTiSid.setError(null);
-        mTiName.setError(null);
-        mTiLoc.setError(null);
-    }
-
 
     private void login() {
 
-        setError();
 
         String loc = mEditTextLoc.getText().toString().trim();
         sid = mEditTextSid.getText().toString().trim();
         String name = mEditTextName.getText().toString().trim();
 
-        int err = 0;
-
         if (!validateFields(sid)) {
-            err++;
-            mTiSid.setError("Session Id should not be empty.");
+            mServerResponse.showSnackBarMessage("Session Id should not be empty.");
+            return;
         }
 
         if (!validateFields(name)) {
-            err++;
-            mTiName.setError("Session Name should not be empty.");
+            mServerResponse.showSnackBarMessage("Session Name should not be empty.");
+            return;
+
         }
 
         if (!validateFields(name)) {
-            err++;
-            mTiLoc.setError("Session Location should not be empty.");
+            mServerResponse.showSnackBarMessage("Session Location should not be empty.");
+            return;
+
         }
 
-        if (err == 0) {
 
             session = new Session();
             session.setSid(sid);
@@ -120,8 +112,8 @@ public class CreateSessionActivity extends AppCompatActivity {
             session.setName(name);
 
             createSession(session);
-        }
     }
+
 
     @Override
     public void onDestroy() {

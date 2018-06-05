@@ -1,20 +1,14 @@
 package com.ariel.wizeup.session;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.WindowManager;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.Response;
-import com.ariel.wizeup.model.Session;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 
@@ -29,8 +23,6 @@ public class ConnectSessionActivity extends AppCompatActivity {
     private String sid;
     private EditText mEditTextSid;
     private EditText mEditTextName;
-    private TextInputLayout mTiSid;
-    private TextInputLayout mTiName;
     private Button mBtLogin;
     private Button mCreateSessionButton;
     private CompositeSubscription mSubscriptions;
@@ -52,13 +44,11 @@ public class ConnectSessionActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mTiSid  = (TextInputLayout) findViewById(R.id.input_edit_text_sid);
-        mTiName  = (TextInputLayout) findViewById(R.id.input_edit_text_name);
-        mBtLogin = (Button) findViewById(R.id.classloginButton);
-        mCreateSessionButton = (Button) findViewById(R.id.create_session_button);
-        mEditTextSid = (EditText) findViewById(R.id.edit_text_sid);
-        mEditTextName = (EditText) findViewById(R.id.edit_text_name);
-        buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
+        mBtLogin = findViewById(R.id.classloginButton);
+        mCreateSessionButton = findViewById(R.id.create_session_button);
+        mEditTextSid = findViewById(R.id.edit_text_sid);
+        mEditTextName = findViewById(R.id.edit_text_name);
+        buttonBack = findViewById(R.id.image_Button_back);
         mBtLogin.setOnClickListener(view -> login());
         mCreateSessionButton.setOnClickListener(view -> createSession());
         buttonBack.setOnClickListener(view -> finish());
@@ -70,34 +60,24 @@ public class ConnectSessionActivity extends AppCompatActivity {
 
     }
 
-    private void setError() {
-        mTiSid.setError(null);
-        mTiName.setError(null);
-    }
-
 
     private void login() {
-
-        setError();
 
         sid = mEditTextSid.getText().toString().trim();
         String name = mEditTextName.getText().toString().trim();
 
-        int err = 0;
 
         if (!validateFields(sid)) {
-            err++;
-            mTiSid.setError("Session Id should not be empty.");
+            mServerResponse.showSnackBarMessage("Session Id should not be empty.");
+            return;
+
         }
 
         if (!validateFields(name)) {
-            err++;
-            mTiName.setError("User Name should not be empty.");
+            name = "Anon";
         }
 
-        if (err == 0) {
             loginProcess(sid,name);
-        }
     }
 
     private void loginProcess(String sid, String name) {

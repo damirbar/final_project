@@ -109,7 +109,7 @@ public class PostActivity extends AppCompatActivity {
             mTextCount.setText(String.valueOf(num));
             if (num < 0) {
                 buttonSend.setEnabled(false);
-                buttonSend.setTextColor(Color.parseColor("#CCCCCC"));
+                buttonSend.setTextColor(Color.parseColor("#e7dada"));
                 mTextCount.setTextColor(Color.RED);
             }
             else{

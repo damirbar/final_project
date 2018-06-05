@@ -95,11 +95,11 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
 
 
     private void initViews(View v) {
-        mTvNoResults = (TextView) v.findViewById(R.id.tv_no_results);
-        messagesList = (ListView) v.findViewById(R.id.sessionMessagesList);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.activity_main_swipe_refresh_layout);
+        mTvNoResults = v.findViewById(R.id.tv_no_results);
+        messagesList = v.findViewById(R.id.sessionMessagesList);
+        mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
         mSwipeRefreshLayout.setVisibility(View.GONE);
-        mFBPost = (FloatingActionButton) v.findViewById(R.id.fb_post);
+        mFBPost = v.findViewById(R.id.fb_post);
         mFBPost.setOnClickListener(view -> openPost());
     }
 
@@ -155,8 +155,6 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
     public void onDestroy() {
         super.onDestroy();
         mSubscriptions.unsubscribe();
-//        mSocket.disconnect();
-//        mSocket.off(Socket.EVENT_CONNECT, onConnect);
     }
 
     @Override

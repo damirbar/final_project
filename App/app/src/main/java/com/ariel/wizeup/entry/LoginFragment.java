@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -48,8 +49,6 @@ public class LoginFragment extends Fragment{
     private EditText mEtEmail;
     private EditText mEtPassword;
     private Button mBtLogin;
-    private TextInputLayout mTiEmail;
-    private TextInputLayout mTiPassword;
     private ProgressBar mProgressBar;
     private CompositeSubscription mSubscriptions;
     private SharedPreferences mSharedPreferences;
@@ -85,8 +84,6 @@ public class LoginFragment extends Fragment{
         mEtPassword = v.findViewById(R.id.et_password);
         Button mNewAccountButton = v.findViewById(R.id.newAccountButton);
         mBtLogin = v.findViewById(R.id.loginButton);
-        mTiEmail = v.findViewById(R.id.ti_email);
-        mTiPassword = v.findViewById(R.id.ti_password);
         TextView mLangTextView = v.findViewById(R.id.langTextView);
         mProgressBar = v.findViewById(R.id.progress);
         TextView mTvForgotPassword = v.findViewById(R.id.forgotPswTextView);
@@ -105,11 +102,11 @@ public class LoginFragment extends Fragment{
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(mEtEmail.getText().toString().length() > 0 && mEtPassword.getText().toString().length() > 0) {
-                    mBtLogin.setTextColor(Color.WHITE);
+                    mBtLogin.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.buttonshape));
                     mBtLogin.setEnabled(true);
                 }
                 else {
-                    mBtLogin.setTextColor(Color.parseColor("#CCCCCC"));
+                    mBtLogin.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.buttonshape_dis));
                     mBtLogin.setEnabled(false);
                 }
             }
@@ -129,14 +126,11 @@ public class LoginFragment extends Fragment{
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(mEtEmail.getText().toString().length() > 0 && mEtPassword.getText().toString().length() > 0) {
-                    mBtLogin.setTextColor(Color.parseColor("#ffffff"));
+                    mBtLogin.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.buttonshape));
                     mBtLogin.setEnabled(true);
                 }
-                if(mEtPassword.getText().toString().length() > 0){
-
-                }
                 else {
-                    mBtLogin.setTextColor(Color.parseColor("#CCCCCC"));
+                    mBtLogin.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.buttonshape_dis));
                     mBtLogin.setEnabled(false);
                 }
             }
@@ -172,41 +166,23 @@ public class LoginFragment extends Fragment{
 
     private void login() {
 
-        setError();
 
         mEmail = mEtEmail.getText().toString().trim();
         mPass = mEtPassword.getText().toString().trim();
 
-        int err = 0;
 
         if (!validateEmail(mEmail)) {
 
-            err++;
-            mTiEmail.setError(getString(R.string.email_should_be_valid));
+            showMessage(getString(R.string.email_should_be_valid));
+            return;
+
         }
-
-        if (!validateFields(mPass)) {
-
-            err++;
-            mTiPassword.setError(getString(R.string.password_should_not_be_empty));
-        }
-
-        if (err == 0) {
 
             loginProcess(mEmail,mPass);
             mProgressBar.setVisibility(View.VISIBLE);
 
-        } else {
-
-            showMessage(getString(R.string.enter_valid_details));
-        }
     }
 
-    private void setError() {
-
-        mTiEmail.setError(null);
-        mTiPassword.setError(null);
-    }
 
     private void loginProcess(String email, String password) {
         mSubscriptions.add(RetrofitRequests.getRetrofit(email, password).login()

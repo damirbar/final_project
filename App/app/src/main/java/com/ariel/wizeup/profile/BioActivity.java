@@ -75,7 +75,7 @@ public class BioActivity extends AppCompatActivity {
             mTextCount.setText(String.valueOf(num));
             if (num < 0) {
                 mBSave.setEnabled(false);
-                mBSave.setTextColor(Color.parseColor("#CCCCCC"));
+                mBSave.setTextColor(Color.parseColor("#e7dada"));
                 mTextCount.setTextColor(Color.RED);
             }
             else{
