@@ -4,20 +4,20 @@ import java.util.Date;
 
 public class Course {
 
-    private String _id;
+    private String cid;
     private String name;
-    private String department_id;
-    private String teacher_id;
+    private String department;
+    private String teacher;
     private String location;
-    private int points;
+    private String points;
     private Date creation_date;
 
-    public String get_id() {
-        return _id;
+    public String getCid() {
+        return cid;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setCid(String cid) {
+        this.cid = cid;
     }
 
     public String getName() {
@@ -28,20 +28,20 @@ public class Course {
         this.name = name;
     }
 
-    public String getDepartment_id() {
-        return department_id;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setDepartment_id(String department_id) {
-        this.department_id = department_id;
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
-    public String getTeacher_id() {
-        return teacher_id;
+    public String getTeacher() {
+        return teacher;
     }
 
-    public void setTeacher_id(String teacher_id) {
-        this.teacher_id = teacher_id;
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
     }
 
     public String getLocation() {
@@ -52,11 +52,11 @@ public class Course {
         this.location = location;
     }
 
-    public int getPoints() {
+    public String getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(String points) {
         this.points = points;
     }
 

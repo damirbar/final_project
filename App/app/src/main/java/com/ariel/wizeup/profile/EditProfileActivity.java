@@ -301,11 +301,14 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     }
 
     private void handleResponseProfile(User user) {
+
         mETFirstName.setText(user.getFname());
         mETLastName.setText(user.getLname());
         mETDisplayName.setText(user.getDisplay_name());
         mETCountry.setText(user.getCountry());
         mETAddress.setText(user.getAddress());
+        mETAboutMe.setText(user.getAbout_me());
+
 
         //Date
         Date date = user.getBirthday();
@@ -315,7 +318,25 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
             mETAge.setText(s);
         }
 
-        mETAboutMe.setText(user.getAbout_me());
+        if(user.getDisplay_name()==null){
+            user.setDisplay_name("");
+        }
+        if(user.getCountry()==null){
+            user.setCountry("");
+        }
+        if(user.getAddress()==null){
+            user.setAddress("");
+        }
+        if(user.getAddress()==null){
+            user.setAddress("");
+        }
+        if(user.getAbout_me()==null){
+            user.setAbout_me("");
+        }
+        if(user.getGender()==null){
+            user.setGender("");
+        }
+
 
         String g = user.getGender();
         if (g == null || g.isEmpty()) {

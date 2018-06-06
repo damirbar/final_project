@@ -2,15 +2,12 @@ package com.ariel.wizeup.course;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.Course;
-import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 
@@ -22,21 +19,15 @@ import static com.ariel.wizeup.utils.Validation.validateFields;
 
 public class CreateCourseActivity extends AppCompatActivity {
 
-    private String cid;///??
     private EditText mEditTextName;
     private EditText mTeacherName;
     private EditText mEditTextLoc;
-    private TextInputLayout mTiName;
-    private TextInputLayout mTiTeacher;
-    private TextInputLayout mTiLoc;
+    private EditText mEditTextDepartment;
+    private EditText mEditTextPoints;
 
-    private Button mBtLogin;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
-    private Button buttonBack;
-    private Course course;
-
 
 
     @Override
@@ -51,14 +42,15 @@ public class CreateCourseActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mTiName = findViewById(R.id.input_edit_text_name);
-        mTiTeacher = findViewById(R.id.input_edit_text_teacher_name);
-        mTiLoc  = findViewById(R.id.input_edit_text_loc);
-        mBtLogin = findViewById(R.id.save_button);
+        Button mBtLogin = findViewById(R.id.save_button);
         mEditTextName = findViewById(R.id.edit_text_name);
         mTeacherName = findViewById(R.id.edit_text_teacher_name);
         mEditTextLoc = findViewById(R.id.edit_text_loc);
-        buttonBack = findViewById(R.id.cancel_button);
+        mEditTextDepartment = findViewById(R.id.edit_text_department);
+        mEditTextPoints = findViewById(R.id.edit_text_points);
+
+
+        Button buttonBack = findViewById(R.id.cancel_button);
         mBtLogin.setOnClickListener(view -> login());
         buttonBack.setOnClickListener(view -> finish());
 
@@ -71,9 +63,9 @@ public class CreateCourseActivity extends AppCompatActivity {
                 .subscribe(this::handleResponseCreate, i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponseCreate(Response response) {
+    private void handleResponseCreate(Course course) {
         Intent intent = new Intent(getBaseContext(),CourseActivity.class);
-        intent.putExtra("cid", cid);///???
+        intent.putExtra("cid", course.getCid());
         startActivity(intent);
         finish();
     }
@@ -85,31 +77,46 @@ public class CreateCourseActivity extends AppCompatActivity {
         String loc = mEditTextLoc.getText().toString().trim();
         String name = mEditTextName.getText().toString().trim();
         String teacher = mTeacherName.getText().toString().trim();
+        String department = mEditTextDepartment.getText().toString().trim();
+        String points = mEditTextPoints.getText().toString().trim();
 
 
-        if (!validateFields(cid)) {
-            mServerResponse.showSnackBarMessage("Course Name should not be empty.");
+
+        if (!validateFields(name)) {
+            mServerResponse.showSnackBarMessage("Name should not be empty.");
             return;
 
         }
 
-        if (!validateFields(name)) {
+        if (!validateFields(teacher)) {
             mServerResponse.showSnackBarMessage("Teacher Name should not be empty.");
             return;
 
         }
 
-        if (!validateFields(name)) {
-            mServerResponse.showSnackBarMessage("Course Location should not be empty.");
+        if (!validateFields(loc)) {
+            mServerResponse.showSnackBarMessage("Location should not be empty.");
+            return;
+
+        }
+        if (!validateFields(department)) {
+            mServerResponse.showSnackBarMessage("Department should not be empty.");
+            return;
+
+        }
+        if (!validateFields(points)) {
+            mServerResponse.showSnackBarMessage("Points should not be empty.");
             return;
 
         }
 
 
-            Course course = new Course();
+        Course course = new Course();
             course.setName(name);
             course.setLocation(loc);
-            course.setTeacher_id(teacher);
+            course.setTeacher(teacher);
+            course.setDepartment(department);
+            course.setPoints(points);
             createCourse(course);
     }
 

@@ -122,6 +122,8 @@
 
                 </android.support.design.widget.TextInputLayout>
 
+
+
             </RelativeLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -171,12 +173,51 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <RadioGroup
+                android:id="@+id/toggle"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/ti_password2"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/pink_out_line"
+                android:checkedButton="@+id/offer"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/search"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_widget_background"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="Teacher"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/offer"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_widget_background"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="Student"
+                    android:textColor="@color/white" />
+            </RadioGroup>
+
 
             <Button
                 android:id="@+id/btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/type_spinner"
+                android:layout_below="@+id/toggle"
                 android:layout_marginTop="45dp"
                 android:background="@drawable/buttonshape_dis"
                 android:enabled="false"
@@ -197,18 +238,6 @@
                 android:paddingTop="@dimen/card_items_margin"
                 android:text="@string/already_registered"
                 android:textAlignment="center" />
-
-            <Spinner
-
-                android:id="@+id/type_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ti_password2"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="60dp"
-                android:layout_marginTop="10dp"
-                android:entries="@array/User_Type"
-                android:visibility="gone" />
 
             <ProgressBar
                 android:id="@+id/progress"
