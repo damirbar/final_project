@@ -33,7 +33,6 @@ public class MyCourseActivity extends AppCompatActivity {
     private CompositeSubscription mSubscriptions;
 
     private ListView coursesList;
-    private ImageButton buttonBack;
     private TextView mTvNoResults;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoursesAdapter mAdapter;
@@ -96,7 +95,7 @@ public class MyCourseActivity extends AppCompatActivity {
     private void initViews() {
         layout =  findViewById(R.id.relative);
         layout.setVisibility(View.GONE);
-        buttonBack = findViewById(R.id.image_Button_back);
+        ImageButton buttonBack = findViewById(R.id.image_Button_back);
         mTvNoResults = findViewById(R.id.tv_no_results);
         coursesList = findViewById(R.id.myClassesList);
         mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);

@@ -2,6 +2,7 @@ package com.ariel.wizeup.network;
 
 import com.ariel.wizeup.model.Course;
 import com.ariel.wizeup.model.CourseFile;
+import com.ariel.wizeup.model.Event;
 import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.Searchable;
 import com.ariel.wizeup.model.Session;
@@ -58,6 +59,10 @@ public interface RetrofitInterface {
     @Multipart
     @POST("students/post-profile-image")
     Observable<Response> uploadProfileImage(@Part MultipartBody.Part file);
+
+    @GET("students/get-events")
+    Observable<Event[]> getEvents(@Query("total") int total ,@Query("get") int get);
+
 
     //////////////////Session//////////////////
 

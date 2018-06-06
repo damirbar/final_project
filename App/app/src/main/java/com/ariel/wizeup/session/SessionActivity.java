@@ -75,14 +75,18 @@ public class SessionActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
             }
+
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) { }
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
             @Override
-            public void onTabReselected(TabLayout.Tab tab) { }
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
         });
 
-//        if (session.getVideoID() != null && !(session.getVideoID().isEmpty()))
-        playVideo();
+        if (session.getVideoID() != null && !(session.getVideoID().isEmpty()))
+            playVideo();
     }
 
 
@@ -164,7 +168,7 @@ public class SessionActivity extends AppCompatActivity {
     }
 
     private void sendSidSms() {
-        String smsBody="Hi, please join my session.\nSession ID: "+session.getSid();
+        String smsBody = "Hi, please join my session.\nSession ID: " + session.getSid();
         Intent sendIntent = new Intent(Intent.ACTION_VIEW);
         sendIntent.putExtra("sms_body", smsBody);
         sendIntent.setType("vnd.android-dir/mms-sms");
@@ -187,7 +191,7 @@ public class SessionActivity extends AppCompatActivity {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().disconnect(session.getSid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
     }
 
     private void handleResponse(Response response) {
