@@ -105,6 +105,7 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
 
 
 router.post("/create-session", function (req, res) {
+
     const sess = new Session({
         sid: req.body.sid,
         name: req.body.name,
@@ -132,7 +133,7 @@ router.post("/create-session", function (req, res) {
             console.log(err);
             return res.status(500).send(err);
         }
-        res.status(200).json({message: "successfully added session " + sess.name + " to db"});
+        res.status(200).json(sess);
         console.log("successfully added session " + sess.name + " to db");
     });
 });
@@ -328,7 +329,6 @@ router.post('/post-video', type, function (req, res) {
                 res.status(400).json({message: 'wrong file'});
             }
             else {
-                res.status(200).json({message: 'received file'});
                 console.log(path);
                 Session.findOne({sid: req.query.sid}, function (err, sess) {
                     if (err) return next(err);
@@ -358,6 +358,7 @@ router.post('/post-video', type, function (req, res) {
                             sess.videoID = result.url;
                             sess.save();
                             first = true;
+                            res.status(200).json({message: 'received file'});
                         });
                 });
             }
@@ -370,6 +371,7 @@ router.post('/post-video', type, function (req, res) {
 
 
 router.post("/reply", function (req, res) {
+
     const decoded = req.verifiedEmail;
     const msg = new Session_Message({
             mid: req.body.mid,
@@ -412,5 +414,12 @@ router.get("/get-message", function (req, res) {
     });
 });
 
+router.get("/get-session",function (req, res) {
+   Session.findOne({sid:req.query.sid},function (err,sess) {
+       if(err)  return err;
+       if(sess) res.status(200).json(sess);
+       else res.status(404).json({message: "no such session"});
+   })
+});
 
 module.exports = router;

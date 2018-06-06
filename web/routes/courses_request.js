@@ -208,4 +208,12 @@ router.post('/post-file', type, function (req, res) {
     }
 });
 
+
+router.get("/get-course",function (req, res) {
+    Course.findOne({cid:req.query.cid},function (err, course) {
+        if(err)  return err;
+        if(sess) res.status(200).json(course);
+        else res.status(404).json({message: "no such course"});
+    })
+});
 module.exports = router;
