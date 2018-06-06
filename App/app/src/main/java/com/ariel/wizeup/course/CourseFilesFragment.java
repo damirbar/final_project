@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ariel.wizeup.R;
+import com.ariel.wizeup.model.Course;
 import com.ariel.wizeup.model.CourseFile;
 import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.network.RetrofitRequests;
@@ -153,15 +154,15 @@ public class CourseFilesFragment extends Fragment {
 
 
     private void pullFiles() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllFilesById(cid)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getCourseById(cid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull, i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponsePull(CourseFile courseFiles[]) {
-        if (!(courseFiles.length == 0)) {
-            ArrayList<CourseFile> saveFiles = new ArrayList<>(Arrays.asList(courseFiles));
+    private void handleResponsePull(Course course) {
+        if (!(course.getFiles().length == 0)) {
+            ArrayList<CourseFile> saveFiles = new ArrayList<>(Arrays.asList(course.getFiles()));
             Collections.reverse(saveFiles);
             mTvNoResults.setVisibility(View.GONE);
             mAdapter = new CourseFilesAdapter(this.getActivity(), new ArrayList<>(saveFiles));

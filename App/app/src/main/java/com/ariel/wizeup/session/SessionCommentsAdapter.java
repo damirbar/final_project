@@ -93,7 +93,7 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
         mEmail.setText(currentMessage.getEmail());
         mLikeNum.setText(String.valueOf(currentMessage.getLikes()));
         mDislikeNum.setText(String.valueOf(currentMessage.getDislikes()));
-        msg.setText(currentMessage.getBody()[1]);
+        msg.setText(currentMessage.getBody());
 
 
         if(position == 0){

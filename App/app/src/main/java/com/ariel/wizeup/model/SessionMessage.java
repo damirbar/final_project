@@ -11,11 +11,11 @@ public class SessionMessage  {
     private SessionMessage replies[];
     private String likers[];
     private String dislikers[];
-    private String body[];
+    private String body;
     private String type;
     private String _id;
     private Date date;
-    private String mid;//Id of the Message to reply
+    private String mid;
 
     public void setDate(Date date) {
         this.date = date;
@@ -90,11 +90,11 @@ public class SessionMessage  {
         this.type = type;
     }
 
-    public String[] getBody() {
+    public String getBody() {
         return body;
     }
 
-    public void setBody(String[] body) {
+    public void setBody(String body) {
         this.body = body;
     }
 

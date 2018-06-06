@@ -28,9 +28,6 @@ public class CreateSessionActivity extends AppCompatActivity {
     private EditText mEditTextSid;
     private EditText mEditTextName;
     private EditText mEditTextLoc;
-    private TextInputLayout mTiSid;
-    private TextInputLayout mTiName;
-    private TextInputLayout mTiLoc;
 
     private Button mBtLogin;
     private CompositeSubscription mSubscriptions;
@@ -53,9 +50,6 @@ public class CreateSessionActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mTiSid  = findViewById(R.id.input_edit_text_sid);
-        mTiName  = findViewById(R.id.input_edit_text_name);
-        mTiLoc  = findViewById(R.id.input_edit_text_loc);
         mBtLogin = findViewById(R.id.save_button);
         mEditTextSid = findViewById(R.id.edit_text_sid);
         mEditTextName = findViewById(R.id.edit_text_name);
