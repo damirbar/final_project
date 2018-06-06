@@ -2,42 +2,44 @@ var express = require('express');
 var router = express.Router();
 var Course = require("../schemas/course");
 
+
+let globalCid = "000001";
 router.post("/create-course", function (req, res) {
 
-
-    const course = new Course({
-        cid: req.body.course_num,
-        name: req.body.name,
-        department: req.body.department,
-        teacher: req.body.teacher,
-        location: req.body.location,
-        points: req.body.points,
-        creation_date: Date.now(),
-        last_modified: Date.now(),
-        hidden: false
-    });
-
-
-    course.save(function (err) {
-        if (err) {
-            if (err.name === 'MongoError' && err.code === 11000) {
-                // Duplicate username
-                console.log('Course ' + course.name + " cannot be added id " + course.cid + ' already exists!');
-                return res.status(500).json({message: 'Course ' + course.name + " cannot be added id " + course.cid + ' already exists!'});
-            }
-            if (err.name === 'ValidationError') {
-                //ValidationError
-                for (field in err.errors) {
-                    console.log("you must provide: " + field + " field");
-                    return res.status(500).json({message: "you must provide: " + field + " field"});
-                }
-            }
-            // Some other error
-            console.log(err);
-            return res.status(500).send(err);
+    Course.findOne({}).sort({"cid":-1}).then(function (ans) {
+        if(ans){
+            globalCid = ans.cid+1;
         }
-        res.status(200).json({message: "successfully added course " + course.name + " to db"});
-        console.log("successfully added course " + course.name + " to db");
+        const course = new Course({
+            cid: globalCid,
+            name: req.body.name,
+            department: req.body.department,
+            teacher: req.body.teacher,
+            location: req.body.location,
+            points: req.body.points,
+        });
+
+        course.save(function (err) {
+            if (err) {
+                if (err.name === 'MongoError' && err.code === 11000) {
+                    // Duplicate username
+                    console.log('Course ' + course.name + " cannot be added id " + course.cid + ' already exists!');
+                    return res.status(500).json({message: 'Course ' + course.name + " cannot be added id " + course.cid + ' already exists!'});
+                }
+                if (err.name === 'ValidationError') {
+                    //ValidationError
+                    for (field in err.errors) {
+                        console.log("you must provide: " + field + " field");
+                        return res.status(500).json({message: "you must provide: " + field + " field"});
+                    }
+                }
+                // Some other error
+                console.log(err);
+                return res.status(500).send(err);
+            }
+            res.status(200).json(course);
+            console.log("successfully added course " + course.name + " to db");
+        });
     });
 });
 
