@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var TeacherSchema = new mongoose.Schema({
-    user_id: String,
-    degree: String,
+    user_id: {type: String, default: ""},
+    degree: {type: String, default: ""},
     friends: Array,
     events: Array,
     departments: Array

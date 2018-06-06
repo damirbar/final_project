@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 var MessageSchema = new mongoose.Schema({
-    guid: String,
-    channel_guid: String,
-    user_guid: String,
-    content: String,
+    guid: {type: String, default: ""},
+    channel_guid: {type: String, default: ""},
+    user_guid: {type: String, default: ""},
+    content: {type: String, default: ""},
     timestamp: Number
 });
 module.exports = mongoose.model('Message', MessageSchema);

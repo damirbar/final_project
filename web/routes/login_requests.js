@@ -17,7 +17,7 @@ router.post("/auth-login-user-pass", function (req, res) {
         return res.status(401).send({message: 'Invalid Credentials!'})
     }
 
-    User.findOne({email: credentials.name}, function (err, user) {
+    User.findOne({email: credentials.name.toLowerCase()}, function (err, user) {
         if (err) return err;
         if (!user) {
             return res.status(400).send({message: 'no such user!'})
@@ -28,7 +28,7 @@ router.post("/auth-login-user-pass", function (req, res) {
             console.log("Found the user " + credentials.name);
             const token = jwt.sign(credentials.name, "Wizer");
 
-            User.update({email: credentials.name}, {accessToken: token}, function (err) {
+            User.update({email: credentials.name.toLowerCase()}, {accessToken: token}, function (err) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -56,17 +56,23 @@ router.post("/auth-login-user-pass", function (req, res) {
 router.get("/get-user-by-token", function (req, res) {
     User.findOne({email: req.verifiedEmail}, function (err, user) {
         if (err) return next(err);
-        res.status(200).send({
-            message: 'welcome to Wizer!',
-            email: user.email,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            accessToken: user.accessToken,
-            role: user.role,
-            photos: user.photos,
-            _id: user._id,
-            display_name: user.display_name
-        })
+        if(user) {
+            res.status(200).send({
+                message: 'welcome to Wizer!',
+                email: user.email,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                accessToken: user.accessToken,
+                role: user.role,
+                photos: user.profile_img,
+                _id: user._id,
+                display_name: user.display_name
+            })
+        }
+        else{
+            console.log("no such student");
+            res.status(404).json({message:"no such student"});
+        }
     });
 });
 
@@ -75,7 +81,7 @@ router.post("/new-user", function (req, res) {
 
     const fname = req.body.first_name,
         lname = req.body.last_name,
-        email = req.body.email,
+        email = req.body.email.toLowerCase(),
         password = req.body.password,
         role = req.body.role;
 
@@ -228,7 +234,7 @@ router.post("/reset-pass-init", function (req, res) {
 });
 
 router.post("/reset-pass-finish", function (req, res) {
-    Student.findOne({email: req.body.email}, function (err, student) {
+    Student.findOne({email: req.body.email.toLowerCase()}, function (err, student) {
         const diff = new Date() - new Date(student.temp_password_time);
         const seconds = Math.floor(diff / 1000);
         console.log("Seconds :" + seconds);
