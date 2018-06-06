@@ -88,6 +88,7 @@ public class AddUserActivity extends AppCompatActivity {
 
     private void handleResponse(Response response) {
         mServerResponse.showSnackBarMessage(response.getMessage());
+        editTextEmail.setText("");
     }
 
 
