@@ -83,6 +83,15 @@ router.all("*", function (req, res, next) {
                         }
 
                     }
+
+                    if (req.url === "/reply") {
+                        let event = {
+                            type: "session",
+                            event: "replied to a question in session " + req.body.sid,//can extract the message if wanted
+                            date: Date.now()
+                        };
+                        user.events.push(event);
+                    }
                     user.save();
                 });
                 return next();
