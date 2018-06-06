@@ -12,38 +12,40 @@ router.post("/create-course", function (req, res) {
             globalCid = ans.cid + 1;
         }
         User.findOne({email: req.body.teacher}, function (err, teacher) {
+            if(teacher) {
+                const course = new Course({
+                    cid: globalCid,
+                    name: req.body.name,
+                    department: req.body.department,
+                    teacher: teacher.id,
+                    location: req.body.location,
+                    points: req.body.points,
+                    students: [teacher.id]
+                });
 
-            const course = new Course({
-                cid: globalCid,
-                name: req.body.name,
-                department: req.body.department,
-                teacher: teacher.id,
-                location: req.body.location,
-                points: req.body.points,
-                students: [teacher.id]
-            });
-
-            course.save(function (err) {
-                if (err) {
-                    if (err.name === 'MongoError' && err.code === 11000) {
-                        // Duplicate username
-                        console.log('Course ' + course.name + " cannot be added id " + course.cid + ' already exists!');
-                        return res.status(500).json({message: 'Course ' + course.name + " cannot be added id " + course.cid + ' already exists!'});
-                    }
-                    if (err.name === 'ValidationError') {
-                        //ValidationError
-                        for (field in err.errors) {
-                            console.log("you must provide: " + field + " field");
-                            return res.status(500).json({message: "you must provide: " + field + " field"});
+                course.save(function (err) {
+                    if (err) {
+                        if (err.name === 'MongoError' && err.code === 11000) {
+                            // Duplicate username
+                            console.log('Course ' + course.name + " cannot be added id " + course.cid + ' already exists!');
+                            return res.status(500).json({message: 'Course ' + course.name + " cannot be added id " + course.cid + ' already exists!'});
                         }
+                        if (err.name === 'ValidationError') {
+                            //ValidationError
+                            for (field in err.errors) {
+                                console.log("you must provide: " + field + " field");
+                                return res.status(500).json({message: "you must provide: " + field + " field"});
+                            }
+                        }
+                        // Some other error
+                        console.log(err);
+                        return res.status(500).send(err);
                     }
-                    // Some other error
-                    console.log(err);
-                    return res.status(500).send(err);
-                }
-                res.status(200).json(course);
-                console.log("successfully added course " + course.name + " to db");
-            });
+                    res.status(200).json(course);
+                    console.log("successfully added course " + course.name + " to db");
+                });
+            }
+            else return res.status(404).json({message: "no teacher: " + req.body.teacher});
         });
     });
 });
