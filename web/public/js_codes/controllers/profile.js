@@ -37,6 +37,8 @@ wizerApp.controller('profileController',
 
 
         $scope.editProfile = function() {
+
+            console.log("SENDING TO EDIT PROFILE: " + JSON.stringify($scope.editUser));
             ProfileService.editProfile($scope.editUser)
                 .then(function (data) {
                     console.log("GOT FROM EDIT PROFILE: " + JSON.stringify(data))
@@ -65,4 +67,12 @@ wizerApp.controller('profileController',
                     });
         };
 
+
+
+        $scope.calculateAge = function calculateAge(birthday) { // birthday is a date
+            birthday = new Date(birthday);
+            var ageDifMs = Date.now() - birthday.getTime();
+            var ageDate = new Date(ageDifMs); // miliseconds from epoch
+            return Math.abs(ageDate.getUTCFullYear() - 1970);
+        }
     });
