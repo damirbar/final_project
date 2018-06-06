@@ -25,7 +25,7 @@ router.all("*", function (req, res, next) {
 
                 User.findOne({email: decoded}, function (err, user) {
 
-                    if (req.url === "/get-all-messages?sid=1234") return;//remove this only for testing
+                    if (req.url === "/get-all-messages?sid=12") return;//remove this only for testing
 
                     console.log(req.url);
                     if (req.url === "/post-profile-image") {
@@ -88,6 +88,26 @@ router.all("*", function (req, res, next) {
                         let event = {
                             type: "session",
                             event: "replied to a question in session " + req.body.sid,//can extract the message if wanted
+                            date: Date.now()
+                        };
+                        user.events.push(event);
+                    }
+                    user.save();
+
+                    if (req.url.includes("/free-text-search")) {
+                        let event = {
+                            type: "search",
+                            event: "searched for: " + req.query.keyword,//can extract the message if wanted
+                            date: Date.now()
+                        };
+                        user.events.push(event);
+                    }
+                    user.save();
+
+                    if (req.url === "/create-session") {
+                        let event = {
+                            type: "create",
+                            event: "created course: " + req.body.name +"at " + req.body.location,//can extract the message if wanted
                             date: Date.now()
                         };
                         user.events.push(event);
