@@ -28,6 +28,7 @@ router.all("*", function (req, res, next) {
                     if (req.url === "/get-all-messages?sid=12") return;//remove this only for testing
 
                     console.log(req.url);
+
                     if (req.url === "/post-profile-image") {
                         let event = {
                             type: "personal",
@@ -68,7 +69,7 @@ router.all("*", function (req, res, next) {
                         if (req.query.rating === "1") {
                             let event = {
                                 type: "session",
-                                event: "liked a question in session " + req.query.sid,//can extract the message if wanted
+                                event: "liked a question (" + req.query.msgid +") in session " + req.query.sid,//can extract the message if wanted
                                 date: Date.now()
                             };
                             user.events.push(event);
@@ -76,7 +77,7 @@ router.all("*", function (req, res, next) {
                         else if(req.query.rating === "0") {
                             let event = {
                                 type: "session",
-                                event: "disliked a question in session " + req.query.sid,//can extract the message if wanted
+                                event: "disliked a question (" + req.query.msgid +") in session " + req.query.sid,//can extract the message if wanted
                                 date: Date.now()
                             };
                             user.events.push(event);
@@ -87,12 +88,11 @@ router.all("*", function (req, res, next) {
                     if (req.url === "/reply") {
                         let event = {
                             type: "session",
-                            event: "replied to a question in session " + req.body.sid,//can extract the message if wanted
+                            event: "replied to a question (" + req.body.mid +") in session " + req.body.sid,//can extract the message if wanted
                             date: Date.now()
                         };
                         user.events.push(event);
                     }
-                    user.save();
 
                     if (req.url.includes("/free-text-search")) {
                         let event = {
@@ -102,7 +102,6 @@ router.all("*", function (req, res, next) {
                         };
                         user.events.push(event);
                     }
-                    user.save();
 
                     if (req.url === "/create-session") {
                         let event = {
@@ -112,6 +111,16 @@ router.all("*", function (req, res, next) {
                         };
                         user.events.push(event);
                     }
+
+                    if (req.file && req.url.includes("/post-video")) {
+                        let event = {
+                            type: "session",
+                            event: "added video to session: " + req.query.sid,//can extract the message if wanted
+                            date: Date.now()
+                        };
+                        user.events.push(event);
+                    }
+
                     user.save();
                 });
                 return next();
