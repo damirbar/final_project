@@ -232,34 +232,35 @@
 </div>
 
 
-<div id="replyModal" class="modal fade" role="dialog">
+<div id="replyModal" class="modal fade reply-modal" role="dialog">
     <div class="modal-dialog modal-width">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="container modal-container">
 
+                <div class="container message-replying-to">
+                    <h4>Replying to:</h4>
+                    <p class="message-text">{{messageToReply.body}}</p>
+                </div>
 
                 <form>
                     <div class="form-group row">
-                        <label for="inputReply" class="col-sm-1 col-form-label">Enter reply</label>
-                        <div class="col-sm-8">
+
+                        <label for="inputReply" class="col-sm-3 col-form-label"><h4>Enter reply</h4></label>
+                        <div class="col-sm-7">
                             <input type="text" class="form-control" ng-model="reply.body" id="inputReply"
                                    placeholder="">
                         </div>
 
-                        <div class="form-group col-sm-3">
+                        <div class="form-group col-sm-2">
 
-                            <div class="dropdown btn-group col-sm-6">
-                                <button class="btn btn-secondary dropdown-toggle msg-type-dropdown-header"
-                                        type="button" id="dropdownRply" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    Type
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <div class="dropdown-item" ng-click="typeChoose('question')">Question</div>
-                                    <div class="dropdown-item" ng-click="typeChoose('answer')">Answer</div>
-                                </div>
-                            </div>
+                            <!--<div class="dropdown btn-group col-sm-6">-->
+
+                                <!--<div class="dropdown-menu" aria-labelledby="dropdownMenu1">-->
+                                    <!--<div class="dropdown-item" ng-click="typeChoose('question')">Question</div>-->
+                                    <!--<div class="dropdown-item" ng-click="typeChoose('answer')">Answer</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
 
                             <div class="col-sm-6">
                                 <button type="submit" class="btn btn-primary" ng-click="sendReply()">Send</button>
