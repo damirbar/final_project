@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.Response;
+import com.ariel.wizeup.model.Session;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 
@@ -23,13 +24,10 @@ public class ConnectSessionActivity extends AppCompatActivity {
     private String sid;
     private EditText mEditTextSid;
     private EditText mEditTextName;
-    private Button mBtLogin;
     private Button mCreateSessionButton;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
-    private ImageButton buttonBack;
-
 
 
     @Override
@@ -44,11 +42,11 @@ public class ConnectSessionActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mBtLogin = findViewById(R.id.classloginButton);
+        Button mBtLogin = findViewById(R.id.classloginButton);
         mCreateSessionButton = findViewById(R.id.create_session_button);
         mEditTextSid = findViewById(R.id.edit_text_sid);
         mEditTextName = findViewById(R.id.edit_text_name);
-        buttonBack = findViewById(R.id.image_Button_back);
+        ImageButton buttonBack = findViewById(R.id.image_Button_back);
         mBtLogin.setOnClickListener(view -> login());
         mCreateSessionButton.setOnClickListener(view -> createSession());
         buttonBack.setOnClickListener(view -> finish());
@@ -87,9 +85,9 @@ public class ConnectSessionActivity extends AppCompatActivity {
                 .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponse(Response response){
+    private void handleResponse(Session session){
         Intent intent = new Intent(getBaseContext(), SessionActivity.class);
-        intent.putExtra("session",response.getSession());
+        intent.putExtra("session",session);
         startActivity(intent);
         finish();
     }

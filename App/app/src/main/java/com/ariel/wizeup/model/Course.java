@@ -11,6 +11,15 @@ public class Course {
     private String location;
     private String points;
     private Date creation_date;
+    private CourseFile files[];
+
+    public CourseFile[] getFiles() {
+        return files;
+    }
+
+    public void setFiles(CourseFile[] files) {
+        this.files = files;
+    }
 
     public String getCid() {
         return cid;

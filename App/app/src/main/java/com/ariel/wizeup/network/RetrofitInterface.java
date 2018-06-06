@@ -63,7 +63,7 @@ public interface RetrofitInterface {
 
     @FormUrlEncoded
     @POST("sessions/connect-session")
-    Observable<Response> connectSession(@Field("sid") String sid, @Field("name") String name);
+    Observable<Session> connectSession(@Field("sid") String sid, @Field("name") String name);
 
     @POST("sessions/create-session")
     Observable<Response> createSession(@Body Session session);
@@ -107,13 +107,17 @@ public interface RetrofitInterface {
     @GET("courses/get-all-courses-by-id")
     Observable<Course[]> getAllCoursesById(@Query("id") String id);
 
-    @GET("courses/get-all-files-by-id")
-    Observable<CourseFile[]> getAllFilesById(@Query("id") String id);
+    @GET("courses/get-course")
+    Observable<Course> getCourseById(@Query("cid") String cid);
 
     @Multipart
     @POST("courses/post-file")
-    Observable<Response> uploadFile(@Part MultipartBody.Part file, @Query("num") String num);
+    Observable<Response> uploadFile(@Part MultipartBody.Part file, @Query("cid") String cid);
 
     @POST("courses/create-course")
     Observable<Course> createCourse(@Body Course course);
+
+    @GET("courses/add-students-to-course")
+    Observable<Response> addStudentsToCourse(@Query("cid") String cid);
+
 }

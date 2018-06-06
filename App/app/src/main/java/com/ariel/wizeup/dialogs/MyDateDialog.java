@@ -55,7 +55,7 @@ public class MyDateDialog extends DialogFragment {
         if (bundle != null) {
             String date = bundle.getString("date");
             try {
-                DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                DateFormat format = new SimpleDateFormat("d MMM yyyy");
                 Date mDate = format.parse(date);
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(mDate);
@@ -67,9 +67,15 @@ public class MyDateDialog extends DialogFragment {
     }
 
     public void onTimeSet() {
-        String date = Integer.toString(mDatePicker.getDayOfMonth()) + "/" + Integer.toString(mDatePicker.getMonth())
-                + "/" + Integer.toString(mDatePicker.getYear());
-        mCallback.Update(date);
+        int   day  = mDatePicker.getDayOfMonth();
+        int   month= mDatePicker.getMonth();
+        int   year = mDatePicker.getYear();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy");
+        String formatedDate = sdf.format(calendar.getTime());
+        mCallback.Update(formatedDate);
         dismiss();
     }
 

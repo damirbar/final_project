@@ -6,14 +6,14 @@ public class CourseFile {
 
     private String url;
     private Date creation_date;
-    private String name;
+    private String originalName;
 
     public String getName() {
-        return name;
+        return originalName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.originalName = name;
     }
 
     public String getUrl() {

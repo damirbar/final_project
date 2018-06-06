@@ -260,7 +260,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         user.setAbout_me(AboutMe);
 
 
-        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat format = new SimpleDateFormat("d MMM yyyy");
         try {
             Date date = format.parse(Age);
             user.setBirthday(date);
@@ -315,15 +315,15 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         //Date
         Date date = user.getBirthday();
         if (date != null) {
-            Format formatter = new SimpleDateFormat("dd/MM/yyyy");
+            Format formatter = new SimpleDateFormat("d MMM yyyy");
             String s = formatter.format(date);
             mETAge.setText(s);
         } else {
             Date now = new Date();
-            Format formatterNow = new SimpleDateFormat("dd/MM/yyyy");
+            Format formatterNow = new SimpleDateFormat("d MMM yyyy");
             String sNow = formatterNow.format(now);
             try {
-                DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                DateFormat format = new SimpleDateFormat("d MMM yyyy");
                 now = format.parse(sNow);
                 user.setBirthday(now);
             } catch (ParseException e) {
