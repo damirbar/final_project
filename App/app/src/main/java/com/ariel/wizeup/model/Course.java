@@ -7,11 +7,21 @@ public class Course {
     private String cid;
     private String name;
     private String department;
-    private String teacher;
+    private String teacher_fname;
+    private String teacher_lname;
+
     private String location;
     private int points;
     private Date creation_date;
     private CourseFile files[];
+
+    public String getTeacher_lname() {
+        return teacher_lname;
+    }
+
+    public void setTeacher_lname(String teacher_lname) {
+        this.teacher_lname = teacher_lname;
+    }
 
     public CourseFile[] getFiles() {
         return files;
@@ -45,12 +55,12 @@ public class Course {
         this.department = department;
     }
 
-    public String getTeacher() {
-        return teacher;
+    public String getTeacher_fname() {
+        return teacher_fname;
     }
 
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
+    public void setTeacher_fname(String teacher_fname) {
+        this.teacher_fname = teacher_fname;
     }
 
     public String getLocation() {

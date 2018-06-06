@@ -40,11 +40,12 @@ public class CoursesAdapter extends ArrayAdapter<Course> {
             listItem = LayoutInflater.from(mContext).inflate(R.layout.feed_course_item, parent, false);
 
         }
-        TextView mCourseName = (TextView) listItem.findViewById(R.id.course_name);
-        TextView mTeacherName = (TextView) listItem.findViewById(R.id.techer_name);
+        TextView mCourseName = listItem.findViewById(R.id.course_name);
+        TextView mTeacherName = listItem.findViewById(R.id.techer_name);
 
         mCourseName.setText(currentCourse.getName());
-        mTeacherName.setText(currentCourse.getTeacher());
+        String teacher = currentCourse.getTeacher_fname()+" "+currentCourse.getTeacher_lname();
+        mTeacherName.setText(teacher);
 
 
         return listItem;

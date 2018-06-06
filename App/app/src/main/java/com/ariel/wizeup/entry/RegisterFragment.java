@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -59,6 +60,8 @@ public class RegisterFragment extends Fragment {
     private SharedPreferences mSharedPreferences;
     private CompositeSubscription mSubscriptions;
     private ChangeLanguage ChangeLanguage;
+    private RadioButton mRadioButtonStudent;
+
 
     @Nullable
     @Override
@@ -74,7 +77,7 @@ public class RegisterFragment extends Fragment {
 
 
     private void initViews(View v) {
-
+        mRadioButtonStudent = v.findViewById(R.id.radio_student);
         mEtFName = v.findViewById(R.id.et_first_name);
         mEtLName = v.findViewById(R.id.et_last_name);
         mEtEmail = v.findViewById(R.id.et_email);
@@ -119,6 +122,7 @@ public class RegisterFragment extends Fragment {
         }
 
 
+
         mPass = password;
         mEmail = email;
 
@@ -127,6 +131,14 @@ public class RegisterFragment extends Fragment {
         user.setLname(last_name);
         user.setEmail(email);
         user.setPassword(password);
+
+        if(mRadioButtonStudent.isChecked()){
+            user.setRole("student");
+        }
+        else {
+            user.setRole("teacher");
+        }
+
 
         mProgressbar.setVisibility(View.VISIBLE);
         registerProcess(user);

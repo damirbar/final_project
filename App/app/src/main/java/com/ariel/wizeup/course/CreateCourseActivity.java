@@ -114,7 +114,7 @@ public class CreateCourseActivity extends AppCompatActivity {
         Course course = new Course();
             course.setName(name);
             course.setLocation(loc);
-            course.setTeacher(teacher);
+            course.setTeacher_fname(teacher);
             course.setDepartment(department);
             course.setPoints(Integer.parseInt(points));
             createCourse(course);
