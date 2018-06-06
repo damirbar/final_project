@@ -12,6 +12,7 @@ var CourseSchema = new mongoose.Schema({
     files:[{
             originalName: {type: String, default: ""},
             url: {type: String, default: ""},
+            creation_date: Date,
             }]
 
 }, { usePushEach: true });
