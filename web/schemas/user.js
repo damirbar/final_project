@@ -11,7 +11,7 @@ var UserSchema = new mongoose.Schema({
     about_me: {type: String, default: ""},
     country: {type: String, default: ""},
     address: {type: String, default: ""},
-    birthday: Date,//change to date
+    birthday: Date,
     gender: {type: String, default: ""},
     photos: Array,
     profile_img: {type: String, default: ""},
@@ -22,7 +22,12 @@ var UserSchema = new mongoose.Schema({
     accessToken: {type: String, default: ""},
     temp_password: {type: String, default: ""},
     temp_password_time: {type: String, default: ""},
-    courses: {type: Array, default: [] }
-});
+    courses: {type: Array, default: [] },
+    events: [{
+        type:  {type: String, default: "general"},
+        event: {type: String, default: ""},
+        date:  {type: Date, default: Date.now()}
+            }]
+}, {usePushEach: true});
 
 module.exports = mongoose.model('User', UserSchema);

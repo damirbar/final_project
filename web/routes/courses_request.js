@@ -1,58 +1,63 @@
 var express = require('express');
 var router = express.Router();
 var Course = require("../schemas/course");
+var User = require("../schemas/user");
 
 
 let globalCid = "000001";
 router.post("/create-course", function (req, res) {
 
-    Course.findOne({}).sort({"cid":-1}).then(function (ans) {
-        if(ans){
-            globalCid = ans.cid+1;
+    Course.findOne({}).sort({"cid": -1}).then(function (ans) {
+        if (ans) {
+            globalCid = ans.cid + 1;
         }
-        const course = new Course({
-            cid: globalCid,
-            name: req.body.name,
-            department: req.body.department,
-            teacher: req.body.teacher,
-            location: req.body.location,
-            points: req.body.points,
-        });
+        User.findOne({email: req.body.teacher},function (err, teacher) {
 
-        course.save(function (err) {
-            if (err) {
-                if (err.name === 'MongoError' && err.code === 11000) {
-                    // Duplicate username
-                    console.log('Course ' + course.name + " cannot be added id " + course.cid + ' already exists!');
-                    return res.status(500).json({message: 'Course ' + course.name + " cannot be added id " + course.cid + ' already exists!'});
-                }
-                if (err.name === 'ValidationError') {
-                    //ValidationError
-                    for (field in err.errors) {
-                        console.log("you must provide: " + field + " field");
-                        return res.status(500).json({message: "you must provide: " + field + " field"});
+            const course = new Course({
+                cid: globalCid,
+                name: req.body.name,
+                department: req.body.department,
+                teacher: teacher.id,
+                location: req.body.location,
+                points: req.body.points,
+                students: [teacher.id]
+            });
+
+            course.save(function (err) {
+                if (err) {
+                    if (err.name === 'MongoError' && err.code === 11000) {
+                        // Duplicate username
+                        console.log('Course ' + course.name + " cannot be added id " + course.cid + ' already exists!');
+                        return res.status(500).json({message: 'Course ' + course.name + " cannot be added id " + course.cid + ' already exists!'});
                     }
+                    if (err.name === 'ValidationError') {
+                        //ValidationError
+                        for (field in err.errors) {
+                            console.log("you must provide: " + field + " field");
+                            return res.status(500).json({message: "you must provide: " + field + " field"});
+                        }
+                    }
+                    // Some other error
+                    console.log(err);
+                    return res.status(500).send(err);
                 }
-                // Some other error
-                console.log(err);
-                return res.status(500).send(err);
-            }
-            res.status(200).json(course);
-            console.log("successfully added course " + course.name + " to db");
+                res.status(200).json(course);
+                console.log("successfully added course " + course.name + " to db");
+            });
         });
-    });
+        });
 });
 
 
-router.get('/get-all-courses', function(req,res,next){
-    Course.find({}, function(err,courses){
-        if(err) {
+router.get('/get-all-courses', function (req, res, next) {
+    Course.find({}, function (err, courses) {
+        if (err) {
             console.log("Error while finding courses");
             return next(err);
-        }else if(courses){
+        } else if (courses) {
             console.log(courses);
             return res.json(courses);
-        }else{
+        } else {
             console.log("No Courses available");
             return res.json("No courses available");
         }
@@ -87,18 +92,18 @@ router.get('/get-all-courses', function(req,res,next){
 //
 // });
 
-router.get('/get-all-courses-by-id', function(req,res){ // You get: Array of IDs
+router.get('/get-all-courses-by-id', function (req, res) { // You get: Array of IDs
     const id = req.query.id;
-        Course.find({students: id },function (err,courses) {
-            if (err) return err;
-            res.status(200).json(courses);
-        });
+    Course.find({students: id}, function (err, courses) {
+        if (err) return err;
+        res.status(200).json(courses);
+    });
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 
-router.get('/search-by-name', function(req,res,next){
+router.get('/search-by-name', function (req, res, next) {
 
     const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     const course_name = req.query.course_name;
@@ -106,15 +111,15 @@ router.get('/search-by-name', function(req,res,next){
     console.log("Got a search for " + course_name);
     console.log("Got a " + req.method + " request from " + ip);
 
-    Course.find({name: course_name}, function(err,courses){
-        if(err) {
+    Course.find({name: course_name}, function (err, courses) {
+        if (err) {
             console.log("Error while finding courses");
             return next(err);
-        }else if(courses){
+        } else if (courses) {
             console.log(courses);
             console.log("Found: " + courses);
             return res.json(courses);
-        }else{
+        } else {
             console.log("No Courses available");
             return res.json("No courses available");
         }
@@ -186,8 +191,8 @@ router.post('/post-file', type, function (req, res) {
                                 if (err) return err;
                                 console.log(result);
                                 const ans = {
-                                    originalName:req.file.originalname,
-                                    url:result.url,
+                                    originalName: req.file.originalname,
+                                    url: result.url,
                                     creation_date: Date.now()
                                 };
                                 course.files.push(ans);
@@ -196,7 +201,7 @@ router.post('/post-file', type, function (req, res) {
                                 first = true;
                             });
                     }
-                    else{
+                    else {
                         console.log("no such course");
                         fs.unlinkSync(path);
                     }
@@ -209,17 +214,18 @@ router.post('/post-file', type, function (req, res) {
     }
 });
 
-router.get("/add-students-to-course",function (req, res) {
-    Course.findOne({cid:req.query.cid},function (err, course) {
-        if(err)  return err;
-        if(course) {
+router.get("/add-students-to-course", function (req, res) {
+    Course.findOne({cid: req.query.cid}, function (err, course) {
+        if (err) return err;
+        if (course) {
             User.findOne({email: req.verifiedEmail}, function (err, user) {
                 if (err) return err;
                 if (user && user.role === "teacher") {
-                    req.query.students.forEach(function (student) {
-                        
+                    User.find({}, function (err, students) {
+                        students.forEach(function (student) {
+                            course.students.push(student.id);
+                        })
                     });
-                    course.students.push(ans);
                     course.save();
                     res.status(200).json(course);
                 }
@@ -230,10 +236,10 @@ router.get("/add-students-to-course",function (req, res) {
     })
 });
 
-router.get("/get-course",function (req, res) {
-    Course.findOne({cid:req.query.cid},function (err, course) {
-        if(err)  return err;
-        if(course) res.status(200).json(course);
+router.get("/get-course", function (req, res) {
+    Course.findOne({cid: req.query.cid}, function (err, course) {
+        if (err) return err;
+        if (course) res.status(200).json(course);
         else res.status(404).json({message: "no such course"});
     })
 });
