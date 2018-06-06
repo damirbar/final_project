@@ -11,7 +11,7 @@ var UserSchema = new mongoose.Schema({
     about_me: {type: String, default: ""},
     country: {type: String, default: ""},
     address: {type: String, default: ""},
-    birthday: Date,//change to date
+    birthday: Date,
     gender: {type: String, default: ""},
     photos: Array,
     profile_img: {type: String, default: ""},
