@@ -1,17 +1,17 @@
 var mongoose = require('mongoose');
 var CourseSchema = new mongoose.Schema({
     cid: {type: Number, unique: true, required: true},
-    name: String,
-    department: String,
-    teacher:String,
-    location: String,
+    name: {type: String, default: ""},
+    department: {type: String, default: ""},
+    teacher:{type: String, default: ""},
+    location: {type: String, default: ""},
     points: Number,
     creation_date: {type: Date, default: Date.now()},
-    last_modified: Date,
+    last_modified: {type: Date, default: Date.now()},
     students:[String],
     files:[{
-            originalName: String,
-            url: String,
+            originalName: {type: String, default: ""},
+            url: {type: String, default: ""},
             }]
 
 }, { usePushEach: true });
