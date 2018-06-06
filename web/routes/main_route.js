@@ -7,7 +7,7 @@ const User = require("../schemas/user");
 
 //make sure that all request contain a valid token
 router.all("*", function (req, res, next) {
-
+    // console.log("here");
     if (req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass') || req.url.includes('/auth/new-user')) {
         return next();
     }

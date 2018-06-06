@@ -166,4 +166,17 @@ router.post('/post-profile-image', type, function (req, res) {
     }
 });
 
+
+router.get("/get-events",function (req, res) {
+    User.findOne({email:req.verifiedEmail}, function (err, user) {
+        if(err) return err;
+        if(user){
+            res.status(200).json(user.events.reverse().slice(0, req.query.end))
+        }
+        else{
+            res.status(404).json({message: "user not found"})
+        }
+    })
+});
+
 module.exports = router;
