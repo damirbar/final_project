@@ -37,7 +37,7 @@ router.post("/create-course", function (req, res) {
                 console.log(err);
                 return res.status(500).send(err);
             }
-            res.status(200).json({message: "successfully added course " + course.name + " to db"});
+            res.status(200).json(course);
             console.log("successfully added course " + course.name + " to db");
         });
     });
