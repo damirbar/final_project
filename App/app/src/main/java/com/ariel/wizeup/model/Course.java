@@ -9,7 +9,7 @@ public class Course {
     private String department;
     private String teacher;
     private String location;
-    private String points;
+    private int points;
     private Date creation_date;
     private CourseFile files[];
 
@@ -61,11 +61,11 @@ public class Course {
         this.location = location;
     }
 
-    public String getPoints() {
+    public int getPoints() {
         return points;
     }
 
-    public void setPoints(String points) {
+    public void setPoints(int points) {
         this.points = points;
     }
 
