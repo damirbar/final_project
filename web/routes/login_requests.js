@@ -56,17 +56,23 @@ router.post("/auth-login-user-pass", function (req, res) {
 router.get("/get-user-by-token", function (req, res) {
     User.findOne({email: req.verifiedEmail}, function (err, user) {
         if (err) return next(err);
-        res.status(200).send({
-            message: 'welcome to Wizer!',
-            email: user.email,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            accessToken: user.accessToken,
-            role: user.role,
-            photos: user.profile_img,
-            _id: user._id,
-            display_name: user.display_name
-        })
+        if(user) {
+            res.status(200).send({
+                message: 'welcome to Wizer!',
+                email: user.email,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                accessToken: user.accessToken,
+                role: user.role,
+                photos: user.profile_img,
+                _id: user._id,
+                display_name: user.display_name
+            })
+        }
+        else{
+            console.log("no such student");
+            res.status(404).json({message:"no such student"});
+        }
     });
 });
 

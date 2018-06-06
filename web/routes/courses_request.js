@@ -188,6 +188,7 @@ router.post('/post-file', type, function (req, res) {
                                 const ans = {
                                     originalName:req.file.originalname,
                                     url:result.url,
+                                    creation_date: Date.now()
                                 };
                                 course.files.push(ans);
                                 course.save();
@@ -208,11 +209,31 @@ router.post('/post-file', type, function (req, res) {
     }
 });
 
+router.get("/add-students-to-course",function (req, res) {
+    Course.findOne({cid:req.query.cid},function (err, course) {
+        if(err)  return err;
+        if(course) {
+            User.findOne({email: req.verifiedEmail}, function (err, user) {
+                if (err) return err;
+                if (user && user.role === "teacher") {
+                    req.query.students.forEach(function (student) {
+                        
+                    });
+                    course.students.push(ans);
+                    course.save();
+                    res.status(200).json(course);
+                }
+                else res.status(404).json({message: "no such user"});
+            });
+        }
+        else res.status(404).json({message: "no such course"});
+    })
+});
 
 router.get("/get-course",function (req, res) {
     Course.findOne({cid:req.query.cid},function (err, course) {
         if(err)  return err;
-        if(sess) res.status(200).json(course);
+        if(course) res.status(200).json(course);
         else res.status(404).json({message: "no such course"});
     })
 });
