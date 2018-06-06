@@ -178,7 +178,7 @@ router.post('/post-file', type, function (req, res) {
             else {
                 res.status(200).json({message: 'received file'});
                 console.log(path);
-                Course.findOne({cid: "654321"}, function (err, course) {
+                Course.findOne({cid: req.query.cid}, function (err, course) {
                     if (err) return next(err);
                     if (course) {
                         console.log("starting to upload " + req.file.originalname);
