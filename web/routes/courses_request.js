@@ -227,9 +227,8 @@ router.get("/add-student-to-course", function (req, res) {
                             course.save();
                             res.status(200).json(course);
                         }
-                        else{
                         else res.status(404).json({message: "no student " +  req.query.student});
-                        }
+
                     });
                 }
                 else res.status(404).json({message: "no such user" + req.verifiedEmail +" or not teacher"});
