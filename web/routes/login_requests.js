@@ -56,7 +56,7 @@ router.post("/auth-login-user-pass", function (req, res) {
 router.get("/get-user-by-token", function (req, res) {
     User.findOne({email: req.verifiedEmail}, function (err, user) {
         if (err) return next(err);
-        if(user) {
+        if (user) {
             res.status(200).send({
                 message: 'welcome to Wizer!',
                 email: user.email,
@@ -69,9 +69,9 @@ router.get("/get-user-by-token", function (req, res) {
                 display_name: user.display_name
             })
         }
-        else{
+        else {
             console.log("no such student");
-            res.status(404).json({message:"no such student"});
+            res.status(404).json({message: "no such student"});
         }
     });
 });
@@ -109,7 +109,7 @@ router.post("/new-user", function (req, res) {
             role: role,
             events:
                 {
-                event: "sing up to wizeUp",
+                    event: "sing up to wizeUp",
                 }
         });
 
@@ -150,61 +150,42 @@ router.post("/new-user", function (req, res) {
 });
 
 router.put("/change-password", function (req, res) {
-
-    const token = req.headers['x-access-token'];
-
-    if (token) {
-        // verifies secret and checks exp
-        jwt.verify(token, "Wizer", function (err, decoded) {
-            if (err) {
-                return res.json({success: false, message: 'Failed to authenticate token.'});
-            } else {
-                User.findOne({accessToken: token}, function (err, user) {
-                    if (err) return next(err);
-                    if (user !== {}) {
-                        const oldPass = req.body.password;
-                        const newPass = req.body.newPassword;
-                        if (bcrypt.compareSync(oldPass, user.password)) {
-                            bcrypt.genSalt(10, function (err, salt) {
-                                bcrypt.hash(user.password, salt, null, function (err, hash) {
-                                    if (err) next(err);
-
-                                    User.update({accessToken: token}, {password: hash}, function (err) {
-                                        if (err) {
-                                            console.log(err);
-                                            return res.json({success: false, message: "DB connection error"});
-                                        } else {
-                                            console.log("password was successfully updated");
-                                            return res.status(200).json({
-                                                success: true,
-                                                message: "password was successfully updated"
-                                            });
-                                        }
-                                    });
+    User.findOne({email: req.verifiedEmail}, function (err, user) {
+        if (err) return next(err);
+        if (user) {
+            const oldPass = req.body.password;
+            const newPass = req.body.temp_password;
+            if (bcrypt.compareSync(oldPass, user.password)) {
+                bcrypt.genSalt(10, function (err, salt) {
+                    bcrypt.hash(newPass, salt, null, function (err, hash) {
+                        if (err) next(err);
+                        user.update({password: hash}, function (err) {
+                            if (err) {
+                                console.log(err);
+                                return res.json({success: false, message: "DB connection error"});
+                            } else {
+                                console.log("password was successfully updated");
+                                return res.status(200).json({
+                                    success: true,
+                                    message: "password was successfully updated"
                                 });
-                            });
-                        } else {
-                            console.log("An error occurred!");
-                            res.status(401).send({message: "Wrong password"});
-                        }
-                    }
+                            }
+                        });
+                    });
                 });
+            } else {
+                console.log("An error occurred!");
+                res.status(401).send({message: "Wrong password"});
             }
-        });
-    } else {
-        // if there is no token
-        // return an error
-        return res.status(403).send({
-            success: false,
-            message: 'No token provided.'
-        });
-    }
+        }
+    });
 });
 
 
 router.post("/reset-pass-init", function (req, res) {
 
-    Student.findOne({email: req.body.email}, function (err, student) {
+    console.log("here");
+    User.findOne({email: req.body.email}, function (err, student) {
         if (err) return next(err);
 
         const salt = bcrypt.genSaltSync(10);

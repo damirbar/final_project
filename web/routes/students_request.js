@@ -8,7 +8,22 @@ router.get("/get-profile", function (req, res, next) {
     User.findOne({_id: id}, function (err, user) {
         if (err) return next(err);
         if (user) {
-            res.status(200).json(user);
+            let ansUser= {
+                role: user.role,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                display_name: user.display_name,
+                email: user.email,
+                about_me: user.about_me,
+                country: user.country,
+                address: user.address,
+                birthday: user.birthday,
+                gender: user.gender,
+                profile_img: user.profile_img,
+                register_date: user.register_date,
+                last_modified: user.last_modified,
+            };
+            res.status(200).json(ansUser);
         }
         else {
             res.status(404).json({message: 'user' + id + 'dose not exist sorry'});
@@ -149,6 +164,19 @@ router.post('/post-profile-image', type, function (req, res) {
             fs.unlinkSync(path);
         }
     }
+});
+
+
+router.get("/get-events",function (req, res) {
+    User.findOne({email:req.verifiedEmail}, function (err, user) {
+        if(err) return err;
+        if(user){
+            res.status(200).json(user.events.reverse().slice(0, req.query.end))
+        }
+        else{
+            res.status(404).json({message: "user not found"})
+        }
+    })
 });
 
 module.exports = router;

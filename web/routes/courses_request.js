@@ -17,7 +17,8 @@ router.post("/create-course", function (req, res) {
                     cid: globalCid,
                     name: req.body.name,
                     department: req.body.department,
-                    teacher: teacher.id,
+                    teacher_fname: teacher.first_name,
+                    teacher_lname: teacher.last_name,
                     location: req.body.location,
                     points: req.body.points,
                     students: [teacher.id]
