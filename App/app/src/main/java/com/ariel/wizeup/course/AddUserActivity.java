@@ -79,7 +79,7 @@ public class AddUserActivity extends AppCompatActivity {
 
 
     private void tryToAddProcess(String user) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().addStudentsToCourse(cid)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().addStudentToCourse(cid,user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
