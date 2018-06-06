@@ -117,7 +117,7 @@ public interface RetrofitInterface {
     @POST("courses/create-course")
     Observable<Course> createCourse(@Body Course course);
 
-    @GET("courses/add-students-to-course")
+    @GET("courses/add-student-to-course")
     Observable<Response> addStudentToCourse(@Query("cid") String cid, @Query("student") String student);
 
 }

@@ -105,6 +105,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
 
     private void handleResponse(Response response) {
+        mServerResponse.showSnackBarMessage(response.getMessage());
         SharedPreferences.Editor editor = mRetrofitRequests.getSharedPreferences().edit();
         editor.putString(PASS,mPass);
         editor.apply();
