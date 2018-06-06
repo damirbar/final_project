@@ -8,7 +8,6 @@ var CourseSchema = new mongoose.Schema({
     points: Number,
     creation_date: {type: Date, default: Date.now()},
     last_modified: Date,
-    hidden: Boolean,
     students:[String],
     files:[{
             originalName: String,
