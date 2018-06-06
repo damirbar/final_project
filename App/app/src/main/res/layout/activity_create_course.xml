@@ -1,11 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/def_background"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:background="@color/def_background">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
@@ -16,24 +13,52 @@
         android:layout_alignParentTop="true"
         android:background="?attr/colorPrimaryDark"
         app:layout_scrollFlags="enterAlways|scroll"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetEnd="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
 
-            <ImageButton
-                android:id="@+id/image_Button_back"
+            <Button
+                android:id="@+id/save_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:fontFamily="sans-serif"
+                android:text="Done"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Create Course"
+                android:textColor="@color/white"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/cancel_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:background="@null"
-                android:contentDescription="TODO"
-                app:srcCompat="@drawable/intercom_back" />
-
+                android:fontFamily="sans-serif"
+                android:text="Cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
@@ -49,17 +74,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/class_name_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:gravity="center"
-                android:text="Create Course  !"
-                android:textAlignment="center"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_edit_text_name"
                 android:layout_width="match_parent"
@@ -73,6 +87,7 @@
                     android:id="@+id/edit_text_name"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:maxLength="@integer/def_max"
                     android:background="@drawable/dark_edit_text"
                     android:gravity="center"
                     android:hint="Name"
@@ -96,6 +111,7 @@
                     android:layout_height="40dp"
                     android:background="@drawable/dark_edit_text"
                     android:gravity="center"
+                    android:maxLength="@integer/def_max"
                     android:hint="Teacher"
                     android:textSize="14sp" />
 
@@ -114,6 +130,7 @@
                     android:id="@+id/edit_text_loc"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:maxLength="@integer/def_max"
                     android:background="@drawable/dark_edit_text"
                     android:gravity="center"
                     android:hint="Location"
@@ -122,19 +139,6 @@
             </android.support.design.widget.TextInputLayout>
 
 
-            <Button
-                android:id="@+id/create_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:layout_marginLeft="70dp"
-                android:layout_marginRight="70dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/dark_buttonshape"
-                android:foregroundGravity="center"
-                android:text="Create Course"
-                android:textColor="@color/white"
-                android:textColorHighlight="@color/white" />
         </LinearLayout>
     </ScrollView>
 

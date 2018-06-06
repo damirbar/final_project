@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -34,7 +32,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -46,6 +44,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="7dp"
                 android:layout_weight="1"
+                android:maxLength="@integer/def_max"
                 android:background="@drawable/edittext_search"
                 android:baselineAligned="false"
                 android:focusable="true"
@@ -68,20 +67,22 @@
         android:background="@color/def_background"
         android:divider="@color/def_background"
         android:listSelector="@android:color/transparent"
-        android:scrollbarSize="2dp"
-        android:visibility="visible" />
+        android:scrollbarSize="2dp" />
 
     <TextView
         android:id="@+id/tv_no_results"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="255dp"
+        android:layout_marginTop="170dp"
         android:foregroundGravity="center"
         android:gravity="center"
-        android:text="No Results"
+        android:text="@string/no_results_found"
+        android:textColor="@color/user_selected"
         android:textSize="16sp"
+        android:textStyle="bold"
         android:visibility="gone" />
 
 </RelativeLayout>

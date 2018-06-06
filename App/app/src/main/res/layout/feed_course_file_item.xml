@@ -75,7 +75,6 @@
             android:ellipsize="end"
             android:gravity="start"
             android:maxLines="2"
-            android:text="file "
             android:textAlignment="viewStart"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/subhead_size" />
@@ -84,7 +83,6 @@
             android:id="@+id/creation_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3/3/18"
             android:textColor="@color/secondary_post_text"
             android:textSize="@dimen/caption_size" />
 

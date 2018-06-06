@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/def_background">
 
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
         android:layout_width="fill_parent"
@@ -16,7 +15,11 @@
         android:layout_alignParentTop="true"
         android:background="?attr/colorPrimaryDark"
         app:layout_scrollFlags="enterAlways|scroll"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetEnd="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,8 +33,33 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@null"
                 app:srcCompat="@drawable/intercom_back" />
+
+            <ImageButton
+                android:id="@+id/image_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                app:srcCompat="@drawable/intercom_compose"
+                android:layout_alignParentRight="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/profile"
+                android:textColor="@color/white"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
 
         </RelativeLayout>
 
@@ -62,9 +90,6 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-
-                <!-- Cover Image -->
 
                 <ImageView
                     android:id="@+id/image"
@@ -122,7 +147,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
-                android:divider="@drawable/divider"
                 android:orientation="vertical"
                 android:showDividers="none|end">
 
@@ -141,47 +165,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:paddingBottom="5dp"
+                    android:textColor="@color/black"
                     android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/divider_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorButtonNormal"/>
 
 
             </LinearLayout>
 
-
-            <TextView
-                android:id="@+id/edit_profile"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="35dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/dark_edit_text"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/edit_profile"
-                android:textAlignment="center"
-                android:textColor="@color/default_circle_indicator_page_color" />
-
-            <TextView
-                android:id="@+id/change_pass"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-
-                android:layout_gravity="center"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/dark_edit_text"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/change_password"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textColor="@color/default_circle_indicator_page_color" />
-
         </LinearLayout>
-
-
     </ScrollView>
-
-
 </RelativeLayout>
 
 

@@ -17,12 +17,15 @@
         android:layout_alignParentTop="true"
         android:background="?attr/colorPrimaryDark"
         app:layout_scrollFlags="enterAlways|scroll"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetEnd="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="10dp">
+            android:layout_height="match_parent">
 
 
             <Button
@@ -31,19 +34,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentRight="false"
+                android:layout_alignParentTop="false"
+                android:fontFamily="sans-serif"
                 android:text="Save"
-                android:textColor="@color/white" />
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Edit Profile"
+                android:textColor="@color/white"
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/cancel_button"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentLeft="false"
                 android:layout_alignParentStart="true"
+                android:fontFamily="sans-serif"
                 android:text="Cancel"
-                android:textColor="@color/white" />
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
@@ -82,11 +101,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/user_profile_photo"
-                android:layout_width="135dp"
-                android:layout_height="126dp"
+                android:layout_width="130dp"
+                android:layout_height="110dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:src="@drawable/default_user_image"
                 app:civ_border_color="?attr/colorAccent" />
 
@@ -97,256 +116,272 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/user_profile_photo"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="3dp"
                 android:adjustViewBounds="true"
                 android:text="Change Profile Photo"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
-            <TableRow
-                android:id="@+id/tR1"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/header_cover_image"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
 
                 <TextView
-                    android:id="@+id/tVFirstName"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center"
-                    android:text="First Name"
-                    android:textSize="14sp" />
+                    android:id="@+id/info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tR8"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Private Information"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/eTFirstName"
+                <TableRow
+                    android:id="@+id/tR1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:ems="10"
-                    android:hint="First Name"
-                    android:inputType="textPersonName"
-                    android:shadowColor="@color/black"
-                    android:textColorLink="@android:color/black"
-                    android:textSize="14sp" />
+                    android:layout_marginTop="15dp">
 
-            </TableRow>
+                    <TextView
+                        android:id="@+id/tVFirstName"
+                        android:layout_width="105dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center|start"
+                        android:text="First Name"
+                        android:textSize="16sp" />
 
-            <TableRow
-                android:id="@+id/tR2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tR1"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/eTFirstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
+                        android:ems="10"
+                        android:hint="First Name"
+                        android:inputType="textPersonName"
+                        android:maxLength="@integer/def_max"
+                        android:textSize="16sp"
+                        app:backgroundTint="@color/edit_text" />
 
-                <TextView
-                    android:id="@+id/tVLastName"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center"
-                    android:text="Last Name"
-                    android:textSize="14sp" />
+                </TableRow>
 
-                <EditText
-                    android:id="@+id/eTLastName"
+                <TableRow
+                    android:id="@+id/tR2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:ems="10"
-                    android:hint="Last Name"
-                    android:inputType="textPersonName"
-                    android:textSize="14sp" />
+                    android:layout_below="@+id/tR1"
+                    android:layout_marginTop="15dp">
 
-            </TableRow>
+                    <TextView
+                        android:id="@+id/tVLastName"
+                        android:layout_width="105dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center|start"
+                        android:text="Last Name"
+                        android:textSize="16sp" />
 
-            <TableRow
-                android:id="@+id/tR5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tR4"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/eTLastName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
+                        android:ems="10"
+                        android:hint="Last Name"
+                        android:inputType="textPersonName"
+                        android:maxLength="@integer/def_max"
+                        android:textSize="16sp"
+                        app:backgroundTint="@color/edit_text" />
 
-                <TextView
-                    android:id="@+id/tVAddress"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center"
-                    android:text="Address"
-                    android:textSize="14sp" />
+                </TableRow>
 
-                <EditText
-                    android:id="@+id/eTAddress"
+                <TableRow
+                    android:id="@+id/tR5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:ems="10"
-                    android:hint="Address"
-                    android:inputType="text"
-                    android:textSize="14sp" />
+                    android:layout_below="@+id/info"
+                    android:layout_marginTop="15dp">
 
-            </TableRow>
+                    <TextView
+                        android:id="@+id/tVAddress"
+                        android:layout_width="105dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center|start"
+                        android:text="Address"
+                        android:textSize="16sp" />
 
-            <TableRow
-                android:id="@+id/tR7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tR6"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/eTAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
+                        android:ems="10"
+                        android:hint="Address"
+                        android:inputType="text"
+                        android:maxLength="@integer/def_max"
+                        android:textSize="16sp"
+                        app:backgroundTint="@color/edit_text" />
 
-                <TextView
-                    android:id="@+id/tVGender"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center"
-                    android:text="Gender"
-                    android:textSize="14sp" />
+                </TableRow>
 
-                <EditText
-                    android:id="@+id/eTGender"
+                <TableRow
+                    android:id="@+id/tR7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:editable="false"
-                    android:ems="10"
-                    android:focusable="false"
-                    android:inputType="none"
-                    android:text="Not Specified"
-                    android:textSize="14sp" />
+                    android:layout_below="@+id/tR6"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp">
+
+                    <TextView
+                        android:id="@+id/tVGender"
+                        android:layout_width="105dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center|start"
+                        android:text="Gender"
+                        android:textSize="16sp" />
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/eTGender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:maxLength="@integer/def_max"
+                        android:text="Not Specified"
+                        android:textSize="16sp"
+                        app:backgroundTint="@color/edit_text" />
 
 
-            </TableRow>
+                </TableRow>
 
-            <TableRow
-                android:id="@+id/tR3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tR2"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/tVDisplayName"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center"
-                    android:text="Display Name"
-                    android:textSize="14sp" />
-
-                <EditText
-                    android:id="@+id/eTDisplay_Name"
+                <TableRow
+                    android:id="@+id/tR3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:ems="10"
-                    android:hint="Display Name"
-                    android:inputType="textPersonName"
-                    android:textSize="14sp" />
+                    android:layout_below="@+id/tR2"
+                    android:layout_marginTop="15dp">
 
-            </TableRow>
+                    <TextView
+                        android:id="@+id/tVDisplayName"
+                        android:layout_width="105dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center|start"
+                        android:text="Display Name"
+                        android:textSize="16sp" />
 
-            <TableRow
-                android:id="@+id/tR4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tR3"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/eTDisplay_Name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
+                        android:ems="10"
+                        android:hint="Display Name"
+                        android:inputType="textPersonName"
+                        android:maxLength="@integer/def_max"
+                        android:textSize="16sp"
+                        app:backgroundTint="@color/edit_text" />
 
-                <TextView
-                    android:id="@+id/tVcountry"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/user_profile_photo"
-                    android:gravity="left|center"
-                    android:text="Country"
-                    android:textSize="14sp" />
+                </TableRow>
 
-                <EditText
-                    android:id="@+id/eTCountry"
+                <TableRow
+                    android:id="@+id/tR4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:ems="10"
-                    android:hint="Country"
-                    android:inputType="text"
-                    android:textSize="14sp" />
+                    android:layout_below="@+id/tR3"
+                    android:layout_marginTop="15dp">
 
-            </TableRow>
+                    <TextView
+                        android:id="@+id/tVcountry"
+                        android:layout_width="105dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center|start"
+                        android:text="Country"
+                        android:textSize="16sp" />
 
-            <TableRow
-                android:id="@+id/tR6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tR5"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/eTCountry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
+                        android:ems="10"
+                        android:hint="Country"
+                        android:inputType="text"
+                        android:maxLength="@integer/def_max"
+                        android:textSize="16sp"
+                        app:backgroundTint="@color/edit_text" />
 
-                <TextView
-                    android:id="@+id/tVAge"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center"
-                    android:text="Birthday"
-                    android:textSize="14sp" />
+                </TableRow>
 
-                <EditText
-                    android:id="@+id/eTAge"
+                <TableRow
+                    android:id="@+id/tR6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:editable="false"
-                    android:ems="10"
-                    android:focusable="false"
-                    android:hint="Birthday"
-                    android:inputType="none"
-                    android:textSize="14sp" />
+                    android:layout_below="@+id/tR5"
+                    android:layout_marginTop="15dp">
 
-            </TableRow>
+                    <TextView
+                        android:id="@+id/tVAge"
+                        android:layout_width="105dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center|start"
+                        android:text="Birthday"
+                        android:textSize="16sp" />
 
-            <TableRow
-                android:id="@+id/tR8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tR7"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/eTAge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:hint="Birthday"
+                        android:inputType="none"
+                        android:maxLength="@integer/def_max"
+                        android:textSize="16sp"
+                        app:backgroundTint="@color/edit_text" />
 
-                <TextView
-                    android:id="@+id/tVAboutMe"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:editable="false"
-                    android:ems="10"
-                    android:gravity="left|center"
-                    android:inputType="none"
-                    android:text="About Me"
-                    android:textSize="14sp" />
+                </TableRow>
 
-                <EditText
-                    android:id="@+id/eTAboutMe"
+                <TableRow
+                    android:id="@+id/tR8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:hint="About Me"
-                    android:inputType="none"
-                    android:textSize="14sp" />
+                    android:layout_below="@+id/tR4"
+                    android:layout_marginTop="15dp">
 
-            </TableRow>
+                    <TextView
+                        android:id="@+id/tVAboutMe"
+                        android:layout_width="105dp"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:gravity="center|start"
+                        android:inputType="none"
+                        android:text="About Me"
+                        android:textSize="16sp" />
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/eTAboutMe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edt_bg_selected"
+                        android:focusable="false"
+                        android:hint="About Me"
+                        android:inputType="none"
+                        android:maxLength="@integer/def_max"
+                        android:textSize="16sp"
+                        app:backgroundTint="@color/edit_text" />
+
+                </TableRow>
+
+            </RelativeLayout>
+
+
 
         </RelativeLayout>
     </ScrollView>

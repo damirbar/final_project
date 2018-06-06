@@ -23,7 +23,11 @@
         android:layout_alignParentTop="true"
         android:background="?attr/colorPrimaryDark"
         app:layout_scrollFlags="enterAlways|scroll"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetEnd="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -34,17 +38,26 @@
                 android:id="@+id/image_Button_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@null"
-                android:contentDescription="TODO"
-                app:srcCompat="@drawable/intercom_back"
-                android:layout_alignParentLeft="true" />
+                app:srcCompat="@drawable/intercom_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Comments"
+                android:textColor="@color/white"
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
-
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/activity_main_swipe_refresh_layout"
@@ -71,7 +84,7 @@
             android:focusableInTouchMode="false"
             android:listSelector="@android:color/transparent"
             android:scrollbarSize="2dp"
-            android:scrollbarThumbVertical="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" />
+            android:scrollbarThumbVertical="@color/highlight_default_color" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout
@@ -94,12 +107,14 @@
             android:hint="@string/add_comment"
             android:inputType="textMultiLine"
             android:maxLines="5"
+            android:maxLength="@integer/comment_max"
             android:minHeight="36.0dip"
             android:paddingLeft="10.0dip"
             android:paddingRight="10.0dip"
             android:textColor="@color/steelGrey"
             android:textColorHint="@color/secondary_comment_text"
-            android:textSize="@dimen/button_font_size" />
+            android:textSize="@dimen/button_font_size"
+            android:layout_marginStart="5dp" />
 
         <TextView
             android:id="@+id/send_btn"
