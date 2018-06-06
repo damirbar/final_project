@@ -278,9 +278,9 @@
                         <tr>
                             <th>Likes</th>
                             <th>Dislikes</th>
-                            <th>Question / Answer</th>
+
                             <th>Message</th>
-                            <th>Action</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody class="messages-table-body">
@@ -289,14 +289,9 @@
 
                             <td scope="row">{{rpl.likes}}</td>
                             <td scope="row">{{rpl.dislikes}}</td>
-                            <td>{{rpl.type.charAt(0).toUpperCase() + rpl.type.slice(1)}}</td>
                             <td>
-                                <div class="col-8 message-content-quote" ng-if="rpl.body[0].length == 0"></div>
-                                <div class="col-8 message-content-quote" ng-if="rpl.body[0].length != 0">
-                                    {{rpl.body[0]}}
-                                </div>
-                                <div class="col-4 message-fix-place"></div>
-                                <div class="message-text col-8">{{rpl.body[1]}}</div>
+
+                                <div class="message-text col-8">{{rpl.body}}</div>
                                 <div class="col-4 message-fix-place"></div>
                             </td>
                             <td class="">

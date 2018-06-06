@@ -13,7 +13,7 @@ wizerApp.controller('sessionController',
         $scope.msgLikes = [];
         $scope.msgHates = [];
 
-        $scope.reply   = {type: "question", body: "", replyTo: "", msgID: ""};
+        $scope.reply   = {type: "question", body: ""};
         $scope.messageToReply = {};
         $scope.repliesWindowOpen = false;
 
@@ -247,7 +247,7 @@ wizerApp.controller('sessionController',
 
         $scope.sendReply = function(){
 
-            SessionService.sendReply($scope.sessionID, $scope.reply.type, [$scope.reply.replyTo, $scope.reply.body], $scope.reply.msgID)
+            SessionService.sendReply($scope.sessionID, $scope.reply.type, $scope.reply.body, $scope.reply.msgID)
                 .then(function (data) {
                     console.log("Sent message");
                     $scope.getMessages();
