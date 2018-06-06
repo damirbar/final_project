@@ -7,7 +7,7 @@ wizerApp.controller('sessionController',
         $scope.loggedUser = {};
         $scope.isConnectedToSession = false;
         $scope.session = null;
-        $scope.message = {type: "question", body: "", replyTo: ""};
+        $scope.message = {type: "question", body: ""};
 
         $scope.sessionMessages = [];
         $scope.msgLikes = [];
@@ -64,11 +64,11 @@ wizerApp.controller('sessionController',
 
         $scope.sendMessage = function () {
 
-            SessionService.sendMessage($scope.sessionID, $scope.message.type, [$scope.message.replyTo, $scope.message.body])
+            SessionService.sendMessage($scope.sessionID, $scope.message.type, $scope.message.body)
                 .then(function (data) {
                     console.log("Sent message");
                     $scope.getMessages();
-                    $scope.message = {type: "question", body: "", replyTo: ""};
+                    $scope.message = {body: ""};
                 })
                 .catch(function (err) {
                     console.log(err);

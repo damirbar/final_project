@@ -106,7 +106,11 @@ router.post("/new-user", function (req, res) {
             register_date: Date.now(),
             last_update: Date.now(),
             password: password,
-            role: role
+            role: role,
+            events:
+                {
+                event: "sing up to wizeUp",
+                }
         });
 
         bcrypt.genSalt(10, function (err, salt) {

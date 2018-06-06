@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Course = require("../schemas/course");
+var User = require("../schemas/user");
 
 
 let globalCid = "000001";
@@ -10,37 +11,41 @@ router.post("/create-course", function (req, res) {
         if (ans) {
             globalCid = ans.cid + 1;
         }
-        const course = new Course({
-            cid: globalCid,
-            name: req.body.name,
-            department: req.body.department,
-            teacher: req.body.teacher,
-            location: req.body.location,
-            points: req.body.points,
-        });
+        User.findOne({email: req.body.teacher},function (err, teacher) {
 
-        course.save(function (err) {
-            if (err) {
-                if (err.name === 'MongoError' && err.code === 11000) {
-                    // Duplicate username
-                    console.log('Course ' + course.name + " cannot be added id " + course.cid + ' already exists!');
-                    return res.status(500).json({message: 'Course ' + course.name + " cannot be added id " + course.cid + ' already exists!'});
-                }
-                if (err.name === 'ValidationError') {
-                    //ValidationError
-                    for (field in err.errors) {
-                        console.log("you must provide: " + field + " field");
-                        return res.status(500).json({message: "you must provide: " + field + " field"});
+            const course = new Course({
+                cid: globalCid,
+                name: req.body.name,
+                department: req.body.department,
+                teacher: teacher.id,
+                location: req.body.location,
+                points: req.body.points,
+                students: [teacher.id]
+            });
+
+            course.save(function (err) {
+                if (err) {
+                    if (err.name === 'MongoError' && err.code === 11000) {
+                        // Duplicate username
+                        console.log('Course ' + course.name + " cannot be added id " + course.cid + ' already exists!');
+                        return res.status(500).json({message: 'Course ' + course.name + " cannot be added id " + course.cid + ' already exists!'});
                     }
+                    if (err.name === 'ValidationError') {
+                        //ValidationError
+                        for (field in err.errors) {
+                            console.log("you must provide: " + field + " field");
+                            return res.status(500).json({message: "you must provide: " + field + " field"});
+                        }
+                    }
+                    // Some other error
+                    console.log(err);
+                    return res.status(500).send(err);
                 }
-                // Some other error
-                console.log(err);
-                return res.status(500).send(err);
-            }
-            res.status(200).json(course);
-            console.log("successfully added course " + course.name + " to db");
+                res.status(200).json(course);
+                console.log("successfully added course " + course.name + " to db");
+            });
         });
-    });
+        });
 });
 
 
@@ -173,7 +178,7 @@ router.post('/post-file', type, function (req, res) {
             else {
                 res.status(200).json({message: 'received file'});
                 console.log(path);
-                Course.findOne({cid: "654321"}, function (err, course) {
+                Course.findOne({cid: req.query.cid}, function (err, course) {
                     if (err) return next(err);
                     if (course) {
                         console.log("starting to upload " + req.file.originalname);

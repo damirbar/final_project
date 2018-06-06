@@ -42,6 +42,7 @@
                         <button ng-click="uploadPhoto()">Upload</button>
                     </div>
 
+                    <!--<h2>{{profile.display_name}}{{ profile.birthday | date : format : timezone}}</h2>-->
                     <h2>{{profile.display_name}}</h2>
                 </div>
                 <div class="basic-details container">
@@ -52,7 +53,11 @@
                         </div>
                         <div class="city-and-country">
                             <span class="profile-city" ng-show="profile.city">{{profile.city}}</span> | <span
-                                class="profile-city" ng-show="profile.country">{{profile.country}}</span>
+                                class="profile-city" ng-show="profile.country">{{profile.country}} </span>
+                        </div>
+                        <div class="profile-age">
+                             | <span
+                                class="profile-city" ng-show="profile.birthday">{{ calculateAge(profile.birthday)}}</span>
                         </div>
                     </div>
 
@@ -188,9 +193,9 @@
                             <input class="col-5" type="text" name="address" ng-model="editUser.address">
                             <div class="col-4"></div>
 
-                            <div class="text col-3">Age:</div>
+                            <div class="text col-3">Birthday:</div>
 
-                            <input class="col-5" type="number" name="age" ng-model="editUser.age">
+                            <input class="col-5" type="date" name="birthday" ng-model="editUser.birthday">
                             <div class="col-4"></div>
 
 
