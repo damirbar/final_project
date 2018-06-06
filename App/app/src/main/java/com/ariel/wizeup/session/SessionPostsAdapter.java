@@ -102,7 +102,7 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
 
         comCount.setText(String.valueOf(currentMessage.getReplies().length));
         mEmail.setText(currentMessage.getEmail());
-        msg.setText(currentMessage.getBody()[1]);
+        msg.setText(currentMessage.getBody());
         mLikeNum.setText(String.valueOf(currentMessage.getLikes()));
         mDislikeNum.setText(String.valueOf(currentMessage.getDislikes()));
 

@@ -83,8 +83,7 @@ public class PostActivity extends AppCompatActivity {
         SessionMessage message = new  SessionMessage();
         message.setSid(sid);
         message.setType(question);
-        String Body[]={"",strMessage};
-        message.setBody(Body);
+        message.setBody(strMessage);
         sendPost(message);
     }
 

@@ -126,7 +126,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     private void showDialog() {
         MyDateDialog newFragment = new MyDateDialog();
         String date = mETAge.getText().toString().trim();
-        if(!(date.isEmpty())) {
+        if (!(date.isEmpty())) {
             Bundle bundle = new Bundle();
             bundle.putString("date", mETAge.getText().toString().trim());
             newFragment.setArguments(bundle);
@@ -200,7 +200,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
     public void genderViewClick() {
         final String[] items = {"Male", "Female", "Not Specified"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this,R.style.Theme_Report_Dialog_Alert);
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this, R.style.Theme_Report_Dialog_Alert);
         builder.setTitle("choose gender");
         builder.setItems(items, (dialog, item) -> {
             switch (items[item]) {
@@ -250,47 +250,49 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
             return;
         }
 
-            User user = new User();
-            user.setFname(first_name);
-            user.setLname(last_name);
-            user.setGender(gender);
-            user.setDisplay_name(mDisplayName);
-            user.setCountry(country);
-            user.setAddress(TAddress);
-            user.setAbout_me(AboutMe);
+        User user = new User();
+        user.setFname(first_name);
+        user.setLname(last_name);
+        user.setGender(gender);
+        user.setDisplay_name(mDisplayName);
+        user.setCountry(country);
+        user.setAddress(TAddress);
+        user.setAbout_me(AboutMe);
 
-            DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = format.parse(Age);
+            user.setBirthday(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        boolean newUser = false;
+        if (!(startUser.equals(user))) {
+            actions++;
+            newUser = true;
+        }
+
+
+        if (imagePath != null && !(imagePath.isEmpty())) {
+            actions++;
             try {
-                Date date = format.parse(Age);
-                user.setBirthday(date);
-            } catch (ParseException e) {
+                InputStream is = new FileInputStream(imagePath);
+                tryUploadPic(getBytes(is));
+                is.close();
+
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            boolean newUser = false;
-            if (!(startUser.equals(user))) {
-                actions++;
-                newUser = true;
-            }
-
-
-            if (imagePath != null && !(imagePath.isEmpty())) {
-                actions++;
-                try {
-                    InputStream is = new FileInputStream(imagePath);
-                    tryUploadPic(getBytes(is));
-                    is.close();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (newUser)
-                updateProfile(user);
-
-            if (actions == 0)
-                finish();
         }
+        if (newUser)
+            updateProfile(user);
+
+        if (actions == 0)
+            finish();
+    }
 
 
     private void loadProfile() {
@@ -312,31 +314,22 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
         //Date
         Date date = user.getBirthday();
-        if(date!=null) {
+        if (date != null) {
             Format formatter = new SimpleDateFormat("dd/MM/yyyy");
             String s = formatter.format(date);
             mETAge.setText(s);
+        } else {
+            Date now = new Date();
+            Format formatterNow = new SimpleDateFormat("dd/MM/yyyy");
+            String sNow = formatterNow.format(now);
+            try {
+                DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                now = format.parse(sNow);
+                user.setBirthday(now);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
-
-        if(user.getDisplay_name()==null){
-            user.setDisplay_name("");
-        }
-        if(user.getCountry()==null){
-            user.setCountry("");
-        }
-        if(user.getAddress()==null){
-            user.setAddress("");
-        }
-        if(user.getAddress()==null){
-            user.setAddress("");
-        }
-        if(user.getAbout_me()==null){
-            user.setAbout_me("");
-        }
-        if(user.getGender()==null){
-            user.setGender("");
-        }
-
 
         String g = user.getGender();
         if (g == null || g.isEmpty()) {

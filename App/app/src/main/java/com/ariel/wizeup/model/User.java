@@ -188,7 +188,7 @@ public class User {
                 this.getDisplay_name().equals(u.getDisplay_name()) &&
                 this.getCountry().equals(u.getCountry()) &&
                 this.getAddress().equals(u.getAddress()) &&
-//                this.getBirthday().equals(u.getBirthday()) &&
+                this.getBirthday().equals(u.getBirthday()) &&
                 this.getGender().equals(u.getGender()) &&
                 this.getAbout_me().equals(u.getAbout_me());
     }
