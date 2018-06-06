@@ -6,9 +6,9 @@ const User = require("../schemas/user");
 
 
 //make sure that all request contain a valid token
-router.all("*" , function (req, res, next) {
+router.all("*", function (req, res, next) {
 
-    if(req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass') || req.url.includes('/auth/new-user') ){
+    if (req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass') || req.url.includes('/auth/new-user')) {
         return next();
     }
     var token = req.headers["x-access-token"] || req.query.token;
@@ -16,33 +16,72 @@ router.all("*" , function (req, res, next) {
         res.redirect('/')
     }
     else {
-            jwt.verify(token, "Wizer", function (err, decoded) {
+        jwt.verify(token, "Wizer", function (err, decoded) {
             if (err) {
                 res.sendFile(path.join(__dirname + "/../index.html"));
                 return res.status(401).json({success: false, message: 'Failed to authenticate token.'});
             } else {
                 req.verifiedEmail = decoded;
 
-                User.findOne({email: decoded},function (err, user) {
+                User.findOne({email: decoded}, function (err, user) {
+
+                    if (req.url === "/get-all-messages?sid=1234") return;//remove this only for testing
+
                     console.log(req.url);
-
-                    if(req.url === "/post-profile-image"){
-                       let event= {
-                            type:  "personal",
+                    if (req.url === "/post-profile-image") {
+                        let event = {
+                            type: "personal",
                             event: "change profile image",
-                            date:  Date.now()
-                       };
-                        user.events.push(event);
-                    }
-                    user.save();
-
-                    if(req.url === "/edit-profile"){
-                        let event= {
-                            type:  "personal",
-                            event: "edit profile",
-                            date:  Date.now()
+                            date: Date.now()
                         };
                         user.events.push(event);
+                    }
+
+                    if (req.url === "/edit-profile") {
+                        let event = {
+                            type: "personal",
+                            event: "edit profile",
+                            date: Date.now()
+                        };
+                        user.events.push(event);
+                    }
+
+                    if (req.url === "/connect-session") {
+                        let event = {
+                            type: "session",
+                            event: "connect to session " + req.body.sid,
+                            date: Date.now()
+                        };
+                        user.events.push(event);
+                    }
+
+                    if (req.url === "/messages") {
+                        let event = {
+                            type: "session",
+                            event: "post a question in session " + req.body.sid,//can extract the message if wanted
+                            date: Date.now()
+                        };
+                        user.events.push(event);
+                    }
+
+                    if (req.url.includes("/rate-message")) {
+                        if (req.query.rating === "1") {
+                            let event = {
+                                type: "session",
+                                event: "liked a question in session " + req.query.sid,//can extract the message if wanted
+                                date: Date.now()
+                            };
+                            user.events.push(event);
+                        }
+                        else if(req.query.rating === "0") {
+                            let event = {
+                                type: "session",
+                                event: "disliked a question in session " + req.query.sid,//can extract the message if wanted
+                                date: Date.now()
+                            };
+                            user.events.push(event);
+                        }
+
                     }
                     user.save();
                 });
