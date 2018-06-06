@@ -41,10 +41,10 @@ public class CoursesAdapter extends ArrayAdapter<Course> {
 
         }
         TextView mCourseName = (TextView) listItem.findViewById(R.id.course_name);
-        TextView mTecherName = (TextView) listItem.findViewById(R.id.techer_name);
+        TextView mTeacherName = (TextView) listItem.findViewById(R.id.techer_name);
 
         mCourseName.setText(currentCourse.getName());
-        mTecherName.setText(currentCourse.getLocation());///change to teacher name
+        mTeacherName.setText(currentCourse.getTeacher());
 
 
         return listItem;

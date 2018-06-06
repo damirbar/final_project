@@ -59,7 +59,7 @@ public class MyCourseActivity extends AppCompatActivity {
         coursesList.setOnItemClickListener((parent, view1, position, id) -> {
             Course  C = mAdapter.getItem(position);
             Intent intent = new Intent(this,CourseActivity.class);
-            intent.putExtra("cid", String.valueOf(C.get_id()));
+            intent.putExtra("cid", String.valueOf(C.getCid()));
             startActivity(intent);
         });
 

@@ -114,6 +114,6 @@ public interface RetrofitInterface {
     @POST("courses/post-file")
     Observable<Response> uploadFile(@Part MultipartBody.Part file, @Query("num") String num);
 
-    @POST("courses/add-course")
-    Observable<Response> createCourse(@Body Course course);
+    @POST("courses/create-course")
+    Observable<Course> createCourse(@Body Course course);
 }
