@@ -13,21 +13,21 @@ var UserSchema = new mongoose.Schema({
     address: {type: String, default: ""},
     birthday: Date,
     gender: {type: String, default: ""},
-    photos: Array,
+    // photos: Array,
     profile_img: {type: String, default: ""},
-    cred: Number,
-    fame: Number,
+    // cred: Number,
+    // fame: Number,
     register_date: {type: Date, default: Date.now()},
     last_modified: {type: Date, default: Date.now()},
     accessToken: {type: String, default: ""},
     temp_password: {type: String, default: ""},
     temp_password_time: {type: String, default: ""},
-    courses: {type: Array, default: [] },
+    // courses: {type: Array, default: [] },
     events: [{
         type:  {type: String, default: "general"},
         event: {type: String, default: ""},
         date:  {type: Date, default: Date.now()}
             }]
-}, {usePushEach: true});
+}, );
 
 module.exports = mongoose.model('User', UserSchema);
