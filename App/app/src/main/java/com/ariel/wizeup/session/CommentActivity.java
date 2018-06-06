@@ -127,8 +127,7 @@ public class CommentActivity extends AppCompatActivity {
         message.setMid(mid);
         message.setSid(sid);
         message.setType("answer");
-        String Body[] = {"", strMessage};
-        message.setBody(Body);
+        message.setBody(strMessage);
         sendCom(message);
     }
 
