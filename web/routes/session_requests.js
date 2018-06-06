@@ -106,35 +106,45 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
 
 router.post("/create-session", function (req, res) {
 
-    const sess = new Session({
-        sid: req.body.sid,
-        name: req.body.name,
-        admin: req.verifiedEmail,
-        location: req.body.location,
-        creation_date: Date.now()
-    });
+    User.findOne({email:req.verifiedEmail},function (err, user) {
+        if(err) return err;
+        if(user){
+            const sess = new Session({
+                sid: req.body.sid,
+                name: req.body.name,
+                admin: req.verifiedEmail,
+                teacher_fname:user.first_name,
+                teacher_lname:user.last_name,
+                location: req.body.location,
+                creation_date: Date.now()
+            });
 
 
-    sess.save(function (err) {
-        if (err) {
-            if (err.name === 'MongoError' && err.code === 11000) {
-                // Duplicate username
-                console.log('Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!');
-                return res.status(500).json({message: 'Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!'});
-            }
-            if (err.name === 'ValidationError') {
-                //ValidationError
-                for (field in err.errors) {
-                    console.log("you must provide: " + field + " field");
-                    return res.status(500).json({message: "you must provide: " + field + " field"});
+            sess.save(function (err) {
+                if (err) {
+                    if (err.name === 'MongoError' && err.code === 11000) {
+                        // Duplicate username
+                        console.log('Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!');
+                        return res.status(500).json({message: 'Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!'});
+                    }
+                    if (err.name === 'ValidationError') {
+                        //ValidationError
+                        for (field in err.errors) {
+                            console.log("you must provide: " + field + " field");
+                            return res.status(500).json({message: "you must provide: " + field + " field"});
+                        }
+                    }
+                    // Some other error
+                    console.log(err);
+                    return res.status(500).send(err);
                 }
-            }
-            // Some other error
-            console.log(err);
-            return res.status(500).send(err);
+                res.status(200).json(sess);
+                console.log("successfully added session " + sess.name + " to db");
+            });
         }
-        res.status(200).json(sess);
-        console.log("successfully added session " + sess.name + " to db");
+        else {
+            return res.status(500).json({message: 'User ' + user.name + " cannot open a session "});
+        }
     });
 });
 
