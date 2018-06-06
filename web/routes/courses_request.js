@@ -223,7 +223,7 @@ router.get("/add-student-to-course", function (req, res) {
             User.findOne({email: req.verifiedEmail}, function (err, user) {
                 if (err) return err;
                 if (user && user.role === "teacher") {
-                    User.find({email: req.query.student}, function (err, student) {
+                    User.findOne({email: req.query.student}, function (err, student) {
                         if(student) {
                             course.students.push(student.id);
                             course.save();
