@@ -11,7 +11,7 @@ router.post("/create-course", function (req, res) {
         if (ans) {
             globalCid = ans.cid + 1;
         }
-        User.findOne({email: req.body.teacher},function (err, teacher) {
+        User.findOne({email: req.body.teacher}, function (err, teacher) {
 
             const course = new Course({
                 cid: globalCid,
@@ -45,7 +45,7 @@ router.post("/create-course", function (req, res) {
                 console.log("successfully added course " + course.name + " to db");
             });
         });
-        });
+    });
 });
 
 
@@ -214,25 +214,28 @@ router.post('/post-file', type, function (req, res) {
     }
 });
 
-router.get("/add-students-to-course", function (req, res) {
+router.get("/add-student-to-course", function (req, res) {
     Course.findOne({cid: req.query.cid}, function (err, course) {
         if (err) return err;
         if (course) {
             User.findOne({email: req.verifiedEmail}, function (err, user) {
                 if (err) return err;
                 if (user && user.role === "teacher") {
-                    User.find({}, function (err, students) {
-                        students.forEach(function (student) {
+                    User.find({email: req.query.student}, function (err, student) {
+                        if(student) {
                             course.students.push(student.id);
-                        })
+                            course.save();
+                            res.status(200).json(course);
+                        }
+                        else{
+                        else res.status(404).json({message: "no student " +  req.query.student});
+                        }
                     });
-                    course.save();
-                    res.status(200).json(course);
                 }
-                else res.status(404).json({message: "no such user"});
+                else res.status(404).json({message: "no such user" + req.verifiedEmail +" or not teacher"});
             });
         }
-        else res.status(404).json({message: "no such course"});
+        else res.status(404).json({message: "no such course" + req.query.cid});
     })
 });
 
