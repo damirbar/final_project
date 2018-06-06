@@ -87,13 +87,34 @@
                     android:id="@+id/edit_text_name"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:maxLength="@integer/def_max"
                     android:background="@drawable/dark_edit_text"
                     android:gravity="center"
                     android:hint="Name"
+                    android:maxLength="@integer/def_max"
                     android:textSize="14sp" />
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_edit_text_department"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="70dp"
+                android:layout_marginRight="70dp"
+                android:layout_marginTop="25dp"
+                app:hintEnabled="false">
+
+
+                <EditText
+                    android:id="@+id/edit_text_department"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/dark_edit_text"
+                    android:gravity="center"
+                    android:hint="Department"
+                    android:maxLength="@integer/def_max"
+                    android:textSize="14sp" />
+
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_edit_text_teacher_name"
@@ -111,8 +132,31 @@
                     android:layout_height="40dp"
                     android:background="@drawable/dark_edit_text"
                     android:gravity="center"
-                    android:maxLength="@integer/def_max"
                     android:hint="Teacher"
+                    android:maxLength="@integer/def_max"
+                    android:textSize="14sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_edit_text_points"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="70dp"
+                android:layout_marginRight="70dp"
+                android:layout_marginTop="25dp"
+                app:hintEnabled="false">
+
+
+                <EditText
+                    android:id="@+id/edit_text_points"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/dark_edit_text"
+                    android:gravity="center"
+                    android:hint="Points"
+                    android:maxLength="@integer/def_max"
                     android:textSize="14sp" />
 
             </android.support.design.widget.TextInputLayout>

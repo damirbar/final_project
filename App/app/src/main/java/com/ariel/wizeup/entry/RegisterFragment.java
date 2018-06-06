@@ -52,7 +52,6 @@ public class RegisterFragment extends Fragment {
     private EditText mEtPassword;
     private EditText mEtPassword2;
     private Button mBtRegister;
-    private Spinner mTypeSpinner;
     private ProgressBar mProgressbar;
     private ServerResponse mServerResponse;
     private String mEmail;
@@ -76,7 +75,6 @@ public class RegisterFragment extends Fragment {
 
     private void initViews(View v) {
 
-        mTypeSpinner = v.findViewById(R.id.type_spinner);
         mEtFName = v.findViewById(R.id.et_first_name);
         mEtLName = v.findViewById(R.id.et_last_name);
         mEtEmail = v.findViewById(R.id.et_email);

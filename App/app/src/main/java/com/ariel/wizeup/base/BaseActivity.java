@@ -196,6 +196,8 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         editor.putString(Constants.ID,"");
         editor.putString(Constants.USER_NAME,"");
         editor.putString(Constants.PROFILE_IMG,"");
+//        editor.putString(Constants.LANG,"en");
+
 
         editor.apply();
         Intent intent = new Intent(this, EntryActivity.class);

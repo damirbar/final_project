@@ -45,6 +45,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import static com.ariel.wizeup.file.DownloadFile.getRootDirPath;
+
 public class ImageCropActivity extends AppCompatActivity {
 
     public static final String TAG = "ImageCropActivity";
@@ -227,13 +229,18 @@ public class ImageCropActivity extends AppCompatActivity {
         }
     }
 
+
+
+
     private void createTempFile() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            mFileTemp = new File(Environment.getExternalStorageDirectory(), TEMP_PHOTO_FILE_NAME);
-        } else {
-            mFileTemp = new File(getFilesDir(), TEMP_PHOTO_FILE_NAME);
-        }
+//        String state = Environment.getExternalStorageState();
+        mFileTemp = new File(getRootDirPath(this), TEMP_PHOTO_FILE_NAME);
+
+//        if (Environment.MEDIA_MOUNTED.equals(state)) {
+//            mFileTemp = new File(Environment.getExternalStorageDirectory(), TEMP_PHOTO_FILE_NAME);
+//        } else {
+//            mFileTemp = new File(getFilesDir(), TEMP_PHOTO_FILE_NAME);
+//        }
     }
 
     private void takePic() {
