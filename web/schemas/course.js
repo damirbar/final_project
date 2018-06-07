@@ -10,11 +10,7 @@ var CourseSchema = new mongoose.Schema({
     creation_date: {type: Date, default: Date.now()},
     last_modified: {type: Date, default: Date.now()},
     students:[String],
-    files:[{
-            originalName: {type: String, default: ""},
-            url: {type: String, default: ""},
-            creation_date: Date,
-            }]
+    files:[String]
 
 }, { usePushEach: true });
 module.exports = mongoose.model('Course', CourseSchema);

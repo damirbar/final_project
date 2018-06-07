@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var User = require("../schemas/user");
+var File = require("../schemas/file");
+
 
 router.get("/get-profile", function (req, res, next) {
     const id = req.query.id;
@@ -8,7 +10,7 @@ router.get("/get-profile", function (req, res, next) {
     User.findOne({_id: id}, function (err, user) {
         if (err) return next(err);
         if (user) {
-            let ansUser= {
+            let ansUser = {
                 role: user.role,
                 first_name: user.first_name,
                 last_name: user.last_name,
@@ -148,13 +150,30 @@ router.post('/post-profile-image', type, function (req, res) {
                             gravity: 'face',
                             radius: 20
                         },
+
                         function (err, result) {
                             fs.unlinkSync(path);
                             if (err) return err;
                             console.log("uploaded " + req.file.originalname);
                             console.log(result);
+                            const ans = new File({
+                                originalName: req.file.originalname,
+                                uploaderid: user.id,
+                                url: result.url,
+                                type: result.format,
+                                size: result.bytes,
+                                hidden: false
+                            });
+                            ans.save(function (err, updated_file) {
+                                if (err) return (err);
+                                user.update({profile_file_id: updated_file.id}).then(function () {
+                                   console.log("added file to collection");
+                                });
+                            });
                             user.profile_img = result.url;
-                            user.save();
+                            user.update({profile_img: result.url}).then(function (err, updated_file) {
+                                console.log("updated user profile image");
+                            });
                             first = true;
                         });
                 });
@@ -167,13 +186,14 @@ router.post('/post-profile-image', type, function (req, res) {
 });
 
 
-router.get("/get-events",function (req, res) {
-    User.findOne({email:req.verifiedEmail}, function (err, user) {
-        if(err) return err;
-        if(user){
-            res.status(200).json(user.events.reverse().slice(0, req.query.end))
+router.get("/get-events", function (req, res) {
+    // check if there is a more efficient way to do this
+    User.findOne({email: req.verifiedEmail}, function (err, user) {
+        if (err) return err;
+        if (user) {
+            res.status(200).json(user.events.reverse().slice(req.query.start, req.query.start + req.query.end))
         }
-        else{
+        else {
             res.status(404).json({message: "user not found"})
         }
     })

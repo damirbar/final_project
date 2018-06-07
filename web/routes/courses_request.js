@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Course = require("../schemas/course");
 var User = require("../schemas/user");
+var File = require("../schemas/file");
 
 
 let globalCid = "000001";
@@ -192,16 +193,25 @@ router.post('/post-file', type, function (req, res) {
                             function (err, result) {
                                 fs.unlinkSync(path);
                                 if (err) return err;
-                                console.log(result);
-                                const ans = {
-                                    originalName: req.file.originalname,
-                                    url: result.url,
-                                    creation_date: Date.now()
-                                };
-                                course.files.push(ans);
-                                course.save();
-                                console.log("uploaded " + req.file.originalname);
-                                first = true;
+                                console.log(result);//test this
+                                User.findOne({email: req.verifiedEmail}, function (err, user) {
+                                    if (err) return err;
+                                    if (user) {
+                                        const ans = new File({
+                                            originalName: req.file.originalname,
+                                            uploaderid: user.id,
+                                            url: result.url,
+                                            type: result.format,
+                                            size: result.bytes,
+                                            hidden: false
+                                        });
+                                        ans.save(function (err, updated_file) {
+                                            if (err) return (err);
+                                            course.files.push(updated_file.id);
+                                            course.save();
+                                        });
+                                    }
+                                });
                             });
                     }
                     else {

@@ -15,6 +15,7 @@ var UserSchema = new mongoose.Schema({
     gender: {type: String, default: ""},
     // photos: Array,
     profile_img: {type: String, default: ""},
+    profile_file_id: {type: String, default: ""},
     // cred: Number,
     // fame: Number,
     register_date: {type: Date, default: Date.now()},
@@ -28,6 +29,6 @@ var UserSchema = new mongoose.Schema({
         event: {type: String, default: ""},
         date:  {type: Date, default: Date.now()}
             }]
-}, );
+}, { usePushEach: true });
 
 module.exports = mongoose.model('User', UserSchema);

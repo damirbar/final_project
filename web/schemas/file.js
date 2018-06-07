@@ -1,11 +1,12 @@
 var mongoose = require('mongoose');
 
 var fileSchema = new mongoose.Schema({
-    course_id: String,
-    url: {type: String, required: true},
-    name: String,
-    creation_date: Date,
-    last_modified: Date,
+    originalName: {type: String, default: ""},
+    uploaderid: {type: String, default: ""},
+    url: {type: String, default: ""},
+    type: {type: String, default: ""},
+    creation_date:{type: Date, default: Date.now()},
+    size: {type: String, default: ""},
     hidden: Boolean
 });
 

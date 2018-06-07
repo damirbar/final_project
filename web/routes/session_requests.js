@@ -365,8 +365,28 @@ router.post('/post-video', type, function (req, res) {
                             if (err) return err;
                             console.log("uploaded " + req.file.originalname);
                             console.log(result);
-                            sess.videoID = result.url;
-                            sess.save();
+                            User.findOne({email: req.verifiedEmail}, function (err, user) {
+                                if (err) return err;
+                                if (user) {
+                                    const ans = new File({
+                                        originalName: req.file.originalname,
+                                        uploaderid: user.id,
+                                        url: result.url,
+                                        type: result.format,
+                                        size: result.bytes,
+                                        hidden: false
+                                    });
+                                    ans.save(function (err, updated_file) {
+                                        if (err) return (err);
+                                        sess.update({video_file_id: updated_file.id}).then(function () {
+                                            console.log("added file to collection");
+                                        });
+                                    });
+                                }
+                            });
+                            sess.update({videoUrl: result.url}).then(function (err, updated_file) {
+                                console.log("updated session video");
+                            });
                             first = true;
                             res.status(200).json({message: 'received file'});
                         });

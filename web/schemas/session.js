@@ -11,7 +11,8 @@ var SessionSchema = new mongoose.Schema({
     curr_rating: {type: Number, default: 0},
     hidden: Boolean,
     messages: Array,
-    videoID: {type: String, default: ""},
+    videoUrl: {type: String, default: ""},
+    video_file_id: {type: String, default: ""},
     picID: {type: String, default: "http://res.cloudinary.com/wizeup/image/upload/v1527096126/wizeup.jpg"}
 
 }, {usePushEach: true});
