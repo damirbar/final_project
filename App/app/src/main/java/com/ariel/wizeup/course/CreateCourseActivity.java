@@ -15,6 +15,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.ariel.wizeup.utils.Validation.validateEmail;
 import static com.ariel.wizeup.utils.Validation.validateFields;
 
 public class CreateCourseActivity extends AppCompatActivity {
@@ -88,8 +89,8 @@ public class CreateCourseActivity extends AppCompatActivity {
 
         }
 
-        if (!validateFields(teacher)) {
-            mServerResponse.showSnackBarMessage("Teacher Name should not be empty.");
+        if (!validateEmail(teacher)) {
+            mServerResponse.showSnackBarMessage(getString(R.string.email_should_be_valid));
             return;
 
         }
