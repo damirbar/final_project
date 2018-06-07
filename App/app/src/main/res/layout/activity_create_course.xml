@@ -133,6 +133,7 @@
                     android:background="@drawable/dark_edit_text"
                     android:gravity="center"
                     android:hint="Teacher"
+                    android:inputType="textEmailAddress"
                     android:maxLength="@integer/def_max"
                     android:textSize="14sp" />
 
@@ -156,6 +157,7 @@
                     android:background="@drawable/dark_edit_text"
                     android:gravity="center"
                     android:hint="Points"
+                    android:inputType="number"
                     android:maxLength="@integer/def_max"
                     android:textSize="14sp" />
 
@@ -165,6 +167,7 @@
                 android:id="@+id/input_edit_text_loc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="50dp"
                 android:layout_marginLeft="70dp"
                 android:layout_marginRight="70dp"
                 android:layout_marginTop="25dp"
@@ -174,10 +177,11 @@
                     android:id="@+id/edit_text_loc"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:maxLength="@integer/def_max"
                     android:background="@drawable/dark_edit_text"
                     android:gravity="center"
                     android:hint="Location"
+                    android:inputType="date"
+                    android:maxLength="@integer/def_max"
                     android:textSize="14sp" />
 
             </android.support.design.widget.TextInputLayout>
