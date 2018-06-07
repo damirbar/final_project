@@ -1,0 +1,352 @@
+.edit-profile {
+
+  .clickers {
+    cursor: default;
+  }
+
+}.home-page {
+  background: rgba(255, 222, 143, 0.22);
+  color: gray;
+  background-image: url("../../imgs/college-students.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: 0px -70px;
+
+  .welcome-section {
+    height: auto;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    color: #e8bebe;
+    height: 540px;
+
+    .welcome-big {
+      margin: auto;
+      width: auto;
+      font-size: 220%;
+      font-weight: 700;
+      padding-left: 5%;
+      padding-right: 5%;
+      background-color: rgba(0, 209, 0, 0.33);
+      border-radius: 10px;
+    }
+    .institutes {
+      font-size: 150%;
+      font-weight: 500;
+      margin-left: 50%;
+    }
+
+    .borders {
+
+      &.up-borders {
+        position: absolute;
+        border-top: 3px solid gray;
+        border-right: 3px solid gray;
+        width: 5%;
+        margin-left: 82%;
+        height: 25%;
+      }
+
+      &.down-borders {
+        border-bottom: 3px solid gray;
+        border-left: 3px solid gray;
+        margin-top: 4%;
+        width: 5%;
+        margin-left: 8%;
+        height: 45px;
+      }
+    }
+    .search-something {
+      .search-input-group {
+        margin-top: 5%;
+      }
+    }
+
+  }
+
+  .how-it-works-area {
+    background-color: #ffddd7e8;
+    text-align: center;
+    background: #b0ff9f;
+    background: -moz-linear-gradient(top, #b0ff9f 0%, #6c0000 100%);
+    background: -webkit-linear-gradient(top, #b0ff9f 0%, rgba(108, 0, 0, 0.95) 100%);
+    background: linear-gradient(to bottom, #b0ff9f 0%, rgba(108, 0, 0, 0.95) 100%);
+    height: 440px;
+    border-top: solid #ff4800 6px;
+
+    .wcircle {
+      background-color: #f5ffe4;
+      margin: auto;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      margin-top: 3%;
+      font-size: 32px;
+      border: solid #00c00082 6px;
+
+      // Outer shadow:
+      //-webkit-box-shadow: 4px 12px 44px 0px rgba(0,0,0,0.48);
+      //-moz-box-shadow: 4px 12px 44px 0px rgba(0,0,0,0.48);
+      //box-shadow: 4px 12px 44px 0px rgba(0,0,0,0.48);
+
+      -webkit-box-shadow: inset 4px 12px 44px 0px rgba(0,0,0,0.38);
+      -moz-box-shadow: inset 4px 12px 44px 0px rgba(0,0,0,0.38);
+      box-shadow: inset 4px 12px 44px 0px rgba(0,0,0,0.38);
+
+      .wcircle-text {
+        padding-top: 40%;
+        font-weight: 600;
+        //position: absolute;
+        //top: 50%;
+        //left: 50%;
+        //margin-top: -50px;
+        //margin-left: -50px;
+      }
+
+
+    }
+    .under-wcircle {
+      font-size: 30px;
+      color: #fff2f2;
+
+    }
+    .arrow {
+      font-size: 89px;
+      top: 70px;
+      color: #ff4800;
+    }
+  }
+
+  .footer-container {
+    padding: 75px;
+    background-color: #4b4b4b;
+  }
+
+}
+
+body {
+  background: rgba(255, 222, 143, 0.44);
+
+}
+
+.wizer-nav {
+  //height: 50px;
+  background-color: #ff6654 !important;
+
+  .wizer-logo {
+    color: white !important;
+    margin-right: 3%;
+  }
+
+}
+
+.modal {
+  .modal-dialog {
+    &.modal-width {
+      //max-width: fit-content;
+      max-width: 55%;
+    }
+
+    .modal-content {
+
+      .modal-container {
+        width: 100%;
+        text-align: center;
+
+        .text {
+          //float: left;
+          text-align: left;
+        }
+
+        //.facebook-signin {
+        //  .fb-btn {
+        //    display: block;
+        //    margin: auto;
+        //    margin-top: 2%;
+        //    margin-bottom: 4%;
+        //  }
+        //}
+
+        .google-btn{
+          color: #fff;
+          text-decoration: none;
+          font-size: 18px;
+          padding: 10px;
+          background: #ff5353;
+
+          display: block;
+          width: fit-content;
+          border-radius: 6%;
+          margin: 10px auto;
+          cursor: pointer;
+        }
+        .facebook-btn{
+          color: #fff;
+          text-decoration: none;
+          font-size: 18px;
+          padding: 10px;
+          background: #3018ff;
+
+          display: block;
+          width: fit-content;
+          border-radius: 6%;
+          margin: 10px auto;
+          cursor: pointer;
+        }
+      }
+
+    }
+
+  }
+}
+.profile-page {
+
+  .tmp-div {
+    margin-top: 5%;
+    margin-left: 15%;
+
+    .tmp-header {
+      font-size: 200%;
+    }
+
+    .tmp-details {
+      .tmp-details-title {
+        font-size: 130%;
+      }
+    }
+  }
+
+
+
+  color: #c2200d;
+
+  .left-hand-side {
+    .basic-details-and-picture {
+      padding: 7%;
+
+      .profile-picture-and-name {
+        text-align: center;
+
+        .profile-picture-div {
+          >input {
+            display: none;
+          }
+        }
+        .profile-picture {
+          box-shadow: -3px -3px 18px 0px;
+          color: #9f392d;
+          -webkit-border-radius: 50%;
+          -moz-border-radius: 50%;
+          border-radius: 50%;
+        }
+      }
+
+      .about-me {
+        .about-me-header {
+          text-align: center;
+        }
+
+
+
+      }
+
+
+    }
+  }
+
+  .right-hand-side {
+    .about-me {
+      padding: 7%;
+    }
+
+    #courses {
+      .course-list {
+        .single-course {
+          display: block;
+          background-color: #ff66540d;
+          padding: 1%;
+          border-radius: 3%;
+          margin-right: 6%;
+          margin-top: 1%;
+
+          .course-header {
+            text-align: center;
+            font-weight: 600;
+            font-size: 7vh;
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+}
+.session-page {
+
+  .session-header {
+    text-align: center;
+    margin: 6% 0;
+  }
+
+  .not-connected {
+    .not-found-session {
+      text-align: center;
+    }
+  }
+  .connected-container {
+
+    .session-vid {
+      width: 100%;
+      .video-div {
+        max-width: 100%;
+
+      }
+    }
+    .session-info {
+      .bs-card {
+        height: 100%;
+
+        .card-body {
+          .bs-card-text {
+            padding: 1% 4%;
+          }
+
+          .session-rating {
+            text-align: center;
+          }
+          .like-unlike-session {
+            left: 36%;
+            margin-top: 5%;
+          }
+        }
+      }
+    }
+    .messages-container {
+      .messages-table-body {
+
+        .message-text {
+          font-size: 32px;
+        }
+
+        .message-likes {
+          font-size: 32px;
+        }
+      }
+      height: 400px;
+      overflow-y: scroll;
+    }
+  }
+
+
+  .message-input {
+    margin-top: 2%;
+  }
+}
+
+.reply-modal {
+  .message-text {
+    font-size: 32px;
+  }
+}
