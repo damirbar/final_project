@@ -18,7 +18,7 @@ router.post("/auth-login-user-pass", function (req, res) {
         return res.status(401).send({message: 'Invalid Credentials!'})
     }
 
-    User.findOne({email: credentials.name}, function (err, user) {
+    User.findOne({email: credentials.name.toLowerCase()}, function (err, user) {
         if (err) return err;
         if (!user) {
             return res.status(400).send({message: 'no such user!'})
@@ -27,9 +27,9 @@ router.post("/auth-login-user-pass", function (req, res) {
         console.log("Found the user " + credentials.name);
         if (bcrypt.compareSync(credentials.pass, user.password)) {
             console.log("Found the user " + credentials.name);
-            const token = jwt.sign(credentials.name, "Wizer");
+            const token = jwt.sign(credentials.name.toLowerCase(), "Wizer");
 
-            User.update({email: credentials.name}, {accessToken: token}, function (err) {
+            User.update({email: credentials.name.toLowerCase()}, {accessToken: token}, function (err) {
                 if (err) {
                     console.log(err);
                 } else {
