@@ -3,7 +3,8 @@ wizerApp.controller('sessionController',
 
         console.log("Hello from sessionController");
         $scope.sessionID = "";
-        $scope.sessionUserName = "Anon";
+        $scope.defaultSessionUserName = "Anon";
+        $scope.sessionUserName = "";
         $scope.loggedUser = {};
         $scope.isConnectedToSession = false;
         $scope.session = null;
@@ -42,18 +43,26 @@ wizerApp.controller('sessionController',
 
         $scope.connectSession = function () {
             console.log("SESSION ID = " + $scope.sessionID);
-            SessionService.connectSession($scope.sessionID, $scope.sessionUserName)
+            SessionService.connectSession($scope.sessionID, $scope.sessionUserName !== "" ? $scope.sessionUserName : $scope.sessionUserName)
                 .then(function (data) {
-                    $scope.session = data;
-                    console.log("Connected to session as " + $scope.sessionUserName);// + JSON.stringify(data.session));
-                    console.log("SESSION DATA = " + JSON.stringify(data));
-                    io.connect();
-                    if (data.session) {
-                        $scope.isConnectedToSession = true;
-                        $scope.session = data.session;
-                        getting();
+
+                    if (data.error) {
+
+                        $scope.errorConnectionMessage = data.error;
+                        $scope.firstConnectionTry = false;
                     }
-                    $scope.firstConnectionTry = false;
+                    else {
+                        $scope.session = data;
+                        console.log("Connected to session as " + $scope.sessionUserName !== "" ? $scope.sessionUserName : $scope.sessionUserName);// + JSON.stringify(data.session));
+                        console.log("SESSION DATA = " + JSON.stringify(data));
+                        io.connect();
+                        if (data.session) {
+                            $scope.isConnectedToSession = true;
+                            $scope.session = data.session;
+                            getting();
+                        }
+                        $scope.firstConnectionTry = false;
+                    }
                 })
                 .catch(function (err) {
                     console.log("Error connection to session");
@@ -79,16 +88,23 @@ wizerApp.controller('sessionController',
 
             SessionService.createSession($scope.createSessionID, $scope.createSessionName, $scope.createSessionLocation)
                 .then(function (data) {
-                    $scope.session = data;
-                    console.log("Connected to session as " + $scope.sessionUserName);// + JSON.stringify(data.session));
-                    console.log("SESSION DATA = " + JSON.stringify(data));
-                    io.connect();
-                    if (data.session) {
-                        $scope.isConnectedToSession = true;
-                        $scope.session = data.session;
-                        getting();
+                    if (data.error) {
+
+                        $scope.errorCreationMessage = data.error;
+                        $scope.firstCreationTry = false;
+
+                    } else {
+                        $scope.session = data;
+                        console.log("Created session with ID = " + $scope.createSessionID);// + JSON.stringify(data.session));
+                        console.log("SESSION DATA = " + JSON.stringify(data));
+                        io.connect();
+                        if (data.session) {
+                            $scope.isConnectedToSession = true;
+                            $scope.session = data.session;
+                            getting();
+                        }
+                        $scope.firstCreationTry = false;
                     }
-                    $scope.firstConnectionTry = false;
                 })
                 .catch(function (err) {
                     console.log(err);

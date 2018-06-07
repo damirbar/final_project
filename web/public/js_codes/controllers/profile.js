@@ -9,6 +9,11 @@ wizerApp.controller('profileController',
         $scope.courses = [];
         $scope.editUser = {};
 
+        // NEEDS TO CHANGE
+        $scope.editUser.birthday = new Date("00-00-0000");
+        $scope.profile = new Date("00-00-0000");
+
+
         var initPage = function() {
             CourseService.getCoursesById($routeParams.id)
                 .then(function (data) {

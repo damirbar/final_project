@@ -14,8 +14,15 @@ wizerApp.service('SessionService', function ($http) {
         return $http.post('/sessions/connect-session', {sid: id, name: name})
             .then(function (data) {
                 return data.data;
-            }, function () {
+            }, function (err) {
                 console.log("Error getting session with ID = " + id);
+                console.log("ERROR: " + JSON.stringify(err));
+                if (err.status === 404) {
+                    console.log("SESSION NOT FOUND");
+                    return {error: "Session not found"};
+                } else {
+                    return {error: "Unkown error connecting to session"};
+                }
             });
     };
 
@@ -24,8 +31,9 @@ wizerApp.service('SessionService', function ($http) {
         return $http.post('/sessions/create-session', {sid: sid, name: name, location: location})
             .then(function (data) {
                 return data.data;
-            }, function () {
-                console.log("Error getting session with ID = " + id);
+            }, function (err) {
+                console.log("Error creating session with ID = " + id);
+                return {error: "Error creating session"};
             });
     };
 
