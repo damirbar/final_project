@@ -27,7 +27,7 @@ router.post("/connect-session", function (req, res) {
                 });
                 if (!exists) {
                     sess.students.push({
-                        rating_val: 1,
+                        rating_val: "1",
                         email: decoded,
                         display_name: name,
                     });
@@ -70,56 +70,49 @@ router.get("/get-students-rating", function (req, res, next) {
 
 
 router.get("/change-val", function (req, res, next) { // Expect 0 or 1
-    //return updated session
-    const id = req.query.sid;
+
     const val = req.query.val;
-
-    // TODO
-    // Need to check what is the student's rating value!
-    // We can't allow the user to change the rating more than one up or one down.
-
-    const token = req.headers['x-access-token'];
-    console.log("token = " + token);
-    // console.log("cred.user = " + cred.user);
-    Student.find({accessToken: token}, function (err, student) {
+    Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) next(err);
-        console.log("The student is: " + JSON.stringify(student));
-        Session.find({sid: id}, function (err, sess) {
-            if (err) next(err);
-            let studs = sess.students;
-            for (let i = 0; i < studs.length; ++i) {
-                if (studs[i].email === student.email && studs[i].rating_val !== val) {
-                    sess.students[i].rating_val = val;
+        if (sess) {
+            sess.students.forEach(function (student) {
+                if (student.email === req.verifiedEmail) {
+                    if (student.rating_val != val) {
+                        student.rating_val = val;
+                        let newarray = sess.students;
+                        let rating = (val === "1" ? (sess.curr_rating + 1) : (sess.curr_rating - 1));
+                        sess.update({students: newarray, curr_rating: rating}).then(function () {
+                            if (err) return next(err);
+                            console.log("Updates rating value successfully ");
+                            res.json(sess);
+                        });
+                    }
+                    else {
+                        res.json(sess);
+                    }
                 }
-            }
-        });
-    });
-
-    Session.findOne({sid: id}, function (err, sess) {
-        if (err) return next(err);
-        sess.curr_rating = (val === 1 ? (sess.curr_rating + 1) : (sess.curr_rating - 1));
-        sess.save(function (err, updated_sess) {
-            if (err) return next(err);
-            console.log("Updates value successfully to " + updated_sess.curr_rating);
-        });
-        res.json(sess.curr_rating);
+            });
+        }
+        else {
+            res.status(404).json({message: "no such session"});
+        }
     });
 });
 
 
 router.post("/create-session", function (req, res) {
 
-    User.findOne({email:req.verifiedEmail},function (err, user) {
-        if(err) return err;
-        if(user){
+    User.findOne({email: req.verifiedEmail}, function (err, user) {
+        if (err) return err;
+        if (user) {
             const sess = new Session({
                 sid: req.body.sid,
                 name: req.body.name,
                 admin: req.verifiedEmail,
-                teacher_fname:user.first_name,
-                teacher_lname:user.last_name,
+                teacher_fname: user.first_name,
+                teacher_lname: user.last_name,
                 location: req.body.location,
-                creation_date: Date.now()
+                endTime: req.body.finish
             });
 
 
@@ -416,23 +409,23 @@ router.post("/reply", function (req, res) {
         }
     );
 
-        // Session_Message.update({_id: mess_id}, ratingUpdate, function (err) {
-        //     console.log('updating session message');
-        //     if (err) {
-        //         console.log(err);
-        //         return err;
-        //     }
-        // });
+    // Session_Message.update({_id: mess_id}, ratingUpdate, function (err) {
+    //     console.log('updating session message');
+    //     if (err) {
+    //         console.log(err);
+    //         return err;
+    //     }
+    // });
 
-        Session_Message.update({_id: req.body.mid}, {$push: {replies: msg}}, function (err, msg) {
-            // console.log('pushing reply to messages');
-            if (err) {
-                return console.log(err);
-            }
-            console.log('success pushing reply to messages');
-            res.status(200).json({message: "successfully added reply " + msg.body + " to db"});
-            console.log("successfully added message " + msg.body + " to db");
-        });
+    Session_Message.update({_id: req.body.mid}, {$push: {replies: msg}}, function (err, msg) {
+        // console.log('pushing reply to messages');
+        if (err) {
+            return console.log(err);
+        }
+        console.log('success pushing reply to messages');
+        res.status(200).json({message: "successfully added reply " + msg.body + " to db"});
+        console.log("successfully added message " + msg.body + " to db");
+    });
 
 });
 
@@ -447,12 +440,12 @@ router.get("/get-message", function (req, res) {
     });
 });
 
-router.get("/get-session",function (req, res) {
-   Session.findOne({sid:req.query.sid},function (err,sess) {
-       if(err)  return err;
-       if(sess) res.status(200).json(sess);
-       else res.status(404).json({message: "no such session"});
-   })
+router.get("/get-session", function (req, res) {
+    Session.findOne({sid: req.query.sid}, function (err, sess) {
+        if (err) return err;
+        if (sess) res.status(200).json(sess);
+        else res.status(404).json({message: "no such session"});
+    })
 });
 
 module.exports = router;

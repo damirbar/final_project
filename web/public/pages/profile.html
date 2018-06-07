@@ -126,7 +126,11 @@
             <div id="clothing-nav-content" class="tab-content">
 
                 <div role="tabpanel" class="tab-pane fade show active" id="home" aria-labelledby="home-tab">
-                    <p>We need to put some activity information here.</p>
+                    <div ng-repeat="event in events">
+                        Type: {{event.type.toUpperCase()}}
+                        Info: {{event.event}}
+                        Date: {{event.date | date:'medium'}}
+                    </div>
                 </div>
 
                 <div role="tabpanel" class="tab-pane fade" id="courses" aria-labelledby="courses-tab">

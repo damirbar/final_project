@@ -9,7 +9,7 @@
             <form class="input-group col-8">
                 <input type="text" ng-model="sessionID" class="form-control" placeholder="Session ID" aria-label=""
                        aria-describedby="basic-addon1">
-                <input type="text" ng-model="sessionUserName" class="form-control" placeholder="Anon" aria-label=""
+                <input type="text" ng-model="sessionUserName" class="form-control" placeholder="Nickname" aria-label=""
                        aria-describedby="basic-addon1">
                 <div class="input-group-append">
                     <button class="btn btn-success" type="submit" ng-click="connectSession()">Connect!</button>
@@ -17,8 +17,8 @@
             </form>
             <div class="pad col-2"></div>
         </div>
-        <div class="not-found-session text-danger" ng-hide="firstConnectionTry">
-            {{session.message}}
+        <div class="not-found-session text-danger" ng-if="!firstConnectionTry">
+            {{errorConnectionMessage}}
         </div>
 
         <br>
@@ -47,8 +47,8 @@
             </form>
             <div class="pad col-2"></div>
         </div>
-        <div class="not-found-session text-danger" ng-hide="firstConnectionTry">
-            {{session.message}}
+        <div class="not-found-session text-danger" ng-if="firstCreationTry">
+            {{errorCreationMessage}}
         </div>
 
 
@@ -122,11 +122,11 @@
                             Session rating: {{((session.curr_rating / session.students.length) * 100).toFixed(2)}}%
                         </div>
                         <div class="like-unlike-session btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-lg btn-success active">
-                                <input type="radio" name="options" id="option1" autocomplete="off" checked ng-click="rateSession(1)"> I get it!
+                            <label class="btn btn-lg btn-success active" ng-click="rateSession(1)">
+                                <input type="radio" name="options" id="option1" autocomplete="off" checked> I get it!
                             </label>
-                            <label class="btn btn-lg btn-danger">
-                                <input type="radio" name="options" id="option2" autocomplete="off" ng-click="rateSession(0)"> I don't get it
+                            <label class="btn btn-lg btn-danger" ng-click="rateSession(0)">
+                                <input type="radio" name="options" id="option2" autocomplete="off"> I don't get it
                             </label>
                         </div>
                     </div>
@@ -194,7 +194,7 @@
                 </tr>
                 </thead>
                 <tbody class="messages-table-body">
-                <tr ng-repeat="msg in sessionMessages | reverse">
+                <tr ng-repeat="msg in sessionMessages | reverse" ng-if="sessionMessages.length > 0">
                     <td class="message-likes" scope="row">{{msg.likes}}</td>
                     <td class="message-likes" scope="row">{{msg.dislikes}}</td>
                     <!--<td>{{msg.type.charAt(0).toUpperCase() + msg.type.slice(1)}}</td>-->
