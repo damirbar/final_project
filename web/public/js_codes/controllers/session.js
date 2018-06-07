@@ -7,13 +7,14 @@ wizerApp.controller('sessionController',
         $scope.loggedUser = {};
         $scope.isConnectedToSession = false;
         $scope.session = null;
+        $scope.session = {};
         $scope.message = {type: "question", body: ""};
 
         $scope.sessionMessages = [];
         $scope.msgLikes = [];
         $scope.msgHates = [];
 
-        $scope.reply   = {type: "question", body: ""};
+        $scope.reply = {type: "question", body: ""};
         $scope.messageToReply = {};
         $scope.repliesWindowOpen = false;
 
@@ -30,8 +31,6 @@ wizerApp.controller('sessionController',
 
         ensureLogged();
 
-
-        $scope.session = {};
 
         // SessionService.getSessionByID($routeParams.id)
         //     .then(function (data) {
@@ -130,7 +129,7 @@ wizerApp.controller('sessionController',
         };
 
 
-        $scope.getToken = function() {
+        $scope.getToken = function () {
             return $window.localStorage.getItem('token');
         };
 
@@ -138,18 +137,18 @@ wizerApp.controller('sessionController',
         $scope.disconnect = function () {
 
             SessionService.disconnect($scope.sessionID)
-                .then(function(data) {
+                .then(function (data) {
                     $scope.isConnectedToSession = false;
                     console.log(JSON.stringify(data));
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     console.log("Error with disconnecting from session");
                 });
 
         };
 
 
-        $scope.$on('$locationChangeStart', function( event ) {
+        $scope.$on('$locationChangeStart', function (event) {
             if ($scope.isConnectedToSession) {
                 var answer = confirm("Are you sure you want to leave this page?");
                 if (!answer) {
@@ -203,32 +202,27 @@ wizerApp.controller('sessionController',
         }, 3000);
 
 
-
-
-
-        $scope.uploadFile = function(){
+        $scope.uploadFile = function () {
 
             var file = $scope.myFile;
             var uploadUrl = "/sessions/post-video?sid=" + $scope.sessionID;
             var fd = new FormData();
             fd.append('recfile', file);
 
-            $http.post(uploadUrl,fd, {
+            $http.post(uploadUrl, fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             })
-                .then(function(data){
-                    console.log("upload success!!!");
-                },
-                    function(){
+                .then(function (data) {
+                        console.log("upload success!!!");
+                    },
+                    function () {
                         console.log("error!!");
                     });
         };
 
 
-
-
-        $scope.setMsgIdToReplyAndGetMessage = function(id) {
+        $scope.setMsgIdToReplyAndGetMessage = function (id) {
             $scope.reply.msgID = id;
 
             SessionService.getMessage(id)
@@ -245,7 +239,7 @@ wizerApp.controller('sessionController',
         };
 
 
-        $scope.sendReply = function(){
+        $scope.sendReply = function () {
 
             SessionService.sendReply($scope.sessionID, $scope.reply.type, $scope.reply.body, $scope.reply.msgID)
                 .then(function (data) {
@@ -257,6 +251,21 @@ wizerApp.controller('sessionController',
                     console.log(err);
                 });
 
-        }
+        };
+
+
+        $scope.rateSession = function(val) {
+
+            SessionService.rateSession(val)
+                .then(function (data) {
+                    console.log("Sent rating = " + val + " successfully.");
+                    $scope.session = data;
+                })
+                .catch(function (err) {
+                    console.log(err);
+                });
+
+        };
 
     });
+

@@ -106,14 +106,28 @@
                 <div class="card bs-card">
                     <h1 class="card-header bg-dark">
                         {{session.name}}
+                        <div class="float-right">Session ID: {{session.sid}}</div>
                     </h1>
+
                     <div class="card-body">
                         <div class="container">
-                        <h4 class="card-title bs-card-text">Session ID: {{session.sid}}</h4>
+
                         <h4 class="card-title bs-card-text">Teacher: {{session.teacher_fname}} {{session.teacher_lname}}</h4>
-                        <p class="card-text bs-card-text">Location: {{session.location}}</p>
-                        <p class="card-text bs-card-text">Contact: {{session.admin}}</p>
-                        <p class="card-text bs-card-text">{{session.students.length}} students connected</p>
+                        <div class="card-text bs-card-text">Location: {{session.location}}</div>
+                        <div class="card-text bs-card-text">Contact: {{session.admin}}</div>
+                        <div class="card-text bs-card-text">{{session.students.length}} students connected</div>
+                        </div>
+
+                        <div class="session-rating display-4">
+                            Session rating: {{((session.curr_rating / session.students.length) * 100).toFixed(2)}}%
+                        </div>
+                        <div class="like-unlike-session btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-lg btn-success active">
+                                <input type="radio" name="options" id="option1" autocomplete="off" checked ng-click="rateSession(1)"> I get it!
+                            </label>
+                            <label class="btn btn-lg btn-danger">
+                                <input type="radio" name="options" id="option2" autocomplete="off" ng-click="rateSession(0)"> I don't get it
+                            </label>
                         </div>
                     </div>
                 </div>
