@@ -170,8 +170,7 @@ router.post('/post-profile-image', type, function (req, res) {
                                    console.log("added file to collection");
                                 });
                             });
-                            user.profile_img = result.url;
-                            user.update({profile_img: result.url}).then(function (err, updated_file) {
+                            user.update({profile_img: result.url}).then(function () {
                                 console.log("updated user profile image");
                             });
                             first = true;
