@@ -68,7 +68,8 @@ router.get("/get-students-rating", function (req, res, next) {
 
 
 router.get("/change-val", function (req, res, next) { // Expect 0 or 1
-    const id = req.query.id;
+    //return updated session
+    const id = req.query.sid;
     const val = req.query.val;
 
     // TODO
