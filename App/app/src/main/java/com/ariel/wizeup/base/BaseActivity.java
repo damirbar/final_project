@@ -57,6 +57,8 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     private String mId;
     private DrawerHeader mDrawerHeader;
     private EventsAdapter mAdapter;
+    private static int ADD_ITEMS = 10;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,29 +71,50 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         initViews();
         setupDrawer();
 
-        eventsList.setOnScrollListener(new EndlessScrollListener() {
-
-            @Override
-            public boolean onLoadMore(int page, int totalItemsCount) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to your AdapterView
-                mServerResponse.showSnackBarMessage("page: "+page+" totalItemsCount: "+totalItemsCount);
-//                loadNextDataFromApi(page);
-                loadEvents(totalItemsCount);
-                // or loadNextDataFromApi(totalItemsCount);
-                return true; // ONLY if more data is actually being loaded; false otherwise.
-            }
-        });
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
             loadEventsInit();
+//            eventsList.setOnScrollListener(new EndlessScrollListener() {
+//                @Override
+//                public boolean onLoadMore(int page, int totalItemsCount) {
+//                    // Triggered only when new data needs to be appended to the list
+//                    // Add whatever code is needed to append new items to your AdapterView
+////                mServerResponse.showSnackBarMessage("page: "+page+" totalItemsCount: "+totalItemsCount);
+//                    loadEvents();
+//                    // or loadNextDataFromApi(totalItemsCount);
+//                    return true; // ONLY if more data is actually being loaded; false otherwise.
+//                }
+//            });
+
             mSwipeRefreshLayout.setRefreshing(false);
         }, 1000));
 
 
         loadEventsInit();
 
+        eventsList.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to your AdapterView
+//                mServerResponse.showSnackBarMessage("page: "+page+" totalItemsCount: "+totalItemsCount);
+                loadEvents();
+                // or loadNextDataFromApi(totalItemsCount);
+                return true; // ONLY if more data is actually being loaded; false otherwise.
+            }
+        });
+
+
     }
+
+    private EndlessScrollListener mEndlessScrollListener = new EndlessScrollListener(){
+
+        @Override
+        public boolean onLoadMore(int page, int totalItemsCount) {
+            loadEvents();
+            return false;
+        }
+    };
 
     private void initViews() {
         mDrawer = (DrawerLayout)findViewById(R.id.drawerLayout);
@@ -240,7 +263,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     }
 
     private void loadEventsInit() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getEvents(0, 10)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getEvents(0, ADD_ITEMS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseEventsInit, ServerResponse::handleErrorQuiet));
@@ -259,8 +282,8 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
     }
 
-    private void loadEvents(int totalItemsCount) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getEvents(totalItemsCount, 10)
+    private void loadEvents() {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getEvents(mAdapter.getEventsList().size(), ADD_ITEMS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseEvents, ServerResponse::handleErrorQuiet));
@@ -274,11 +297,5 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
             mAdapter.notifyDataSetChanged();
         }
     }
-
-//    public void loadNextDataFromApi(int offset) {
-//        loadEvents();
-//    }
-
-
 
 }

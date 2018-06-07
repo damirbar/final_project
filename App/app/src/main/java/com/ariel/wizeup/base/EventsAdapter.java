@@ -58,7 +58,8 @@ public class EventsAdapter extends ArrayAdapter<Event> {
 
         }
 
-        holder.mEventType.setText(eventsList.get(position).getType());
+        String type = eventsList.get(position).getType().toUpperCase();
+        holder.mEventType.setText(type);
         holder.mEvent.setText(eventsList.get(position).getEvent());
 
         //Date

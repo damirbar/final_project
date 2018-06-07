@@ -42,8 +42,10 @@ public interface RetrofitInterface {
     @PUT("auth/change-password")
     Observable<Response> changePassword(@Body User user);
 
+    @FormUrlEncoded
     @POST("auth/reset-pass-init")
-    Observable<Response> resetPasswordInit(@Body String mail);
+    Observable<Response> resetPasswordInit(@Field("email") String email);
+
 
     @POST("auth/reset-pass-finish")
     Observable<Response> resetPasswordFinish(@Body User user);
@@ -61,7 +63,7 @@ public interface RetrofitInterface {
     Observable<Response> uploadProfileImage(@Part MultipartBody.Part file);
 
     @GET("students/get-events")
-    Observable<Event[]> getEvents(@Query("total") int total ,@Query("get") int get);
+    Observable<Event[]> getEvents(@Query("start") int start ,@Query("end") int end);
 
 
     //////////////////Session//////////////////
