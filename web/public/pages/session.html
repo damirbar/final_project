@@ -59,10 +59,10 @@
 
         <div class="row">
 
-            <div class="col-6 session-vid" ng-if="isConnectedToSession && session.videoID != ''">
+            <div class="col-6 session-vid" ng-if="isConnectedToSession && session.videoUrl != ''">
                 <video style="max-width: 100%"
                        poster="{{session.picID}}" controls>
-                    <source ng-src="{{session.videoID}}"
+                    <source ng-src="{{session.videoUrl}}"
                             type="video/mp4">
                 </video>
             </div>
@@ -71,7 +71,7 @@
             <!--<source src="http://localhost:3000/sessions/getVideo?sid={{sessionID}}&token={{getToken()}}"-->
 
 
-            <div class="col-6 session-vid-upload" ng-show="isConnectedToSession && session.videoID == ''">
+            <div class="col-6 session-vid-upload" ng-show="isConnectedToSession && session.videoUrl == ''">
                 <!--<form action="/sessions/post-video" method="post" enctype="multipart/form-data">-->
                 <!--<input type="file" name='recfile' placeholder="Select file"/>-->
                 <!--<br/>-->
