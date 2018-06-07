@@ -1,9 +1,0 @@
-web/data/
-web/public/stylesheets/main.less
-.idea/workspace.xml
-web/public/stylesheets/css/main.css
-web/node_modules/*
-web/public/stylesheets/css/main.min.css
-\.idea/
-
-web/upload/
