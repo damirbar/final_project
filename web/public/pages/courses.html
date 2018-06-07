@@ -1,6 +1,14 @@
 <div class="courses-page">
 
-    <div class="list-group container courses-list-container">
+    <div class="loading" ng-show="loading" style="text-align: center;">
+        <div class="fa fa-spinner fa-spin" style="font-size:184px; margin: auto; width: 100%; margin-top: 8%;"></div>
+    </div>
+
+    <div class="list-group container courses-list-container" ng-show="!loading">
+
+        <div class="courses-header my-courses display-4 row font-weight-bold">
+            My courses
+        </div>
 
         <div class="list-group-item list-group-item-action row course-item" ng-repeat="course in courses">
 
