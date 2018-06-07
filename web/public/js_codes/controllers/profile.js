@@ -1,5 +1,5 @@
 wizerApp.controller('profileController',
-    function ($scope, $routeParams, $http, ProfileService, CourseService) {
+    function ($scope, $routeParams, $http, $rootScope, ProfileService, CourseService) {
 
         console.log("Hello from profileController");
         var defaultProfilePicture = "https://images.youtrendit.com/1487525287/desktop/avatar-600/youtrendit_Australopitekus.jpg";
@@ -39,6 +39,15 @@ wizerApp.controller('profileController',
         $scope.readMoreButton = function() {
             $scope.readMore = !$scope.readMore;
         };
+
+
+        if ($rootScope.loggedUser._id === $routeParams.id) {
+            ProfileService.getProfileEvents(0, 10)
+                .then(function (data) {
+                console.log("Events: " + JSON.stringify(data));
+                $scope.events = data;
+            });
+        }
 
 
         $scope.editProfile = function() {
