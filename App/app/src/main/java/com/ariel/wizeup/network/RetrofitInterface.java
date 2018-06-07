@@ -61,7 +61,7 @@ public interface RetrofitInterface {
     Observable<Response> uploadProfileImage(@Part MultipartBody.Part file);
 
     @GET("students/get-events")
-    Observable<Event[]> getEvents(@Query("total") int total ,@Query("get") int get);
+    Observable<Event[]> getEvents(@Query("start") int start ,@Query("end") int end);
 
 
     //////////////////Session//////////////////
