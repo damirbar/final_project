@@ -256,7 +256,8 @@ wizerApp.controller('sessionController',
 
         $scope.rateSession = function(val) {
 
-            SessionService.rateSession(val)
+            console.log("RATING SESSION");
+            SessionService.rateSession(val, $scope.sessionID )
                 .then(function (data) {
                     console.log("Sent rating = " + val + " successfully.");
                     $scope.session = data;

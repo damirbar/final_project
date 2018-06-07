@@ -86,7 +86,7 @@ wizerApp.service('SessionService', function ($http) {
             });
     };
 
-    this.rateSession = function(val) {
+    this.rateSession = function(val, sessionId) {
         return $http.get('/sessions/change-val?sid=' + sessionId + "&val=" + val)
             .then(function (data) {
                 return data.data;
