@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
 var SessionSchema = new mongoose.Schema({
     sid: {type: Number, unique: true, required: true},
-    name: {type: String, default: ""},
-    admin: {type: String, default: ""},
-    teacher_fname: {type: String, default: ""},
-    teacher_lname: {type: String, default: ""},
-    location: {type: String, default: ""},
+    name: {type: String, required: true},
+    admin: {type: String, required: true},
+    teacher_fname: {type: String, required: true},
+    teacher_lname: {type: String, required: true},
+    location: {type: String, required: true},
     creation_date: {type: Date, default: Date.now()},
     students: Array,
     curr_rating: {type: Number, default: 0},
@@ -15,7 +15,7 @@ var SessionSchema = new mongoose.Schema({
     video_file_id: {type: String, default: ""},
     picID: {type: String, default: "http://res.cloudinary.com/wizeup/image/upload/v1527096126/wizeup.jpg"},
     ongoing: {type: Boolean, default: true},
-    endTime: Date
+    endTime: {type: Date, required: true}
 
 }, {usePushEach: true});
 module.exports = mongoose.model('Session', SessionSchema);

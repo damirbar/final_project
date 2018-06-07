@@ -80,13 +80,11 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
                     if (student.rating_val != val) {
                         student.rating_val = val;
                         let newarray = sess.students;
-                        sess.update({students: newarray}).then(function () {
-                            let rating = (val === "1" ? (sess.curr_rating + 1) : (sess.curr_rating - 1));
-                            sess.update({curr_rating: rating}).then(function () {
-                                if (err) return next(err);
-                                console.log("Updates rating value successfully ");
-                                res.json(sess);
-                            });
+                        let rating = (val === "1" ? (sess.curr_rating + 1) : (sess.curr_rating - 1));
+                        sess.update({students: newarray, curr_rating: rating}).then(function () {
+                            if (err) return next(err);
+                            console.log("Updates rating value successfully ");
+                            res.json(sess);
                         });
                     }
                     else {
