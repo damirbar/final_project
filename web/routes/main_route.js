@@ -7,7 +7,7 @@ const User = require("../schemas/user");
 
 //make sure that all request contain a valid token
 router.all("*", function (req, res, next) {
-    if (req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass') || req.url.includes('/auth/new-user') || req.url.includes('reset-pass-init')) {
+    if (req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass') || req.url.includes('/auth/new-user') || req.url.includes('/auth/reset-pass-init')) {
         return next();
     }
     var token = req.headers["x-access-token"] || req.query.token;
@@ -26,7 +26,7 @@ router.all("*", function (req, res, next) {
 
                     // if (req.url === "/get-all-messages?sid=12") return;//remove this only for testing
 
-                    console.log(req.url);
+                    // console.log(req.url);
 
                     if (req.url === "/post-profile-image") {
                         let event = {
