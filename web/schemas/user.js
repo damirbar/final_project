@@ -28,6 +28,6 @@ var UserSchema = new mongoose.Schema({
         event: {type: String, default: ""},
         date:  {type: Date, default: Date.now()}
             }]
-}, );
+}, { usePushEach: true });
 
 module.exports = mongoose.model('User', UserSchema);
