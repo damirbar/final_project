@@ -10,6 +10,18 @@ wizerApp.service('ProfileService', function($http) {
             });
     };
 
+
+
+    this.getProfileEvents = function(start, end) {
+        return $http.get('/students/get-events?start=' + start + '&end=' + end)
+            .then(function(data) {
+                return data.data;
+            }, function(){
+                console.log("Error getting user with ID = " + id);
+            });
+    };
+
+
     this.getProfileByName = function(fname, lname) {
 
         var qfname = fname ? fname : "null";
