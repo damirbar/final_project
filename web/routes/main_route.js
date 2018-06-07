@@ -7,7 +7,6 @@ const User = require("../schemas/user");
 
 //make sure that all request contain a valid token
 router.all("*", function (req, res, next) {
-    // console.log("here");
     if (req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass') || req.url.includes('/auth/new-user')) {
         return next();
     }
@@ -25,7 +24,7 @@ router.all("*", function (req, res, next) {
 
                 User.findOne({email: decoded}, function (err, user) {
 
-                    if (req.url === "/get-all-messages?sid=12") return;//remove this only for testing
+                    // if (req.url === "/get-all-messages?sid=12") return;//remove this only for testing
 
                     console.log(req.url);
 
@@ -106,7 +105,7 @@ router.all("*", function (req, res, next) {
                     if (req.url === "/create-session") {
                         let event = {
                             type: "create",
-                            event: "created course: " + req.body.name +"at " + req.body.location,//can extract the message if wanted
+                            event: "created session: " + req.body.name +" at " + req.body.location,//can extract the message if wanted
                             date: Date.now()
                         };
                         user.events.push(event);
@@ -115,7 +114,43 @@ router.all("*", function (req, res, next) {
                     if (req.file && req.url.includes("/post-video")) {
                         let event = {
                             type: "session",
-                            event: "added video to session: " + req.query.sid,//can extract the message if wanted
+                            event: "added video to session: " + req.query.sid,//can extract the video name if wanted
+                            date: Date.now()
+                        };
+                        user.events.push(event);
+                    }
+
+                    if (req.url === "/create-course") {
+                        let event = {
+                            type: "create",
+                            event: "created course: " + req.body.name +" with teacher: " + req.body.teacher,//can extract the message if wanted
+                            date: Date.now()
+                        };
+                        user.events.push(event);
+                    }
+
+                    if (req.file && req.url.includes("/post-file")) {
+                        let event = {
+                            type: "course",
+                            event: "added file to course: " + req.query.cid,//can extract the file name if wanted
+                            date: Date.now()
+                        };
+                        user.events.push(event);
+                    }
+
+                    if (req.url.includes("/courses/add-students-to-course")) {
+                        let event = {
+                            type: "course",
+                            event: "added a student (" + req.query.student +") to course: " + req.query.cid,//can extract the file name if wanted
+                            date: Date.now()
+                        };
+                        user.events.push(event);
+                    }
+
+                    if (req.url.includes("/get-course")) {
+                        let event = {
+                            type: "course",
+                            event: "looked at course " + req.query.cid,
                             date: Date.now()
                         };
                         user.events.push(event);

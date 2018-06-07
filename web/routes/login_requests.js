@@ -5,6 +5,7 @@ const Student = require("../schemas/student");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt-nodejs');
 const auth = require('basic-auth');
+var validator = require("email-validator");
 
 router.use(expressValidator());
 
@@ -17,7 +18,7 @@ router.post("/auth-login-user-pass", function (req, res) {
         return res.status(401).send({message: 'Invalid Credentials!'})
     }
 
-    User.findOne({email: credentials.name.toLowerCase()}, function (err, user) {
+    User.findOne({email: credentials.name}, function (err, user) {
         if (err) return err;
         if (!user) {
             return res.status(400).send({message: 'no such user!'})
@@ -28,7 +29,7 @@ router.post("/auth-login-user-pass", function (req, res) {
             console.log("Found the user " + credentials.name);
             const token = jwt.sign(credentials.name, "Wizer");
 
-            User.update({email: credentials.name.toLowerCase()}, {accessToken: token}, function (err) {
+            User.update({email: credentials.name}, {accessToken: token}, function (err) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -77,6 +78,7 @@ router.get("/get-user-by-token", function (req, res) {
 });
 
 
+
 router.post("/new-user", function (req, res) {
 
     const fname = req.body.first_name,
@@ -85,10 +87,15 @@ router.post("/new-user", function (req, res) {
         password = req.body.password,
         role = req.body.role;
 
+
     req.checkBody("first_name", "First Name is required").notEmpty();
     req.checkBody("last_name", "Last Name is required").notEmpty();
     req.checkBody("email", "Email is required").notEmpty();
-    req.checkBody("email", "Email is not valid").isEmail();
+    // req.checkBody("email".toLowerCase(), "Email is not valid").isEmail();
+    if(!validator.validate(email)){
+        console.log("Email is not valid");
+        res.status(400).json({message: "Email is not valid"});
+    }// true
     req.checkBody("password", "Password is required").notEmpty();
     req.checkBody("role", "role is required").notEmpty();
 
@@ -219,7 +226,7 @@ router.post("/reset-pass-init", function (req, res) {
 });
 
 router.post("/reset-pass-finish", function (req, res) {
-    Student.findOne({email: req.body.email.toLowerCase()}, function (err, student) {
+    Student.findOne({email: req.body.email}, function (err, student) {
         const diff = new Date() - new Date(student.temp_password_time);
         const seconds = Math.floor(diff / 1000);
         console.log("Seconds :" + seconds);
