@@ -45,6 +45,11 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
             controller: 'sessionController'
         })
 
+        .when('/courses/', {
+            templateUrl: '../pages/courses.html',
+            controller: 'coursesController'
+        })
+
     .otherwise({ redirectTo: '/'});
 
 

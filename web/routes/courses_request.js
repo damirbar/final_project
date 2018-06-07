@@ -77,6 +77,21 @@ router.get('/get-all-courses-by-id', function (req, res) { // You get: Array of 
     });
 });
 
+
+router.get('/get-my-courses', function (req, res) {
+
+    User.findOne({email: req.verifiedEmail}, function(err, user) {
+        Course.find({students: user._id}, function (err, courses) {
+            if (err) return err;
+            res.status(200).json(courses);
+        });
+    });
+
+});
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 

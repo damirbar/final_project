@@ -1,3 +1,19 @@
+.courses-page .courses-list-container .course-item {
+  color: #8d2b2b;
+  font-size: 110%;
+}
+.courses-page .courses-list-container .course-item .course-header {
+  font-weight: 600;
+  font-size: 130%;
+  padding-left: 1%;
+}
+.courses-page .courses-list-container .course-item .course-header-name {
+  font-size: 170%;
+}
+.courses-page .courses-list-container .course-item .course-students {
+  text-align: right;
+  color: #007a00;
+}
 .edit-profile .clickers {
   cursor: default;
 }
