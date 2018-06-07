@@ -4,6 +4,8 @@ var Session = require("../schemas/session");
 var Session_Message = require("../schemas/session_message");
 var Student = require("../schemas/student");
 var User = require("../schemas/user");
+var File = require("../schemas/file");
+
 
 router.post("/connect-session", function (req, res) {
     const decoded = req.verifiedEmail;
@@ -117,7 +119,7 @@ router.post("/create-session", function (req, res) {
                 teacher_fname:user.first_name,
                 teacher_lname:user.last_name,
                 location: req.body.location,
-                creation_date: Date.now()
+                endTime: req.body.finish
             });
 
 

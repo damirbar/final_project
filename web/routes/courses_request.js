@@ -68,33 +68,6 @@ router.get('/get-all-courses', function (req, res, next) {
     });
 });
 
-// router.post('/get-all-courses-by-id', function(req,res,next){ // You get: Array of IDs
-//
-//     const ObjectID   = require('mongodb').ObjectID;
-//
-//     const coursesIds = req.body.courses;
-//
-//     const ids = coursesIds.map(function(crs) {
-//         return ObjectID(String(crs));
-//     });
-//
-//     let courses = [];
-//
-//     function addToCourses(coursesToAdd) {
-//         courses = coursesToAdd;
-//         res.json({courses: courses});
-//     }
-//
-//     Course.find({ '_id': { $in: ids } }, function(err, crses) {
-//         if(err) {
-//             console.log("Error in get-courses-by-id. error = " + err);
-//             error.message = err;
-//         } else {
-//             addToCourses(crses);
-//         }
-//     });
-//
-// });
 
 router.get('/get-all-courses-by-id', function (req, res) { // You get: Array of IDs
     const id = req.query.id;
@@ -130,24 +103,6 @@ router.get('/search-by-name', function (req, res, next) {
     });
 });
 
-
-// router.get('/file-system/download-file',function(req,res){
-//     const file_id = req.query.file_id;
-//     const course_id = req.query.course_id;
-//         File.findOne({_id:file_id,course_id:course_id},function (err,file) {
-//                     if(err) throw err;
-//                     console.log("found " + file.url);
-//                     res.status(200).send(file.url);
-//         });
-// });
-
-// router.get('/get-all-files-by-id', function(req,res){
-//     const id = req.query.id;
-//     SystemFile.find({course_id: id },function (err,files) {
-//         if (err) return err;
-//         res.status(200).json(files);
-//     });
-// });
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
