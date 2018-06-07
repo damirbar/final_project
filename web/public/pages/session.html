@@ -122,11 +122,11 @@
                             Session rating: {{((session.curr_rating / session.students.length) * 100).toFixed(2)}}%
                         </div>
                         <div class="like-unlike-session btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-lg btn-success active">
-                                <input type="radio" name="options" id="option1" autocomplete="off" checked ng-click="rateSession(1)"> I get it!
+                            <label class="btn btn-lg btn-success active" ng-click="rateSession(1)">
+                                <input type="radio" name="options" id="option1" autocomplete="off" checked> I get it!
                             </label>
-                            <label class="btn btn-lg btn-danger">
-                                <input type="radio" name="options" id="option2" autocomplete="off" ng-click="rateSession(0)"> I don't get it
+                            <label class="btn btn-lg btn-danger" ng-click="rateSession(0)">
+                                <input type="radio" name="options" id="option2" autocomplete="off"> I don't get it
                             </label>
                         </div>
                     </div>
