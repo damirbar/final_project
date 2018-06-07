@@ -11,18 +11,8 @@ var path = require("path");
 
 var bodyParser = require("body-parser");
 
-
-const Student = require("./schemas/student");
-const Session = require("./schemas/session");
-const Channel = require("./schemas/channel");///shay chat
-const Message = require("./schemas/message");///shay chat
-
-
-
-//shay
 var logger = require('morgan');
 
-//shay
 const router = express.Router();
 app.use(logger('dev'));
 
@@ -47,14 +37,12 @@ myLessCompiler();
 
 var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
 mongoose.connect(mongoDB, {
-    //     useMongoClient: true
     }
 );
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 
-//shay
 require('./routes/routes')(router);
 app.use('/api/v1', router);
 
@@ -75,15 +63,12 @@ var authRouts = require("./routes/login_requests");
 app.use('/auth', authRouts);
 
 
-/////////////////////////
-
-
-io.on('connect', function(socket) {
-    console.log("SOMEBODY CONNECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    socket.on('disconnect', function() {
-        console.log("ERAN IS FUCKING GAY");
-    });
-});
+// io.on('connect', function(socket) {
+//     console.log("SOMEBODY CONNECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//     socket.on('disconnect', function() {
+//         console.log("ERAN IS FUCKING GAY");
+//     });
+// });
 
 
 http.listen(3000, function () {
@@ -96,79 +81,6 @@ app.get('*', function(req, res){
     res.sendFile(path.join(__dirname + "/index.html"));
 });
 
-
-// For session testing:
-
-var addSession = function () {
-    var session = new Session(
-        {
-            sid: 1234,
-            name: "Test Session",
-            teacher_id: "WizeGuy1234",
-            location: "10.4.2",
-            creation_date: Date.now(),
-            students: [
-                {
-                    id_num: "d1234",
-                    display_name: "Damir",
-                    mail: "damir@wizeup.com",
-                    rating_val: 1
-                },
-                {
-                    id_num: "sh1234",
-                    display_name: "Shay",
-                    mail: "shay@wizeup.com",
-                    rating_val: 1
-                },
-                {
-                    id_num: "se1234",
-                    display_name: "Sefi",
-                    mail: "sefi@wizeup.com",
-                    rating_val: 1
-                },
-                {
-                    id_num: "e1234",
-                    display_name: "Eran",
-                    mail: "eran@wizeup.com",
-                    rating_val: 1
-                }
-            ],
-            curr_rating: 0
-        }
-    );
-    session.save()
-        .then(function (item) {
-            console.log("Saved a session to the DB");
-        })
-        .catch(function (err) {
-            console.log("\nCouldn't save the session to the DB\nError: " + err + "\n");
-        })
-
-
-    // Session.findOne({internal_id: 1234}).then(function(sess) {
-
-    // });
-};
-// addSession();
-
-
-
-//can delete?
-
-// var feedStudents = function (dataArr) {
-//     for (var i = 0; i < dataArr.length; ++i) {
-//         var dat = new Student(dataArr[i]);
-//         dat.save()
-//             .then(function (item) {
-//                 console.log("Saved a student to the DB");
-//             })
-//             .catch(function (err) {
-//                 console.log("\nCouldn't save student to the DB\nError: " + err.errmsg + "\n");
-//             })
-//     }
-// };
-
-//var studentList = require('./studentsArr');
 
 
 
