@@ -1,13 +1,17 @@
 wizerApp.controller('profileController',
-    function ($scope, $routeParams, $http, $rootScope, ProfileService, CourseService) {
+    function ($scope, $routeParams, $http, $rootScope, $timeout, ProfileService, CourseService) {
 
         console.log("Hello from profileController");
         var defaultProfilePicture = "https://images.youtrendit.com/1487525287/desktop/avatar-600/youtrendit_Australopitekus.jpg";
+
+        $scope.loading = true;
+
         $scope.userArr = [];
         $scope.profile = {};
         $scope.readMore = false;
         $scope.courses = [];
         $scope.editUser = {};
+
 
         // NEEDS TO CHANGE
         $scope.editUser.birthday = new Date("00-00-0000");
@@ -23,14 +27,19 @@ wizerApp.controller('profileController',
                 });
         };
 
-        ProfileService.getProfileByID($routeParams.id)
-            .then(function (data) {
-                console.log("Looking for " + $routeParams.id);
-                $scope.profile = data;
-                $scope.editUser = data;
-                console.log(data);
-                initPage();
-            });
+
+        $scope.getProfile = function() {
+            ProfileService.getProfileByID($routeParams.id)
+                .then(function (data) {
+                    console.log("Looking for " + $routeParams.id);
+                    $scope.profile = data;
+                    $scope.editUser = data;
+                    console.log(data);
+                    initPage();
+                    $scope.loading = false;
+                });
+        };
+        $scope.getProfile();
 
         $scope.getPhoto = function() {
             console.log("PROFILE IMAGE = " + $scope.profile.profile_img);
@@ -89,5 +98,27 @@ wizerApp.controller('profileController',
             var ageDifMs = Date.now() - birthday.getTime();
             var ageDate = new Date(ageDifMs); // miliseconds from epoch
             return Math.abs(ageDate.getUTCFullYear() - 1970);
-        }
+        };
+
+
+
+        $scope.myImage='';
+        $scope.myCroppedImage='';
+
+        var handleFileSelect=function(evt) {
+            $scope.uploadPhoto();
+            var file=evt.currentTarget.files[0];
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                $scope.$apply(function($scope){
+                    $scope.myImage=evt.target.result;
+                    $scope.profile.profile_img = $scope.myCroppedImage;
+                });
+            };
+            reader.readAsDataURL(file);
+            $timeout(function() {
+                $scope.getProfile();
+            }, 6000)
+        };
+        angular.element(document.querySelector('#file-profile-image')).on('change',handleFileSelect);
     });

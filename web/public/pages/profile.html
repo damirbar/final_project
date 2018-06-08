@@ -34,39 +34,60 @@
                     <div class="profile-picture-div">
                         <!--<img class="profile-picture" ng-src="{{getPhoto()}}" style="width: 100%;">-->
 
+                        <!--<div class="cropArea">-->
+                            <!--<img-crop image="myImage" result-image="myCroppedImage"></img-crop>-->
+                        <!--</div>-->
+
+
+
                         <label for="file-profile-image">
-                            <img class="profile-picture" ng-src="{{getPhoto()}}" style="width: 100%;">
+                            <img class="profile-picture" ng-src="{{profile.profile_img}}" style="width: 100%;">
+                            <!--<img class="profile-picture" ng-src="{{myCroppedImage}}" style="width: 100%;">-->
                         </label>
 
                         <input id="file-profile-image" type="file" name='recfile' file-model="myFile"/><br><br>
-                        <button ng-click="uploadPhoto()">Upload</button>
+                        <!--<button ng-click="uploadPhoto()">Upload</button>-->
+
+                        <!--<div class="modal-btn" data-toggle="modal" data-target="#cropModal">-->
+                            <!--open crop-->
+                        <!--</div>-->
+
+                        <!--<div class="cropArea">-->
+                            <!--<img-crop image="myImage" result-image="profile.profile_img"></img-crop>-->
+                        <!--</div>-->
+
+
                     </div>
+
+
 
                     <!--<h2>{{profile.display_name}}{{ profile.birthday | date : format : timezone}}</h2>-->
                     <h2>{{profile.display_name}}</h2>
                 </div>
                 <div class="basic-details container">
-                    <div class="name-and-country" style="display: -webkit-box">
-                        <div class="first-and-last-name"
+                    <div class="name-and-country row">
+                        <div class="first-and-last-name col-12"
                              ng-show="profile.display_name != profile.first_name + ' ' + profile.last_name">
                             {{profile.first_name}} {{profile.last_name}} 
                         </div>
-                        <div class="city-and-country">
-                            <span class="profile-city" ng-show="profile.city">{{profile.city}}</span> | <span
-                                class="profile-city" ng-show="profile.country">{{profile.country}} </span>
+
+                        <div class="city-and-country col-6">
+                            <span class="profile-city" ng-show="profile.city">{{profile.city}}</span>
+                            <span class="profile-city" ng-show="profile.country">{{profile.country}}</span>
                         </div>
-                        <div class="profile-age">
-                             | <span
-                                class="profile-city" ng-show="profile.birthday">{{ calculateAge(profile.birthday)}}</span>
+
+                        <div class="profile-age col-6">
+                            <span class="profile-city" ng-show="profile.birthday">{{calculateAge(profile.birthday)}} y/o</span>
                         </div>
                     </div>
 
-                    <div class="message-me row">
-                        <button class="btn btn-info" data-placement="right" data-toggle="tooltip"
-                                title="Temporarily unavailable">Message
-                        </button>
-                    </div>
+                    <!--<div class="message-me row">-->
+                        <!--<button class="btn btn-info" data-placement="right" data-toggle="tooltip"-->
+                                <!--title="Temporarily unavailable">Message-->
+                        <!--</button>-->
+                    <!--</div>-->
 
+                    <br><br><br>
                     <div class="about-me" ng-show="profile.about_me != ''">
                         <h3 class="about-me-header">About me:</h3>
                         <!--<div class="about-me-text read-more-activation"></div>-->
@@ -122,14 +143,14 @@
 
             </ul>
 
+            <div class="loading" ng-show="loading" style="text-align: center;">
+                <div class="fa fa-spinner fa-spin" style="font-size:184px; margin: auto; width: 100%; margin-top: 8%;"></div>
+            </div>
             <!-- Content Panel -->
             <div id="clothing-nav-content" class="tab-content">
 
                 <div role="tabpanel" class="tab-pane fade show active" id="home" aria-labelledby="home-tab">
                     <div class="profile-event" ng-repeat="event in events">
-
-                        <!--<event-elm></event-elm>-->
-                        <!--<event-custom event="event"></event-custom>-->
 
                         <div class="event-type">
                             {{event.type.charAt(0).toUpperCase() + event.type.slice(1)}}
@@ -254,3 +275,29 @@
     </div>
 
 </div>
+
+
+
+
+
+
+
+<div id="cropModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-width">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="container modal-container">
+
+
+
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
