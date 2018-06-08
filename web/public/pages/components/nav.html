@@ -8,21 +8,21 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            <li class="nav-item active home-nav-btn">
+                <a class="nav-link" href="/" ng-click="homeClick()">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item non-home-nav-btn">
                 <!--<a class="nav-link" href="#/">Profile</a>-->
                 <!--<a class="nav-link profile-link" ng-href="#/profile/{{$rootScope.loggedUser._id}}" ng-if="isLogged">Profile</a>-->
-                <a class="nav-link profile-link" ng-show="isLoggedIn()">Profile</a>
+                <a class="nav-link profile-link" ng-show="isLoggedIn()" ng-click="nonHomeClick()">Profile</a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link session-link" href="/sessions/" ng-show="isLoggedIn()">Session</a>
+            <li class="nav-item non-home-nav-btn">
+                <a class="nav-link session-link" href="/sessions/" ng-show="isLoggedIn()" ng-click="nonHomeClick()">Session</a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link courses-link" href="/courses/" ng-show="isLoggedIn()">Courses</a>
+            <li class="nav-item non-home-nav-btn">
+                <a class="nav-link courses-link" href="/courses/" ng-show="isLoggedIn()" ng-click="nonHomeClick()">Courses</a>
             </li>
 
 
@@ -37,7 +37,7 @@
             <div class="logout-activator" ng-click="logout()">Log Out</div>
             <div class="underlined"></div>
         </div>
-        <form class="form-inline my-2 my-lg-0">
+        <form class="form-inline my-2 my-lg-0 search-nav-form animate-show-hide" ng-hide="true">
         <!--<form class="form-inline my-2 my-lg-0" ng-if="$location.path() == '/'">-->
 
             <!--TODO free text search-->

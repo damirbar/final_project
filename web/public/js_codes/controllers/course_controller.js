@@ -1,7 +1,8 @@
 wizerApp.controller('courseController',
-    function ($scope, $routeParams, courseService) {
+    function ($scope, $routeParams, $rootScope, courseService) {
 
         // console.log("Hello from profileController");
+        $rootScope.showSearchNav = true;
         $scope.course = {};
 
 

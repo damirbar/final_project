@@ -18,7 +18,7 @@ wizerApp.controller('coursesController',
 
     $scope.getMyCourses();
 
-    console.log($location.path())
+    console.log($location.path());
 
     });
 

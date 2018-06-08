@@ -10,7 +10,7 @@
             My courses
         </div>
 
-        <div class="list-group-item list-group-item-action row course-item" ng-repeat="course in courses">
+        <a ng-href="/courses/{{course._id}}" class="list-group-item list-group-item-action row course-item" ng-repeat="course in courses">
 
             <div class="course-name col-3 course-header course-header-name">{{course.name}}</div>
 
@@ -36,7 +36,7 @@
                 <span class="number-of-students course-header">{{course.students.length}}</span>
                  students attend this class
             </div>
-        </div>
+        </a>
 
 
     </div>

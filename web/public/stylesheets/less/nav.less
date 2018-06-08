@@ -5,11 +5,30 @@ body {
 
 .wizer-nav {
   //height: 50px;
-  background-color: #ff6654 !important;
+  //background-color: #ff6654 !important;
 
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff321b+66,ffca1b+89,47fa00+100 */
+  background: rgb(255,50,27); /* Old browsers */
+  background: -moz-linear-gradient(left, rgba(255,50,27,1) 66%, rgba(255,202,27,1) 89%, rgba(71,250,0,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, rgba(255,50,27,1) 66%,rgba(255,202,27,1) 89%,rgba(71,250,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, rgba(255,50,27,1) 66%,rgba(255,202,27,1) 89%,rgba(71,250,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff321b', endColorstr='#47fa00',GradientType=1 ); /* IE6-9 */
   .wizer-logo {
     color: white !important;
     margin-right: 3%;
+  }
+
+  .search-nav-form {
+  }
+
+  .animate-show-hide {
+    transition: all linear 0.5s;
+  }
+  .animate-show-hide {
+    &.ng-hide {
+      transition: all linear 0.5s;
+      opacity: 0;
+    }
   }
 
 }
