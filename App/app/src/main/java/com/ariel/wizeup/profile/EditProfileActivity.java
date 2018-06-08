@@ -72,7 +72,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     private String imagePath;
     private int actions;
     private User startUser;
-    private ScrollView layout;
+//    private ScrollView layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +91,8 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     }
 
     private void initViews() {
-        layout = findViewById(R.id.scroll);
-        layout.setVisibility(View.GONE);
+//        layout = findViewById(R.id.scroll);
+//        layout.setVisibility(View.GONE);
         mETFirstName = (EditText) findViewById(R.id.eTFirstName);
         mETLastName = (EditText) findViewById(R.id.eTLastName);
         mETGender = (EditText) findViewById(R.id.eTGender);
@@ -339,12 +339,12 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
         String pic = user.getProfile_img();
         if (pic != null && !(pic.isEmpty()))
-            Picasso.get()
+            Picasso.with(this)
                     .load(pic)
                     .error(R.drawable.default_user_image)
                     .into(image);
 
-        layout.setVisibility(View.VISIBLE);
+//        layout.setVisibility(View.VISIBLE);
         startUser = user;
     }
 

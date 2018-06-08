@@ -36,9 +36,8 @@ public class MyCourseActivity extends AppCompatActivity {
     private TextView mTvNoResults;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoursesAdapter mAdapter;
-    private String mId;
     private FloatingActionButton mFB;
-    private RelativeLayout layout;
+//    private RelativeLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,6 @@ public class MyCourseActivity extends AppCompatActivity {
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.layout_my_classes));
-        initSharedPreferences();
         initViews();
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
@@ -87,14 +85,9 @@ public class MyCourseActivity extends AppCompatActivity {
 
     }
 
-    private void initSharedPreferences() {
-        mId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID,"");
-    }
-
-
     private void initViews() {
-        layout =  findViewById(R.id.relative);
-        layout.setVisibility(View.GONE);
+//        layout =  findViewById(R.id.relative);
+//        layout.setVisibility(View.GONE);
         ImageButton buttonBack = findViewById(R.id.image_Button_back);
         mTvNoResults = findViewById(R.id.tv_no_results);
         coursesList = findViewById(R.id.myClassesList);
@@ -111,7 +104,7 @@ public class MyCourseActivity extends AppCompatActivity {
     }
 
     private void pullCourses() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllCoursesById(mId)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getMyCourses()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull, i -> mServerResponse.handleError(i)));
@@ -128,7 +121,7 @@ public class MyCourseActivity extends AppCompatActivity {
 
         }
 
-        layout.setVisibility(View.VISIBLE);
+//        layout.setVisibility(View.VISIBLE);
 
     }
 
