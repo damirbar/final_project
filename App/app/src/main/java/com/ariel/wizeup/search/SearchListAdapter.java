@@ -87,7 +87,7 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
 
             String pic = user.getProfile_img();
             if (pic != null && !(pic.isEmpty()))
-                Picasso.get()
+                Picasso.with(mContext)
                         .load(pic)
                         .error(R.drawable.default_user_image)
                         .into(profileImage);

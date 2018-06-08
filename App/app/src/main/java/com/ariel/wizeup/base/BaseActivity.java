@@ -187,7 +187,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mDrawerHeader.getNameTxt().setText(user.getFname() + " " + user.getLname());
         String pic = user.getProfile_img();
         if(pic!=null&&!(pic.isEmpty()))
-            Picasso.get().load(pic).into(mDrawerHeader.getProfileImage());
+            Picasso.with(this).load(pic).into(mDrawerHeader.getProfileImage());
     }
 
     @Override

@@ -111,8 +111,8 @@ public interface RetrofitInterface {
     @GET("courses/get-all-courses")
     Observable<Course[]> getAllCourses();
 
-    @GET("courses/get-all-courses-by-id")
-    Observable<Course[]> getAllCoursesById(@Query("id") String id);
+    @GET("courses/get-my-courses")
+    Observable<Course[]> getMyCourses();
 
     @GET("courses/get-course")
     Observable<Course> getCourseById(@Query("cid") String cid);
