@@ -1,6 +1,15 @@
 wizerApp.controller('navController', ['$scope','AuthService', '$location', '$timeout', 'ProfileService', 'SearchService', '$rootScope', '$interval',
     '$http', function ($scope, AuthService, $location, $timeout, ProfileService, SearchService, $rootScope, $interval, $http) {
 
+
+        $scope.homeClick = function() {
+            $('.search-nav-form').addClass('ng-hide');
+        };
+        $scope.nonHomeClick = function() {
+            $('.search-nav-form').removeClass('ng-hide');
+        };
+
+
         console.log("PATH ===================== " + $location.path());
         $scope.loggedUser = {};
         $scope.user = {};

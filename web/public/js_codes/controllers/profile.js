@@ -33,7 +33,8 @@ wizerApp.controller('profileController',
             });
 
         $scope.getPhoto = function() {
-            return $scope.profile.photos ? ($scope.profile.profile_img == '' ? defaultProfilePicture : $scope.profile.profile_img) : defaultProfilePicture;
+            console.log("PROFILE IMAGE = " + $scope.profile.profile_img);
+            return $scope.profile.profile_img == '' ? defaultProfilePicture : $scope.profile.profile_img;
         };
 
         $scope.readMoreButton = function() {
