@@ -1,6 +1,7 @@
 wizerApp.controller('navController', ['$scope','AuthService', '$location', '$timeout', 'ProfileService', 'SearchService', '$rootScope', '$interval',
     '$http', function ($scope, AuthService, $location, $timeout, ProfileService, SearchService, $rootScope, $interval, $http) {
 
+        console.log("PATH ===================== " + $location.path());
         $scope.loggedUser = {};
         $scope.user = {};
         // $scope.user.role = "student";

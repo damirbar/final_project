@@ -28,7 +28,12 @@ var UserSchema = new mongoose.Schema({
         type:  {type: String, default: "general"},
         event: {type: String, default: ""},
         date:  {type: Date, default: Date.now()}
-            }]
+            }],
+    notifications: [{
+        type:  {type: String, default: "general"},
+        body: {type: String, default: ""},
+        date:  {type: Date, default: Date.now()}
+    }]
 }, { usePushEach: true });
 
 module.exports = mongoose.model('User', UserSchema);

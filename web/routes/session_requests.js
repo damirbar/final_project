@@ -227,7 +227,33 @@ router.post("/messages", function (req, res) {
             if (err) {
                 return console.log(err);
             }
+
+            Session.findOne({sid: req.body.sid}, function (err, sess) {
+                if (sess) {
+                    User.findOne({email: decoded}, function (err, user) {
+                        if (user) {
+                            let emailArray = [];
+                            sess.students.forEach(function(stud){
+                                emailArray.push(stud.email)
+                            });
+                            User.find({email: {$in :emailArray}}, function (err, students) {
+                               students.forEach(function(student){
+                                 let notify ={
+                                     type:  "Session",
+                                     body: user.first_name + " posted a question in session "+ sess.name,
+                                     date:  Date.now()
+                                            };
+                                   student.notifications.push(notify);
+                                   student.save();
+                               });
+                            });
+                        }
+                    });
+                }
+            });
+
         });
+
         res.status(200).json({message: "successfully added message " + msg.body + " to db"});
         console.log("successfully added message " + msg.body + " to db");
     });
