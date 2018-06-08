@@ -25,10 +25,10 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
             controller: 'getProfilesController'
         })
 
-        .when('/courses',{
-            templateUrl:'../pages/courses.html',
-            controller:'courseController'
-        })
+        // .when('/courses',{
+        //     templateUrl:'../pages/courses.html',
+        //     controller:'courseController'
+        // })
 
         .when('/courses/search-by-name/:course_name', {
             templateUrl: '../pages/courses.html',
@@ -43,6 +43,16 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
         .when('/sessions/', {
             templateUrl: '../pages/session.html',
             controller: 'sessionController'
+        })
+
+        .when('/courses/', {
+            templateUrl: '../pages/courses.html',
+            controller: 'coursesController'
+        })
+
+        .when('/courses/:id', {
+            templateUrl: '../pages/course.html',
+            controller: 'courseController'
         })
 
     .otherwise({ redirectTo: '/'});

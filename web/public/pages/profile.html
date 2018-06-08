@@ -126,11 +126,23 @@
             <div id="clothing-nav-content" class="tab-content">
 
                 <div role="tabpanel" class="tab-pane fade show active" id="home" aria-labelledby="home-tab">
-                    <div ng-repeat="event in events">
-                        Type: {{event.type.toUpperCase()}}
-                        Info: {{event.event}}
-                        Date: {{event.date | date:'medium'}}
+                    <div class="profile-event" ng-repeat="event in events">
+
+                        <!--<event-elm></event-elm>-->
+                        <!--<event-custom event="event"></event-custom>-->
+
+                        <div class="event-type">
+                            {{event.type.charAt(0).toUpperCase() + event.type.slice(1)}}
+                        </div>
+                        <div class="event-content">
+                            {{event.event}}
+                        </div>
+                        <div class="event-time">{{event.date | date: 'medium'}}</div>
+
+
                     </div>
+
+
                 </div>
 
                 <div role="tabpanel" class="tab-pane fade" id="courses" aria-labelledby="courses-tab">

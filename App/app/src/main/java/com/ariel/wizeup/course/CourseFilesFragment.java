@@ -94,10 +94,10 @@ public class CourseFilesFragment extends Fragment {
     }
 
     private void initViews(View v) {
-        mTvNoResults = (TextView) v.findViewById(R.id.tv_no_results);
-        filesList = (ListView) v.findViewById(R.id.files_list);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.activity_main_swipe_refresh_layout);
-        mFBAddFile = (FloatingActionButton) v.findViewById(R.id.fb_add_file);
+        mTvNoResults = v.findViewById(R.id.tv_no_results);
+        filesList = v.findViewById(R.id.files_list);
+        mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
+        mFBAddFile = v.findViewById(R.id.fb_add_file);
         mSwipeRefreshLayout.setVisibility(View.GONE);
         mFBAddFile.setOnClickListener(view -> addFile());
     }

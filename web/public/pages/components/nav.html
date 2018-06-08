@@ -21,6 +21,11 @@
                 <a class="nav-link session-link" href="/sessions/" ng-show="isLoggedIn()">Session</a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link courses-link" href="/courses/" ng-show="isLoggedIn()">Courses</a>
+            </li>
+
+
         </ul>
         <div class="nav-link login" data-toggle="modal" data-target="#loginModal"
              style="cursor: pointer" ng-show="!isLoggedIn()">
@@ -33,10 +38,11 @@
             <div class="underlined"></div>
         </div>
         <form class="form-inline my-2 my-lg-0">
+        <!--<form class="form-inline my-2 my-lg-0" ng-if="$location.path() == '/'">-->
 
             <!--TODO free text search-->
             <input class="form-control mr-sm-2" type="text" placeholder="Search" ng-model="searchTerm.keywords">
-            <button class="btn btn-warning my-2 my-sm-0" type="submit" ng-click="freeTextSearch()" >Search</button>
+            <button class="btn btn-warning my-2 my-sm-0" type="submit"  ng-click="freeTextSearch()" >Search</button>
 
         </form>
     </div>
