@@ -15,7 +15,7 @@ var SessionSchema = new mongoose.Schema({
     video_file_id: {type: String, default: ""},
     picID: {type: String, default: "http://res.cloudinary.com/wizeup/image/upload/v1527096126/wizeup.jpg"},
     ongoing: {type: Boolean, default: true},
-    endTime: {type: Date, required: true}
+    // endTime: {type: Date, required: true}
 
 }, {usePushEach: true});
 module.exports = mongoose.model('Session', SessionSchema);

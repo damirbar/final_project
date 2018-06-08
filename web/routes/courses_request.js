@@ -209,6 +209,21 @@ router.get("/add-student-to-course", function (req, res) {
                             course.students.push(student.id);
                             course.save();
                             res.status(200).json(course);
+
+                            //notify users
+                            //todo test this!!!
+                            User.find({id: {$in :course.students}}, function (err, students) {
+                                students.forEach(function(stud){
+                                    let notify ={
+                                        type:  "Course",
+                                        body: student.first_name + " joined the course "+ course.name,
+                                        date:  Date.now()
+                                    };
+                                    stud.notifications.push(notify);
+                                    stud.save();
+                                });
+                            });
+                            //
                         }
                         else res.status(404).json({message: "no student " +  req.query.student});
 
