@@ -131,7 +131,7 @@ router.post('/post-profile-image', type, function (req, res) {
         const path = req.file.path;
         if (first) {
             first = false;
-            if (!req.file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+            if (!req.file.originalname.toLowerCase().match(/\.(jpg|jpeg|png)$/)) {
                 fs.unlinkSync(path);
                 res.status(400).json({message: 'wrong file'});
             }
