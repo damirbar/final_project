@@ -150,18 +150,37 @@
             <div id="clothing-nav-content" class="tab-content">
 
                 <div role="tabpanel" class="tab-pane fade show active" id="home" aria-labelledby="home-tab">
-                    <div class="profile-event" ng-repeat="event in events">
 
-                        <div class="event-type">
-                            {{event.type.charAt(0).toUpperCase() + event.type.slice(1)}}
-                        </div>
-                        <div class="event-content">
-                            {{event.event}}
-                        </div>
-                        <div class="event-time">{{event.date | date: 'medium'}}</div>
+                    <ul class="list-group container">
+
+                        <li class="event-item list-group-item profile-event row" ng-repeat="event in events">
+
+                            <div class="event-type col-12">
+                                {{event.type.charAt(0).toUpperCase() + event.type.slice(1)}}
+                            </div>
+                            <div class="event-content col-10">
+                                {{event.event}}
+                            </div>
+                            <div class="event-time float-right col-2">{{event.date | date: 'medium'}}</div>
 
 
-                    </div>
+                        </li>
+
+
+                    </ul>
+
+                    <!--<div class="profile-event" ng-repeat="event in events">-->
+
+                        <!--<div class="event-type">-->
+                            <!--{{event.type.charAt(0).toUpperCase() + event.type.slice(1)}}-->
+                        <!--</div>-->
+                        <!--<div class="event-content">-->
+                            <!--{{event.event}}-->
+                        <!--</div>-->
+                        <!--<div class="event-time">{{event.date | date: 'medium'}}</div>-->
+
+
+                    <!--</div>-->
 
 
                 </div>
