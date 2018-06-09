@@ -14,7 +14,7 @@ router.get('/free-text-search', function (req, res) {
 
     let keywords = req.query.keyword;
 
-    let numOfCollections = 6;
+    let numOfCollections = 7;
     let doneCounter = 0;
 
     let searchResults = {};
@@ -26,6 +26,7 @@ router.get('/free-text-search', function (req, res) {
 
     User.find({$text: {$search: keywords}}, function (err, results) {
         if (err) {
+            console.log("Error in search Users");
             console.log(err);
         }else if(results != []){
             searchResults.users = results;
@@ -38,6 +39,7 @@ router.get('/free-text-search', function (req, res) {
 
     File.find({$text: {$search: keywords}}, function (err, results) {
         if (err) {
+            console.log("Error in search Files");
             console.log(err);
         }else if(results != []){
             searchResults.files = results;
@@ -50,6 +52,7 @@ router.get('/free-text-search', function (req, res) {
 
     Session.find({$text: {$search: keywords}}, function (err, results) {
         if (err) {
+            console.log("Error in search Sessions");
             console.log(err);
         }else if(results != []){
             searchResults.sessions = results;
@@ -62,6 +65,7 @@ router.get('/free-text-search', function (req, res) {
 
     University.find({$text: {$search: keywords}}, function (err, results) {
         if (err) {
+            console.log("Error in search Universities");
             console.log(err);
         }else if(results != []){
             searchResults.universities = results;
@@ -72,20 +76,22 @@ router.get('/free-text-search', function (req, res) {
         }
     });
 
-    // Faculty.find({$text: {$search: keywords}}, function (err, results) {
-    //     if (err) {
-    //         console.log(err);
-    //     }else if(results != []){
-    //         searchResults.faculties = results;
-    //     }
-    //     doneCounter++;
-    //     if (doneCounter == numOfCollections) {
-    //         sendSearchResults();
-    //     }
-    // });
+    Faculty.find({$text: {$search: keywords}}, function (err, results) {
+        if (err) {
+            console.log("Error in search Faculties");
+            console.log(err);
+        }else if(results != []){
+            searchResults.faculties = results;
+        }
+        doneCounter++;
+        if (doneCounter == numOfCollections) {
+            sendSearchResults();
+        }
+    });
 
     Course.find({$text: {$search: keywords}}, function (err, results) {
         if (err) {
+            console.log("Error in search Courses");
             console.log(err);
         }else if(results != []){
             searchResults.courses = results;
@@ -98,6 +104,7 @@ router.get('/free-text-search', function (req, res) {
 
     Department.find({$text: {$search: keywords}}, function (err, results) {
         if (err) {
+            console.log("Error in search Departments");
             console.log(err);
         }else if(results != []){
             searchResults.departments = results;
