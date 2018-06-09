@@ -216,7 +216,7 @@ router.get("/rate-message", function (req, res) {
                          else{
                              let notify ={
                                  type:  "Session",
-                                 body: users[0].first_name + " " + users[0].last_name + " " +type + " your message ( " + mess_id +" ) ",
+                                 body: users[0].first_name + " " + users[0].last_name + " " +type + " your question ( " + mess_id +" ) ",
                                  date:  Date.now()
                              };
                              users[1].notifications.push(notify);
@@ -234,8 +234,7 @@ router.get("/rate-message", function (req, res) {
     });
 });
 
-
-router.get("/rate-message", function (req, res) {
+router.get("/rate-reply-message", function (req, res) {
 
     const rating = Number(req.query.rating);
     const mess_id = req.query.msgid;
@@ -297,7 +296,7 @@ router.get("/rate-message", function (req, res) {
                         if(users[0].email===to){
                             let notify ={
                                 type:  "Session",
-                                body: users[1].first_name + " " + users[1].last_name + " " +type + " your message ( " + mess_id +" ) ",
+                                body: users[1].first_name + " " + users[1].last_name + " " +type + " your question ( " + mess_id +" ) ",
                                 date:  Date.now()
                             };
                             users[0].notifications.push(notify);
