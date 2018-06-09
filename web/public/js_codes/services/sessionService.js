@@ -103,7 +103,7 @@ wizerApp.service('SessionService', function ($http) {
             });
     };
 
-    this.rateReplyMessage = function(sessionId, messageId, rating) {
+    this.rateReplyMessage = function(sessionId, replytoId, messageId, rating) {
         return $http.get('/sessions/rate-reply-message?sid=' + sessionId + "&msgid=" + messageId + "&rating=" + rating)
             .then(function (data) {
                 return data.data;

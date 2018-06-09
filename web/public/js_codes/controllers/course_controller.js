@@ -1,17 +1,21 @@
 wizerApp.controller('courseController',
-    function ($scope, $routeParams, $rootScope, courseService) {
+    function ($scope, $routeParams, $rootScope, CourseService) {
 
         // console.log("Hello from profileController");
         $rootScope.showSearchNav = true;
         $scope.course = {};
 
 
-        courseService.searchCoursesByName($routeParams.course_name)
-            .then(function (data) {
-                console.log("in controller Looking for " + $routeParams.course_name);
-                console.log(data);
-                $scope.courseArr = data;
-            });
+        $scope.getCourse = function () {
+            console.log("Fetching course...");
+            CourseService.getCourseById($routeParams.id)
+                .then(function (data) {
+                    console.log("in controller Looking for " + $routeParams.id);
+                    console.log(data);
+                    $scope.course = data;
+                });
+        };
+        $scope.getCourse();
 
 
     });

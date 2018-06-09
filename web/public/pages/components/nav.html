@@ -27,21 +27,43 @@
 
 
         </ul>
-        <div class="dropdown">
-            <button class="fas fa-bell btn btn-secondary"
-                    type="button" id="dropdownMenu2" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
 
+
+
+        <!--<div class="btn-group dropdown">-->
+            <!--<button class="fas fa-bell btn btn-secondary"-->
+                    <!--type="button" id="notificationsDropdown" data-toggle="dropdown"-->
+                    <!--aria-haspopup="true" aria-expanded="false">-->
+
+            <!--</button>-->
+            <!--<div class="dropdown-menu" aria-labelledby="notificationsDropdown">-->
+                <!--<div class="dropdown-item" ng-repeat="notification in notifications">-->
+                    <!--{{notification.body}}-->
+                <!--</div>-->
+                <!--&lt;!&ndash;<a class="dropdown-item" href="#"></a>&ndash;&gt;-->
+                <!--<a class="dropdown-item" href="#!">Action</a>-->
+                <!--<a class="dropdown-item" href="#!">Another action</a>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="" ng-show="isLoggedIn()">
+            <button type="button" class="fas fa-bell btn btn-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                <div class="dropdown-item" ng-repeat="notification in notifications">
-                    {{notification.body}}
+            <div class="dropdown-menu dropdown-menu-right notifications-background">
+
+                <div class="loading" ng-show="loadingNotifications" style="text-align: center;">
+                    <div class="fa fa-spinner fa-spin" style="font-size:34px; margin: auto; width: 100%; margin-top: 8%;"></div>
                 </div>
-                <!--<a class="dropdown-item" href="#"></a>-->
-                <a class="dropdown-item" href="#!">Action</a>
-                <a class="dropdown-item" href="#!">Another action</a>
+
+                <div class="dropdown-item" ng-repeat="notification in notifications">
+                    <div class="notification-body font-weight-bold">{{notification.body}}</div>
+                    <div class="notification-date">{{notification.date | date: 'medium'}}</div>
+
+                </div>
             </div>
         </div>
+
+
+
         <div class="nav-link login" data-toggle="modal" data-target="#loginModal"
              style="cursor: pointer" ng-show="!isLoggedIn()">
             Log In

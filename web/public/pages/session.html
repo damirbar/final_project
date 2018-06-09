@@ -314,11 +314,11 @@
                                     <button type="button"
                                             ng-class="msgLikes[msgLikes.length - $index - 1] ? 'active btn btn-outline-success' : 'btn btn-outline-success'"
 
-                                            ng-click="rateReplyMessage(rpl.sid, rpl._id, 1)">Like
+                                            ng-click="rateReplyMessage(rpl.sid, messageToReply._id, rpl._id, 1)">Like
                                     </button>
                                     <button type="button"
                                             ng-class="msgHates[msgLikes.length - $index - 1] ? 'active btn btn-outline-danger' : 'btn btn-outline-danger'"
-                                            ng-click="rateReplyMessage(rpl.sid, rpl._id, 0)">Hate
+                                            ng-click="rateReplyMessage(rpl.sid, messageToReply._id, rpl._id, 0)">Hate
                                     </button>
 
                                 </div>

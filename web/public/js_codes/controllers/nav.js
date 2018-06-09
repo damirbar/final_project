@@ -1,6 +1,8 @@
 wizerApp.controller('navController', ['$scope','AuthService', '$location', '$timeout', 'ProfileService', 'SearchService', '$rootScope', '$interval',
     '$http', function ($scope, AuthService, $location, $timeout, ProfileService, SearchService, $rootScope, $interval, $http) {
 
+        $scope.loadingNotifications = true;
+        $scope.notifications = [];
 
         $scope.homeClick = function() {
             $('.search-nav-form').addClass('ng-hide');
@@ -27,7 +29,7 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
                         $rootScope.loggedUser = data.data;
                         $scope.loggedUser = $rootScope.loggedUser;
 
-
+                        $scope.getNotifications();
 
                         console.log(JSON.stringify(data.data));
                         $scope.isLogged = true;
@@ -89,7 +91,6 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
                     if (data.success) {
 
                         $rootScope.loggedUser = data.data;
-                        $scope.notifications = $rootScope.loggedUser.notifications;
                         $scope.login();
                         console.log(JSON.stringify(data.data));
                         $scope.isLogged = true;
@@ -100,67 +101,27 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
 
         };
 
-        $scope.googleLogin = function () {
-            console.log("Clicked google login");
-            AuthService.googleLogin();
-            // .then(function (data) {
-            //     if (data.data.loggedUser) {
-            //         console.log("Login succeeded with Google! The loggedUser is: " + JSON.stringify(data.data.loggedUser));
-            //         $rootScope.loggedUser = data.data.loggedUser;
-            //         $scope.isLogged = true;
-            //     } else {
-            //         console.log("Error logging in with Google! " + JSON.stringify(data));
-            //         $scope.isLogged = false;
-            //     }
-            //
-            // })
-            // .catch(function(err) {
-            //     console.log("An error occurred! " + JSON.stringify(err));
-            // });
-            // console.log("Clicked google login");
-            // $http.get("/auth/google")
-            //     .then(function(data) {
-            //         console.log("Successsssssssssssssss");
-            //     }, function(err) {
-            //         console.log("An error occurred in googleLogin()! " + JSON.stringify(err));
-            //     });
+
+        $scope.getNotifications = function () {
+            ProfileService.getNotifications(0, 10)
+                .then(function (data) {
+                    console.log("Got " + data.length + " notifications");
+                    console.log(data);
+                    $scope.notifications = data;
+                    $scope.loadingNotifications = false;
+                }, function (err) {
+                    console.log("An error occurred in facebookLogin()! " + JSON.stringify(err));
+                });
         };
+
+
+
         $scope.onSignIn = function (googleUser) {
             var profile = googleUser.getBasicProfile();
             console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
             console.log('Name: ' + profile.getName());
             console.log('Image URL: ' + profile.getImageUrl());
             console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-        };
-
-        // function onSignIn(googleUser) {
-        //     var profile = googleUser.getBasicProfile();
-        //     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        //     console.log('Name: ' + profile.getName());
-        //     console.log('Image URL: ' + profile.getImageUrl());
-        //     console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-        // }
-
-        $scope.facebookLogin = function () {
-            // AuthService.facebookLogin()
-            //     .then(function (data) {
-            //         if (data.data.loggedUser) {
-            //             console.log("Login succeeded with Facebook! The loggedUser is: " + JSON.stringify(data.data.loggedUser));
-            //             $rootScope.loggedUser = data.data.loggedUser;
-            //             $scope.isLogged = true;
-            //         } else {
-            //             console.log("Error logging in with Facebook! " + JSON.stringify(data));
-            //             $scope.isLogged = false;
-            //         }
-            //
-            //     });
-            console.log("Clicked facebook login");
-            $http.get("/auth/facebook")
-                .then(function (data) {
-                    console.log("Successsssssssssssssss");
-                }, function (err) {
-                    console.log("An error occurred in facebookLogin()! " + JSON.stringify(err));
-                });
         };
 
 
