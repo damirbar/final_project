@@ -141,7 +141,7 @@ public class CourseFilesFragment extends Fragment {
     private void tryUploadFile(byte[] bytes,String fileName) {
         RequestBody requestFile = RequestBody.create(MediaType.parse("application/pdf"), bytes);
         MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", fileName, requestFile);
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body, cid)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body, Integer.parseInt(cid))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseUploadFile, i -> mServerResponse.handleError(i)));
@@ -161,16 +161,16 @@ public class CourseFilesFragment extends Fragment {
     }
 
     private void handleResponsePull(Course course) {
-        if (!(course.getFiles().length == 0)) {
-            ArrayList<CourseFile> saveFiles = new ArrayList<>(Arrays.asList(course.getFiles()));
-            Collections.reverse(saveFiles);
-            mTvNoResults.setVisibility(View.GONE);
-            mAdapter = new CourseFilesAdapter(this.getActivity(), new ArrayList<>(saveFiles));
-            filesList.setAdapter(mAdapter);
-        } else {
-            mTvNoResults.setVisibility(View.VISIBLE);
-        }
-        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+//        if (!(course.getFiles().length == 0)) {
+//            ArrayList<CourseFile> saveFiles = new ArrayList<>(Arrays.asList(course.getFiles()));
+//            Collections.reverse(saveFiles);
+//            mTvNoResults.setVisibility(View.GONE);
+//            mAdapter = new CourseFilesAdapter(this.getActivity(), new ArrayList<>(saveFiles));
+//            filesList.setAdapter(mAdapter);
+//        } else {
+//            mTvNoResults.setVisibility(View.VISIBLE);
+//        }
+//        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

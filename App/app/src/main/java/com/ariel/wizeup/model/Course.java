@@ -11,9 +11,9 @@ public class Course {
     private String teacher_lname;
 
     private String location;
-    private int points;
+    private Double points;
     private Date creation_date;
-    private CourseFile files[];
+    private String files[];
 
     public String getTeacher_lname() {
         return teacher_lname;
@@ -23,11 +23,11 @@ public class Course {
         this.teacher_lname = teacher_lname;
     }
 
-    public CourseFile[] getFiles() {
+    public String[] getFiles() {
         return files;
     }
 
-    public void setFiles(CourseFile[] files) {
+    public void setFiles(String[] files) {
         this.files = files;
     }
 
@@ -71,11 +71,11 @@ public class Course {
         this.location = location;
     }
 
-    public int getPoints() {
+    public Double getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(Double points) {
         this.points = points;
     }
 

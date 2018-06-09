@@ -1,5 +1,6 @@
 package com.ariel.wizeup.session;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -22,15 +23,19 @@ import com.ariel.wizeup.network.ServerResponse;
 import com.github.rtoshiro.view.video.FullscreenVideoLayout;
 
 import java.io.IOException;
+import java.io.InputStream;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.ariel.wizeup.network.RetrofitRequests.getBytes;
+
 public class SessionActivity extends AppCompatActivity {
-    private Toolbar toolbar;
     private TabLayout tabLayout;
-    private ImageButton buttonBack;
     private ImageButton buttonVid;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
@@ -39,6 +44,8 @@ public class SessionActivity extends AppCompatActivity {
     private Session session;
     private FullscreenVideoLayout vid;
     private RelativeLayout mVideoViewRelative;
+    private static final int INTENT_REQUEST_CODE = 100;
+
 
 
     @Override
@@ -85,30 +92,30 @@ public class SessionActivity extends AppCompatActivity {
             }
         });
 
-        if (session.getVideoID() != null && !(session.getVideoID().isEmpty()))
+        if (session.getVideoUrl() != null && !(session.getVideoUrl().isEmpty())){
             playVideo();
+        }
     }
 
 
     private void initViews() {
-        buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
+        ImageButton buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         buttonBack.setOnClickListener(view -> goBack());
         buttonVid = (ImageButton) findViewById(R.id.vid_button_close);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Session"));
         tabLayout.addTab(tabLayout.newTab().setText("Updates"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        vid = (FullscreenVideoLayout) findViewById(R.id.videoView);
+        vid = findViewById(R.id.videoView);
         mVideoViewRelative = findViewById(R.id.videoViewRelative);
     }
 
     private void playVideo() {
 
         vid.setActivity(this);
-
-        Uri videoUri = Uri.parse(session.getVideoID());
+        Uri videoUri = Uri.parse(session.getVideoUrl());
         try {
             vid.setVideoURI(videoUri);
 
@@ -155,8 +162,12 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_share) {
             sendSidSms();
+            return true;
+        }
+        if (id == R.id.action_vid) {
+            uploadVid();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -180,12 +191,55 @@ public class SessionActivity extends AppCompatActivity {
             Session _session = (Session) getIntent().getExtras().getParcelable("session");
             if (_session != null) {
                 session = _session;
+                session.setSid("1234");///////rm
                 return true;
             } else
                 return false;
         } else
             return false;
     }
+
+    private void uploadVid() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("video/mp4");
+        try {
+            startActivityForResult(intent, INTENT_REQUEST_CODE);
+
+        } catch (ActivityNotFoundException e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == INTENT_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                try {
+                    InputStream is = getContentResolver().openInputStream(data.getData());
+                    tryUploadVid(getBytes(is));
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void tryUploadVid(byte[] bytes) {
+        RequestBody requestFile = RequestBody.create(MediaType.parse("video/mp4"), bytes);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", "video.mp4", requestFile);
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadVid(body, session.getSid())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseUploadVid, i -> mServerResponse.handleError(i)));
+    }
+
+    private void handleResponseUploadVid(Response response) {
+        mServerResponse.showSnackBarMessage(response.getMessage());
+    }
+
+
 
     private void disconnectFromSession() {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().disconnect(session.getSid())

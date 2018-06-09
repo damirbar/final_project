@@ -79,7 +79,7 @@ public class CourseInfoFragment extends Fragment {
         mTDepartment.setText(course.getDepartment());
         String teacherFullName = course.getTeacher_fname() + " " + course.getTeacher_lname();
         mTTeacher.setText(teacherFullName);
-        String points = Integer.toString(course.getPoints());
+        String points = Double.toString(course.getPoints());
         mTPoints.setText(points);
         mTLoc.setText(course.getLocation());
 

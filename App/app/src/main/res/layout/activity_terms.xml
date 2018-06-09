@@ -59,19 +59,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="20dp"
-                android:gravity="start"
-                android:text="@string/info1"
-                android:textAllCaps="false"
-                android:textColor="@color/user_selected"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
             <ImageView
                 android:id="@+id/img_logo"
                 android:layout_width="match_parent"
@@ -84,9 +71,23 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="@dimen/top_margin30"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="20dp"
+                android:gravity="start"
+                android:text="@string/info1"
+                android:textAllCaps="false"
+                android:textColor="@color/user_selected"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/top_margin30"
+                android:layout_marginRight="@dimen/top_margin30"
                 android:layout_marginTop="10dp"
+                android:background="@color/black21"
                 android:fontFamily="sans-serif"
                 android:gravity="start"
                 android:text="@string/info2"
@@ -97,8 +98,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="@dimen/top_margin30"
+                android:layout_marginRight="@dimen/top_margin30"
                 android:layout_marginTop="10dp"
                 android:gravity="start"
                 android:text="@string/info2_bold"
@@ -110,8 +111,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="@dimen/top_margin30"
+                android:layout_marginRight="@dimen/top_margin30"
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif"
                 android:gravity="start"
@@ -125,8 +126,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="@dimen/top_margin30"
+                android:layout_marginRight="@dimen/top_margin30"
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif"
                 android:gravity="start"

@@ -1,9 +1,12 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_session_info"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/def_background"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true">
+
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -234,22 +237,17 @@
                         android:layout_marginStart="74dp"
                         android:background="@null"
                         android:button="@drawable/like_checkbox" />
+
                 </RelativeLayout>
 
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/button_vid"
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
-                android:layout_marginLeft="100dp"
-                android:layout_marginRight="100dp"
-                android:layout_marginTop="@dimen/top_margin30"
-                android:background="@drawable/buttonshape"
-                android:text="Upload Video"
-                android:textColor="@android:color/white" />
+                android:layout_height="300dp"
+                android:layout_marginBottom="100dp" />
 
         </LinearLayout>
     </ScrollView>
