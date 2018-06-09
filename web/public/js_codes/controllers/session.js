@@ -180,6 +180,16 @@ wizerApp.controller('sessionController',
             $scope.getMessages();
         };
 
+        $scope.getSession = function () {
+            SessionService.getSession($scope.sessionID)
+                .then(function (data) {
+                    $scope.session = data;
+                    console.log(JSON.stringify(data));
+                })
+                .catch(function (err) {
+                    console.log("Error with disconnecting from session");
+                });
+        };
 
         $scope.typeChoose = function (type) {
             $('.msg-type-dropdown-header').text(type.charAt(0).toUpperCase() + type.slice(1));
@@ -198,6 +208,16 @@ wizerApp.controller('sessionController',
                 });
         };
 
+        $scope.rateReplyMessage = function (sid, mid, rate) {
+            SessionService.rateReplyMessage(sid, mid, rate)
+                .then(function (data) {
+                    // console.log(JSON.stringify(data));
+                    $scope.getMessages();
+                })
+                .catch(function (err) {
+                    console.log("Error with getting messages");
+                });
+        };
 
         $scope.onTimeUpdate = function () {
             var currTime = $element[0].currentTime;
@@ -214,6 +234,7 @@ wizerApp.controller('sessionController',
         $interval(function () {
             if ($scope.isConnectedToSession) {
                 getting();
+                $scope.getSession();
             }
         }, 3000);
 
@@ -261,7 +282,7 @@ wizerApp.controller('sessionController',
                 .then(function (data) {
                     console.log("Sent message");
                     $scope.getMessages();
-                    $scope.message = {type: "question", body: "", replyTo: ""};
+                    $scope.reply = {body: ""};
                 })
                 .catch(function (err) {
                     console.log(err);

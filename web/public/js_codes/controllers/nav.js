@@ -23,9 +23,12 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
             if (AuthService.isLoggedIn()) {
                 AuthService.getUserByToken()
                     .then(function (data) {
-                        console.log("DATA = " + JSON.stringify(data))
+                        console.log("DATA = " + JSON.stringify(data));
                         $rootScope.loggedUser = data.data;
                         $scope.loggedUser = $rootScope.loggedUser;
+
+
+
                         console.log(JSON.stringify(data.data));
                         $scope.isLogged = true;
                         if ($rootScope.loggedUser) $('.profile-link').attr("href", "/profile/" + $rootScope.loggedUser._id);
@@ -86,6 +89,7 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
                     if (data.success) {
 
                         $rootScope.loggedUser = data.data;
+                        $scope.notifications = $rootScope.loggedUser.notifications;
                         $scope.login();
                         console.log(JSON.stringify(data.data));
                         $scope.isLogged = true;
