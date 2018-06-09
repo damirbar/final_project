@@ -208,8 +208,8 @@ wizerApp.controller('sessionController',
                 });
         };
 
-        $scope.rateReplyMessage = function (sid, mid, rate) {
-            SessionService.rateReplyMessage(sid, mid, rate)
+        $scope.rateReplyMessage = function (sid, origMsgId, mid, rate) {
+            SessionService.rateReplyMessage(sid, origMsgId, mid, rate)
                 .then(function (data) {
                     // console.log(JSON.stringify(data));
                     $scope.getMessages();
