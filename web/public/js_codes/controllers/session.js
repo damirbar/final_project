@@ -282,6 +282,7 @@ wizerApp.controller('sessionController',
                 .then(function (data) {
                     console.log("Sent message");
                     $scope.getMessages();
+                    $scope.setMsgIdToReplyAndGetMessage($scope.reply.msgID);
                     $scope.reply = {body: ""};
                 })
                 .catch(function (err) {
