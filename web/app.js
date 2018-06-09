@@ -1,77 +1,126 @@
 var express = require("express");
-var mongoose = require("mongoose");
-mongoose.Promise = require("bluebird");
-var path = require("path");
-var bodyParser = require("body-parser");
-var Student = require("./schemas/student");
-var Teacher = require("./schemas/teacher");
-
-var feeder = require("./teacherStream");
-
-
-
 var app = express();
 
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+var mongoose = require("mongoose");
+mongoose.Promise = require("bluebird");
+
+var path = require("path");
+
+var bodyParser = require("body-parser");
+
+var logger = require('morgan');
+
+const router = express.Router();
+app.use(logger('dev'));
+
+
+var teacherRequests = require('./routes/teacher_requests');
+var studentRequests = require('./routes/students_request');
+var coursesRequests = require('./routes/courses_request');
+var mainRequests    = require('./routes/main_route');
+var sessionRequests = require('./routes/session_requests');
+var searchRequests = require('./routes/search_routes');
+
+
+
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+var myLessCompiler = require("./tools/less_compiler");
+myLessCompiler();
 
 
-var mongoDB = 'mongodb://127.0.0.1:27017/main_db';
+var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
 mongoose.connect(mongoDB, {
-     useMongoClient: true}
+    }
 );
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 
-//query to dataBase
-// Student.findOne({'first_name':"eran"}, function(err,student){
-//     if(err) return "error";
-//     console.log("u got "+ student);
+require('./routes/routes')(router);
+app.use('/api/v1', router);
+
+
+app.use('/', mainRequests);
+app.use('/teachers', teacherRequests);
+app.use('/students', studentRequests);
+app.use('/courses', coursesRequests);
+app.use('/sessions', sessionRequests);
+app.use('/search', searchRequests);
+
+
+var chatRequests = require('./routes/chat_request');///////shay chat
+app.use('/chat', chatRequests);////shay chat
+
+
+var authRouts = require("./routes/login_requests");
+app.use('/auth', authRouts);
+
+
+// io.on('connect', function(socket) {
+//     console.log("SOMEBODY CONNECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//     socket.on('disconnect', function() {
+//         console.log("ERAN IS FUCKING GAY");
+//     });
 // });
 
-app.post("/student", function(req,res){
-    var myData= new Student(req.body);
-    myData.save()
-        .then(function (item){
-            res.send("successfully saved item to db");
-            console.log("successfully added " +myData.first_name +  " to db");
-    })
-        .catch(function (error) {
-            res.status(400).send("unable to save data");
-            console.log("unable to save data");
-        });
-});
 
-app.post("/teacher", function(req,res){
-    var myData= new Teacher(req.body);
-    myData.save()
-        .then(function (item){
-            res.send("successfully saved item to db");
-            console.log("successfully added " + myData.first_name +  " to db");
-        })
-        .catch(function (error) {
-            res.status(400).send("unable to save data");
-            console.log("unable to save data");
-        });
-});
-
-app.get("/",function(req,res){
-     console.log(req.headers["x-forwarded-for"] || req.connection.remoteAddress);
-     res.sendFile(path.join(__dirname + "/index.html"));
-});
-
-app.listen(3000, function(){
+http.listen(3000, function () {
     console.log("listening...");
 });
 
-app.post("/teachers", function(req,res){
-        feeder.func(req.body,res);
+
+//The 404 Route (ALWAYS Keep this as the last route)
+app.get('*', function(req, res){
+    res.sendFile(path.join(__dirname + "/index.html"));
 });
 
-app.get("/teacher", function(req,res){
-    res.sendFile(path.join(__dirname + "/TestTeacherPage.html"));
-});
 
 
+
+var addChat = function () {
+    var channel = new Channel(
+        {
+            guid: "money",
+            name: "bank2"
+        }
+    );
+    channel.save()
+        .then(function (item) {
+            console.log("Saved a channel to the DB");
+        })
+        .catch(function (err) {
+            console.log("\nCouldn't save the channel to the DB\nError: " + err + "\n");
+        })
+};
+
+//addChat();
+
+var addMessage = function () {
+    var message = new Message(
+        {
+            guid: "shay",
+            channel_guid: "money",
+            user_guid: "avi",
+            content: "bye",
+            timestamp: Date.now()
+        }
+    );
+    message.save()
+        .then(function (item) {
+            console.log("Saved a message to the DB");
+        })
+        .catch(function (err) {
+            console.log("\nCouldn't save the message to the DB\nError: " + err + "\n");
+        })
+};
+
+
+// addMessage();
 

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="log_in">התחבר</string>
+    <string name="register">הרשם</string>
+    <string name="multi_language_support">עברית • אנגלית • עוד…</string>
+    <string name="email">דוא\"ל</string>
+    <string name="password">סיסמה</string>
+    <string name="forgot_password">שכחת את הסיסמה?</string>
+    <string name="sign_up">הרשם</string>
+    <string name="first_name">שם פרטי</string>
+    <string name="confirm_password">אשר סיסמה</string>
+    <string name="already_registered">כבר יש לך חשבון?</string>
+    <string name="last_name">שם משפחה</string>
+    <string name="token">קוד אישי</string>
+    <string name="new_password">סיסמה חדשה</string>
+    <string name="reset_password">אפס את הסיסמה</string>
+    <string name="email_should_be_valid">כתובת האימייל צריכה להיות תקפה.</string>
+    <string name="password_should_not_be_empty">הסיסמה לא צריכה להיות ריקה.</string>
+    <string name="enter_valid_details">הזן פרטים חוקיים.</string>
+    <string name="password_must_be_at_least_6_characters">סיסמא חייבת להיות לפחות בת 6 תווים.</string>
+    <string name="passwords_dont_match">סיסמאות אינן תואמות.</string>
+    <string name="first_name_should_not_be_empty">השם הפרטי אינו יכול להיות ריק.</string>
+    <string name="last_name_should_not_be_empty">שם משפחה לא צריך להיות ריק.</string>
+    <string name="token_should_not_be_empty">הקוד אינו יכול להיות ריק.</string>
+    <string name="internal_server_error">שגיאת שרת פנימית.</string>
+    <string name="network_error">בעיה בהתחברות לאינטרנט.</string>
+    <string name="hebrew">עברית</string>
+    <string name="english">אנגלית</string>
+    <string name="choose_language">בחר שפה</string>
+    <string name="change_password">שנה סיסמה</string>
+    <string name="language">שפה</string>
+    <string name="current_password">סיסמה נוכחית</string>
+    <string name="send">שלח</string>
+    <string name="account">חשבון</string>
+    <string name="support">תמיכה</string>
+    <string name="report_a_problem">דווח על בעיה</string>
+    <string name="settings">הגדרות</string>
+    <string name="done">אשר</string>
+    <string name="current">נוכחי</string>
+    <string name="new_str">חדש</string>
+    <string name="verify">אמת</string>
+    <string name="new_password_again">סיסמא חדשה, שוב</string>
+    <string name="feedback">משוב</string>
+    <string name="cancel">בטל</string>
+    <string name="general_feedback_capital">משוב כללי</string>
+    <string name="profile">פרופיל</string>
+    <string name="session">ערוץ</string>
+    <string name="my_courses">הקורסים שלי</string>
+    <string name="messages">הודעות</string>
+    <string name="notifications">התראות</string>
+    <string name="about">אודות</string>
+    <string name="logout">להתנתק</string>
+    <string name="no_results_found">לא נמצאו תוצאות</string>
+    <string name="add_new_post">הוסף פוסט חדש</string>
+    <string name="add_comment">הוסף תגובה</string>
+    <string name="about_me">עליי</string>
+    <string name="edit_profile">ערוך פרופיל</string>
+    <string name="general_feedback">בקצרה להסביר מה אתה אוהב, או מה אפשר לשפר.</string>
+    <string name="ok">אשר</string>
+    <string name="save">שמור</string>
+    <string name="post">פרסם</string>
+
+
+
+
+
+
+
+</resources>

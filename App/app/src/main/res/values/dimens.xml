@@ -1,0 +1,22 @@
+<resources>
+    <dimen name="horizontal_margin8">8.0dip</dimen>
+    <dimen name="card_items_margin">8dp</dimen>
+    <dimen name="zero">0.0dip</dimen>
+    <dimen name="button_margin">24dp</dimen>
+    <dimen name="activity_horizontal_margin">16.0dip</dimen>
+    <dimen name="box_circle">74.0dip</dimen>
+    <dimen name="activity_vertical_margin">16.0dip</dimen>
+    <dimen name="button_font_size">14.0sp</dimen>
+    <dimen name="caption_size">12.0sp</dimen>
+    <dimen name="box_name_size">18.0sp</dimen>
+    <dimen name="box_feed_text_offset">16.0dip</dimen>
+    <dimen name="box_space">2.0dip</dimen>
+    <dimen name="feed_font_size">16.0sp</dimen>
+    <dimen name="child_margin_top">24dp</dimen>
+    <dimen name="logo_height">80dp</dimen>
+    <dimen name="button_padding">48dp</dimen>
+    <dimen name="subhead_size">16.0sp</dimen>
+    <dimen name="padding8">8.0dip</dimen>
+    <dimen name="top_margin8">8.0dip</dimen>
+    <dimen name="top_margin30">30.0dip</dimen>
+</resources>

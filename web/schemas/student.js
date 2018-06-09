@@ -1,29 +1,12 @@
 var mongoose = require('mongoose');
+var bcrypt = require('bcrypt-nodejs');
+
 var StudentSchema = new mongoose.Schema({
-
-    first_name: String,
-    last_name: String,
-    display_name: String,
-    mail: String,
-    about_me: String,
-    facebook_id: String,
-    country: String,
-    city: String,
-    age: Number,
-    uni: {},
-    gender: String,
-    courses: Array,
-    photos: Array,
-    fs: {},
+    user_id: {type: String, default: ""},
     grades: Array,
-    cred: Number,
-    fame: Number,
-    msg: Array,
-    register_date: Date,
-    last_update: Date,
-    notifications: Array
-
-
+    friends: Array,
+    events: Array,
+    department: {type: String, default: ""}
 });
 
 module.exports = mongoose.model('Student', StudentSchema);

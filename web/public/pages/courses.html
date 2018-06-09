@@ -1,0 +1,44 @@
+<div class="courses-page">
+
+    <div class="loading" ng-show="loading" style="text-align: center;">
+        <div class="fa fa-spinner fa-spin" style="font-size:184px; margin: auto; width: 100%; margin-top: 8%;"></div>
+    </div>
+
+    <div class="list-group container courses-list-container" ng-show="!loading">
+
+        <div class="courses-header my-courses display-4 row font-weight-bold">
+            My courses
+        </div>
+
+        <div class="list-group-item list-group-item-action row course-item" ng-repeat="course in courses">
+
+            <div class="course-name col-3 course-header course-header-name">{{course.name}}</div>
+
+            <div class="course-teacher col-9">
+                <span class="fas fa-chalkboard-teacher"></span>
+                <span class="teacher-name course-header">  Teacher:</span>
+                 {{course.teacher_fname}} {{course.teacher_lname}}
+            </div>
+
+            <div class="course-location col-12">
+                <span class="fas fa-location-arrow"></span>
+                <span class="location course-header">  Location:</span>
+                 {{course.location}}
+            </div>
+
+            <div class="course-points col-6">
+                <span class="fas fa-sort-numeric-up"></span>
+                <span class="location course-header">  Points:</span>
+                {{course.points}}
+            </div>
+
+            <div class="course-students col-6">
+                <span class="number-of-students course-header">{{course.students.length}}</span>
+                 students attend this class
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
