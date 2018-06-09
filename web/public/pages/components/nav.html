@@ -48,7 +48,7 @@
         <div class="" ng-show="isLoggedIn()">
             <button type="button" class="fas fa-bell btn btn-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             </button>
-            <div class="dropdown-menu dropdown-menu-right">
+            <div class="dropdown-menu dropdown-menu-right notifications-background">
                 <div class="dropdown-item" ng-repeat="notification in notifications">
                     <div class="notification-body font-weight-bold">{{notification.body}}</div>
                     <div class="notification-date">{{notification.date | date: 'medium'}}</div>
