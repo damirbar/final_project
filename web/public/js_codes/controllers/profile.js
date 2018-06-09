@@ -106,13 +106,13 @@ wizerApp.controller('profileController',
         $scope.myCroppedImage='';
 
         var handleFileSelect=function(evt) {
-            $scope.uploadPhoto();
             var file=evt.currentTarget.files[0];
             var reader = new FileReader();
             reader.onload = function (evt) {
                 $scope.$apply(function($scope){
                     $scope.myImage=evt.target.result;
                     $scope.profile.profile_img = $scope.myCroppedImage;
+                    $scope.uploadPhoto();
                 });
             };
             reader.readAsDataURL(file);

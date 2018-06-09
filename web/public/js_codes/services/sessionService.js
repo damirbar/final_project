@@ -57,6 +57,15 @@ wizerApp.service('SessionService', function ($http) {
     };
 
 
+    this.getSession = function(sessionId) {
+        return $http.get('/sessions/get-session?sid=' + sessionId)
+            .then(function (data) {
+                return data.data;
+            }, function () {
+                console.log("Error getting session with ID = " + sessionId);
+            });
+    };
+
     this.getMessages = function(sessionId) {
         return $http.get('/sessions/get-all-messages?sid=' + sessionId)
             .then(function (data) {
@@ -87,6 +96,15 @@ wizerApp.service('SessionService', function ($http) {
 
     this.rateMessage = function(sessionId, messageId, rating) {
         return $http.get('/sessions/rate-message?sid=' + sessionId + "&msgid=" + messageId + "&rating=" + rating)
+            .then(function (data) {
+                return data.data;
+            }, function () {
+                console.log("Error rating message in session with ID = " + sessionId);
+            });
+    };
+
+    this.rateReplyMessage = function(sessionId, messageId, rating) {
+        return $http.get('/sessions/rate-reply-message?sid=' + sessionId + "&msgid=" + messageId + "&rating=" + rating)
             .then(function (data) {
                 return data.data;
             }, function () {
