@@ -1,6 +1,7 @@
 wizerApp.controller('navController', ['$scope','AuthService', '$location', '$timeout', 'ProfileService', 'SearchService', '$rootScope', '$interval',
     '$http', function ($scope, AuthService, $location, $timeout, ProfileService, SearchService, $rootScope, $interval, $http) {
 
+        $scope.loadingNotifications = true;
         $scope.notifications = [];
 
         $scope.homeClick = function() {
@@ -107,6 +108,7 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
                     console.log("Got " + data.length + " notifications");
                     console.log(data);
                     $scope.notifications = data;
+                    $scope.loadingNotifications = false;
                 }, function (err) {
                     console.log("An error occurred in facebookLogin()! " + JSON.stringify(err));
                 });

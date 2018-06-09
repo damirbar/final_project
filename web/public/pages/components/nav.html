@@ -49,6 +49,11 @@
             <button type="button" class="fas fa-bell btn btn-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             </button>
             <div class="dropdown-menu dropdown-menu-right notifications-background">
+
+                <div class="loading" ng-show="loadingNotifications" style="text-align: center;">
+                    <div class="fa fa-spinner fa-spin" style="font-size:34px; margin: auto; width: 100%; margin-top: 8%;"></div>
+                </div>
+
                 <div class="dropdown-item" ng-repeat="notification in notifications">
                     <div class="notification-body font-weight-bold">{{notification.body}}</div>
                     <div class="notification-date">{{notification.date | date: 'medium'}}</div>
