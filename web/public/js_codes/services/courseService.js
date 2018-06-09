@@ -19,6 +19,15 @@ wizerApp.service('CourseService', function($http) {
             });
     };
 
+    this.getCourseById = function(id) {
+        return $http.get('/courses/get-course?cid=' + id)
+            .then(function(data) {
+                return data.data;
+            }, function() {
+                console.log("Error getting courses by ids");
+            });
+    };
+
     this.getMyCourses = function() {
         return $http.get('/courses/get-my-courses')
             .then(function(data) {

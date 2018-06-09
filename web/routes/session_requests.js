@@ -148,17 +148,16 @@ router.post("/create-session", function (req, res) {
 router.get("/rate-message", function (req, res) {
 
     const rating = Number(req.query.rating);
-    const sess_id = req.query.sid;
     const mess_id = req.query.msgid;
     const decoded = req.verifiedEmail;
-
+    let to = "";
     // finds the user
     User.findOne({email: decoded}, function (err, user) {
         if (err) throw err;
 
         //finds the message and fetches its likers and dislikers arrays.
-        Session_Message.findOne({_id: mess_id}, {_id: 0, likers: 1, dislikers: 1}, function (err, raters) {
-
+        Session_Message.findOne({_id: mess_id}, {_id: 0, likers: 1, dislikers: 1, email:1}, function (err, raters) {
+            to = raters.email;
             if (err) return err;
             let likers = raters.likers;
             let dislikers = raters.dislikers;
@@ -197,6 +196,34 @@ router.get("/rate-message", function (req, res) {
             }
             // updates the message rating with the ratingUpdate object
             Session_Message.update({_id: mess_id}, ratingUpdate, function (err) {
+                let emails = [];
+                emails.push(decoded);
+                emails.push(to);
+
+                User.find({email: {$in :emails}},function (err,users) {
+                    if(err) return err;
+                     if(users){
+                         let type = rating == 1 ? "liked" : "disliked";
+                         if(users[0].email===to){
+                             let notify ={
+                                 type:  "Session",
+                                 body: users[1].first_name + " " + users[1].last_name + " " +type + " your message ( " + mess_id +" ) ",
+                                 date:  Date.now()
+                             };
+                             users[0].notifications.push(notify);
+                             users[0].save();
+                         }
+                         else{
+                             let notify ={
+                                 type:  "Session",
+                                 body: users[0].first_name + " " + users[0].last_name + " " +type + " your question ( " + mess_id +" ) ",
+                                 date:  Date.now()
+                             };
+                             users[1].notifications.push(notify);
+                             users[1].save()
+                         }
+                     }
+                });
                 console.log('updating session message');
                 if (err) {
                     console.log(err);
@@ -206,6 +233,110 @@ router.get("/rate-message", function (req, res) {
         });
     });
 });
+
+ObjectID = require('mongodb').ObjectID;
+
+router.get("/rate-reply-message", function (req, res) {
+    const rating = Number(req.query.rating);
+    const mess_id = req.query.msgid;
+    const decoded = req.verifiedEmail;
+    let to = "";
+    let id = new ObjectID(mess_id);
+    // finds the user
+    User.findOne({email: decoded}, function (err, user) {
+        if (err) throw err;
+
+        //finds the message and fetches its likers and dislikers arrays.
+        Session_Message.findOne( {'replies._id': id }, function (err, message) {
+            message.replies.forEach(function (org , i) {
+               if(org._id == mess_id){
+                   if (err) return err;
+                   to = org.email;
+                   let likers = org.likers;
+                   let dislikers = org.dislikers;
+                   let liked = likers.indexOf(user.id) > -1; // true if the user has liked the message
+                   let disliked = dislikers.indexOf(user.id) > -1;// true if the user has disliked the message
+
+                   let newMesssage = org;
+                   message.replies.splice(i, 1);
+
+                   if (rating === 1) { // user likes the message
+                       if (liked) { // user has already liked the message
+                           newMesssage.likers.forEach(function (liker, i) {
+                               if(liker == user.id) newMesssage.likers.splice(i,1);
+                           });
+                           newMesssage.likes-=1;
+                       } else if (disliked) {
+                           newMesssage.likers.push(user.id);
+                           newMesssage.dislikers.forEach(function (disliker, i) {
+                               if(disliker == user.id) newMesssage.dislikers.splice(i,1);
+                           });
+                           newMesssage.dislikes-=1;
+                           newMesssage.likes+=1;
+                       } else {
+                           newMesssage.likers.push(user.id);
+                           newMesssage.likes+=1;
+                       }
+                   } else {
+                       if (disliked) {
+                           newMesssage.dislikers.forEach(function (disliker, i) {
+                               if(disliker == user.id) newMesssage.dislikers.splice(i,1);
+                           });
+                           newMesssage.dislikes-=1;
+                       } else if (liked) {
+                           newMesssage.dislikers.push(user.id);
+                           newMesssage.likers.forEach(function (liker, i) {
+                              if(liker == user.id) newMesssage.likers.splice(i,1);
+                           });
+                           newMesssage.likes-=1;
+                           newMesssage.dislikes+=1;
+                       } else {
+                           newMesssage.dislikers.push(user.id);
+                           newMesssage.dislikes+=1;
+                       }
+                   }
+                   let newArray = message.replies;
+                   newArray.push(newMesssage);
+                   message.update({replies: newArray },function (err) {
+                       let emails = [];
+                       emails.push(decoded);
+                       emails.push(to);
+
+                       User.find({email: {$in :emails}},function (err,users) {
+                           if(err) return err;
+                           if(users){
+                               let type = rating == 1 ? "liked" : "disliked";
+                               if(users[0].email===to){
+                                   let notify ={
+                                       type:  "Session",
+                                       body: users[1].first_name + " " + users[1].last_name + " " +type + " your question ( " + mess_id +" ) ",
+                                       date:  Date.now()
+                                   };
+                                   users[0].notifications.push(notify);
+                                   users[0].save();
+                               }
+                               else{
+                                   let notify ={
+                                       type:  "Session",
+                                       body: users[0].first_name + " " + users[0].last_name + " " +type + " your message ( " + mess_id +" ) ",
+                                       date:  Date.now()
+                                   };
+                                   users[1].notifications.push(notify);
+                                   users[1].save()
+                               }
+                           }
+                       });
+                       console.log('updating session message');
+                       if (err) {
+                           console.log(err);
+                           return err;
+                       }
+                   });
+               }
+            });
+            });
+        });
+    });
 
 router.post("/messages", function (req, res) {
     const decoded = req.verifiedEmail;

@@ -11,6 +11,15 @@ wizerApp.service('ProfileService', function($http) {
     };
 
 
+    this.getNotifications = function(start, end) {
+        return $http.get('/students/get-notifications?start=' + start + '&end=' + end)
+            .then(function(data) {
+                console.log("Here's what i got: " + JSON.stringify(data));
+                return data.data;
+            }, function(){
+                console.log("Error getting user with ID = " + id);
+            });
+    };
 
     this.getProfileEvents = function(start, end) {
         return $http.get('/students/get-events?start=' + start + '&end=' + end)

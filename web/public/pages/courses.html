@@ -1,4 +1,4 @@
-<div class="courses-page">
+<div class="course-page">
 
     <div class="loading" ng-show="loading" style="text-align: center;">
         <div class="fa fa-spinner fa-spin" style="font-size:184px; margin: auto; width: 100%; margin-top: 8%;"></div>
@@ -10,7 +10,7 @@
             My courses
         </div>
 
-        <a ng-href="/courses/{{course._id}}" class="list-group-item list-group-item-action row course-item" ng-repeat="course in courses">
+        <a ng-href="/courses/{{course.cid}}" class="list-group-item list-group-item-action row course-item" ng-repeat="course in courses">
 
             <div class="course-name col-3 course-header course-header-name">{{course.name}}</div>
 

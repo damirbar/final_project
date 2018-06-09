@@ -195,8 +195,8 @@
                 </thead>
                 <tbody class="messages-table-body">
                 <tr ng-repeat="msg in sessionMessages | reverse" ng-if="sessionMessages.length > 0">
-                    <td class="message-likes" scope="row">{{msg.likes}}</td>
-                    <td class="message-likes" scope="row">{{msg.dislikes}}</td>
+                    <td class="message-likes text-success" scope="row">{{msg.likes}}</td>
+                    <td class="message-likes text-danger" scope="row">{{msg.dislikes}}</td>
                     <!--<td>{{msg.type.charAt(0).toUpperCase() + msg.type.slice(1)}}</td>-->
                     <td>
 
@@ -220,7 +220,7 @@
                             <button type="button" class="reply btn btn-outline-dark" data-toggle="modal"
                                     data-target="#replyModal"
                                     style="cursor: pointer" ng-click="setMsgIdToReplyAndGetMessage(msg._id)">
-                                Replies
+                                {{msg.replies.length}} Replies
                                 <div class="underlined"></div>
                             </button>
 
@@ -301,8 +301,8 @@
 
                         <tr ng-repeat="rpl in messageToReply.replies | reverse">
 
-                            <td scope="row">{{rpl.likes}}</td>
-                            <td scope="row">{{rpl.dislikes}}</td>
+                            <td class="text-success" scope="row text-success">{{rpl.likes}}</td>
+                            <td class="text-danger" scope="row">{{rpl.dislikes}}</td>
                             <td>
 
                                 <div class="message-text col-8">{{rpl.body}}</div>
@@ -314,11 +314,11 @@
                                     <button type="button"
                                             ng-class="msgLikes[msgLikes.length - $index - 1] ? 'active btn btn-outline-success' : 'btn btn-outline-success'"
 
-                                            ng-click="rateMessage(rpl.sid, rpl._id, 1)">Like
+                                            ng-click="rateReplyMessage(rpl.sid, messageToReply._id, rpl._id, 1)">Like
                                     </button>
                                     <button type="button"
                                             ng-class="msgHates[msgLikes.length - $index - 1] ? 'active btn btn-outline-danger' : 'btn btn-outline-danger'"
-                                            ng-click="rateMessage(rpl.sid, rpl._id, 0)">Hate
+                                            ng-click="rateReplyMessage(rpl.sid, messageToReply._id, rpl._id, 0)">Hate
                                     </button>
 
                                 </div>
