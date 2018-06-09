@@ -198,4 +198,17 @@ router.get("/get-events", function (req, res) {
     })
 });
 
+router.get("/get-notifications", function (req, res) {
+    // check if there is a more efficient way to do this
+    User.findOne({email: req.verifiedEmail}, function (err, user) {
+        if (err) return err;
+        if (user) {
+            res.status(200).json(user.notifications.reverse().slice(req.query.start, req.query.start + req.query.end))
+        }
+        else {
+            res.status(404).json({message: "user not found"})
+        }
+    })
+});
+
 module.exports = router;

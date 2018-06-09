@@ -148,17 +148,16 @@ router.post("/create-session", function (req, res) {
 router.get("/rate-message", function (req, res) {
 
     const rating = Number(req.query.rating);
-    const sess_id = req.query.sid;
     const mess_id = req.query.msgid;
     const decoded = req.verifiedEmail;
-
+    let to = "";
     // finds the user
     User.findOne({email: decoded}, function (err, user) {
         if (err) throw err;
 
         //finds the message and fetches its likers and dislikers arrays.
-        Session_Message.findOne({_id: mess_id}, {_id: 0, likers: 1, dislikers: 1}, function (err, raters) {
-
+        Session_Message.findOne({_id: mess_id}, {_id: 0, likers: 1, dislikers: 1, email:1}, function (err, raters) {
+            to = raters.email;
             if (err) return err;
             let likers = raters.likers;
             let dislikers = raters.dislikers;
@@ -197,6 +196,124 @@ router.get("/rate-message", function (req, res) {
             }
             // updates the message rating with the ratingUpdate object
             Session_Message.update({_id: mess_id}, ratingUpdate, function (err) {
+                let emails = [];
+                emails.push(decoded);
+                emails.push(to);
+
+                User.find({email: {$in :emails}},function (err,users) {
+                    if(err) return err;
+                     if(users){
+                         let type = rating == 1 ? "liked" : "disliked";
+                         if(users[0].email===to){
+                             let notify ={
+                                 type:  "Session",
+                                 body: users[1].first_name + " " + users[1].last_name + " " +type + " your message ( " + mess_id +" ) ",
+                                 date:  Date.now()
+                             };
+                             users[0].notifications.push(notify);
+                             users[0].save();
+                         }
+                         else{
+                             let notify ={
+                                 type:  "Session",
+                                 body: users[0].first_name + " " + users[0].last_name + " " +type + " your message ( " + mess_id +" ) ",
+                                 date:  Date.now()
+                             };
+                             users[1].notifications.push(notify);
+                             users[1].save()
+                         }
+                     }
+                });
+                console.log('updating session message');
+                if (err) {
+                    console.log(err);
+                    return err;
+                }
+            });
+        });
+    });
+});
+
+
+router.get("/rate-message", function (req, res) {
+
+    const rating = Number(req.query.rating);
+    const mess_id = req.query.msgid;
+    const decoded = req.verifiedEmail;
+    let to = "";
+    // finds the user
+    User.findOne({email: decoded}, function (err, user) {
+        if (err) throw err;
+
+        //finds the message and fetches its likers and dislikers arrays.
+        Session_Message.findOne({_id: mess_id}, {_id: 0, likers: 1, dislikers: 1, email:1}, function (err, raters) {
+            to = raters.email;
+            if (err) return err;
+            let likers = raters.likers;
+            let dislikers = raters.dislikers;
+            let liked = likers.indexOf(user._id) > -1; // true if the user has liked the message
+            let disliked = dislikers.indexOf(user._id) > -1;// true if the user has disliked the message
+            let ratingUpdate = {};
+
+            if (rating === 1) { // user likes the message
+                if (liked) { // user has already liked the message
+                    ratingUpdate.$pull = {likers: user._id};//removes the user id from the likers array
+                    ratingUpdate.$inc = {likes: -1};
+                    console.log('user has already liked this message. mess id:' + mess_id);
+                    // return res.status(200).json({message: 'user has already liked this message. mess id:' + mess_id});
+                } else if (disliked) { // user has already disliked the message.
+                    ratingUpdate.$push = {likers: user._id};
+                    ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
+                    ratingUpdate.$inc = {likes: 1, dislikes: -1};
+                } else { // user is liking the message fo the first time
+                    ratingUpdate.$push = {likers: user._id};
+                    ratingUpdate.$inc = {likes: 1};
+                }
+            } else {// user likes the message
+                if (disliked) {// user has already disliked the message
+                    ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
+                    ratingUpdate.$inc = {dislikes: -1};
+                    console.log('user has already disliked this message. mess id:' + mess_id);
+                    // return res.status(200).json({message: 'user has already disliked this message. mess id:' + mess_id});
+                } else if (liked) { // user has already liked the message.
+                    ratingUpdate.$push = {dislikers: user._id};
+                    ratingUpdate.$pull = {likers: user._id};//removes the user id from the likers array
+                    ratingUpdate.$inc = {likes: -1, dislikes: 1};
+                } else {// user is disliking the message fo the first time
+                    ratingUpdate.$push = {dislikers: user._id};
+                    ratingUpdate.$inc = {dislikes: 1};
+                }
+            }
+            // updates the message rating with the ratingUpdate object
+            Session_Message.update({_id: mess_id}, ratingUpdate, function (err) {
+                let emails = [];
+                emails.push(decoded);
+                emails.push(to);
+
+                User.find({email: {$in :emails}},function (err,users) {
+                    if(err) return err;
+                    if(users){
+                        let type = rating == 1 ? "liked" : "disliked";
+                        if(users[0].email===to){
+                            let notify ={
+                                type:  "Session",
+                                body: users[1].first_name + " " + users[1].last_name + " " +type + " your message ( " + mess_id +" ) ",
+                                date:  Date.now()
+                            };
+                            users[0].notifications.push(notify);
+                            users[0].save();
+                        }
+                        else{
+                            let notify ={
+                                type:  "Session",
+                                body: users[0].first_name + " " + users[0].last_name + " " +type + " your message ( " + mess_id +" ) ",
+                                date:  Date.now()
+                            };
+                            users[1].notifications.push(notify);
+                            users[1].save()
+                        }
+                    }
+                });
                 console.log('updating session message');
                 if (err) {
                     console.log(err);
