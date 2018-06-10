@@ -15,7 +15,6 @@ import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.Session;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
-import com.robinhood.spark.SparkView;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -45,9 +44,6 @@ public class SessionInfoFragment extends Fragment {
     private int LIKE = 1;
     private int DISLIKE = 0;
 
-    private SparkView sparkView;
-    private RandomizedAdapter adapter;
-    private TextView scrubInfoTextView;
 //    private int delay = 5000;
 
 
@@ -96,17 +92,6 @@ public class SessionInfoFragment extends Fragment {
             tryChangeVal(DISLIKE);
         });
 
-        adapter = new RandomizedAdapter();
-        sparkView.setAdapter(adapter);
-        sparkView.setScrubListener(value -> {
-            if (value == null) {
-                scrubInfoTextView.setText(R.string.scrub_empty);
-            } else {
-                scrubInfoTextView.setText(getString(R.string.scrub_format, value));
-            }
-        });
-
-
         return view;
 
     }
@@ -123,8 +108,6 @@ public class SessionInfoFragment extends Fragment {
         mLocTextView = v.findViewById(R.id.tvLocation);
         mOnlineNum = v.findViewById(R.id.tvOnlineNum);
 
-        sparkView = v.findViewById(R.id.sparkview);
-        scrubInfoTextView = v.findViewById(R.id.scrub_info_textview);
     }
 
     private void getData() {

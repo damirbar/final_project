@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.Event;
+import com.ariel.wizeup.model.SessionMessage;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -47,6 +48,8 @@ public class EventsAdapter extends ArrayAdapter<Event> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
+        Event currentEvent = eventsList.get(position);
+
         MyEventHolder holder;
         if (view == null) {
             view = LayoutInflater.from(mContext).inflate(R.layout.feed_event_item, parent, false);
@@ -58,12 +61,14 @@ public class EventsAdapter extends ArrayAdapter<Event> {
 
         }
 
-        String type = eventsList.get(position).getType().substring(0, 1).toUpperCase() + eventsList.get(position).getType().substring(1);
+        String type = currentEvent.getType().substring(0, 1).toUpperCase() + currentEvent.getType().substring(1);
         holder.mEventType.setText(type);
-        holder.mEvent.setText(eventsList.get(position).getEvent());
+
+        String event = currentEvent.getEvent().substring(0, 1).toUpperCase() + currentEvent.getEvent().substring(1);
+        holder.mEvent.setText(event);
 
         //Date
-        Date date = eventsList.get(position).getDate();
+        Date date = currentEvent.getDate();
         if (date != null) {
             Format formatter = new SimpleDateFormat("HH:mm EEE, d MMM yyyy");
             String s = formatter.format(date);

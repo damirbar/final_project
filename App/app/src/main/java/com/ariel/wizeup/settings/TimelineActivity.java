@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -86,10 +87,12 @@ public class TimelineActivity extends AppCompatActivity {
     };
 
     private void initViews() {
+        ImageButton buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
         mTvNoResults = (TextView) findViewById(R.id.tv_no_results);
         eventsList = (ListView) findViewById(R.id.events);
-        }
+        buttonBack.setOnClickListener(view -> finish());
+    }
 
 
     private void loadEventsInit() {

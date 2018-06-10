@@ -81,9 +81,6 @@
     <string name="post">Post</string>
 
 
-    <string name="scrub_empty">Tap and hold the graph</string>
-    <string name="scrub_format">Value: %1$s</string>
-
     <string name="host">192.168.0.46</string>
     <string name="port">3000</string>
     <string name="action_settings">Options</string>
