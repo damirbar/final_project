@@ -4,7 +4,6 @@ package com.ariel.wizeup.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
 import java.util.Date;
 
 public class Session implements Parcelable {
@@ -14,7 +13,7 @@ public class Session implements Parcelable {
     private String admin;
     private String teacher_id;
     private String location;
-    private String videoID;
+    private String videoUrl;
     //    private SessionMessage messages[];
     private String picID;
     //private int curr_rating;
@@ -28,7 +27,7 @@ public class Session implements Parcelable {
         admin = in.readString();
         teacher_id = in.readString();
         location = in.readString();
-        videoID = in.readString();
+        videoUrl = in.readString();
         picID = in.readString();
     }
 
@@ -68,12 +67,12 @@ public class Session implements Parcelable {
         this.picID = picID;
     }
 
-    public String getVideoID() {
-        return videoID;
+    public String getVideoUrl() {
+        return videoUrl;
     }
 
-    public void setVideoID(String videoID) {
-        this.videoID = videoID;
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 
     public String getTeacher_id() {
@@ -130,7 +129,7 @@ public class Session implements Parcelable {
         parcel.writeString(admin);
         parcel.writeString(teacher_id);
         parcel.writeString(location);
-        parcel.writeString(videoID);
+        parcel.writeString(videoUrl);
         parcel.writeString(picID);
     }
 }

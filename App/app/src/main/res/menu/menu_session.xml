@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_share"
         android:orderInCategory="100"
         android:title="Share Session"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_vid"
+        android:orderInCategory="100"
+        android:title="Upload Video"
         app:showAsAction="never" />
 </menu>

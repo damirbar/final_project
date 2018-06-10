@@ -88,7 +88,7 @@ public interface RetrofitInterface {
     Observable<Response> getStudentsRating(@Query("id") String id);
 
     @GET("sessions/get-all-messages")
-    Observable<SessionMessage []> getAllMessages(@Query("sid") String sid);
+    Observable<SessionMessage []> getAllMessages(@Query("sid") int sid);
 
     @GET("sessions/get-message")
     Observable<SessionMessage> getMessage(@Query("mid") String mid);
@@ -119,7 +119,7 @@ public interface RetrofitInterface {
 
     @Multipart
     @POST("courses/post-file")
-    Observable<Response> uploadFile(@Part MultipartBody.Part file, @Query("cid") String cid);
+    Observable<Response> uploadFile(@Part MultipartBody.Part file, @Query("cid") int cid);
 
     @POST("courses/create-course")
     Observable<Course> createCourse(@Body Course course);

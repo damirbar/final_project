@@ -1,14 +1,14 @@
 package com.ariel.wizeup.session;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -16,27 +16,32 @@ import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.robinhood.spark.SparkView;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static android.app.Activity.RESULT_OK;
-import static com.ariel.wizeup.network.RetrofitRequests.getBytes;
-
-public class SessionInfoFragment extends Fragment {
+public class SessionInfoFragment extends Fragment implements
+        OnChartGestureListener,
+        OnChartValueSelectedListener {
 
     private CheckBox likeCbx;
     private CheckBox dislikeCbx;
     private TextView mRatingNum;
     private TextView mSidTextView;
-    private Button btnVid;
 
     private TextView mDateTextView;
     private TextView mTeacherTextView;
@@ -49,7 +54,8 @@ public class SessionInfoFragment extends Fragment {
     private String sid;
     private int LIKE = 1;
     private int DISLIKE = 0;
-    private static final int INTENT_REQUEST_CODE = 100;
+
+    private LineChart mChart;
 
 
     @Override
@@ -61,6 +67,16 @@ public class SessionInfoFragment extends Fragment {
         getData();
 
         initViews(view);
+
+        // add data
+        setData();
+
+        // get the legend (only possible after setting data)
+        Legend l = mChart.getLegend();
+
+        // modify the legend ...
+        // l.setPosition(LegendPosition.LEFT_OF_CHART);
+        l.setForm(Legend.LegendForm.LINE);
 
         //        Handler handler = new Handler();
 //        handler.postDelayed(new Runnable(){
@@ -97,71 +113,162 @@ public class SessionInfoFragment extends Fragment {
             tryChangeVal(DISLIKE);
         });
 
+
         return view;
 
     }
 
-    private void initViews(View v) {
-        likeCbx = (CheckBox) v.findViewById(R.id.like_cbx);
-        dislikeCbx = (CheckBox) v.findViewById(R.id.dislike_cbx);
-        mRatingNum = (TextView) v.findViewById(R.id.tvRating);
-        mSidTextView = (TextView) v.findViewById(R.id.tvSid);
-        mDateTextView = (TextView) v.findViewById(R.id.tvDate);
-        mTeacherTextView = (TextView) v.findViewById(R.id.tvTeacher);
-        mLocTextView = (TextView) v.findViewById(R.id.tvLocation);
-        mOnlineNum = (TextView) v.findViewById(R.id.tvOnlineNum);
-        btnVid = (Button) v.findViewById(R.id.button_vid);
-        btnVid.setOnClickListener(view -> uploadVid());
-        mSidTextView.setText(sid);
+    @Override
+    public void onChartGestureStart(MotionEvent me,
+                                    ChartTouchListener.ChartGesture
+                                            lastPerformedGesture) {
+
+        Log.i("Gesture", "START, x: " + me.getX() + ", y: " + me.getY());
+    }
+
+    @Override
+    public void onChartGestureEnd(MotionEvent me,
+                                  ChartTouchListener.ChartGesture
+                                          lastPerformedGesture) {
+
+        Log.i("Gesture", "END, lastGesture: " + lastPerformedGesture);
+
+        // un-highlight values after the gesture is finished and no single-tap
+        if(lastPerformedGesture != ChartTouchListener.ChartGesture.SINGLE_TAP)
+            // or highlightTouch(null) for callback to onNothingSelected(...)
+            mChart.highlightValues(null);
+    }
+
+    @Override
+    public void onChartLongPressed(MotionEvent me) {
+        Log.i("LongPress", "Chart longpressed.");
+    }
+
+    @Override
+    public void onChartDoubleTapped(MotionEvent me) {
+        Log.i("DoubleTap", "Chart double-tapped.");
+    }
+
+    @Override
+    public void onChartSingleTapped(MotionEvent me) {
+        Log.i("SingleTap", "Chart single-tapped.");
+    }
+
+    @Override
+    public void onChartFling(MotionEvent me1, MotionEvent me2,
+                             float velocityX, float velocityY) {
+        Log.i("Fling", "Chart flinged. VeloX: "
+                + velocityX + ", VeloY: " + velocityY);
+    }
+
+    @Override
+    public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
+        Log.i("Scale / Zoom", "ScaleX: " + scaleX + ", ScaleY: " + scaleY);
+    }
+
+    @Override
+    public void onChartTranslate(MotionEvent me, float dX, float dY) {
+        Log.i("Translate / Move", "dX: " + dX + ", dY: " + dY);
+    }
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        Log.i("Entry selected", e.toString());
+//        Log.i("LOWHIGH", "low: " + mChart.getLowestVisibleXIndex()
+//                + ", high: " + mChart.getHighestVisibleXIndex());
+
+        Log.i("MIN MAX", "xmin: " + mChart.getXChartMin()
+                + ", xmax: " + mChart.getXChartMax()
+                + ", ymin: " + mChart.getYChartMin()
+                + ", ymax: " + mChart.getYChartMax());
+
 
     }
+
+    @Override
+    public void onNothingSelected() {
+        Log.i("Nothing selected", "Nothing selected.");
+    }
+
+
+    private ArrayList<String> setXAxisValues(){
+        ArrayList<String> xVals = new ArrayList<String>();
+        xVals.add("10");
+        xVals.add("20");
+        xVals.add("30");
+        xVals.add("30.5");
+        xVals.add("40");
+
+        return xVals;
+    }
+
+    private ArrayList<Entry> setYAxisValues(){
+        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        yVals.add(new Entry(60, 0));
+        yVals.add(new Entry(48, 1));
+        yVals.add(new Entry(70.5f, 2));
+        yVals.add(new Entry(100, 3));
+        yVals.add(new Entry(180.9f, 4));
+
+        return yVals;
+    }
+
+    private void setData() {
+        ArrayList<String> xVals = setXAxisValues();
+
+        ArrayList<Entry> yVals = setYAxisValues();
+
+        LineDataSet set1;
+
+        // create a dataset and give it a type
+        set1 = new LineDataSet(yVals, "DataSet 1");
+        set1.setFillAlpha(110);
+        // set1.setFillColor(Color.RED);
+
+        // set the line to be drawn like this "- - - - - -"
+        // set1.enableDashedLine(10f, 5f, 0f);
+        // set1.enableDashedHighlightLine(10f, 5f, 0f);
+        set1.setColor(Color.BLACK);
+        set1.setCircleColor(Color.BLACK);
+        set1.setLineWidth(1f);
+        set1.setCircleRadius(3f);
+        set1.setDrawCircleHole(false);
+        set1.setValueTextSize(9f);
+        set1.setDrawFilled(true);
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+        dataSets.add(set1); // add the datasets
+
+        // create a data object with the datasets
+        LineData data = new LineData(dataSets);
+
+        // set data
+        mChart.setData(data);
+
+    }
+
+    private void initViews(View v) {
+        likeCbx = v.findViewById(R.id.like_cbx);
+        dislikeCbx = v.findViewById(R.id.dislike_cbx);
+        mRatingNum = v.findViewById(R.id.tvRating);
+        mSidTextView = v.findViewById(R.id.tvSid);
+        mDateTextView = v.findViewById(R.id.tvDate);
+        mTeacherTextView = v.findViewById(R.id.tvTeacher);
+        mLocTextView = v.findViewById(R.id.tvLocation);
+        mOnlineNum = v.findViewById(R.id.tvOnlineNum);
+        mSidTextView.setText(sid);
+        mChart = (LineChart) v.findViewById(R.id.chart1);
+        mChart.setOnChartGestureListener(this);
+        mChart.setOnChartValueSelectedListener(this);
+
+        }
 
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             sid = bundle.getString("sid");
+            sid = "1234";////////////rm
         }
-    }
-
-    private void uploadVid() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("video/mp4");
-        try {
-            startActivityForResult(intent, INTENT_REQUEST_CODE);
-
-        } catch (ActivityNotFoundException e) {
-
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == INTENT_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                try {
-                    InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
-                    tryUploadVid(getBytes(is));
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private void tryUploadVid(byte[] bytes) {
-        RequestBody requestFile = RequestBody.create(MediaType.parse("video/mp4"), bytes);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", "video.mp4", requestFile);
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadVid(body, sid)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseUploadVid, i -> mServerResponse.handleError(i)));
-    }
-
-
-    private void handleResponseUploadVid(Response response) {
-        mServerResponse.showSnackBarMessage(response.getMessage());
     }
 
 
@@ -172,37 +279,16 @@ public class SessionInfoFragment extends Fragment {
                 .subscribe(this::handleResponseChangeVal, i -> mServerResponse.handleError(i)));
     }
 
-    private void tryGetStudentsCount() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getStudentsCount(sid)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseCount, i -> mServerResponse.handleError(i)));
-    }
-
-    private void tryGetStudentsRating() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getStudentsRating(sid)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseRating, i -> mServerResponse.handleError(i)));
-    }
 
 
     private void handleResponseChangeVal(Response response) {
     }
 
-    private void handleResponseCount(Response response) {
-        mOnlineNum.setText(response.getMessage().trim());
-    }
 
-    private void handleResponseRating(Response response) {
-        mRatingNum.setText(response.getMessage().trim());
-    }
 
     @Override
     public void onResume() {
         super.onResume();
-//        tryGetStudentsCount();
-//        tryGetStudentsRating();
     }
 
 

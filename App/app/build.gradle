@@ -50,4 +50,7 @@ dependencies {
     implementation 'com.albinmathew:photo-crop-library:1.0.3'
     implementation 'com.github.siyamed:android-shape-imageview:0.9.3@aar'
     implementation 'com.mindorks:placeholderview:0.2.7'
+
+    implementation 'com.robinhood.spark:spark:1.2.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }

@@ -45,7 +45,7 @@ public class MyCourseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_courses);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
-        mServerResponse = new ServerResponse(findViewById(R.id.layout_my_classes));
+        mServerResponse = new ServerResponse(findViewById(R.id.relative));
         initViews();
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
