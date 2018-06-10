@@ -1,5 +1,6 @@
 package com.ariel.wizeup.session;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.Session;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
+import com.ariel.wizeup.settings.FeedbackActivity;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -107,7 +109,14 @@ public class SessionInfoFragment extends Fragment {
         mTeacherTextView = v.findViewById(R.id.tvTeacher);
         mLocTextView = v.findViewById(R.id.tvLocation);
         mOnlineNum = v.findViewById(R.id.tvOnlineNum);
+        mRatingNum.setOnClickListener(view -> openGraph());
 
+
+    }
+
+    private void openGraph() {
+        Intent i = new Intent(getActivity(), GraphActivity.class);
+        startActivity(i);
     }
 
     private void getData() {

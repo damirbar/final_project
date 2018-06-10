@@ -9,11 +9,21 @@ public class Course {
     private String department;
     private String teacher_fname;
     private String teacher_lname;
+    private String teacher;
+
 
     private String location;
     private Double points;
     private Date creation_date;
     private String files[];
+
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
 
     public String getTeacher_lname() {
         return teacher_lname;
