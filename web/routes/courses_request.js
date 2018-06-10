@@ -243,4 +243,17 @@ router.get("/get-course", function (req, res) {
         else res.status(404).json({message: "no such course"});
     })
 });
+
+router.get("/get-course-files", function (req, res) {
+    Course.findOne({cid: req.query.cid}, function (err, course) {
+        if (err) return err;
+        if (course) {
+            File.find({_id: {$in : course.files}},function (err, files) {
+                if(err) return err;
+                res.status(200).json(files);
+            });
+        }
+        else res.status(404).json({message: "no such course"});
+    })
+});
 module.exports = router;

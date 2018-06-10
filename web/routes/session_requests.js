@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 var Session = require("../schemas/session");
 var Session_Message = require("../schemas/session_message");
-var Student = require("../schemas/student");
 var User = require("../schemas/user");
 var File = require("../schemas/file");
+ObjectID = require('mongodb').ObjectID;
 
 
 router.post("/connect-session", function (req, res) {
@@ -273,7 +273,6 @@ router.get("/rate-message", function (req, res) {
     });
 });
 
-ObjectID = require('mongodb').ObjectID;
 
 router.get("/rate-reply-message", function (req, res) {
     const rating = Number(req.query.rating);
