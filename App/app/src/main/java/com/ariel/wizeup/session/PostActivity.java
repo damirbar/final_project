@@ -1,17 +1,13 @@
 package com.ariel.wizeup.session;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.ariel.wizeup.R;
@@ -54,13 +50,12 @@ public class PostActivity extends AppCompatActivity {
     private void initViews() {
         mTextCount = findViewById(R.id.count_num);
         mPostText = findViewById(R.id.post_text);
-        mPostText.setText("");
         buttonBack = findViewById(R.id.cancel_button);
         buttonSend = findViewById(R.id.save_button);
         buttonSend.setOnClickListener(view -> attemptSendPost());
         buttonBack.setOnClickListener(view -> finish());
         mPostText.addTextChangedListener(mTextEditorWatcher);
-
+        mPostText.setText("");
     }
 
     private boolean getData() {

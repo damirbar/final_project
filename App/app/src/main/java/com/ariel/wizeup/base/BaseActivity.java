@@ -1,15 +1,10 @@
 package com.ariel.wizeup.base;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -33,6 +28,8 @@ import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.profile.ProfileActivity;
 import com.ariel.wizeup.search.SearchActivity;
 import com.ariel.wizeup.session.ConnectSessionActivity;
+import com.ariel.wizeup.settings.EndlessScrollListener;
+import com.ariel.wizeup.settings.EventsAdapter;
 import com.ariel.wizeup.settings.SettingsActivity;
 import com.ariel.wizeup.utils.Constants;
 import com.mindorks.placeholderview.PlaceHolderView;
@@ -122,6 +119,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     };
 
     private void initViews() {
+        mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
         mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerView = (PlaceHolderView) findViewById(R.id.drawerView);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -132,7 +130,6 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     }
 
     private void initSearchView() {
-        mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
         SearchView editSearch = (SearchView) findViewById(R.id.searchView);
         editSearch.setOnClickListener(view -> openSearch());
         ImageView clearButton = (ImageView) editSearch.findViewById(android.support.v7.appcompat.R.id.search_button);
@@ -186,7 +183,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getProfile(mId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseProfile, ServerResponse::handleErrorQuiet));
+                .subscribe(this::handleResponseProfile, i -> mServerResponse.handleErrorDown(i)));
     }
 
     private void handleResponseProfile(User user) {
@@ -272,7 +269,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getEvents(0, ADD_ITEMS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseEventsInit, ServerResponse::handleErrorQuiet));
+                .subscribe(this::handleResponseEventsInit, i -> mServerResponse.handleErrorDown(i)));
 
     }
 
@@ -292,7 +289,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getEvents(mAdapter.getEventsList().size(), ADD_ITEMS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseEvents, ServerResponse::handleErrorQuiet));
+                .subscribe(this::handleResponseEvents, i -> mServerResponse.handleErrorDown(i)));
 
     }
 

@@ -154,23 +154,23 @@ public class CourseFilesFragment extends Fragment {
 
 
     private void pullFiles() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getCourseById(cid)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getCourseFiles(cid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull, i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponsePull(Course course) {
-//        if (!(course.getFiles().length == 0)) {
-//            ArrayList<CourseFile> saveFiles = new ArrayList<>(Arrays.asList(course.getFiles()));
-//            Collections.reverse(saveFiles);
-//            mTvNoResults.setVisibility(View.GONE);
-//            mAdapter = new CourseFilesAdapter(this.getActivity(), new ArrayList<>(saveFiles));
-//            filesList.setAdapter(mAdapter);
-//        } else {
-//            mTvNoResults.setVisibility(View.VISIBLE);
-//        }
-//        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+    private void handleResponsePull(CourseFile files[]) {
+        if (!(files.length == 0)) {
+            ArrayList<CourseFile> saveFiles = new ArrayList<>(Arrays.asList(files));
+            Collections.reverse(saveFiles);
+            mTvNoResults.setVisibility(View.GONE);
+            mAdapter = new CourseFilesAdapter(this.getActivity(), new ArrayList<>(saveFiles));
+            filesList.setAdapter(mAdapter);
+        } else {
+            mTvNoResults.setVisibility(View.VISIBLE);
+        }
+        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

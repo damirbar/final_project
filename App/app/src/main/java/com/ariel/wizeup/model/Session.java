@@ -11,13 +11,13 @@ public class Session implements Parcelable {
     private String sid;
     private String name;
     private String admin;
-    private String teacher_id;
     private String location;
     private String videoUrl;
-    //    private SessionMessage messages[];
+    private String teacher_fname;
+    private String teacher_lname;
     private String picID;
-    //private int curr_rating;
     private Date creation_date;
+    private SessionUser students[];
 
     public Session(){}
 
@@ -25,10 +25,12 @@ public class Session implements Parcelable {
         sid = in.readString();
         name = in.readString();
         admin = in.readString();
-        teacher_id = in.readString();
         location = in.readString();
         videoUrl = in.readString();
         picID = in.readString();
+        teacher_fname = in.readString();
+        teacher_lname = in.readString();
+
     }
 
     public static final Creator<Session> CREATOR = new Creator<Session>() {
@@ -42,6 +44,14 @@ public class Session implements Parcelable {
             return new Session[size];
         }
     };
+
+    public SessionUser[] getStudents() {
+        return students;
+    }
+
+    public void setStudents(SessionUser[] students) {
+        this.students = students;
+    }
 
     public Date getCreation_date() {
         return creation_date;
@@ -75,13 +85,6 @@ public class Session implements Parcelable {
         this.videoUrl = videoUrl;
     }
 
-    public String getTeacher_id() {
-        return teacher_id;
-    }
-
-    public void setTeacher_id(String teacher_id) {
-        this.teacher_id = teacher_id;
-    }
 
     public String getLocation() {
         return location;
@@ -91,14 +94,21 @@ public class Session implements Parcelable {
         this.location = location;
     }
 
-//    public SessionMessage[] getMessages() {
-//        return messages;
-//    }
-//
-//    public void setMessages(SessionMessage[] messages) {
-//        this.messages = messages;
-//    }
+    public String getTeacher_fname() {
+        return teacher_fname;
+    }
 
+    public void setTeacher_fname(String teacher_fname) {
+        this.teacher_fname = teacher_fname;
+    }
+
+    public String getTeacher_lname() {
+        return teacher_lname;
+    }
+
+    public void setTeacher_lname(String teacher_lname) {
+        this.teacher_lname = teacher_lname;
+    }
 
     public String getSid() {
         return sid;
@@ -127,9 +137,11 @@ public class Session implements Parcelable {
         parcel.writeString(sid);
         parcel.writeString(name);
         parcel.writeString(admin);
-        parcel.writeString(teacher_id);
         parcel.writeString(location);
         parcel.writeString(videoUrl);
         parcel.writeString(picID);
+        parcel.writeString(teacher_fname);
+        parcel.writeString(teacher_lname);
+
     }
 }

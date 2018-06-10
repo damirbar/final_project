@@ -115,6 +115,21 @@
                 android:textAllCaps="false"
                 android:textSize="15sp" />
 
+            <Button
+                android:id="@+id/time_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:drawableEnd="@drawable/expand_arrow"
+                android:drawableRight="@drawable/expand_arrow"
+                android:fontFamily="sans-serif"
+                android:gravity="left|center"
+                android:text="Timeline"
+                android:textAllCaps="false"
+                android:textSize="15sp" />
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

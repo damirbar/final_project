@@ -1,11 +1,13 @@
 package com.ariel.wizeup.network;
 
 import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.androidadvance.topsnackbar.TSnackbar;
+import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,6 +43,11 @@ public class ServerResponse {
         snackBar.show();
     }
 
+    public void downSnackBarMessage(String message) {
+        Snackbar.make(layout, message,Snackbar.LENGTH_SHORT).show();
+    }
+
+
     public void handleError(Throwable error) {
         Log.d("error", error.toString());
         try {
@@ -58,17 +65,36 @@ public class ServerResponse {
         }
     }
 
-    public static void handleErrorQuiet(Throwable error) {
-        Log.d("tag", error.toString());
-        if (error instanceof HttpException) {
-            Gson gson = new GsonBuilder().setLenient().create();
-            try {
+    public void handleErrorDown(Throwable error) {
+        Log.d("error", error.toString());
+        try {
+            if (error instanceof HttpException) {
+                Gson gson = new GsonBuilder().setLenient().create();
                 String errorBody = ((HttpException) error).response().errorBody().string();
                 Response response = gson.fromJson(errorBody, Response.class);
-            } catch (JsonSyntaxException | IOException e) {
-                e.printStackTrace();
+                downSnackBarMessage(response.getMessage());
+            } else {
+                downSnackBarMessage("Network Error.");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            downSnackBarMessage("Internal Server Error.");
         }
     }
+
+    public static void handleErrorQuiet(Throwable error) {
+        Log.d("error", error.toString());
+        try {
+            if (error instanceof HttpException) {
+                Gson gson = new GsonBuilder().setLenient().create();
+                String errorBody = ((HttpException) error).response().errorBody().string();
+                Response response = gson.fromJson(errorBody, Response.class);
+            } else {
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

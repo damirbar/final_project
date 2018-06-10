@@ -51,7 +51,6 @@ public class SessionActivity extends AppCompatActivity {
     private static final int INTENT_REQUEST_CODE = 100;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +65,13 @@ public class SessionActivity extends AppCompatActivity {
         initViews();
 
         buttonVid.setOnClickListener(v -> {
+            if ((session.getVideoUrl().isEmpty())) {
+                pullSession();
+                if ((session.getVideoUrl().isEmpty())){
+                    mServerResponse.downSnackBarMessage("No video.");
+                    return;
+                }
+            }
             if (mVideoViewRelative.getVisibility() == View.VISIBLE) {
                 stopPosition = vid.getCurrentPosition();
                 vid.pause();
@@ -75,9 +81,10 @@ public class SessionActivity extends AppCompatActivity {
                 vid.seekTo(stopPosition);
             }
             buttonVid.setRotation(buttonVid.getRotation() + 180);
+
         });
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final ViewPager viewPager = findViewById(R.id.pager);
         final SessionPagerAdapter adapter = new SessionPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), session.getSid());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -96,7 +103,7 @@ public class SessionActivity extends AppCompatActivity {
             }
         });
 
-        if (session.getVideoUrl() != null && !(session.getVideoUrl().isEmpty())){
+        if (!(session.getVideoUrl().isEmpty())) {
             playVideo();
         }
     }
@@ -118,8 +125,8 @@ public class SessionActivity extends AppCompatActivity {
 
     private void loadLocale() {
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String lang = mSharedPreferences.getString(Constants.LANG,"");
-        ChangeLanguage changeLanguage =new ChangeLanguage(this);
+        String lang = mSharedPreferences.getString(Constants.LANG, "");
+        ChangeLanguage changeLanguage = new ChangeLanguage(this);
         changeLanguage.setLocale(lang);
     }
 
@@ -243,20 +250,32 @@ public class SessionActivity extends AppCompatActivity {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadVid(body, session.getSid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseUploadVid, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseUploadVid, i -> mServerResponse.handleErrorDown(i)));
     }
 
     private void handleResponseUploadVid(Response response) {
         mServerResponse.showSnackBarMessage(response.getMessage());
     }
 
+    private void pullSession() {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getSessionById(session.getSid())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponsePullSession, i -> mServerResponse.handleErrorDown(i)));
+    }
 
+    private void handleResponsePullSession(Session _session) {
+        session = _session;
+        if (!(session.getVideoUrl().isEmpty())) {
+            playVideo();
+        }
+    }
 
     private void disconnectFromSession() {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().disconnect(session.getSid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponse, i -> mServerResponse.handleErrorDown(i)));
     }
 
     private void handleResponse(Response response) {
