@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var SessionSchema = new mongoose.Schema({
-    sid: {type: Number, unique: true, required: true},
+    sid: {type: String, unique: true, required: true},
     name: {type: String, required: true},
     admin: {type: String, required: true},
     teacher_fname: {type: String, required: true},

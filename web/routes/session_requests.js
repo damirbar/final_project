@@ -77,28 +77,28 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
         if (sess) {
             sess.students.forEach(function (student) {
                 if (student.email === req.verifiedEmail) {
-                    if(val == 1){
+                    if(val === '1'){
                         if(!sess.likers.includes(student.email)){
                             sess.likers.push(student.email);
                             sess.likes+=1;
-                            if(sess.dislikers.includes(student.email)){
-                                sess.dislikers.forEach(function (stud, i) {
-                                    if(stud.email == student.email) sess.dislikers.splice(i, 1);
-                                });
-                                sess.dislikes-=1;
-                            }
+                        }
+                        if(sess.dislikers.includes(student.email)){
+                            sess.dislikers.forEach(function (stud, i) {
+                                if(stud === student.email) sess.dislikers.splice(i, 1);
+                            });
+                            sess.dislikes-=1;
                         }
                     }
                     else{
                         if(!sess.dislikers.includes(student.email)){
                             sess.dislikers.push(student.email);
                             sess.dislikes+=1;
-                            if(sess.likers.includes(student.email)){
-                                sess.likers.forEach(function (stud, i) {
-                                    if(stud.email == student.email) sess.likers.splice(i, 1);
-                                });
-                                sess.likes-=1;
-                            }
+                        }
+                        if(sess.likers.includes(student.email)){
+                            sess.likers.forEach(function (stud, i) {
+                                if(stud === student.email) sess.likers.splice(i, 1);
+                            });
+                            sess.likes-=1;
                         }
                     }
                     sess.save().then(function () {
@@ -231,11 +231,22 @@ router.get("/rate-message", function (req, res) {
                 User.find({email: {$in :emails}},function (err,users) {
                     if(err) return err;
                      if(users){
-                         let type = rating == 1 ? "liked" : "disliked";
+                         let type = rating === 1 ? "liked" : "disliked";
+                         if(users.length === 1)
+                         {
+                             let notify ={
+                                 type:  "Session",
+                                 body: "you " +type + " your question ( " + mess_id +" ) ",
+                                 date:  Date.now()
+                             };
+                             users[0].notifications.push(notify);
+                             users[0].save();
+                             return;
+                         }
                          if(users[0].email===to){
                              let notify ={
                                  type:  "Session",
-                                 body: users[1].first_name + " " + users[1].last_name + " " +type + " your message ( " + mess_id +" ) ",
+                                 body: users[1].first_name + " " + users[1].last_name + " " +type + " your question ( " + mess_id +" ) ",
                                  date:  Date.now()
                              };
                              users[0].notifications.push(notify);
@@ -291,13 +302,13 @@ router.get("/rate-reply-message", function (req, res) {
                    if (rating === 1) { // user likes the message
                        if (liked) { // user has already liked the message
                            newMesssage.likers.forEach(function (liker, i) {
-                               if(liker == user.id) newMesssage.likers.splice(i,1);
+                               if(liker === user.id) newMesssage.likers.splice(i,1);
                            });
                            newMesssage.likes-=1;
                        } else if (disliked) {
                            newMesssage.likers.push(user.id);
                            newMesssage.dislikers.forEach(function (disliker, i) {
-                               if(disliker == user.id) newMesssage.dislikers.splice(i,1);
+                               if(disliker === user.id) newMesssage.dislikers.splice(i,1);
                            });
                            newMesssage.dislikes-=1;
                            newMesssage.likes+=1;
@@ -308,13 +319,13 @@ router.get("/rate-reply-message", function (req, res) {
                    } else {
                        if (disliked) {
                            newMesssage.dislikers.forEach(function (disliker, i) {
-                               if(disliker == user.id) newMesssage.dislikers.splice(i,1);
+                               if(disliker === user.id) newMesssage.dislikers.splice(i,1);
                            });
                            newMesssage.dislikes-=1;
                        } else if (liked) {
                            newMesssage.dislikers.push(user.id);
                            newMesssage.likers.forEach(function (liker, i) {
-                              if(liker == user.id) newMesssage.likers.splice(i,1);
+                              if(liker === user.id) newMesssage.likers.splice(i,1);
                            });
                            newMesssage.likes-=1;
                            newMesssage.dislikes+=1;
@@ -334,11 +345,22 @@ router.get("/rate-reply-message", function (req, res) {
                        User.find({email: {$in :emails}},function (err,users) {
                            if(err) return err;
                            if(users){
-                               let type = rating == 1 ? "liked" : "disliked";
+                               let type = rating === 1 ? "liked" : "disliked";
+                               if(users.length === 1)
+                               {
+                                   let notify ={
+                                       type:  "Session",
+                                       body: "you " +type + " your reply ( " + mess_id +" ) ",
+                                       date:  Date.now()
+                                   };
+                                   users[0].notifications.push(notify);
+                                   users[0].save();
+                                   return;
+                               }
                                if(users[0].email===to){
                                    let notify ={
                                        type:  "Session",
-                                       body: users[1].first_name + " " + users[1].last_name + " " +type + " your question ( " + mess_id +" ) ",
+                                       body: users[1].first_name + " " + users[1].last_name + " " +type + " your reply ( " + mess_id +" ) ",
                                        date:  Date.now()
                                    };
                                    users[0].notifications.push(notify);
@@ -347,7 +369,7 @@ router.get("/rate-reply-message", function (req, res) {
                                else{
                                    let notify ={
                                        type:  "Session",
-                                       body: users[0].first_name + " " + users[0].last_name + " " +type + " your message ( " + mess_id +" ) ",
+                                       body: users[0].first_name + " " + users[0].last_name + " " +type + " your reply ( " + mess_id +" ) ",
                                        date:  Date.now()
                                    };
                                    users[1].notifications.push(notify);
@@ -421,7 +443,7 @@ router.post("/messages", function (req, res) {
 
 
 router.get("/get-all-messages", function (req, res) {
-    var sess_id = Number(req.query.sid);
+    var sess_id = req.query.sid;
     Session.aggregate([
             {
                 $lookup: {
