@@ -13,7 +13,7 @@ public  class RandomizedAdapter extends SparkAdapter {
 
     public RandomizedAdapter() {
         random = new Random();
-        yData = new int[10];
+        yData = new int[50];
         randomize();
     }
 

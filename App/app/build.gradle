@@ -53,4 +53,9 @@ dependencies {
 
     implementation 'com.robinhood.spark:spark:1.2.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
+    implementation 'com.github.nkzawa:socket.io-client:0.4.2'
+    implementation 'io.pristine:libjingle:8871@aar'
+
+
 }

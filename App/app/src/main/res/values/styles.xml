@@ -39,7 +39,7 @@
     <style name="spark_SparkView">
         <item name="spark_lineColor">@color/user_selected</item>
         <item name="spark_lineWidth">2dp</item>
-        <item name="spark_cornerRadius">360dp</item>
+        <item name="spark_cornerRadius">5dp</item>
         <item name="spark_fill">false</item>
 
         <item name="spark_baseLineColor">@color/default_circle_indicator_page_color</item>
