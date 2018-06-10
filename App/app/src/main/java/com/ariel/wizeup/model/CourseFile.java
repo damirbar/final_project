@@ -7,6 +7,16 @@ public class CourseFile {
     private String url;
     private Date creation_date;
     private String originalName;
+    private String size;
+
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
 
     public String getName() {
         return originalName;

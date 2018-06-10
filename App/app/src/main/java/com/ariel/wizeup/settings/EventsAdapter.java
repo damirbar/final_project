@@ -1,4 +1,4 @@
-package com.ariel.wizeup.base;
+package com.ariel.wizeup.settings;
 
 import android.app.Activity;
 import android.content.Context;
@@ -58,7 +58,7 @@ public class EventsAdapter extends ArrayAdapter<Event> {
 
         }
 
-        String type = eventsList.get(position).getType().toUpperCase();
+        String type = eventsList.get(position).getType().substring(0, 1).toUpperCase() + eventsList.get(position).getType().substring(1);
         holder.mEventType.setText(type);
         holder.mEvent.setText(eventsList.get(position).getEvent());
 

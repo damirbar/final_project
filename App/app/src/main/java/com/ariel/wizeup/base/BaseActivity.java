@@ -28,6 +28,8 @@ import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.profile.ProfileActivity;
 import com.ariel.wizeup.search.SearchActivity;
 import com.ariel.wizeup.session.ConnectSessionActivity;
+import com.ariel.wizeup.settings.EndlessScrollListener;
+import com.ariel.wizeup.settings.EventsAdapter;
 import com.ariel.wizeup.settings.SettingsActivity;
 import com.ariel.wizeup.utils.Constants;
 import com.mindorks.placeholderview.PlaceHolderView;
@@ -117,6 +119,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     };
 
     private void initViews() {
+        mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
         mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerView = (PlaceHolderView) findViewById(R.id.drawerView);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -127,7 +130,6 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     }
 
     private void initSearchView() {
-        mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
         SearchView editSearch = (SearchView) findViewById(R.id.searchView);
         editSearch.setOnClickListener(view -> openSearch());
         ImageView clearButton = (ImageView) editSearch.findViewById(android.support.v7.appcompat.R.id.search_button);

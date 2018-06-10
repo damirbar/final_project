@@ -2,10 +2,8 @@ package com.ariel.wizeup.settings;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -56,11 +54,20 @@ public class SettingsActivity extends AppCompatActivity {
         langListView.setVisibility(View.GONE);
         Button langBtn = findViewById(R.id.lang_button);
         Button passBtn = findViewById(R.id.pass_button);
+        Button timeBtn = findViewById(R.id.time_button);
         Button reportBtn = findViewById(R.id.report_button);
         reportBtn.setOnClickListener(view -> OpenReport());
         passBtn.setOnClickListener(view -> OpenChangePass());
         buttonBack.setOnClickListener(view -> finish());
         langBtn.setOnClickListener(view -> OpenCloseList());
+        timeBtn.setOnClickListener(view -> OpenTime());
+
+    }
+
+    private void OpenTime() {
+        Intent i = new Intent(this, TimelineActivity.class);
+        startActivity(i);
+
     }
 
     private void OpenReport() {

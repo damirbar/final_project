@@ -76,7 +76,7 @@ public interface RetrofitInterface {
     Observable<Response> createSession(@Body Session session);
 
     @GET("sessions/change-val")
-    Observable<Response> changeVal(@Query("id") String id, @Query("val") int val);
+    Observable<Response> changeVal(@Query("sid") String sid, @Query("val") int val);
 
     @GET("sessions/rate-message")
     Observable<Response> rateMessage(@Query("sid") String sid, @Query("msgid") String msgid, @Query("rating") int rating);
@@ -134,5 +134,9 @@ public interface RetrofitInterface {
 
     @GET("courses/add-student-to-course")
     Observable<Response> addStudentToCourse(@Query("cid") String cid, @Query("student") String student);
+
+    @GET("courses/get-course-files")
+    Observable<CourseFile[]> getCourseFiles(@Query("cid") String cid);
+
 
 }
