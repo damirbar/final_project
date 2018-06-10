@@ -63,10 +63,6 @@ public class LoginFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Intent intent = new Intent(getActivity(),FileUploadActivity.class);//remove
-//        startActivity(intent);//remove
-//        getActivity().finish(); //remove
-
         changeLanguage =new ChangeLanguage(getActivity());
         initSharedPreferences();
         autoLogin();

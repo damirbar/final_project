@@ -243,11 +243,24 @@
 
             </LinearLayout>
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/chart1"
+            <com.robinhood.spark.SparkView
+                android:id="@+id/sparkview"
+                style="@style/spark_SparkView"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginBottom="100dp" />
+                android:layout_height="200dp"
+                app:spark_lineColor="@color/user_selected"
+                app:spark_scrubEnabled="true" />
+
+
+            <TextView
+                android:id="@+id/scrub_info_textview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/scrub_empty"
+                android:textAppearance="?android:textAppearanceLarge" />
 
         </LinearLayout>
     </ScrollView>

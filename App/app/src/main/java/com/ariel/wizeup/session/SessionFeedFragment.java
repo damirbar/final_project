@@ -114,12 +114,11 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             sid = bundle.getString("sid");
-            sid = "1234";////////////rm
 
         }
     }
     private void pullMessages(){
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllMessages(Integer.parseInt(sid))
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllMessages(sid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull,i -> mServerResponse.handleError(i)));
