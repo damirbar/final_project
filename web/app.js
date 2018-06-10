@@ -16,6 +16,12 @@ var logger = require('morgan');
 const router = express.Router();
 app.use(logger('dev'));
 
+let passportService = require('./tools/passport');
+let passport       = require("passport");
+
+passportService.init();
+app.use(passport.initialize());
+app.use(passport.session());
 
 var teacherRequests = require('./routes/teacher_requests');
 var studentRequests = require('./routes/students_request');
@@ -69,7 +75,9 @@ app.use('/auth', authRouts);
 //         console.log("ERAN IS FUCKING GAY");
 //     });
 // });
+let emailService = require('./tools/email');
 
+emailService.init();
 
 http.listen(3000, function () {
     console.log("listening...");
