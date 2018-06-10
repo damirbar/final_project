@@ -5,7 +5,10 @@ const Student = require("../schemas/student");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt-nodejs');
 const auth = require('basic-auth');
-var validator = require("email-validator");
+let validator = require("email-validator");
+let emailService = require('./../tools/email');
+let emailMessages = require('./../tools/email-messages');
+let randomstring = require("randomstring");
 
 router.use(expressValidator());
 
@@ -78,7 +81,6 @@ router.get("/get-user-by-token", function (req, res) {
 });
 
 
-
 router.post("/new-user", function (req, res) {
 
     const fname = req.body.first_name,
@@ -92,7 +94,7 @@ router.post("/new-user", function (req, res) {
     req.checkBody("last_name", "Last Name is required").notEmpty();
     req.checkBody("email", "Email is required").notEmpty();
     // req.checkBody("email".toLowerCase(), "Email is not valid").isEmail();
-    if(!validator.validate(email)){
+    if (!validator.validate(email)) {
         console.log("Email is not valid");
         res.status(400).json({message: "Email is not valid"});
     }// true
@@ -188,72 +190,56 @@ router.put("/change-password", function (req, res) {
     });
 });
 
-
 router.post("/reset-pass-init", function (req, res) {
 
-    console.log("here");
-    User.findOne({email: req.body.email}, function (err, student) {
+    User.findOne({email: req.body.email}, function (err, user) {
         if (err) return next(err);
-
+        if(user){
         const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(random, salt);
+        const hash = bcrypt.hashSync("random", salt);
 
-        student.temp_password = hash;
-        student.temp_password_time = new Date();
-    }).save().then(function (student) {
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-        const transporter = nodemailer.createTransport(`smtps://${config.email}:${config.password}@smtp.gmail.com`);
-        const emailOptions = {
-            from: `"${config.name}" <${config.email}>`,
-            to: email,
-            subject: 'Reset Password Request ',
-            html: `Hello ${student.display_name},
-                <br><br>
-    			&nbsp;&nbsp;&nbsp;&nbsp; Your reset password token is <b>${random}</b>. 
-    			If you are viewing this email from a Android Device click this <a href = "http://localhost:3000/${random}">link</a>. 
-    			The token is valid for only 2 minutes.<br><br>
-    			Thanks,<br>
-    			wizer.`
-        };
-        return transporter.sendEmail(emailOptions);
-    }).then(function (info) {
-        console.log(info);
-        resolve({status: 200, message: 'Check email for instructions'})
-    }).catch(function (err) {
-        console.log(err);
-        reject({status: 500, message: 'Internal Server Error !'});
-    })
+        let random = randomstring.generate(7);
+
+        user.temp_password = random;
+        user.temp_password_time = new Date();
+        user.save(function () {
+            emailService.init();
+            emailService.sendMail('stermaneran@gmail.com', 'Reset Password Request', emailMessages.reset_password(user, random));
+            res.status(200).json({message: 'see mail for more information'});
+        });
+        }
+        else{
+            res.status(404).json({message: 'no such user'});
+            }
+    });
 });
 
 router.post("/reset-pass-finish", function (req, res) {
-    Student.findOne({email: req.body.email}, function (err, student) {
-        const diff = new Date() - new Date(student.temp_password_time);
+    let token = req.body.accessToken;
+    User.findOne({email: req.body.email}, function (err, user) {
+        const diff = new Date() - new Date(user.temp_password_time);
         const seconds = Math.floor(diff / 1000);
         console.log("Seconds :" + seconds);
         if (seconds < 600) {
-            return student;
+            if (token === user.temp_password){
+
+                const salt = bcrypt.genSaltSync(10);
+                const hash = bcrypt.hashSync(req.body.password, salt);
+
+                user.password = hash;
+                user.temp_password = undefined;
+                user.temp_password_time = undefined;
+
+                user.save().then(function () {
+                    res.status(200).json(user);
+                });
+            } else {
+                res.status(401).json({message: 'Invalid Token !'});
+            }
         } else {
-            reject({status: 401, message: 'Time Out ! Try again'});
+            res.status(404).json({message: 'time out try again'});
         }
-    }).then(function (student) {
-        if (bcrypt.compareSync(token, student.temp_password)) {
-
-            const salt = bcrypt.genSaltSync(10);
-            const hash = bcrypt.hashSync(password, salt);
-
-            student.password = hash;
-            student.temp_password = undefined;
-            student.temp_password_time = undefined;
-
-            return student.save();
-        } else {
-            reject({status: 401, message: 'Invalid Token !'});
-        }
-    }).then(function (student) {
-        resolve({
-            status: 200, message: 'Password Changed Successfully !'
-        })
-    })
+    });
 });
 
 module.exports = router;
