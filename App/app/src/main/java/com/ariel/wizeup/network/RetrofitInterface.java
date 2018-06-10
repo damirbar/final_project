@@ -88,7 +88,7 @@ public interface RetrofitInterface {
     Observable<Response> getStudentsRating(@Query("id") String id);
 
     @GET("sessions/get-all-messages")
-    Observable<SessionMessage []> getAllMessages(@Query("sid") int sid);
+    Observable<SessionMessage []> getAllMessages(@Query("sid") String sid);
 
     @GET("sessions/get-message")
     Observable<SessionMessage> getMessage(@Query("mid") String mid);

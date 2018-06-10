@@ -122,7 +122,6 @@ public class SessionInfoFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             sid = bundle.getString("sid");
-            sid = "1234";////////////rm
         }
     }
 

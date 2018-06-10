@@ -54,6 +54,7 @@ public class PostActivity extends AppCompatActivity {
     private void initViews() {
         mTextCount = findViewById(R.id.count_num);
         mPostText = findViewById(R.id.post_text);
+        mPostText.setText("");
         buttonBack = findViewById(R.id.cancel_button);
         buttonSend = findViewById(R.id.save_button);
         buttonSend.setOnClickListener(view -> attemptSendPost());

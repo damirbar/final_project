@@ -2,9 +2,11 @@ package com.ariel.wizeup.session;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +22,8 @@ import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.Session;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
+import com.ariel.wizeup.settings.ChangeLanguage;
+import com.ariel.wizeup.utils.Constants;
 import com.github.rtoshiro.view.video.FullscreenVideoLayout;
 
 import java.io.IOException;
@@ -112,6 +116,14 @@ public class SessionActivity extends AppCompatActivity {
         mVideoViewRelative = findViewById(R.id.videoViewRelative);
     }
 
+    private void loadLocale() {
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String lang = mSharedPreferences.getString(Constants.LANG,"");
+        ChangeLanguage changeLanguage =new ChangeLanguage(this);
+        changeLanguage.setLocale(lang);
+    }
+
+
     private void playVideo() {
 
         vid.setActivity(this);
@@ -191,7 +203,6 @@ public class SessionActivity extends AppCompatActivity {
             Session _session = (Session) getIntent().getExtras().getParcelable("session");
             if (_session != null) {
                 session = _session;
-                session.setSid("1234");///////rm
                 return true;
             } else
                 return false;
@@ -268,6 +279,8 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        loadLocale();
+
     }
 
     @Override
@@ -275,4 +288,5 @@ public class SessionActivity extends AppCompatActivity {
         super.onPause();
         vid.pause();
     }
+
 }
