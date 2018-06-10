@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var Session = require("../schemas/session");
-var Session_Message = require("../schemas/session_message");
-var Student = require("../schemas/student");
-var User = require("../schemas/user");
-var File = require("../schemas/file");
+let express = require('express');
+let router = express.Router();
+let Session = require("../schemas/session");
+let Session_Message = require("../schemas/session_message");
+let User = require("../schemas/user");
+let File = require("../schemas/file");
+ObjectID = require('mongodb').ObjectID;
 
 
 router.post("/connect-session", function (req, res) {
@@ -29,19 +29,19 @@ router.post("/connect-session", function (req, res) {
                     sess.students.push({
                         rating_val: "1",
                         email: decoded,
-                        display_name: name,
+                        display_name: name
                     });
                     const newArray = sess.students;
                     sess.update({students: newArray}).then(function (item) {
                         console.log("Saved " + decoded + " to session: " + sid);
-                        res.status(200).json({message: 'Welcome to Class !', session: sess});
+                        res.status(200).json(sess);
                     }).catch(function (err) {
                         console.log("Unable to save the session with the new student " + name);
                     });
                 }
                 else {
                     console.log('Welcome back to Class ' + decoded + '!');
-                    res.status(200).json({message: 'Welcome back to Class !', session: sess});
+                    res.status(200).json(sess);
                 }
             }
             else {
@@ -273,7 +273,6 @@ router.get("/rate-message", function (req, res) {
     });
 });
 
-ObjectID = require('mongodb').ObjectID;
 
 router.get("/rate-reply-message", function (req, res) {
     const rating = Number(req.query.rating);

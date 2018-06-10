@@ -1,7 +1,7 @@
-const shay={
+const email={
    "name" : "Wizer Team",
-   "email" : "wizeupteam@gmail.com",
-   "password" : "wizer6185",
+   "email" : "teamwizeup@gmail.com",
+   "password" : "wizeup!1",
    "secret" : "Wizer",
 };
 const cloudniary={
@@ -10,7 +10,7 @@ const cloudniary={
     api_secret: 'A2ZBcQsnU72oh7p9JI415BOR1ws'
 };
 
-const ret = {cloudniary:cloudniary,shay:shay};
+const ret = {cloudniary:cloudniary, email:email};
 module.exports=ret;
 
 
