@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var SessionSchema = new mongoose.Schema({
-    sid: {type: Number, unique: true, required: true},
+    sid: {type: String, unique: true, required: true},
     name: {type: String, required: true},
     admin: {type: String, required: true},
     teacher_fname: {type: String, required: true},
@@ -8,7 +8,10 @@ var SessionSchema = new mongoose.Schema({
     location: {type: String, required: true},
     creation_date: {type: Date, default: Date.now()},
     students: Array,
-    curr_rating: {type: Number, default: 0},
+    likes: {type : Number, default: 0},
+    dislikes: {type : Number, default: 0},
+    likers: [String],
+    dislikers: [String],
     hidden: Boolean,
     messages: Array,
     videoUrl: {type: String, default: ""},
