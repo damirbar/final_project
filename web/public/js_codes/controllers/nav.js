@@ -1,5 +1,5 @@
-wizerApp.controller('navController', ['$scope','AuthService', '$location', '$timeout', 'ProfileService', 'SearchService', '$rootScope', '$interval',
-    '$http', function ($scope, AuthService, $location, $timeout, ProfileService, SearchService, $rootScope, $interval, $http) {
+wizerApp.controller('navController', ['$scope','AuthService', '$location', '$timeout', 'ProfileService','socketIO', 'SearchService', '$rootScope', '$interval',
+    '$http', function ($scope, AuthService, $location, $timeout, ProfileService, socketIO, SearchService, $rootScope, $interval, $http) {
 
         $scope.loadingNotifications = true;
         $scope.notifications = [];
@@ -11,6 +11,15 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
             $('.search-nav-form').removeClass('ng-hide');
         };
 
+        function registerUserToSocketIO (user_id) {
+
+            socketIO.on('ackConnection', function (){
+                console.log("successfully registered to socket.io");
+            });
+            socketIO.emit('registerClientToClients', user_id);
+        }
+
+        console.log('From nav: ');
 
         console.log("PATH ===================== " + $location.path());
         $scope.loggedUser = {};
@@ -26,6 +35,7 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
                 AuthService.getUserByToken()
                     .then(function (data) {
                         console.log("DATA = " + JSON.stringify(data));
+                        registerUserToSocketIO(data.data._id);
                         $rootScope.loggedUser = data.data;
                         $scope.loggedUser = $rootScope.loggedUser;
 
@@ -132,6 +142,8 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
         };
 
 
+
+
         var ctr = 0;
         $scope.isLoggedIn = function() {
             return $scope.isLogged;
@@ -147,4 +159,6 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
             console.log($scope.searchTerm.keywords);
             SearchService.freeTextSearch($scope.searchTerm.keywords);
         }
+
+
     }]);
