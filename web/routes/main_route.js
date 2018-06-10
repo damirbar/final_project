@@ -24,6 +24,8 @@ router.all("*", function (req, res, next) {
 
                 User.findOne({email: decoded}, function (err, user) {
 
+                    next();
+
                     // if (req.url === "/get-all-messages?sid=12") return;//remove this only for testing
 
                     // console.log(req.url);
@@ -159,7 +161,6 @@ router.all("*", function (req, res, next) {
                         user.save();
                     }
                 });
-                return next();
             }
         });
     }
