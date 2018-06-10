@@ -81,6 +81,10 @@ public interface RetrofitInterface {
     @GET("sessions/rate-message")
     Observable<Response> rateMessage(@Query("sid") String sid, @Query("msgid") String msgid, @Query("rating") int rating);
 
+    @GET("sessions/rate-reply-message")
+    Observable<Response> ratereplyMessage(@Query("sid") String sid, @Query("msgid") String msgid, @Query("rating") int rating);
+
+
     @GET("sessions/get-students-count")
     Observable<Response> getStudentsCount(@Query("id") String id);
 
@@ -105,6 +109,10 @@ public interface RetrofitInterface {
     @Multipart
     @POST("sessions/post-video")
     Observable<Response> uploadVid(@Part MultipartBody.Part file, @Query("sid") String sid);
+
+    @GET("sessions/get-session")
+    Observable<Session> getSessionById(@Query("sid") String sid);
+
 
     //////////////////Courses//////////////////
 

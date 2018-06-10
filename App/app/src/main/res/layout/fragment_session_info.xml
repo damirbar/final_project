@@ -44,7 +44,36 @@
                     android:layout_marginTop="2dp"
                     android:gravity="start|center"
                     android:paddingBottom="5dp"
-                    android:text="1234"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:divider="@drawable/divider"
+                android:orientation="vertical"
+                android:showDividers="none|end">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:gravity="start|center"
+                    android:paddingBottom="5dp"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp" />
 
@@ -75,7 +104,6 @@
                     android:layout_marginTop="2dp"
                     android:gravity="start|center"
                     android:paddingBottom="5dp"
-                    android:text="1/1/18"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp" />
 
@@ -107,7 +135,6 @@
                     android:layout_marginTop="2dp"
                     android:gravity="start|center"
                     android:paddingBottom="5dp"
-                    android:text="Shay cohen"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp" />
 
@@ -139,7 +166,6 @@
                     android:layout_marginTop="2dp"
                     android:gravity="start|center"
                     android:paddingBottom="5dp"
-                    android:text="4.4.4"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp" />
 
@@ -171,7 +197,6 @@
                     android:layout_marginTop="2dp"
                     android:gravity="start|center"
                     android:paddingBottom="5dp"
-                    android:text="5"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp" />
 

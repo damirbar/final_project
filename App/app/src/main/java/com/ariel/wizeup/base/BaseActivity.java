@@ -1,15 +1,10 @@
 package com.ariel.wizeup.base;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -186,7 +181,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getProfile(mId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseProfile, ServerResponse::handleErrorQuiet));
+                .subscribe(this::handleResponseProfile, i -> mServerResponse.handleErrorDown(i)));
     }
 
     private void handleResponseProfile(User user) {
@@ -272,7 +267,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getEvents(0, ADD_ITEMS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseEventsInit, ServerResponse::handleErrorQuiet));
+                .subscribe(this::handleResponseEventsInit, i -> mServerResponse.handleErrorDown(i)));
 
     }
 
@@ -292,7 +287,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getEvents(mAdapter.getEventsList().size(), ADD_ITEMS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseEvents, ServerResponse::handleErrorQuiet));
+                .subscribe(this::handleResponseEvents, i -> mServerResponse.handleErrorDown(i)));
 
     }
 
