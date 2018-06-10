@@ -81,6 +81,29 @@ router.get("/get-user-by-token", function (req, res) {
 });
 
 
+router.get("/get-user-from-google", function (req, res) {
+    User.findOne({accessToken: req.query.token}, function (err, user) {
+        if (err) return next(err);
+        if (user) {
+            res.status(200).send({
+                message: 'welcome to Wizer!',
+                email: user.email,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                accessToken: user.accessToken,
+                role: user.role,
+                photos: user.profile_img,
+                _id: user._id,
+                display_name: user.display_name
+            })
+        }
+        else {
+            console.log("no such student");
+            res.status(404).json({message: "no such student"});
+        }
+    });
+});
+
 router.post("/new-user", function (req, res) {
 
     const fname = req.body.first_name,
@@ -242,4 +265,20 @@ router.post("/reset-pass-finish", function (req, res) {
     });
 });
 
+
+////
+
+let passport = require('passport');
+
+router.get('/google',
+    passport.authenticate('google', {scope: ['profile email', 'https://www.googleapis.com/auth/user.birthday.read']}));
+
+router.get('/google/callback',
+    passport.authenticate('google', {failureRedirect: '/'}), function (req, res) {
+        // Successful authentication, redirect home.
+        res.render('close-auth.html', {userId: req.session.passport.user});
+    }
+);
+
+///
 module.exports = router;

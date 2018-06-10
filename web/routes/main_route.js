@@ -7,7 +7,14 @@ const User = require("../schemas/user");
 
 //make sure that all request contain a valid token
 router.all("*", function (req, res, next) {
-    if (req.url === '/' || req.url === '/favicon.ico' || req.url.includes('/auth/auth-login-user-pass') || req.url.includes('/auth/new-user') || req.url.includes('/auth/reset-pass-finish') || req.url.includes('/auth/reset-pass-init')) {
+    if (req.url === '/' || req.url === '/favicon.ico'
+        || req.url.includes('/auth/auth-login-user-pass')
+        || req.url.includes('/auth/new-user')
+        || req.url.includes('/auth/reset-pass-finish')
+        || req.url.includes('/auth/reset-pass-init')
+        || req.url.includes('/auth/google')
+        || req.url.includes('/auth/google/callback')
+        || req.url.includes('/auth/get-user-from-google')) {
         return next();
     }
     var token = req.headers["x-access-token"] || req.query.token;
