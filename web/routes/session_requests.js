@@ -77,19 +77,47 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
         if (sess) {
             sess.students.forEach(function (student) {
                 if (student.email === req.verifiedEmail) {
-                    if (student.rating_val != val) {
-                        student.rating_val = val;
-                        let newarray = sess.students;
-                        let rating = (val === "1" ? (sess.curr_rating + 1) : (sess.curr_rating - 1));
-                        sess.update({students: newarray, curr_rating: rating}).then(function () {
-                            if (err) return next(err);
-                            console.log("Updates rating value successfully ");
-                            res.json(sess);
-                        });
+                    if(val == 1){
+                        if(!sess.likers.includes(student.email)){
+                            sess.likers.push(student.email);
+                            sess.likes+=1;
+                            if(sess.dislikers.includes(student.email)){
+                                sess.dislikers.forEach(function (stud, i) {
+                                    if(stud.email == student.email) sess.dislikers.splice(i, 1);
+                                });
+                                sess.dislikes-=1;
+                            }
+                        }
                     }
-                    else {
+                    else{
+                        if(!sess.dislikers.includes(student.email)){
+                            sess.dislikers.push(student.email);
+                            sess.dislikes+=1;
+                            if(sess.likers.includes(student.email)){
+                                sess.likers.forEach(function (stud, i) {
+                                    if(stud.email == student.email) sess.likers.splice(i, 1);
+                                });
+                                sess.likes-=1;
+                            }
+                        }
+                    }
+                    sess.save().then(function () {
+                        console.log("Updates rating value successfully ");
                         res.json(sess);
-                    }
+                    });
+                    // if (student.rating_val != val) {
+                    //     student.rating_val = val;
+                    //     let newarray = sess.students;
+                    //     let rating = (val === "1" ? (sess.curr_rating + 1) : (sess.curr_rating - 1));
+                    //     sess.update({students: newarray, curr_rating: rating}).then(function () {
+                    //         if (err) return next(err);
+                    //         console.log("Updates rating value successfully ");
+                    //         res.json(sess);
+                    //     });
+                    // }
+                    // else {
+                    //     res.json(sess);
+                    // }
                 }
             });
         }
@@ -298,6 +326,7 @@ router.get("/rate-reply-message", function (req, res) {
                    let newArray = message.replies;
                    newArray.push(newMesssage);
                    message.update({replies: newArray },function (err) {
+                       console.log("done rating message");
                        let emails = [];
                        emails.push(decoded);
                        emails.push(to);
@@ -371,7 +400,7 @@ router.post("/messages", function (req, res) {
                                students.forEach(function(student){
                                  let notify ={
                                      type:  "Session",
-                                     body: user.first_name + " posted a question in session "+ sess.name,
+                                     body: user.first_name +  " " + user.last_name+ " posted a question in session "+ sess.name,
                                      date:  Date.now()
                                             };
                                    student.notifications.push(notify);
