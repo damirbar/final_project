@@ -1,4 +1,4 @@
-package com.ariel.wizeup;
+package com.ariel.wizeup.liveStream;
 
 public class PeerConnectionParameters {
     public final boolean videoCallEnabled;

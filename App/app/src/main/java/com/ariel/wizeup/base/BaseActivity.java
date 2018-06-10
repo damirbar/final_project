@@ -28,6 +28,7 @@ import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.profile.ProfileActivity;
 import com.ariel.wizeup.search.SearchActivity;
 import com.ariel.wizeup.session.ConnectSessionActivity;
+import com.ariel.wizeup.settings.ChangeLanguage;
 import com.ariel.wizeup.settings.EndlessScrollListener;
 import com.ariel.wizeup.settings.EventsAdapter;
 import com.ariel.wizeup.settings.SettingsActivity;
@@ -59,6 +60,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     private String mId;
     private DrawerHeader mDrawerHeader;
     private EventsAdapter mAdapter;
+    private ChangeLanguage changeLanguage;
     private static int ADD_ITEMS = 10;
 
 
@@ -66,6 +68,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+        changeLanguage =new ChangeLanguage(this);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.search_List));
@@ -144,6 +147,9 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEmail = mSharedPreferences.getString(EMAIL, "");
         mId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID, "");
+        String lang = mSharedPreferences.getString(Constants.LANG,"");
+        changeLanguage.setLocale(lang);
+
     }
 
     private void setupDrawer() {

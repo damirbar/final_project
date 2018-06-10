@@ -34,7 +34,6 @@ public class CommentActivity extends AppCompatActivity {
     private ListView commentsList;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private EditText mCommentText;
-    private ImageButton buttonBack;
     private TextView buttonSend;
     private String sid;
     private String mid;
@@ -67,7 +66,7 @@ public class CommentActivity extends AppCompatActivity {
     private void initViews() {
         commentsList = (ListView) findViewById(R.id.comments);
         mCommentText = (EditText) findViewById(R.id.com_text);
-        buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
+        ImageButton buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         buttonSend = (TextView) findViewById(R.id.send_btn);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
         mSwipeRefreshLayout.setVisibility(View.GONE);

@@ -1,4 +1,4 @@
-package com.ariel.wizeup;
+package com.ariel.wizeup.liveStream;
 
 import java.net.URISyntaxException;
 import java.util.HashMap;

@@ -123,12 +123,15 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RtcActivity"
-            android:configChanges="keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
-        <activity android:name=".settings.TimelineActivity"
+            android:name=".liveStream.RtcActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name=".settings.TimelineActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".session.GraphActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
 
     </application>
 
