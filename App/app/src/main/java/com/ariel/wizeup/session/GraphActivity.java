@@ -1,6 +1,9 @@
 package com.ariel.wizeup.session;
 
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -10,6 +13,8 @@ import android.widget.TextView;
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
+import com.ariel.wizeup.settings.ChangeLanguage;
+import com.ariel.wizeup.utils.Constants;
 import com.robinhood.spark.SparkView;
 
 import rx.subscriptions.CompositeSubscription;
@@ -29,13 +34,13 @@ public class GraphActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale();
+        getData();
         setContentView(R.layout.activity_graph);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.activity_graph));
         initViews();
-
-
     }
 
     private void initViews() {
@@ -61,6 +66,14 @@ public class GraphActivity extends AppCompatActivity {
 
     }
 
+    private void loadLocale() {
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String lang = mSharedPreferences.getString(Constants.LANG, "");
+        ChangeLanguage changeLanguage = new ChangeLanguage(this);
+        changeLanguage.setLocale(lang);
+    }
+
+
     private boolean getData() {
         if (getIntent().getExtras() != null) {
             String _sid = getIntent().getExtras().getString("sid");
@@ -74,11 +87,20 @@ public class GraphActivity extends AppCompatActivity {
             return false;
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        loadLocale();
+
+    }
+
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mSubscriptions.unsubscribe();
+        loadLocale();
     }
 
 

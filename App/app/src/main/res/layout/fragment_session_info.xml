@@ -247,7 +247,7 @@
                         android:layout_centerHorizontal="true"
                         android:gravity="start|center"
                         android:paddingBottom="5dp"
-                        android:text="0"
+                        android:text="100%"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="18sp" />
 

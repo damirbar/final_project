@@ -39,10 +39,11 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
     private String sid;
     private SessionPostsAdapter mAdapter;
     private String mId;
+    private View view;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_session_feed,container,false);
+        view = inflater.inflate(R.layout.fragment_session_feed,container,false);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
         mServerResponse = new ServerResponse(view.findViewById(R.id.activity_session_feed));
@@ -100,15 +101,16 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
         mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
         mSwipeRefreshLayout.setVisibility(View.GONE);
         mFBPost = v.findViewById(R.id.fb_post);
-        mFBPost.setOnClickListener(view -> openPost());
+        mFBPost.setOnClickListener(view -> askUser());
     }
 
-    private void openPost(){
-        Intent intent = new Intent(getActivity(), PostActivity.class);
-        intent.putExtra("sid",sid);
-        startActivity(intent);
+    private void askUser(){
+        Bundle bundle = new Bundle();
+        bundle.putString("sid", sid);
+        PostBottomDialog tab1 = new PostBottomDialog();
+        tab1.setArguments(bundle);
+        tab1.show(getActivity().getSupportFragmentManager(), "Dialog");
     }
-
 
     private void getData() {
         Bundle bundle = this.getArguments();
@@ -117,6 +119,7 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
 
         }
     }
+
     private void pullMessages(){
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getAllMessages(sid)
                 .observeOn(AndroidSchedulers.mainThread())

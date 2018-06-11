@@ -131,8 +131,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".session.GraphActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape" />
+        <activity android:name=".session.QuizActivity"></activity>
     </application>
 
 </manifest>

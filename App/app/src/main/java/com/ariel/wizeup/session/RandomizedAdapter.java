@@ -7,18 +7,18 @@ import com.robinhood.spark.SparkAdapter;
 import java.util.Random;
 
 public  class RandomizedAdapter extends SparkAdapter {
-    private final float[] yData;
+    private final int[] yData;
     private final Random random;
 
     public RandomizedAdapter() {
         random = new Random();
-        yData = new float[50];
+        yData = new int[100];
         randomize();
     }
 
     private void randomize() {
         for (int i = 0, count = yData.length; i < count; i++) {
-            yData[i] = random.nextFloat();
+            yData[i] = random.nextInt(100);
         }
         notifyDataSetChanged();
     }

@@ -116,6 +116,7 @@ public class SessionInfoFragment extends Fragment {
 
     private void openGraph() {
         Intent i = new Intent(getActivity(), GraphActivity.class);
+        i.putExtra("sid",sid);
         startActivity(i);
     }
 
