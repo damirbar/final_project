@@ -56,7 +56,8 @@ wizerApp.controller('sessionController',
                         console.log("Connected to session as " + $scope.sessionUserName !== "" ? $scope.sessionUserName : $scope.sessionUserName);// + JSON.stringify(data.session));
                         console.log("SESSION DATA = " + JSON.stringify(data));
                         io.connect();
-                        if (data.session) {
+                        if (data._id) {
+                            // console.log("YES");
                             $scope.isConnectedToSession = true;
                             $scope.session = data.session;
                             getting();
