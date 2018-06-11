@@ -71,7 +71,6 @@ wizerApp.controller('sessionController',
         };
 
         $scope.sendMessage = function () {
-
             SessionService.sendMessage($scope.sessionID, $scope.message.type, $scope.message.body)
                 .then(function (data) {
                     console.log("Sent message");
@@ -83,9 +82,7 @@ wizerApp.controller('sessionController',
                 });
         };
 
-
         $scope.createSession = function () {
-
             SessionService.createSession($scope.createSessionID, $scope.createSessionName, $scope.createSessionLocation)
                 .then(function (data) {
                     if (data.error) {
@@ -110,7 +107,6 @@ wizerApp.controller('sessionController',
                     console.log(err);
                     $scope.firstConnectionTry = false;
                 });
-
         };
 
         $scope.getMessages = function () {

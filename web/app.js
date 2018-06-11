@@ -1,8 +1,6 @@
 var express = require("express");
 var app = express();
-var HashMap = require("hashmap");
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
 
 var mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
@@ -20,10 +18,9 @@ app.use(logger('dev'));
 var teacherRequests = require('./routes/teacher_requests');
 var studentRequests = require('./routes/students_request');
 var coursesRequests = require('./routes/courses_request');
-var mainRequests    = require('./routes/main_route');
+var mainRequests = require('./routes/main_route');
 var sessionRequests = require('./routes/session_requests');
 var searchRequests = require('./routes/search_routes');
-
 
 
 app.use(bodyParser.json());
@@ -36,8 +33,7 @@ myLessCompiler();
 
 
 var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
-mongoose.connect(mongoDB, {
-    }
+mongoose.connect(mongoDB, {}
 );
 
 var db = mongoose.connection;
@@ -63,29 +59,67 @@ var authRouts = require("./routes/login_requests");
 app.use('/auth', authRouts);
 
 
-
 //////////SOCKET.IO
 
-var sockets = new HashMap();
-var clients = new HashMap();
+const io = require('socket.io')(http);
+const HashMap = require("hashmap");
 
-io.on('connection', function(socket) {
+const sockets = new HashMap();
+const clients = new HashMap();
+const pendingSockets = new HashMap();
+
+io.on('connection', function (socket) {
 
     console.log(socket.id + ' Connected');
 
-    socket.on('registerClientToClients', function (user_id){
+    pendingSockets.set(socket.id, socket);
+
+    //On Authentication
+    socket.on('registerClientToClients', function (user_id) {
+
+        pendingSockets.remove(socket.id);
+
         clients.set(user_id, socket);
         sockets.set(socket.id, user_id);
+
+        console.log(user_id + ' was registered');
+
+        /*can be a boolean value to ensure that the user has been registered successfully*/
         socket.emit('ackConnection', "Hello from the other siiiiiiiide!!!!!!");
     });
 
-    socket.on('disconnect', function() {
+    socket.on('sendNotification', function(subject_id){});
 
-        var userID = sockets.get(socket.id);
-        sockets.remove(socket.id);
-        clients.remove(userID);
 
-        console.log(userID + " disconnected");
+    socket.on('unregisterClientToClients', function (user_id) {
+
+        console.log("removeing " + user_id);
+
+        if(clients.has(user_id)) {
+            clients.remove(user_id);
+            if (sockets.has(socket.id)) {
+                sockets.remove(socket.id);
+            }
+            pendingSockets.set(socket.id, socket);
+        }
+    });
+
+
+
+    //On disconnection. Removes the user from the map
+    socket.on('disconnect', function () {
+
+        var socketID = socket.id;
+
+        if(pendingSockets.has(socketID)){
+            pendingSockets.remove(socketID);
+
+        }else{
+            var userID = sockets.get(socketID);
+            sockets.remove(socketID);
+            clients.remove(userID);
+            console.log(userID + " disconnected");
+        }
     });
 });
 
@@ -96,11 +130,9 @@ http.listen(3000, function () {
 
 
 //The 404 Route (ALWAYS Keep this as the last route)
-app.get('*', function(req, res){
+app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname + "/index.html"));
 });
-
-
 
 
 var addChat = function () {
