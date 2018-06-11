@@ -42,7 +42,9 @@ public class CoursesAdapter extends ArrayAdapter<Course> {
         }
         TextView mCourseName = listItem.findViewById(R.id.course_name);
         TextView mTeacherName = listItem.findViewById(R.id.techer_name);
+        TextView mCourseLoc = listItem.findViewById(R.id.course_loc);
 
+        mCourseLoc.setText(currentCourse.getLocation());
         mCourseName.setText(currentCourse.getName());
         String teacher = currentCourse.getTeacher_fname()+" "+currentCourse.getTeacher_lname();
         mTeacherName.setText(teacher);

@@ -23,18 +23,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-            <ImageButton
+            <Button
                 android:id="@+id/image_Button_back"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@null"
-                app:srcCompat="@drawable/intercom_back" />
+                android:fontFamily="sans-serif"
+                android:gravity="start"
+                android:text="Quit"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
 
         </RelativeLayout>
 

@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
@@ -110,7 +111,7 @@ public class SessionActivity extends AppCompatActivity {
 
 
     private void initViews() {
-        ImageButton buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
+        Button buttonBack =  findViewById(R.id.image_Button_back);
         buttonBack.setOnClickListener(view -> goBack());
         buttonVid = (ImageButton) findViewById(R.id.vid_button_close);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
