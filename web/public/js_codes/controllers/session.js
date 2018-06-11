@@ -1,5 +1,5 @@
 wizerApp.controller('sessionController',
-    function ($scope, $rootScope, $routeParams, $location, $window, $interval, AuthService, SessionService, $http, UploadService/*,socketIO*/) {
+    function ($scope, $rootScope, $routeParams, $location, $window, $interval, AuthService, SessionService, $http, UploadService, socketIO) {
 
         console.log("Hello from sessionController");
         $scope.sessionID = "";

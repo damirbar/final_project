@@ -1,6 +1,6 @@
 var express = require("express");
 var app = express();
-
+var HashMap = require("hashmap");
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
@@ -16,12 +16,6 @@ var logger = require('morgan');
 const router = express.Router();
 app.use(logger('dev'));
 
-let passportService = require('./tools/passport');
-let passport       = require("passport");
-
-passportService.init();
-app.use(passport.initialize());
-app.use(passport.session());
 
 var teacherRequests = require('./routes/teacher_requests');
 var studentRequests = require('./routes/students_request');
@@ -69,15 +63,32 @@ var authRouts = require("./routes/login_requests");
 app.use('/auth', authRouts);
 
 
-// io.on('connect', function(socket) {
-//     console.log("SOMEBODY CONNECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//     socket.on('disconnect', function() {
-//         console.log("ERAN IS FUCKING GAY");
-//     });
-// });
-let emailService = require('./tools/email');
 
-emailService.init();
+//////////SOCKET.IO
+
+var sockets = new HashMap();
+var clients = new HashMap();
+
+io.on('connection', function(socket) {
+
+    console.log(socket.id + ' Connected');
+
+    socket.on('registerClientToClients', function (user_id){
+        clients.set(user_id, socket);
+        sockets.set(socket.id, user_id);
+        socket.emit('ackConnection', "Hello from the other siiiiiiiide!!!!!!");
+    });
+
+    socket.on('disconnect', function() {
+
+        var userID = sockets.get(socket.id);
+        sockets.remove(socket.id);
+        clients.remove(userID);
+
+        console.log(userID + " disconnected");
+    });
+});
+
 
 http.listen(3000, function () {
     console.log("listening...");

@@ -1,6 +1,5 @@
 wizerApp.service('AuthService', function($http, AuthToken, $rootScope) {
 
-
     this.googleLogin = function() {
         //return $http.get("http://localhost:3000/auth/google");
         $http.get("/auth/google");
@@ -17,10 +16,12 @@ wizerApp.service('AuthService', function($http, AuthToken, $rootScope) {
         return $http({method: 'POST', url: '/auth/auth-login-user-pass?email=' + email +'&password=' + password,
             headers: {'Authorization': stringToSend}})
             .then(function(data) {
+
                 console.log(data.data.msg);
 
                 AuthToken.setToken(data.data.accessToken);
                 return data.data;
+
             }, function(){
                 console.log("Error Authenticating " + email);
             });
@@ -53,7 +54,6 @@ wizerApp.service('AuthService', function($http, AuthToken, $rootScope) {
         var token = AuthToken.getToken();
         return $http.get('/auth/get-user-by-token?token=' + token);
     };
-
 
     this.logout = function() {
         AuthToken.setToken();
