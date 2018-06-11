@@ -37,24 +37,4 @@ public class ChangeLanguage {
         editor.apply();
     }
 
-    public void changeLanguageDialog() {
-        final String[] listItems = {activity.getString(R.string.english), activity.getString(R.string.hebrew)};
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(
-                activity,R.style.Theme_Report_Dialog_Alert);
-        mBuilder.setTitle(R.string.choose_language);
-        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
-        String lang = mSharedPreferences.getString(Constants.LANG, "");
-        mBuilder.setItems(listItems, (dialog, item) -> {
-            if (item == 0 && !(lang.equalsIgnoreCase("en"))) {
-                setLocale("en");
-                activity.recreate();
-            } else if (item == 1 && !(lang.equalsIgnoreCase("iw"))) {
-                setLocale("iw");
-                activity.recreate();
-            }
-        });
-        AlertDialog mDialog = mBuilder.create();
-        mDialog.show();
-    }
-
 }

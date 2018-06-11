@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/RelativeLayoutSheet"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/RelativeLayoutSheet"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    app:layout_behavior="@string/bottom_sheet_behavior"
     android:background="#ffffff"
+    android:padding="5dp"
     app:behavior_hideable="true"
-    android:padding="20dp"
-    >
+    app:layout_behavior="@string/bottom_sheet_behavior">
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,6 +34,7 @@
                     android:height="60dp"
                     android:background="#fff"
                     android:drawablePadding="6dp"
+                    android:drawableTop="@drawable/post"
                     android:fontFamily="sans-serif-light"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:gravity="center"
@@ -42,7 +42,8 @@
                     android:text="Post"
                     android:textAlignment="center"
                     android:textAllCaps="false"
-                    android:textColor="#666" />
+                    android:textColor="#666"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -62,6 +63,7 @@
                     android:height="60dp"
                     android:background="#fff"
                     android:drawablePadding="6dp"
+                    android:drawableTop="@drawable/quiz"
                     android:fontFamily="sans-serif-light"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:gravity="center"
@@ -69,14 +71,14 @@
                     android:text="Quiz"
                     android:textAlignment="center"
                     android:textAllCaps="false"
-                    android:textColor="#666" />
+                    android:textColor="#666"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
         </TableRow>
 
     </TableLayout>
-
 
 
 </LinearLayout>

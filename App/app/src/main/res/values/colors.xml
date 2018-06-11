@@ -10,6 +10,7 @@
     <color name="def_text">#808080</color>
     <color name="transparent">#00ff0000</color>
 
+    <color name="dialog_color">#009688</color>
 
     <color name="highlight_default_color">#2196f3</color>
     <color name="secondary_post_text">#989898</color>

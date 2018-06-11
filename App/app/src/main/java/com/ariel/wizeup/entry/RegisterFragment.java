@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.base.BaseActivity;
+import com.ariel.wizeup.dialogs.LanguageDialog;
 import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.User;
 import com.ariel.wizeup.network.RetrofitRequests;
@@ -87,12 +88,18 @@ public class RegisterFragment extends Fragment {
         TextView mTvLogin = v.findViewById(R.id.tv_login);
         mProgressbar = v.findViewById(R.id.progress);
         TextView mLangTextView = v.findViewById(R.id.langTextView);
-        mLangTextView.setOnClickListener(view -> ChangeLanguage.changeLanguageDialog());
+        mLangTextView.setOnClickListener(view -> askUserLang());
         mBtRegister.setOnClickListener(view -> register());
         mTvLogin.setOnClickListener(view -> goToLogin());
         textChangedListener();
 
     }
+
+    private void askUserLang() {
+        LanguageDialog fragment = new LanguageDialog();
+        fragment.show(getFragmentManager(), LanguageDialog.TAG);
+    }
+
 
     private void register() {
 

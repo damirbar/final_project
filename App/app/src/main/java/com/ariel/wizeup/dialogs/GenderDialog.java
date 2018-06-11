@@ -3,107 +3,94 @@ package com.ariel.wizeup.dialogs;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.NumberPicker;
 
 import com.ariel.wizeup.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link GenderDialog.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link GenderDialog#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class GenderDialog extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+public class GenderDialog extends BottomSheetDialogFragment {
 
-    public GenderDialog() {
-        // Required empty public constructor
+    public interface OnCallbackGender {
+        public void UpdateGender(String gender);
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment GenderDialog.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static GenderDialog newInstance(String param1, String param2) {
-        GenderDialog fragment = new GenderDialog();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    public static final String TAG = GenderDialog.class.getSimpleName();
 
+    private NumberPicker mNumberPicker;
+    GenderDialog.OnCallbackGender mCallback;
+    private String[] data;
+
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_gender_dialog, container, false);
+        initViews(view);
+        initPicker();
+        getData();
+
+        return view;
+    }
+
+    private void initPicker() {
+        data = new String[]{"Male", "Female", "Not Specified"};
+        mNumberPicker.setMinValue(0);
+        mNumberPicker.setMaxValue(data.length-1);
+        mNumberPicker.setDisplayedValues(data);
+
+    }
+
+    private void initViews(View v) {
+        mNumberPicker = v.findViewById(R.id.number_picker);
+        Button mBtSetGender = v.findViewById(R.id.button_ok);
+        mBtSetGender.setOnClickListener(view -> onGenderSet());
+        Button mBtCancel = v.findViewById(R.id.button_cancel);
+        mBtCancel.setOnClickListener(view -> dismiss());
+    }
+
+    private void getData() {
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            String gender = bundle.getString("gender");
+            if(gender!=null) {
+                int i = 0;
+                if (gender.equalsIgnoreCase("Female"))
+                    i = 1;
+                else if (gender.equalsIgnoreCase("Not Specified"))
+                    i = 2;
+                mNumberPicker.setValue(i);
+            }
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_gender_dialog, container, false);
+    public void onGenderSet() {
+        String gender = data[mNumberPicker.getValue()];
+        mCallback.UpdateGender(gender);
+        dismiss();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+        try {
+            mCallback = (GenderDialog.OnCallbackGender) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

@@ -86,6 +86,8 @@ public class MyDateDialog extends BottomSheetDialogFragment {
         super.onAttach(context);
         try {
             mCallback = (OnCallbackReceived) context;
-        } catch (ClassCastException e) {}
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
     }
 }

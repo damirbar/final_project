@@ -14,12 +14,12 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="?attr/colorPrimaryDark"
-        app:layout_scrollFlags="enterAlways|scroll"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:contentInsetEnd="0dp"
         app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
         app:contentInsetRight="0dp"
-        app:contentInsetEnd="0dp">
+        app:contentInsetStart="0dp"
+        app:layout_scrollFlags="enterAlways|scroll"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -65,6 +65,172 @@
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/edit_text_q"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="55dp"
+                android:layout_marginTop="@dimen/top_margin30"
+                android:layout_weight="1"
+                android:background="@drawable/dark_edit_text"
+                android:gravity="center"
+                android:hint="Question  (required)"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLength="@integer/que_max"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="25dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginStart="70dp"
+                android:orientation="horizontal">
+
+
+                <EditText
+                    android:id="@+id/edit_text_ans1"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/dark_edit_text"
+                    android:gravity="center"
+                    android:hint="Answer 1  (required)"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLength="@integer/ans_max"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@null"
+                    android:button="@drawable/ans_checkbox" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginStart="70dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edit_text_ans2"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/dark_edit_text"
+                    android:gravity="center"
+                    android:hint="Answer 2  (required)"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLength="@integer/ans_max"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@null"
+                    android:button="@drawable/ans_checkbox" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginStart="70dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edit_text_ans3"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/dark_edit_text"
+                    android:gravity="center"
+                    android:hint="Answer 3"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLength="@integer/ans_max"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@null"
+                    android:button="@drawable/ans_checkbox" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginStart="70dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edit_text_ans4"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/dark_edit_text"
+                    android:gravity="center"
+                    android:hint="Answer 4"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLength="@integer/ans_max"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@null"
+                    android:button="@drawable/ans_checkbox" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </RelativeLayout>

@@ -51,4 +51,9 @@
         <item name="spark_animateChanges">true</item>
     </style>
 
+    <style name="DefaultPickerTheme" parent="AppTheme">
+        <item name="colorControlNormal">@color/dialog_color</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

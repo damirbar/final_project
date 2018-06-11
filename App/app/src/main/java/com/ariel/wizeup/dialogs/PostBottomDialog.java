@@ -1,4 +1,4 @@
-package com.ariel.wizeup.session;
+package com.ariel.wizeup.dialogs;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ariel.wizeup.R;
+import com.ariel.wizeup.session.PostActivity;
+import com.ariel.wizeup.session.QuizActivity;
 
 public class PostBottomDialog extends BottomSheetDialogFragment {
     private String sid;

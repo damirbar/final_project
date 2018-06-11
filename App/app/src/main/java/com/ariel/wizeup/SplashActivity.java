@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.ariel.wizeup.entry.EntryActivity;
 import com.ariel.wizeup.session.GraphActivity;
+import com.ariel.wizeup.session.QuizActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -13,7 +14,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = new Intent(this, EntryActivity.class);
-//        Intent intent = new Intent(this, GraphActivity.class);//rm
+//        Intent intent = new Intent(this, QuizActivity.class);//rm
 
         startActivity(intent);
         finish();

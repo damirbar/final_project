@@ -7,36 +7,33 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <DatePicker
-        android:id="@+id/datePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
-        android:spinnersShown="true"
+    <NumberPicker
+        android:id="@+id/number_picker"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:descendantFocusability="blocksDescendants"
         android:theme="@style/DefaultPickerTheme" />
-
 
     <Button
         android:id="@+id/button_cancel"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/datePicker"
-        android:layout_alignStart="@+id/datePicker"
-        android:layout_below="@+id/datePicker"
-        android:text="@string/cancel" />
+        android:layout_alignLeft="@+id/number_picker"
+        android:layout_alignStart="@+id/number_picker"
+        android:layout_below="@+id/number_picker"
+        android:text="@string/cancel"
+        android:textColor="@color/dialog_color" />
 
     <Button
         android:id="@+id/button_ok"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/datePicker"
-        android:layout_alignRight="@+id/datePicker"
-        android:layout_below="@+id/datePicker"
-        android:text="@string/ok" />
+        android:layout_alignEnd="@+id/number_picker"
+        android:layout_alignRight="@+id/number_picker"
+        android:layout_below="@+id/number_picker"
+        android:text="@string/ok"
+        android:textColor="@color/dialog_color" />
 
 </RelativeLayout>
