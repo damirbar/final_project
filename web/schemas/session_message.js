@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 var SessionMessageSchema = new mongoose.Schema({
     email: {type: String, default: ""},    // mail of sender
+    poster_id: {type: String, required: true},// message poster ID
     sid: {type: String, default: ""} ,   // session ID
     type: {type: String, default: ""},  // question or answer
     likes: {type : Number, default: 0},

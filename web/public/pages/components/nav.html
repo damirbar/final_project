@@ -4,25 +4,38 @@
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand wizer-logo" href="/">Wizer</a>
+
+
+    <div class="wizer-logo-div">
+        <!--<img class="img-wizeup" src="/imgs/wizeup-logo.png">-->
+    <!--<a class="navbar-brand wizer-logo" href="/"></a>-->
+    </div>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active home-nav-btn">
-                <a class="nav-link" href="/" ng-click="homeClick()">Home <span class="sr-only">(current)</span></a>
+
+            <li class="nav-item active home-nav-btn fade-in first">
+                <div class="wizer-logo-div">
+                    <!--<img class="img-wizeup" src="/imgs/wizeup-logo.png">-->
+                    <!--<a class="navbar-brand wizer-logo" href="/"></a>-->
+                </div>
             </li>
-            <li class="nav-item non-home-nav-btn">
+
+            <li class="nav-item active home-nav-btn fade-in first">
+                <a class="nav-link liner" href="/" ng-click="homeClick()">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item non-home-nav-btn fade-in first">
                 <!--<a class="nav-link" href="#/">Profile</a>-->
                 <!--<a class="nav-link profile-link" ng-href="#/profile/{{$rootScope.loggedUser._id}}" ng-if="isLogged">Profile</a>-->
-                <a class="nav-link profile-link" ng-show="isLoggedIn()" ng-click="nonHomeClick()">Profile</a>
+                <a class="nav-link profile-link liner" ng-show="isLoggedIn()" ng-click="nonHomeClick()">Profile</a>
             </li>
 
-            <li class="nav-item non-home-nav-btn">
-                <a class="nav-link session-link" href="/sessions/" ng-show="isLoggedIn()" ng-click="nonHomeClick()">Session</a>
+            <li class="nav-item non-home-nav-btn fade-in first">
+                <a class="nav-link session-link liner" href="/sessions/" ng-show="isLoggedIn()" ng-click="nonHomeClick()">Session</a>
             </li>
 
-            <li class="nav-item non-home-nav-btn">
-                <a class="nav-link courses-link" href="/courses/" ng-show="isLoggedIn()" ng-click="nonHomeClick()">Courses</a>
+            <li class="nav-item non-home-nav-btn fade-in first">
+                <a class="nav-link courses-link liner" href="/courses/" ng-show="isLoggedIn()" ng-click="nonHomeClick()">Courses</a>
             </li>
 
 
@@ -45,7 +58,7 @@
                 <!--<a class="dropdown-item" href="#!">Another action</a>-->
             <!--</div>-->
         <!--</div>-->
-        <div class="" ng-show="isLoggedIn()">
+        <div class="fade-in first" ng-show="isLoggedIn()">
             <button type="button" class="fas fa-bell btn btn-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             </button>
             <div class="dropdown-menu dropdown-menu-right notifications-background">
