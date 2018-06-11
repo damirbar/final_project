@@ -72,7 +72,7 @@ wizerApp.controller('sessionController',
         };
 
         $scope.sendMessage = function () {
-            SessionService.sendMessage($scope.sessionID, $scope.message.type, $scope.message.body)
+            SessionService.sendMessage(AuthService.user_id, $scope.sessionID, $scope.message.type, $scope.message.body)
                 .then(function (data) {
                     console.log("Sent message");
                     $scope.getMessages();
@@ -110,7 +110,7 @@ wizerApp.controller('sessionController',
                 });
         };
 
-        $scope.getMessages = function () {
+        $scope.getMessages = function (){
 
             SessionService.getMessages($scope.sessionID)
                 .then(function (data) {
@@ -148,7 +148,6 @@ wizerApp.controller('sessionController',
 
 
         $scope.disconnect = function () {
-
             SessionService.disconnect($scope.sessionID)
                 .then(function (data) {
                     $scope.isConnectedToSession = false;
@@ -157,7 +156,6 @@ wizerApp.controller('sessionController',
                 .catch(function (err) {
                     console.log("Error with disconnecting from session");
                 });
-
         };
 
 

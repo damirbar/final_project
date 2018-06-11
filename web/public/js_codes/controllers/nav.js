@@ -70,9 +70,10 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
                 });
         };
 
-
         $scope.logout = function () {
             console.log("Activated logout function");
+            console.log(AuthService.user_id);
+            unregisterUserFromSocketIO(AuthService.user_id);
             $scope.isLogged = false;
             AuthService.logout();
             $location.path('/');
@@ -102,7 +103,6 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
 
         };
 
-
         $scope.getNotifications = function () {
             ProfileService.getNotifications(0, 10)
                 .then(function (data) {
@@ -114,7 +114,6 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
                     console.log("An error occurred in facebookLogin()! " + JSON.stringify(err));
                 });
         };
-
 
 
         $scope.onSignIn = function (googleUser) {
@@ -144,9 +143,8 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
         //////
 
         ///////socket.io unregistration
-        function unregisterUserToSocketIO (user_id) {
-
-            socketIO.emit('unregisterClientToClients', user_id);
+        function unregisterUserFromSocketIO (user_id) {
+            socketIO.emit('unregisterClientFromClients', user_id);
         }
         //////
 
