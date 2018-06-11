@@ -5,7 +5,7 @@ let Session_Message = require("../schemas/session_message");
 let User = require("../schemas/user");
 let File = require("../schemas/file");
 ObjectID = require('mongodb').ObjectID;
-
+const socketIOEmitter = require('app.js');
 
 router.post("/connect-session", function (req, res) {
     const decoded = req.verifiedEmail;
@@ -184,7 +184,7 @@ router.get("/rate-message", function (req, res) {
         if (err) throw err;
 
         //finds the message and fetches its likers and dislikers arrays.
-        Session_Message.findOne({_id: mess_id}, {_id: 0, likers: 1, dislikers: 1, email:1}, function (err, raters) {
+        Session_Message.findOne({_id: mess_id}, {_id: 0, likers: 1, dislikers: 1,poster_id: 1, email:1}, function (err, raters) {
             to = raters.email;
             if (err) return err;
             let likers = raters.likers;
@@ -391,6 +391,7 @@ router.get("/rate-reply-message", function (req, res) {
 router.post("/messages", function (req, res) {
     const decoded = req.verifiedEmail;
     const msg = new Session_Message({
+            poster_id: req.body.sender_id,
             sid: req.body.sid,
             type: req.body.type,
             body: req.body.body,

@@ -60,11 +60,17 @@
         <div class="row">
 
             <div class="col-6 session-vid" ng-if="isConnectedToSession && session.videoUrl != ''">
+                <!--<video style="max-width: 100%"-->
+                <!--poster="{{session.picID}}" controls>-->
+                <!--<source ng-src="{{session.videoUrl}}"-->
+                <!--type="video/mp4">-->
+                <!--</video>-->
                 <video style="max-width: 100%"
-                       poster="{{session.picID}}" controls>
+                    poster="../imgs/wizeup-logo.png" controls>
                     <source ng-src="{{session.videoUrl}}"
                             type="video/mp4">
                 </video>
+
             </div>
 
             <!--<source src="http://res.cloudinary.com/wizeup/video/upload/v1526281528/1234video.mp4"-->
@@ -118,8 +124,13 @@
                         <div class="card-text bs-card-text">{{session.students.length}} students connected</div>
                         </div>
 
-                        <div class="session-rating display-4">
-                            Session rating: {{((session.curr_rating / session.students.length) * 100).toFixed(2)}}%
+                        <div class="session-rating container">
+                            <!--Session rating: {{((session.curr_rating / session.students.length) * 100).toFixed(2)}}%-->
+                            <div class="row">
+                                <span class="session-rating-header display-4 col-12 retroshadow">Session rating:</span>
+                                <div class="col-6 text-success session-dis-like">{{session.likes}} Likes</div>
+                                <div class="col-6 text-danger session-dis-like">{{session.dislikes}} Dislikes</div>
+                            </div>
                         </div>
                         <div class="like-unlike-session btn-group btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-lg btn-success active" ng-click="rateSession(1)">
@@ -208,7 +219,6 @@
 
                             <button type="button"
                                     ng-class="msgLikes[msgLikes.length - $index - 1] ? 'active btn btn-outline-success' : 'btn btn-outline-success'"
-
                                     ng-click="rateMessage(msg.sid, msg._id, 1)">Like
                             </button>
                             <button type="button"

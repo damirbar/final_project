@@ -65,6 +65,7 @@ app.use('/auth', authRouts);
 
 const io = require('socket.io')(http);
 const HashMap = require("hashmap");
+// const socketIO = require('./tools/socketIO');
 
 const sockets = new HashMap();
 const clients = new HashMap();
@@ -92,8 +93,7 @@ io.on('connection', function (socket) {
 
     socket.on('sendNotification', function(subject_id){});
 
-
-    socket.on('unregisterClientToClients', function (user_id) {
+    socket.on('unregisterClientFromClients', function (user_id) {
 
         console.log("removeing " + user_id);
 
@@ -106,8 +106,6 @@ io.on('connection', function (socket) {
         }
     });
 
-
-
     //On disconnection. Removes the user from the map
     socket.on('disconnect', function () {
 
@@ -115,6 +113,7 @@ io.on('connection', function (socket) {
 
         if(pendingSockets.has(socketID)){
             pendingSockets.remove(socketID);
+            console.log("unregistered socket "+ socket.id + " disconnected");
 
         }else{
             var userID = sockets.get(socketID);
@@ -123,6 +122,26 @@ io.on('connection', function (socket) {
             console.log(userID + " disconnected");
         }
     });
+
+
+    function isRegistered(user_id){
+        return clients.has(user_id);
+    }
+
+    //Utility module for other server's routes
+    var socketIOEmitter = {};
+
+    socketIOEmitter.emitEvent = function (user_id, eventName, args) {
+
+        if(isRegistered(user_id)) {
+            clients.get(user_id).emit(eventName, args);
+            return true;
+        }
+        return false;
+    }
+
+    module.exports = socketIOEmitter;
+
 });
 
 
