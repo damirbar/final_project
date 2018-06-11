@@ -5,7 +5,7 @@ let Session_Message = require("../schemas/session_message");
 let User = require("../schemas/user");
 let File = require("../schemas/file");
 ObjectID = require('mongodb').ObjectID;
-const socketIOEmitter = require('app.js');
+// const socketIOEmitter = require('app.js');
 
 router.post("/connect-session", function (req, res) {
     const decoded = req.verifiedEmail;
