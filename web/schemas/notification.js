@@ -6,6 +6,8 @@ var NotificationSchema = new mongoose.Schema({
     creation_date: {type: String, default: Date.now()},
     seen: {type: Boolean, default: false},
     type: {type: Number, required: true},
+    subject: {type: String, required: true},
+    subject_id: {type: String, required: true},
     content: {type: String, required: true}
 });
 

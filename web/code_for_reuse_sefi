@@ -130,3 +130,44 @@
 
 
 
+
+Session_Message.update({_id: mess_id}, ratingUpdate, function (err) {
+                let emails = [];
+                emails.push(decoded);
+                emails.push(to);
+
+                User.find({email: {$in :emails}},function (err,users) {
+                    if(err) return err;
+                     if(users){
+                         let type = rating === 1 ? "liked" : "disliked";
+                         if(users.length === 1)
+                         {
+                             let notify ={
+                                 type:  "Session",
+                                 body: "you " +type + " your question ( " + mess_id +" ) ",
+                                 date:  Date.now()
+                             };
+                             users[0].notifications.push(notify);
+                             users[0].save();
+                             return;
+                         }
+                         if(users[0].email===to){
+                             let notify ={
+                                 type:  "Session",
+                                 body: users[1].first_name + " " + users[1].last_name + " " +type + " your question ( " + mess_id +" ) ",
+                                 date:  Date.now()
+                             };
+                             users[0].notifications.push(notify);
+                             users[0].save();
+                         }
+                         else{
+                             let notify ={
+                                 type:  "Session",
+                                 body: users[0].first_name + " " + users[0].last_name + " " +type + " your question ( " + mess_id +" ) ",
+                                 date:  Date.now()
+                             };
+                             users[1].notifications.push(notify);
+                             users[1].save()
+                         }
+                     }
+                }); right abvoe console.log('updating session message');
