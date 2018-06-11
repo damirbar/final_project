@@ -11,14 +11,6 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
             $('.search-nav-form').removeClass('ng-hide');
         };
 
-        function registerUserToSocketIO (user_id) {
-
-            socketIO.on('ackConnection', function (){
-                console.log("successfully registered to socket.io");
-            });
-            socketIO.emit('registerClientToClients', user_id);
-        }
-
         console.log('From nav: ');
 
         console.log("PATH ===================== " + $location.path());
@@ -61,10 +53,9 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
             AuthService.auth($scope.user.email, $scope.user.password)
                 .then(function (data) {
                     console.log("Got " + JSON.stringify(data) + " from login function");
-                    data = data.data;
+                    // data = data.data;
                     // $rootScope.loggedUser = data;
                     // $scope.loggedUser = data;
-                    console.log(data);
                     $scope.checkLogin();
                     // $scope.$apply();
                     $timeout(function () {
@@ -142,6 +133,22 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
         };
 
 
+        ///////socket.io registration
+        function registerUserToSocketIO (user_id) {
+            AuthService.user_id = user_id;
+            socketIO.on('ackConnection', function (){
+                console.log("successfully registered to socket.io");
+            });
+            socketIO.emit('registerClientToClients', user_id);
+        }
+        //////
+
+        ///////socket.io unregistration
+        function unregisterUserToSocketIO (user_id) {
+
+            socketIO.emit('unregisterClientToClients', user_id);
+        }
+        //////
 
 
         var ctr = 0;
