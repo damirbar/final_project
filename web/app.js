@@ -33,7 +33,9 @@ myLessCompiler();
 
 
 var mongoDB = 'mongodb://damir:damiri@cluster0-shard-00-00-00hhm.mongodb.net:27017,cluster0-shard-00-01-00hhm.mongodb.net:27017,cluster0-shard-00-02-00hhm.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
-mongoose.connect(mongoDB, {}
+mongoose.connect(mongoDB, {
+    useMongoClient: true
+    }
 );
 
 var db = mongoose.connection;
