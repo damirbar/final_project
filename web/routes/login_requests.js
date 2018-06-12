@@ -85,17 +85,8 @@ router.get("/get-user-from-google", function (req, res) {
     User.findOne({accessToken: req.query.token}, function (err, user) {
         if (err) return next(err);
         if (user) {
-            res.status(200).send({
-                message: 'welcome to Wizer!',
-                email: user.email,
-                first_name: user.first_name,
-                last_name: user.last_name,
-                accessToken: user.accessToken,
-                role: user.role,
-                photos: user.profile_img,
-                _id: user._id,
-                display_name: user.display_name
-            })
+            req.verifiedEmail = user.email;
+
         }
         else {
             console.log("no such student");
@@ -271,12 +262,15 @@ router.post("/reset-pass-finish", function (req, res) {
 let passport = require('passport');
 
 router.get('/google',
-    passport.authenticate('google', {scope: ['profile email', 'https://www.googleapis.com/auth/user.birthday.read']}));
+    //remove comment for birthday access
+    passport.authenticate('google', {scope: ['profile email']}));
 
 router.get('/google/callback',
     passport.authenticate('google', {failureRedirect: '/'}), function (req, res) {
         // Successful authentication, redirect home.
-        res.render('close-auth.html', {userId: req.session.passport.user});
+        console.log("\n\nEEEE\n\n");
+        res.status(200).redirect('http://localhost:3000/');
+        // res.send('/', {userId: req.session.passport.user});
     }
 );
 

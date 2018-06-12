@@ -4,7 +4,10 @@ let User = require('../schemas/user');
 let email = require('./email');
 let emailMessages = require('./email-messages');
 let config = require('../config/config');
+const bcrypt = require('bcrypt-nodejs');
 let File = require("../schemas/file");
+let Q = require('q');
+
 
 const cloudinary = require('cloudinary');
 
@@ -26,6 +29,72 @@ module.exports.init = function () {
         });
     });
 
+//     passport.use(new GoogleStrategy({
+//             clientID: config.passport.googleClientId,
+//             clientSecret: config.passport.googleClientSecret,
+//             apiKey: "change this",
+//             callbackURL: "http://localhost:3000/auth/google/callback"
+//         },
+//         function (accessToken, refreshToken, profile, done) {
+//             console.log(profile);
+//             User.findOne({email: profile.emails[0].value}, function (err, user) {
+//                 if (err) return done(err);
+//                 if (user) {
+//                     return done(null, user);
+//                 }
+//                 else {
+//                     user = new User({
+//                         role: "student",
+//                         first_name: profile.name.givenName,
+//                         last_name: profile.name.familyName,
+//                         display_name: profile.displayName,
+//                         email: profile.emails[0].value,
+//                     });
+//                     bcrypt.genSalt(10, function (err, salt) {
+//                         bcrypt.hash(profile.id, salt, null, function (err, hash) {
+//                             user.acssesToken = hash;
+//                             console.log("starting to upload google image");
+//                             cloudinary.v2.uploader.upload(profile._json.image.url,
+//                                 {
+//                                     public_id: "profiles/" + user.id + "profile",
+//                                     width: 1000,
+//                                     height: 1000,
+//                                     crop: 'thumb',
+//                                     gravity: 'face',
+//                                     radius: 20
+//                                 },
+//
+//                                 function (err, result) {
+//                                     if (err) return err;
+//                                     console.log("uploaded google image");
+//                                     console.log(result);
+//                                     const ans = new File({
+//                                         originalName: "google profile image",
+//                                         uploaderid: user.id,
+//                                         url: result.url,
+//                                         type: result.format,
+//                                         size: result.bytes,
+//                                         hidden: false
+//                                     });
+//                                     ans.save(function (err, updated_file) {
+//                                         if (err) return (err);
+//                                         user.profile_file_id = updated_file.id;
+//                                         user.profile_img = result.url;
+//                                             email.sendMail([user.email], 'Registration to wizeUp', emailMessages.registration(user));
+//                                         user.save().then(function(){
+//                                             return done(user);
+//                                         });
+//                                     });
+//                                 });
+//                         });
+//                     });
+//                 }
+//             });
+//         }
+//     ));
+// };
+
+
     passport.use(new GoogleStrategy({
             clientID: config.passport.googleClientId,
             clientSecret: config.passport.googleClientSecret,
@@ -36,64 +105,70 @@ module.exports.init = function () {
             User.findOne({email: profile.emails[0].value}, function (err, user) {
                 if (err) return done(err);
                 if (user) {
-                    return done(null, user);
+                        return done(null, user);
                 }
                 else {
-                    user = new User({
-                        role: "student",
-                        first_name: profile.name.givenName,
-                        last_name: profile.name.familyName,
-                        display_name: profile.displayName,
-                        email: profile.emails[0].value,
-                        birthday: profile._json.birthday,
-                        accessToken: profile.id,
-                    });
-                    console.log("starting to upload google image");
-                    cloudinary.v2.uploader.upload(profile._json.image.url,
-                        {
-                            public_id: "profiles/" + user.id + "profile",
-                            width: 1000,
-                            height: 1000,
-                            crop: 'thumb',
-                            gravity: 'face',
-                            radius: 20
-                        },
-
-                        function (err, result) {
-                            if (err) return err;
-                            console.log("uploaded google image");
-                            console.log(result);
-                            const ans = new File({
-                                originalName: "google profile image",
-                                uploaderid: user.id,
-                                url: result.url,
-                                type: result.format,
-                                size: result.bytes,
-                                hidden: false
+                    bcrypt.genSalt(10, function (err, salt) {
+                        bcrypt.hash(profile.id, salt, null, function (err, hash) {
+                            user = new User({
+                                role: "student",
+                                first_name: profile.name.givenName,
+                                last_name: profile.name.familyName,
+                                display_name: profile.displayName,
+                                email: profile.emails[0].value,
+                                accessToken: hash
                             });
-                            ans.save(function (err, updated_file) {
-                                if (err) return (err);
-                                user.profile_file_id = updated_file.id;
-                                user.profile_img = result.url;
-                                if (user.email) {
-                                    email.sendMail([user.email], 'Registration to wizeUp', emailMessages.registration(user));
-                                }
-                                user.save();
-                                return done(user);
+                            uploadProfileImage(user, profile._json.image.url).then(function (result) {
+                                user.save(function (err, user) {
+                                    if (err) console.log(err);
+                                    console.log("new user saved");
+                                    email.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
+                                    return done(null, user);
+                                });
+                            }, function (err) {
+                                console.log(err);
                             });
                         });
+                    });
                 }
             });
         }
     ));
 };
 
-function getGender(gender) {
-    if (gender) {
-        if (gender.toLowerCase() === 'female')
-            return 1;
-        if (gender.toLowerCase() === 'male')
-            return 2;
-    }
-    return 3;
+function uploadProfileImage(user, newImage) {
+    let dfr = Q.defer();
+
+
+    console.log("starting to upload google image");
+    cloudinary.v2.uploader.upload(newImage,
+        {
+            public_id: "profiles/" + user.id + "profile",
+            width: 1000,
+            height: 1000,
+            crop: 'thumb',
+            gravity: 'face',
+            radius: 20
+        },
+
+        function (err, result) {
+            if (err) return dfr.reject(err);
+            console.log("uploaded google image");
+            console.log(result);
+            const ans = new File({
+                originalName: "google profile image",
+                uploaderid: user.id,
+                url: result.url,
+                type: result.format,
+                size: result.bytes,
+                hidden: false
+            });
+            ans.save(function (err, updated_file) {
+                if (err) return dfr.reject(err);
+                user.profile_file_id = updated_file.id;
+                user.profile_img = result.url;
+                dfr.resolve(result);
+            });
+        });
+    return dfr.promise;
 }
