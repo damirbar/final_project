@@ -181,15 +181,21 @@ router.get("/rate-message", function (req, res) {
 
     const rating = Number(req.query.rating);
     const mess_id = req.query.msgid;
+    const sess_id = req.query.sid;
     const decoded = req.verifiedEmail;
-    let to = "";
+    let updateEvent = {
+        message_id: mess_id,
+        likes: 0,
+        dislikes: 0
+    };
+
     // finds the user
     User.findOne({email: decoded}, function (err, user) {
         if (err) throw err;
 
         //finds the message and fetches its likers and dislikers arrays.
-        Session_Message.findOne({_id: mess_id}, {_id: 0, likers: 1, dislikers: 1,poster_id: 1, email:1}, function (err, message) {
-            console.log(message);
+        Session_Message.findOne({_id: mess_id}, {_id: 0,sid:1 , likers: 1, dislikers: 1,poster_id: 1, email:1}, function (err, message) {
+
             if (err) return err;
             let likers = message.likers;
             let dislikers = message.dislikers;
@@ -201,40 +207,45 @@ router.get("/rate-message", function (req, res) {
                 if (liked) { // user has already liked the message
                     ratingUpdate.$pull = {likers: user._id};//removes the user id from the likers array
                     ratingUpdate.$inc = {likes: -1};
-                    console.log('user has already liked this message. mess id:' + mess_id);
-                    return res.status(200).json({message: 'user has already liked this message. mess id:' + mess_id});
+                    updateEvent.likes = -1;
+                    // console.log('user has already liked this message. mess id:' + mess_id);
                 } else if (disliked) { // user has already disliked the message.
+
                     ratingUpdate.$push = {likers: user._id};
                     ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
                     ratingUpdate.$inc = {likes: 1, dislikes: -1};
+
+                    updateEvent.likes = 1;
+                    updateEvent.dislikes = -1;
+
                 } else { // user is liking the message fo the first time
                     ratingUpdate.$push = {likers: user._id};
                     ratingUpdate.$inc = {likes: 1};
+                    updateEvent.likes = 1;
                 }
+
             } else {// user likes the message
                 if (disliked) {// user has already disliked the message
                     ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
                     ratingUpdate.$inc = {dislikes: -1};
-                    console.log('user has already disliked this message. mess id:' + mess_id);
-                    return res.status(200).json({message: 'user has already disliked this message. mess id:' + mess_id});
+                    updateEvent.dislikes = -1;
                 } else if (liked) { // user has already liked the message.
                     ratingUpdate.$push = {dislikers: user._id};
                     ratingUpdate.$pull = {likers: user._id};//removes the user id from the likers array
                     ratingUpdate.$inc = {likes: -1, dislikes: 1};
+                    updateEvent.likes = -1;
+                    updateEvent.dislikes = 1;
                 } else {// user is disliking the message fo the first time
                     ratingUpdate.$push = {dislikers: user._id};
                     ratingUpdate.$inc = {dislikes: 1};
+                    updateEvent.dislikes = 1;
                 }
             }
             // updates the message rating with the ratingUpdate object
-            Session_Message.update({_id: mess_id} ,ratingUpdate, function(err){
-
-                console.log('updating session message');
-                console.log(ratingUpdate);
-
+            Session_Message.update({_id: mess_id},ratingUpdate, function(err){
                if(err) console.log(err);
-
                else{
+                   socketIOEmitter.emitEventToSessionRoom(sess_id, 'updateMessageRating', updateEvent);
                    let notification = new Notification({
                        receiver_id: message.poster_id,
                        sender_id: user._id,
@@ -242,8 +253,8 @@ router.get("/rate-message", function (req, res) {
                        subject: 'message',
                        subject_id: mess_id
                    });
+
                    notificationsSystem.saveAndEmitNotification(notification);
-                   // socketIOEmitter.emitEvent(message.poster_id, 'newNotification', notification);
                }
             });
 
@@ -374,7 +385,7 @@ router.post("/messages", function (req, res) {
     const decoded = req.verifiedEmail;
 
     const msg = new Session_Message({
-            poster_id: req.body.sender_id,
+            poster_id: req.body.poster_id,
             sid: req.body.sid,
             type: req.body.type,
             body: req.body.body,

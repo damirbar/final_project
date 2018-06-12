@@ -41,8 +41,8 @@ wizerApp.service('SessionService', function ($http, socketIO) {
             });
     };
 
-    this.sendMessage = function(senderID, sessionId, type, message) {
-        return $http.post('/sessions/messages', {sender_id: senderID, sid: sessionId, type: type, body: message})
+    this.sendMessage = function(posterID, sessionId, type, message) {
+        return $http.post('/sessions/messages', {poster_id: posterID, sid: sessionId, type: type, body: message})
             .then(function (data) {
                 socketIO.emit('postSessionMessage', );
                 return data.data;
@@ -50,7 +50,6 @@ wizerApp.service('SessionService', function ($http, socketIO) {
                 console.log("Error sending message to session with ID = " + sessionId);
             });
     };
-
 
     this.sendReply = function(sessionId, type, message, message_id) {
         return $http.post('/sessions/reply', {sid: sessionId, type: type, body: message, mid: message_id})

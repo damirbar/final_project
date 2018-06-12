@@ -56,11 +56,6 @@ exports.socketInit = function (socket){
         });
     });
 
-    socket.on('postSessionMessage', function(message){
-        console.log('posting');
-        console.log(message);
-    });
-
     socket.on('', function(){
 
     });
@@ -139,6 +134,7 @@ function getAllSessions(){
 exports.emitEvent = function (user_id, eventName, args) {
 
     console.log('emitting event ' + eventName);
+
     if(exports.isRegistered(user_id)) {
         clients.get(user_id).emit(eventName, args);
         return true;
