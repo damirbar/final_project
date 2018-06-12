@@ -271,7 +271,6 @@ router.get('/google',
 router.get('/google/callback',
     passport.authenticate('google', {failureRedirect: '/'}), function (req, res) {
         // Successful authentication, redirect home.
-        console.log("\n\nEEEE\n\n");
         res.status(200).redirect('http://localhost:3000/');
         // res.send('/', {userId: req.session.passport.user});
     }

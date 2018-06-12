@@ -29,71 +29,6 @@ module.exports.init = function () {
         });
     });
 
-//     passport.use(new GoogleStrategy({
-//             clientID: config.passport.googleClientId,
-//             clientSecret: config.passport.googleClientSecret,
-//             apiKey: "change this",
-//             callbackURL: "http://localhost:3000/auth/google/callback"
-//         },
-//         function (accessToken, refreshToken, profile, done) {
-//             console.log(profile);
-//             User.findOne({email: profile.emails[0].value}, function (err, user) {
-//                 if (err) return done(err);
-//                 if (user) {
-//                     return done(null, user);
-//                 }
-//                 else {
-//                     user = new User({
-//                         role: "student",
-//                         first_name: profile.name.givenName,
-//                         last_name: profile.name.familyName,
-//                         display_name: profile.displayName,
-//                         email: profile.emails[0].value,
-//                     });
-//                     bcrypt.genSalt(10, function (err, salt) {
-//                         bcrypt.hash(profile.id, salt, null, function (err, hash) {
-//                             user.acssesToken = hash;
-//                             console.log("starting to upload google image");
-//                             cloudinary.v2.uploader.upload(profile._json.image.url,
-//                                 {
-//                                     public_id: "profiles/" + user.id + "profile",
-//                                     width: 1000,
-//                                     height: 1000,
-//                                     crop: 'thumb',
-//                                     gravity: 'face',
-//                                     radius: 20
-//                                 },
-//
-//                                 function (err, result) {
-//                                     if (err) return err;
-//                                     console.log("uploaded google image");
-//                                     console.log(result);
-//                                     const ans = new File({
-//                                         originalName: "google profile image",
-//                                         uploaderid: user.id,
-//                                         url: result.url,
-//                                         type: result.format,
-//                                         size: result.bytes,
-//                                         hidden: false
-//                                     });
-//                                     ans.save(function (err, updated_file) {
-//                                         if (err) return (err);
-//                                         user.profile_file_id = updated_file.id;
-//                                         user.profile_img = result.url;
-//                                             email.sendMail([user.email], 'Registration to wizeUp', emailMessages.registration(user));
-//                                         user.save().then(function(){
-//                                             return done(user);
-//                                         });
-//                                     });
-//                                 });
-//                         });
-//                     });
-//                 }
-//             });
-//         }
-//     ));
-// };
-
 
     passport.use(new GoogleStrategy({
             clientID: config.passport.googleClientId,
@@ -105,7 +40,7 @@ module.exports.init = function () {
             User.findOne({email: profile.emails[0].value}, function (err, user) {
                 if (err) return done(err);
                 if (user) {
-                        return done(null, user);
+                    return done(null, user);
                 }
                 else {
                     bcrypt.genSalt(10, function (err, salt) {

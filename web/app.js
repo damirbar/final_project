@@ -14,6 +14,11 @@ var logger = require('morgan');
 const router = express.Router();
 app.use(logger('dev'));
 
+let passport       = require("passport");
+let passportService = require('./tools/passport');
+app.use(passport.initialize());
+app.use(passport.session());
+passportService.init();
 
 var teacherRequests = require('./routes/teacher_requests');
 var studentRequests = require('./routes/students_request');
