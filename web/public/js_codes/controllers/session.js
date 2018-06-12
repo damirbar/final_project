@@ -172,16 +172,14 @@ wizerApp.controller('sessionController',
                     let index = 0;
 
                     $scope.sessionMessages = data;
-
                     $scope.sessionMessages.forEach(function(message){
-
                         message.liked = message.disliked = false;
                         if(message.likers.includes($rootScope.loggedUser._id)){
-
                             message.liked = true;
                         }else if(message.dislikers.includes($rootScope.loggedUser._id)){
                             message.disliked = true;
                         }
+
                         $scope.sessionMessagesMap[message._id] = index;
                         ++index;
 
@@ -245,11 +243,33 @@ wizerApp.controller('sessionController',
             $scope.reply.type = type;
         };
 
-        $scope.rateMessage = function (sid, mid, rate) {
+        $scope.rateMessage = function (sid, mid, rate){
+
             SessionService.rateMessage(sid, mid, rate)
                 .then(function (data) {
-                    // console.log(JSON.stringify(data));
-                    $scope.getMessages();
+                    // $scope.getMessages();
+                    let message = $scope.sessionMessages[$scope.sessionMessagesMap[mid]];
+                    console.log('Pressedddddd');
+                    console.log(message);
+                    if(rate == 1){
+                        if(message.disliked){
+                            message.liked = true;
+                            message.disliked = false;
+                        }else if(message.liked){
+                            message.liked = false;
+                        }else{
+                            message.liked = true;
+                        }
+                    }else{
+                        if(message.liked){
+                            message.liked = false;
+                            message.disliked = true;
+                        }else if(message.disliked){
+                            message.disliked = false;
+                        }else{
+                            message.disliked = false;
+                        }
+                    }
                 })
                 .catch(function (err) {
                     console.log("Error with getting messages");

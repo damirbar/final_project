@@ -180,19 +180,14 @@ router.post("/create-session", function (req, res) {
 router.get("/rate-message", function (req, res) {
 
     const rating = Number(req.query.rating);
-    console.log("####################################################################");
-    console.log("rating: " + rating);
     const mess_id = req.query.msgid;
     const sess_id = req.query.sid;
     const decoded = req.verifiedEmail;
     let updateEvent = {
-        message_id: new ObjectID(mess_id),
+        message_id: mess_id,
         likes: 0,
         dislikes: 0
     };
-
-    console.log('liked message id');
-    console.log(mess_id);
 
     // finds the user
     User.findOne({email: decoded}, function (err, user) {
@@ -200,7 +195,7 @@ router.get("/rate-message", function (req, res) {
 
         //finds the message and fetches its likers and dislikers arrays.
         Session_Message.findOne({_id: mess_id}, {_id: 0,sid:1 , likers: 1, dislikers: 1,poster_id: 1, email:1}, function (err, message) {
-            console.log(message);
+
             if (err) return err;
             let likers = message.likers;
             let dislikers = message.dislikers;
@@ -248,10 +243,6 @@ router.get("/rate-message", function (req, res) {
             }
             // updates the message rating with the ratingUpdate object
             Session_Message.update({_id: mess_id},ratingUpdate, function(err){
-                console.log('updating session message');
-                console.log(updateEvent);
-                console.log('updating object');
-                console.log(ratingUpdate);
                if(err) console.log(err);
                else{
                    socketIOEmitter.emitEventToSessionRoom(sess_id, 'updateMessageRating', updateEvent);

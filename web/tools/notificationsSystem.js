@@ -23,7 +23,6 @@ var subjectTypes = {
 
 
 exports.saveAndEmitNotification = function (notification){
-    console.log(notification);
     User.findOne({_id: notification.sender_id},{first_name: 1, last_name: 1}, function(err, user){
         if(err) return console.log(err);
         subjectTypes[notification.subject].findOne({_id: new ObjectID(notification.subject_id)}, {_id: 0, body: 1}, function(err,message){
