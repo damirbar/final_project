@@ -130,7 +130,12 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
                 likeCheckBoxState[pos] = false;
                 messagesList.get(position).setLikes(messagesList.get(position).getLikes() - 1);
             }
-            addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),1);
+            if(position != 0)
+                addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),1);
+            else
+                addRateMainPost(messagesList.get(position).getSid(),messagesList.get(position).get_id(),1);
+
+
             notifyDataSetChanged();
         });
         dislikeCbx.setTag(position);
@@ -154,7 +159,11 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
                 dislikeCheckBoxState[pos] = false;
                 messagesList.get(position).setDislikes(messagesList.get(position).getDislikes() - 1);
             }
-            addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),0);
+            if(position != 0)
+                addRate(messagesList.get(position).getSid(),messagesList.get(position).get_id(),0);
+            else
+                addRateMainPost(messagesList.get(position).getSid(),messagesList.get(position).get_id(),0);
+
             notifyDataSetChanged();
         });
 
@@ -194,6 +203,14 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, ServerResponse::handleErrorQuiet));
     }
+
+    private void addRateMainPost(String sid, String msgId,int rate) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().rateMessage(sid,msgId,rate)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, ServerResponse::handleErrorQuiet));
+    }
+
 
     private void handleResponse(Response response) { }
 

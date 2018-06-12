@@ -66,7 +66,7 @@ public class NotificationService extends Service {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this, getString(R.string.app_name))
-                        .setSmallIcon(R.drawable.wizeup_logo)
+                        .setSmallIcon(R.mipmap.ic_launcher_foreground)
                         .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
                                 R.drawable.wizeup_logo))
                         .setAutoCancel(true)
