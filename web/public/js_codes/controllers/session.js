@@ -21,6 +21,11 @@ wizerApp.controller('sessionController',
 
         $scope.firstConnectionTry = true;
 
+
+        socketIO.on('newSessionMessage', function(message){
+           $scope.sessionMessages.push(message);
+        });
+
         var ensureLogged = function () {
             if (!AuthService.isLoggedIn()) {
                 $location.path('/');
@@ -171,7 +176,6 @@ wizerApp.controller('sessionController',
         });
 
         var getting = function () {
-            // while(!$scope.isConnectedToSession);
             $scope.getMessages();
         };
 
@@ -227,12 +231,12 @@ wizerApp.controller('sessionController',
             });
         };
 
-        $interval(function () {
-            if ($scope.isConnectedToSession) {
-                getting();
-                $scope.getSession();
-            }
-        }, 3000);
+        // $interval(function () {
+        //     if ($scope.isConnectedToSession) {
+        //         getting();
+        //         $scope.getSession();
+        //     }
+        // }, 3000);
 
 
         $scope.uploadFile = function () {
