@@ -74,7 +74,7 @@
             android:maxLines="2"
             android:textAlignment="viewStart"
             android:textColor="@color/primary_text"
-            android:textSize="@dimen/subhead_size" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/techer_name"

@@ -21,16 +21,16 @@ import com.ariel.wizeup.R;
 import com.ariel.wizeup.TermsActivity;
 import com.ariel.wizeup.course.MyCourseActivity;
 import com.ariel.wizeup.entry.EntryActivity;
-import com.ariel.wizeup.model.Event;
+import com.ariel.wizeup.model.Notification;
 import com.ariel.wizeup.model.User;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
+import com.ariel.wizeup.notification.NotificationsAdapter;
 import com.ariel.wizeup.profile.ProfileActivity;
 import com.ariel.wizeup.search.SearchActivity;
 import com.ariel.wizeup.session.ConnectSessionActivity;
 import com.ariel.wizeup.settings.ChangeLanguage;
-import com.ariel.wizeup.settings.EndlessScrollListener;
-import com.ariel.wizeup.settings.EventsAdapter;
+import com.ariel.wizeup.utils.EndlessScrollListener;
 import com.ariel.wizeup.settings.SettingsActivity;
 import com.ariel.wizeup.utils.Constants;
 import com.mindorks.placeholderview.PlaceHolderView;
@@ -50,7 +50,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
-    private ListView eventsList;
+    private ListView notificationsList;
     private TextView mTvNoResults;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private PlaceHolderView mDrawerView;
@@ -59,7 +59,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     private String mEmail;
     private String mId;
     private DrawerHeader mDrawerHeader;
-    private EventsAdapter mAdapter;
+    private NotificationsAdapter mAdapter;
     private ChangeLanguage changeLanguage;
     private static int ADD_ITEMS = 10;
 
@@ -78,14 +78,14 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
-            loadEventsInit();
-//            eventsList.setOnScrollListener(new EndlessScrollListener() {
+            loadNotificationsInit();
+//            notificationsList.setOnScrollListener(new EndlessScrollListener() {
 //                @Override
 //                public boolean onLoadMore(int page, int totalItemsCount) {
 //                    // Triggered only when new data needs to be appended to the list
 //                    // Add whatever code is needed to append new items to your AdapterView
 ////                mServerResponse.showSnackBarMessage("page: "+page+" totalItemsCount: "+totalItemsCount);
-//                    loadEvents();
+//                    loadNotifications();
 //                    // or loadNextDataFromApi(totalItemsCount);
 //                    return true; // ONLY if more data is actually being loaded; false otherwise.
 //                }
@@ -95,15 +95,15 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         }, 1000));
 
 
-        loadEventsInit();
+        loadNotificationsInit();
 
-        eventsList.setOnScrollListener(new EndlessScrollListener() {
+        notificationsList.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to your AdapterView
 //                mServerResponse.showSnackBarMessage("page: "+page+" totalItemsCount: "+totalItemsCount);
-                loadEvents();
+                loadNotifications();
                 // or loadNextDataFromApi(totalItemsCount);
                 return true; // ONLY if more data is actually being loaded; false otherwise.
             }
@@ -116,7 +116,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
         @Override
         public boolean onLoadMore(int page, int totalItemsCount) {
-            loadEvents();
+            loadNotifications();
             return false;
         }
     };
@@ -127,7 +127,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mDrawerView = (PlaceHolderView) findViewById(R.id.drawerView);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mTvNoResults = (TextView) findViewById(R.id.tv_no_results);
-        eventsList = (ListView) findViewById(R.id.search_List);
+        notificationsList = (ListView) findViewById(R.id.search_List);
         initSearchView();
 
     }
@@ -271,38 +271,38 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
     }
 
-    private void loadEventsInit() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getEvents(0, ADD_ITEMS)
+    private void loadNotificationsInit() {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getNotifications(0, ADD_ITEMS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseEventsInit, i -> mServerResponse.handleErrorDown(i)));
+                .subscribe(this::handleResponseNotificationsInit, i -> mServerResponse.handleErrorDown(i)));
 
     }
 
-    private void handleResponseEventsInit(Event event[]) {
-        if (!(event.length == 0)) {
-            ArrayList<Event> saveEvents = new ArrayList<>(Arrays.asList(event));
+    private void handleResponseNotificationsInit(Notification notification[]) {
+        if (!(notification.length == 0)) {
+            ArrayList<Notification> saveNotifications = new ArrayList<>(Arrays.asList(notification));
             mTvNoResults.setVisibility(View.GONE);
-            mAdapter = new EventsAdapter(this, new ArrayList<>(saveEvents));
-            eventsList.setAdapter(mAdapter);
+            mAdapter = new NotificationsAdapter(this, new ArrayList<>(saveNotifications));
+            notificationsList.setAdapter(mAdapter);
         } else {
             mTvNoResults.setVisibility(View.VISIBLE);
         }
 
     }
 
-    private void loadEvents() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getEvents(mAdapter.getEventsList().size(), ADD_ITEMS)
+    private void loadNotifications() {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getNotifications(mAdapter.getNotificationList().size(), ADD_ITEMS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseEvents, i -> mServerResponse.handleErrorDown(i)));
+                .subscribe(this::handleResponseNotifications, i -> mServerResponse.handleErrorDown(i)));
 
     }
 
-    private void handleResponseEvents(Event event[]) {
-        if (!(event.length == 0)) {
-            ArrayList<Event> saveEvents = new ArrayList<>(Arrays.asList(event));
-            mAdapter.getEventsList().addAll(saveEvents);
+    private void handleResponseNotifications(Notification notification[]) {
+        if (!(notification.length == 0)) {
+            ArrayList<Notification> saveNotifications = new ArrayList<>(Arrays.asList(notification));
+            mAdapter.getNotificationList().addAll(saveNotifications);
             mAdapter.notifyDataSetChanged();
         }
     }
