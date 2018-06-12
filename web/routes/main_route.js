@@ -33,9 +33,6 @@ router.all("*", function (req, res, next) {
 
                     next();
 
-                    // if (req.url === "/get-all-messages?sid=12") return;//remove this only for testing
-
-                    // console.log(req.url);
                     if (user) {
                         if (req.url === "/post-profile-image") {
                             let event = {

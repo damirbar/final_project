@@ -14,6 +14,11 @@ var logger = require('morgan');
 const router = express.Router();
 app.use(logger('dev'));
 
+let passport       = require("passport");
+let passportService = require('./tools/passport');
+app.use(passport.initialize());
+app.use(passport.session());
+passportService.init();
 
 var teacherRequests = require('./routes/teacher_requests');
 var studentRequests = require('./routes/students_request');
@@ -131,7 +136,9 @@ io.on('connection', function (socket) {
     //Utility module for other server's routes
     var socketIOEmitter = {};
 
-    socketIOEmitter.emitEvent = function (user_id, eventName, args) {
+    exports.emitEvent = function (user_id, eventName, args) {
+
+        console.log('emitting event ' + eventName);
 
         if(isRegistered(user_id)) {
             clients.get(user_id).emit(eventName, args);
@@ -139,8 +146,6 @@ io.on('connection', function (socket) {
         }
         return false;
     }
-
-    module.exports = socketIOEmitter;
 
 });
 

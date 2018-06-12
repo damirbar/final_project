@@ -136,6 +136,7 @@ wizerApp.controller('sessionController',
                     }
                 })
                 .catch(function (err) {
+                    console.log(err);
                     console.log("Error with getting messages");
                 });
 
@@ -157,7 +158,6 @@ wizerApp.controller('sessionController',
                     console.log("Error with disconnecting from session");
                 });
         };
-
 
         $scope.$on('$locationChangeStart', function (event) {
             if ($scope.isConnectedToSession) {
