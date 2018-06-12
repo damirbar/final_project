@@ -76,82 +76,15 @@ const socketIO = require('./tools/socketIO');
 socketIO.setIO(io);
 
 io.on('connection', function (socket) {
-
     console.log(socket.id + ' Connected');
     socketIO.socketInit(socket);
-
-    // pendingSockets.set(socket.id, socket);
-
-    //On Authentication
-    // socket.on('registerClientToClients', function (user_id) {
-    //
-    //     // pendingSockets.remove(socket.id);
-    //     //
-    //     // clients.set(user_id, socket);
-    //     // sockets.set(socket.id, user_id);
-    //     //
-    //     // console.log(user_id + ' was registered');
-    //     //
-    //     // /*can be a boolean value to ensure that the user has been registered successfully*/
-    //     // socket.emit('ackConnection', "Hello from the other siiiiiiiide!!!!!!");
-    // });
-
-    // socket.on('unregisterClientFromClients', function (user_id) {
-    //
-    //     socketIO.unregisterClientFromClients(user_id);
-    //
-    //     // console.log("removeing " + user_id);
-    //     //
-    //     // if(clients.has(user_id)) {
-    //     //     clients.remove(user_id);
-    //     //     if (sockets.has(socket.id)) {
-    //     //         sockets.remove(socket.id);
-    //     //     }
-    //     //     pendingSockets.set(socket.id, socket);
-    //     // }
-    // });
-
-    //On disconnection. Removes the user from the map
-    // socket.on('disconnect', function () {
-    //     socketIO.onDisconnect(socket);
-    //     // var socketID = socket.id;
-    //     //
-    //     // if(pendingSockets.has(socketID)){
-    //     //     pendingSockets.remove(socketID);
-    //     //     console.log("unregistered socket "+ socket.id + " disconnected");
-    //     //
-    //     // }else{
-    //     //     var userID = sockets.get(socketID);
-    //     //     sockets.remove(socketID);
-    //     //     clients.remove(userID);
-    //     //     console.log(userID + " disconnected");
-    //     // }
-    // });
-
-
-    // function isRegistered(user_id){
-    //     return clients.has(user_id);
-    // }
-
-    //Utility module for other server's routes
-
-    // exports.emitEvent = function (user_id, eventName, args) {
-    //
-    //     console.log('emitting event ' + eventName);
-    //
-    //     if(isRegistered(user_id)) {
-    //         clients.get(user_id).emit(eventName, args);
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
 });
 
 
 http.listen(3000, function () {
     console.log("listening...");
 });
+////////////////
 
 
 //The 404 Route (ALWAYS Keep this as the last route)
