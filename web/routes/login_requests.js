@@ -9,6 +9,7 @@ let validator = require("email-validator");
 let emailService = require('./../tools/email');
 let emailMessages = require('./../tools/email-messages');
 let randomstring = require("randomstring");
+let config = require('../config/config');
 
 router.use(expressValidator());
 
@@ -30,7 +31,7 @@ router.post("/auth-login-user-pass", function (req, res) {
         console.log("Found the user " + credentials.name);
         if (bcrypt.compareSync(credentials.pass, user.password)) {
             console.log("Found the user " + credentials.name);
-            const token = jwt.sign(credentials.name.toLowerCase(), "Wizer");
+            const token = jwt.sign(credentials.name.toLowerCase(), config.email.secret);
 
             User.update({email: credentials.name.toLowerCase()}, {accessToken: token}, function (err) {
                 if (err) {

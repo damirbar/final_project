@@ -1,8 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var path = require("path");
-const jwt = require('jsonwebtoken');
-const User = require("../schemas/user");
+let express = require('express');
+let router = express.Router();
+let path = require("path");
+let jwt = require('jsonwebtoken');
+let User = require("../schemas/user");
+let config = require('../config/config');
 
 
 //make sure that all request contain a valid token
@@ -17,12 +18,12 @@ router.all("*", function (req, res, next) {
         || req.url.includes('/auth/get-user-from-google')) {
         return next();
     }
-    var token = req.headers["x-access-token"] || req.query.token;
+    let token = req.headers["x-access-token"] || req.query.token;
     if (!token) {
         res.redirect('/')
     }
     else {
-        jwt.verify(token, "Wizer", function (err, decoded) {
+        jwt.verify(token, config.email.secret, function (err, decoded) {
             if (err) {
                 res.sendFile(path.join(__dirname + "/../index.html"));
                 return res.status(401).json({success: false, message: 'Failed to authenticate token.'});
@@ -36,8 +37,6 @@ router.all("*", function (req, res, next) {
                     if (user) {
 
                         let event= undefined;
-
-                        console.log(req.url);
 
                         switch (req.params[0]){
                             case "/students/post-profile-image":
@@ -83,87 +82,53 @@ router.all("*", function (req, res, next) {
                                     event: "created course: " + req.body.name + " with teacher: " + req.body.teacher,
                                 };
                                 break;
+
+                            // change so self rating wont count
+                            // and unlike and undislike as well
                             case "/sessions/rate-message":
                                 let type = req.query.rating === "1" ? "liked" : "disliked";
                                 event = {
                                     type: "session",
                                     event: type + " a question (" + req.query.msgid + ") in session " + req.query.sid,//can extract the message if wanted
                                 };
+                                break;
+                            //test this
+                            case "/free-text-search":
+                                event = {
+                                    type: "search",
+                                    event: "searched for: " + req.query.keyword
+                                };
+                                break;
+                            //test this
+                            case "/sessions/post-video":
+                                if(req.file) {
+                                    event = {
+                                        type: "session",
+                                        event: "added video (" + req.file.originalname + ") to session: " + req.query.sid,
+                                    };
+                                }
+                                break;
+                            //test this
+                            case "/courses/add-students-to-course":
+                                    event = {
+                                        type: "course",
+                                        event: "added a student (" + req.query.student + ") to course: " + req.query.cid,
+                                    };
+                                break;
+                            //test this
+                            case "/courses/get-course":
+                                event = {
+                                    type: "course",
+                                    event: "viewed course " + req.query.cid,
+                                };
+                                break;
+
                         }
                         if(event){
                             event.date = Date.now();
                             user.events.push(event);
                             user.save();
-                            return;
                         }
-
-                        // if (req.url.includes("/rate-message")) {
-                        //     if (req.query.rating === "1") {
-                        //         let event = {
-                        //             type: "session",
-                        //             event: "liked a question (" + req.query.msgid + ") in session " + req.query.sid,//can extract the message if wanted
-                        //             date: Date.now()
-                        //         };
-                        //         user.events.push(event);
-                        //     }
-                        //     else if (req.query.rating === "0") {
-                        //         let event = {
-                        //             type: "session",
-                        //             event: "disliked a question (" + req.query.msgid + ") in session " + req.query.sid,//can extract the message if wanted
-                        //             date: Date.now()
-                        //         };
-                        //         user.events.push(event);
-                        //     }
-                        //
-                        // }
-
-
-                        if (req.url.includes("/free-text-search")) {
-                            let event = {
-                                type: "search",
-                                event: "searched for: " + req.query.keyword,
-                                date: Date.now()
-                            };
-                            user.events.push(event);
-                        }
-
-                        if (req.file && req.url.includes("/post-video")) {
-                            let event = {
-                                type: "session",
-                                event: "added video (" + req.file.originalname + ") to session: " + req.query.sid,
-                                date: Date.now()
-                            };
-                            user.events.push(event);
-                        }
-
-                        if (req.file && req.url.includes("/post-file")) {
-                            let event = {
-                                type: "course",
-                                event: "added file (" + req.file.originalname + ") to course: " + req.query.cid,
-                                date: Date.now()
-                            };
-                            user.events.push(event);
-                        }
-
-                        if (req.url.includes("/courses/add-students-to-course")) {
-                            let event = {
-                                type: "course",
-                                event: "added a student (" + req.query.student + ") to course: " + req.query.cid,
-                                date: Date.now()
-                            };
-                            user.events.push(event);
-                        }
-
-                        if (req.url.includes("/get-course")) {
-                            let event = {
-                                type: "course",
-                                event: "looked at course " + req.query.cid,
-                                date: Date.now()
-                            };
-                            user.events.push(event);
-                        }
-
-                        user.save();
                     }
                 });
             }
