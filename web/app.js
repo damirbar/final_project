@@ -9,10 +9,10 @@ var path = require("path");
 
 var bodyParser = require("body-parser");
 
-var logger = require('morgan');
+// var logger = require('morgan');
 
 const router = express.Router();
-app.use(logger('dev'));
+// app.use(logger('dev'));
 
 let passport       = require("passport");
 let passportService = require('./tools/passport');
@@ -69,83 +69,80 @@ app.use('/auth', authRouts);
 //////////SOCKET.IO
 
 const io = require('socket.io')(http);
-const HashMap = require("hashmap");
-// const socketIO = require('./tools/socketIO');
+const socketIO = require('./tools/socketIO');
 
-const sockets = new HashMap();
-const clients = new HashMap();
-const pendingSockets = new HashMap();
+socketIO.setIO(io);
 
 io.on('connection', function (socket) {
 
     console.log(socket.id + ' Connected');
+    socketIO.socketInit(socket);
 
-    pendingSockets.set(socket.id, socket);
+    // pendingSockets.set(socket.id, socket);
 
     //On Authentication
-    socket.on('registerClientToClients', function (user_id) {
+    // socket.on('registerClientToClients', function (user_id) {
+    //
+    //     // pendingSockets.remove(socket.id);
+    //     //
+    //     // clients.set(user_id, socket);
+    //     // sockets.set(socket.id, user_id);
+    //     //
+    //     // console.log(user_id + ' was registered');
+    //     //
+    //     // /*can be a boolean value to ensure that the user has been registered successfully*/
+    //     // socket.emit('ackConnection', "Hello from the other siiiiiiiide!!!!!!");
+    // });
 
-        pendingSockets.remove(socket.id);
-
-        clients.set(user_id, socket);
-        sockets.set(socket.id, user_id);
-
-        console.log(user_id + ' was registered');
-
-        /*can be a boolean value to ensure that the user has been registered successfully*/
-        socket.emit('ackConnection', "Hello from the other siiiiiiiide!!!!!!");
-    });
-
-    socket.on('sendNotification', function(subject_id){});
-
-    socket.on('unregisterClientFromClients', function (user_id) {
-
-        console.log("removeing " + user_id);
-
-        if(clients.has(user_id)) {
-            clients.remove(user_id);
-            if (sockets.has(socket.id)) {
-                sockets.remove(socket.id);
-            }
-            pendingSockets.set(socket.id, socket);
-        }
-    });
+    // socket.on('unregisterClientFromClients', function (user_id) {
+    //
+    //     socketIO.unregisterClientFromClients(user_id);
+    //
+    //     // console.log("removeing " + user_id);
+    //     //
+    //     // if(clients.has(user_id)) {
+    //     //     clients.remove(user_id);
+    //     //     if (sockets.has(socket.id)) {
+    //     //         sockets.remove(socket.id);
+    //     //     }
+    //     //     pendingSockets.set(socket.id, socket);
+    //     // }
+    // });
 
     //On disconnection. Removes the user from the map
-    socket.on('disconnect', function () {
+    // socket.on('disconnect', function () {
+    //     socketIO.onDisconnect(socket);
+    //     // var socketID = socket.id;
+    //     //
+    //     // if(pendingSockets.has(socketID)){
+    //     //     pendingSockets.remove(socketID);
+    //     //     console.log("unregistered socket "+ socket.id + " disconnected");
+    //     //
+    //     // }else{
+    //     //     var userID = sockets.get(socketID);
+    //     //     sockets.remove(socketID);
+    //     //     clients.remove(userID);
+    //     //     console.log(userID + " disconnected");
+    //     // }
+    // });
 
-        var socketID = socket.id;
 
-        if(pendingSockets.has(socketID)){
-            pendingSockets.remove(socketID);
-            console.log("unregistered socket "+ socket.id + " disconnected");
-
-        }else{
-            var userID = sockets.get(socketID);
-            sockets.remove(socketID);
-            clients.remove(userID);
-            console.log(userID + " disconnected");
-        }
-    });
-
-
-    function isRegistered(user_id){
-        return clients.has(user_id);
-    }
+    // function isRegistered(user_id){
+    //     return clients.has(user_id);
+    // }
 
     //Utility module for other server's routes
-    var socketIOEmitter = {};
 
-    exports.emitEvent = function (user_id, eventName, args) {
-
-        console.log('emitting event ' + eventName);
-
-        if(isRegistered(user_id)) {
-            clients.get(user_id).emit(eventName, args);
-            return true;
-        }
-        return false;
-    }
+    // exports.emitEvent = function (user_id, eventName, args) {
+    //
+    //     console.log('emitting event ' + eventName);
+    //
+    //     if(isRegistered(user_id)) {
+    //         clients.get(user_id).emit(eventName, args);
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
 });
 

@@ -1,4 +1,4 @@
-package com.ariel.wizeup.settings;
+package com.ariel.wizeup.utils;
 
 import android.widget.AbsListView;
 

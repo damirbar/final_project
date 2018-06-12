@@ -1,4 +1,4 @@
-wizerApp.service('SessionService', function ($http) {
+wizerApp.service('SessionService', function ($http, socketIO) {
 
     this.getSessionByID = function (id) {
         return $http.post('/sessions/connect-session', {sid: id})
@@ -11,8 +11,11 @@ wizerApp.service('SessionService', function ($http) {
 
     this.connectSession = function (id, name) {
         console.log("ID = " + id);
+        console.log('joined session');
         return $http.post('/sessions/connect-session', {sid: id, name: name})
             .then(function (data) {
+                console.log(data);
+                socketIO.emit('joinSession', data.data.sid);
                 return data.data;
             }, function (err) {
                 console.log("Error getting session with ID = " + id);
@@ -30,6 +33,7 @@ wizerApp.service('SessionService', function ($http) {
         console.log("ID = " + sid);
         return $http.post('/sessions/create-session', {sid: sid, name: name, location: location})
             .then(function (data) {
+                socketIO.emit('createSession', sid);
                 return data.data;
             }, function (err) {
                 console.log("Error creating session with ID = " + id);
@@ -40,6 +44,7 @@ wizerApp.service('SessionService', function ($http) {
     this.sendMessage = function(senderID, sessionId, type, message) {
         return $http.post('/sessions/messages', {sender_id: senderID, sid: sessionId, type: type, body: message})
             .then(function (data) {
+                socketIO.emit('postSessionMessage', );
                 return data.data;
             }, function () {
                 console.log("Error sending message to session with ID = " + sessionId);
@@ -60,6 +65,7 @@ wizerApp.service('SessionService', function ($http) {
     this.getSession = function(sessionId) {
         return $http.get('/sessions/get-session?sid=' + sessionId)
             .then(function (data) {
+                // console.log('joined session');
                 return data.data;
             }, function () {
                 console.log("Error getting session with ID = " + sessionId);
@@ -88,6 +94,7 @@ wizerApp.service('SessionService', function ($http) {
     this.disconnect = function(sessionId) {
         return $http.get('/sessions/disconnect?sid=' + sessionId)
             .then(function (data) {
+                socketIO.emit('leaveSession', sessionId);
                 return data.data;
             }, function () {
                 console.log("Error disconnecting from session with ID = " + sessionId);

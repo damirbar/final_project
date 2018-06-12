@@ -9,7 +9,7 @@ ObjectID = require('mongodb').ObjectID;
 
 const notificationsSystem = require('../tools/notificationsSystem');
 
-const socketIOEmitter = require('../app');
+const socketIOEmitter = require('../tools/socketIO');
 
 router.post("/connect-session", function (req, res) {
     const decoded = req.verifiedEmail;
@@ -189,6 +189,7 @@ router.get("/rate-message", function (req, res) {
 
         //finds the message and fetches its likers and dislikers arrays.
         Session_Message.findOne({_id: mess_id}, {_id: 0, likers: 1, dislikers: 1,poster_id: 1, email:1}, function (err, message) {
+            console.log(message);
             if (err) return err;
             let likers = message.likers;
             let dislikers = message.dislikers;
@@ -201,7 +202,7 @@ router.get("/rate-message", function (req, res) {
                     ratingUpdate.$pull = {likers: user._id};//removes the user id from the likers array
                     ratingUpdate.$inc = {likes: -1};
                     console.log('user has already liked this message. mess id:' + mess_id);
-                    // return res.status(200).json({message: 'user has already liked this message. mess id:' + mess_id});
+                    return res.status(200).json({message: 'user has already liked this message. mess id:' + mess_id});
                 } else if (disliked) { // user has already disliked the message.
                     ratingUpdate.$push = {likers: user._id};
                     ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
@@ -215,7 +216,7 @@ router.get("/rate-message", function (req, res) {
                     ratingUpdate.$pull = {dislikers: user._id}; //removes the user id from the dislikers array
                     ratingUpdate.$inc = {dislikes: -1};
                     console.log('user has already disliked this message. mess id:' + mess_id);
-                    // return res.status(200).json({message: 'user has already disliked this message. mess id:' + mess_id});
+                    return res.status(200).json({message: 'user has already disliked this message. mess id:' + mess_id});
                 } else if (liked) { // user has already liked the message.
                     ratingUpdate.$push = {dislikers: user._id};
                     ratingUpdate.$pull = {likers: user._id};//removes the user id from the likers array
@@ -226,11 +227,10 @@ router.get("/rate-message", function (req, res) {
                 }
             }
             // updates the message rating with the ratingUpdate object
-
-            Session_Message.update(message._id ,ratingUpdate, function(err){
+            Session_Message.update({_id: mess_id} ,ratingUpdate, function(err){
 
                 console.log('updating session message');
-
+                console.log(ratingUpdate);
 
                if(err) console.log(err);
 
@@ -239,10 +239,10 @@ router.get("/rate-message", function (req, res) {
                        receiver_id: message.poster_id,
                        sender_id: user._id,
                        type: rating,
-                       subject: 'Message',
+                       subject: 'message',
                        subject_id: mess_id
                    });
-                   notificationsSystem.saveNotification(notification);
+                   notificationsSystem.saveAndEmitNotification(notification);
                    // socketIOEmitter.emitEvent(message.poster_id, 'newNotification', notification);
                }
             });
@@ -370,7 +370,9 @@ router.get("/rate-reply-message", function (req, res) {
     });
 
 router.post("/messages", function (req, res) {
+
     const decoded = req.verifiedEmail;
+
     const msg = new Session_Message({
             poster_id: req.body.sender_id,
             sid: req.body.sid,
@@ -380,6 +382,8 @@ router.post("/messages", function (req, res) {
             date: Date.now()
         }
     );
+
+
     msg.save(function (err) {
         if (err) {
             console.log(err);
@@ -389,34 +393,10 @@ router.post("/messages", function (req, res) {
             console.log('pushing message to messages');
             if (err) {
                 return console.log(err);
+            }else{
+                socketIOEmitter.emitEventToSessionRoom(msg.sid,'newSessionMessage',msg);
             }
-
-            Session.findOne({sid: req.body.sid}, function (err, sess) {
-                if (sess) {
-                    User.findOne({email: decoded}, function (err, user) {
-                        if (user) {
-                            let emailArray = [];
-                            sess.students.forEach(function(stud){
-                                emailArray.push(stud.email)
-                            });
-                            User.find({email: {$in :emailArray}}, function (err, students) {
-                               students.forEach(function(student){
-                                 let notify ={
-                                     type:  "Session",
-                                     body: user.first_name +  " " + user.last_name+ " posted a question in session "+ sess.name,
-                                     date:  Date.now()
-                                            };
-                                   student.notifications.push(notify);
-                                   student.save();
-                               });
-                            });
-                        }
-                    });
-                }
-            });
-
         });
-
         res.status(200).json({message: "successfully added message " + msg.body + " to db"});
         console.log("successfully added message " + msg.body + " to db");
     });
@@ -461,7 +441,7 @@ router.get("/get-all-user-messages", function (req, res) {
     let messages = [];
     const decoded = req.verifiedEmail;
     Session.findOne({sid: req.query.sid}, function (err, sess) {
-        if (err) return next(err);
+        if (err) return console.log(err);
         User.findOne({email: decoded}, function (err, user) {
             if (err) return err;
             for (let i = 0; i < sess.messages.length; ++i) {
