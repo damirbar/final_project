@@ -25,6 +25,7 @@ import com.ariel.wizeup.model.Notification;
 import com.ariel.wizeup.model.User;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
+import com.ariel.wizeup.notification.BService;
 import com.ariel.wizeup.notification.NotificationsAdapter;
 import com.ariel.wizeup.profile.ProfileActivity;
 import com.ariel.wizeup.search.SearchActivity;
@@ -68,6 +69,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+        startService(new Intent(getBaseContext(), BService.class));///rm
         changeLanguage =new ChangeLanguage(this);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
