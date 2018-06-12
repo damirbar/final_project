@@ -13,6 +13,7 @@ import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.Event;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
+import com.ariel.wizeup.utils.EndlessScrollListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
