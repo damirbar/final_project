@@ -19,11 +19,12 @@ router.post('/read-all-notifications', function(req,res){
 });
 
 router.get('get-user-notifications', function(req, res){
-
     var user_id = req.query.user_id;
-
-    Notification.find({receiver_id: user_id},function () {
-
+    Notification.find({receiver_id: user_id},function (err, notifications) {
+        if(err){
+            return res.status(500).json({message: 'error with getting notifications'});
+        }
+        return res.status(200).json(notifications);
     });
 });
 
