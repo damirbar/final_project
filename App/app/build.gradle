@@ -51,8 +51,10 @@ dependencies {
     implementation 'com.github.siyamed:android-shape-imageview:0.9.3@aar'
     implementation 'com.mindorks:placeholderview:0.2.7'
 
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    //Graph
+    implementation 'com.robinhood.spark:spark:1.2.0'
 
+    //LiveStream
     implementation 'com.github.nkzawa:socket.io-client:0.4.2'
     implementation 'io.pristine:libjingle:8871@aar'
 

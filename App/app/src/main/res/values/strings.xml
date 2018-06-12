@@ -84,6 +84,10 @@
     <string name="host">192.168.0.46</string>
     <string name="port">3000</string>
     <string name="action_settings">Options</string>
+    <string name="scrub_empty">Tap and hold the graph.</string>
+    <string name="scrub_format">Value: %1$s</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

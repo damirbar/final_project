@@ -1,5 +1,6 @@
 package com.ariel.wizeup.session;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ariel.wizeup.R;
@@ -15,6 +17,8 @@ import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.Session;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
+import com.ariel.wizeup.settings.FeedbackActivity;
+import com.squareup.picasso.Picasso;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -29,6 +33,7 @@ public class SessionInfoFragment extends Fragment {
     private CheckBox likeCbx;
     private CheckBox dislikeCbx;
     private TextView mRatingNum;
+    private ImageView imageView;
 
     private TextView mSNameTextView;
     private TextView mSidTextView;
@@ -100,14 +105,22 @@ public class SessionInfoFragment extends Fragment {
         likeCbx = v.findViewById(R.id.like_cbx);
         dislikeCbx = v.findViewById(R.id.dislike_cbx);
         mRatingNum = v.findViewById(R.id.tvRating);
-
+        imageView = v.findViewById(R.id.imageView);
         mSNameTextView = v.findViewById(R.id.tvName);
         mSidTextView = v.findViewById(R.id.tvSid);
         mDateTextView = v.findViewById(R.id.tvDate);
         mTeacherTextView = v.findViewById(R.id.tvTeacher);
         mLocTextView = v.findViewById(R.id.tvLocation);
         mOnlineNum = v.findViewById(R.id.tvOnlineNum);
+        mRatingNum.setOnClickListener(view -> openGraph());
 
+
+    }
+
+    private void openGraph() {
+        Intent i = new Intent(getActivity(), GraphActivity.class);
+        i.putExtra("sid",sid);
+        startActivity(i);
     }
 
     private void getData() {
@@ -154,6 +167,12 @@ public class SessionInfoFragment extends Fragment {
         mLocTextView.setText(_session.getLocation());
         String numStudents = Integer.toString(_session.getStudents().length);
         mOnlineNum.setText(numStudents);
+
+        String pic = _session.getPicID();
+        if (pic != null && !(pic.isEmpty()))
+            Picasso.with(getActivity())
+                    .load(pic)
+                    .into(imageView);
     }
 
 

@@ -5,6 +5,10 @@
     <integer name="post_max">500</integer>
     <integer name="comment_max">500</integer>
     <integer name="feedback_max">500</integer>
+    <integer name="ans_max">60</integer>
+    <integer name="que_max">95</integer>
+
+
 
 
 

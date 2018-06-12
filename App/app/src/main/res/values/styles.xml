@@ -36,4 +36,24 @@
         <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
     </style>
 
+    <style name="spark_SparkView">
+        <item name="spark_lineColor">@color/user_selected</item>
+        <item name="spark_lineWidth">2dp</item>
+        <item name="spark_cornerRadius">360dp</item>
+        <item name="spark_fill">false</item>
+
+        <item name="spark_baseLineColor">@color/default_circle_indicator_page_color</item>
+        <item name="spark_baseLineWidth">@dimen/spark_base_line_width</item>
+
+        <item name="spark_scrubLineColor">@color/default_circle_indicator_page_color</item>
+        <item name="spark_scrubLineWidth">@dimen/spark_scrub_line_width</item>
+        <item name="spark_scrubEnabled">true</item>
+        <item name="spark_animateChanges">true</item>
+    </style>
+
+    <style name="DefaultPickerTheme" parent="AppTheme">
+        <item name="colorControlNormal">@color/dialog_color</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

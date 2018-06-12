@@ -37,8 +37,8 @@ wizerApp.service('SessionService', function ($http) {
             });
     };
 
-    this.sendMessage = function(sessionId, type, message) {
-        return $http.post('/sessions/messages', {sid: sessionId, type: type, body: message})
+    this.sendMessage = function(senderID, sessionId, type, message) {
+        return $http.post('/sessions/messages', {sender_id: senderID, sid: sessionId, type: type, body: message})
             .then(function (data) {
                 return data.data;
             }, function () {

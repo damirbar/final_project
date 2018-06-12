@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class MyDateDialog extends DialogFragment {
+public class MyDateDialog extends BottomSheetDialogFragment {
 
     public interface OnCallbackReceived {
         public void Update(String date);
@@ -85,6 +86,8 @@ public class MyDateDialog extends DialogFragment {
         super.onAttach(context);
         try {
             mCallback = (OnCallbackReceived) context;
-        } catch (ClassCastException e) {}
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
     }
 }

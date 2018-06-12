@@ -74,16 +74,15 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/tool_bar"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@color/def_background"
             android:choiceMode="singleChoice"
             android:divider="@color/def_background"
+            android:dividerHeight="5dp"
             android:fastScrollEnabled="true"
             android:focusableInTouchMode="false"
-            android:listSelector="@android:color/transparent"
-            android:scrollbarSize="2dp"
-            android:scrollbarThumbVertical="@color/highlight_default_color" />
+            android:listSelector="@android:color/transparent" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView

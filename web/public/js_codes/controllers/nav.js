@@ -1,5 +1,5 @@
-wizerApp.controller('navController', ['$scope','AuthService', '$location', '$timeout', 'ProfileService', 'SearchService', '$rootScope', '$interval',
-    '$http', function ($scope, AuthService, $location, $timeout, ProfileService, SearchService, $rootScope, $interval, $http) {
+wizerApp.controller('navController', ['$scope','AuthService', '$location', '$timeout', 'ProfileService','socketIO', 'SearchService', '$rootScope', '$interval',
+    '$http', function ($scope, AuthService, $location, $timeout, ProfileService, socketIO, SearchService, $rootScope, $interval, $http) {
 
         $scope.loadingNotifications = true;
         $scope.notifications = [];
@@ -11,6 +11,7 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
             $('.search-nav-form').removeClass('ng-hide');
         };
 
+        console.log('From nav: ');
 
         console.log("PATH ===================== " + $location.path());
         $scope.loggedUser = {};
@@ -26,6 +27,7 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
                 AuthService.getUserByToken()
                     .then(function (data) {
                         console.log("DATA = " + JSON.stringify(data));
+                        registerUserToSocketIO(data.data._id);
                         $rootScope.loggedUser = data.data;
                         $scope.loggedUser = $rootScope.loggedUser;
 
@@ -51,10 +53,9 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
             AuthService.auth($scope.user.email, $scope.user.password)
                 .then(function (data) {
                     console.log("Got " + JSON.stringify(data) + " from login function");
-                    data = data.data;
+                    // data = data.data;
                     // $rootScope.loggedUser = data;
                     // $scope.loggedUser = data;
-                    console.log(data);
                     $scope.checkLogin();
                     // $scope.$apply();
                     $timeout(function () {
@@ -69,9 +70,10 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
                 });
         };
 
-
         $scope.logout = function () {
             console.log("Activated logout function");
+            console.log(AuthService.user_id);
+            unregisterUserFromSocketIO(AuthService.user_id);
             $scope.isLogged = false;
             AuthService.logout();
             $location.path('/');
@@ -101,7 +103,6 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
 
         };
 
-
         $scope.getNotifications = function () {
             ProfileService.getNotifications(0, 10)
                 .then(function (data) {
@@ -113,7 +114,6 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
                     console.log("An error occurred in facebookLogin()! " + JSON.stringify(err));
                 });
         };
-
 
 
         $scope.onSignIn = function (googleUser) {
@@ -132,6 +132,23 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
         };
 
 
+        ///////socket.io registration
+        function registerUserToSocketIO (user_id) {
+            AuthService.user_id = user_id;
+            socketIO.on('ackConnection', function (){
+                console.log("successfully registered to socket.io");
+            });
+            socketIO.emit('registerClientToClients', user_id);
+        }
+        //////
+
+        ///////socket.io unregistration
+        function unregisterUserFromSocketIO (user_id) {
+            socketIO.emit('unregisterClientFromClients', user_id);
+        }
+        //////
+
+
         var ctr = 0;
         $scope.isLoggedIn = function() {
             return $scope.isLogged;
@@ -147,4 +164,6 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
             console.log($scope.searchTerm.keywords);
             SearchService.freeTextSearch($scope.searchTerm.keywords);
         }
+
+
     }]);

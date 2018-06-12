@@ -27,7 +27,6 @@ public class PostActivity extends AppCompatActivity {
     private CompositeSubscription mSubscriptions;
 
     private EditText mPostText;
-    private Button buttonBack;
     private Button buttonSend;
     private final String question = "question";
     private String sid;
@@ -50,7 +49,7 @@ public class PostActivity extends AppCompatActivity {
     private void initViews() {
         mTextCount = findViewById(R.id.count_num);
         mPostText = findViewById(R.id.post_text);
-        buttonBack = findViewById(R.id.cancel_button);
+        Button buttonBack = findViewById(R.id.cancel_button);
         buttonSend = findViewById(R.id.save_button);
         buttonSend.setOnClickListener(view -> attemptSendPost());
         buttonBack.setOnClickListener(view -> finish());

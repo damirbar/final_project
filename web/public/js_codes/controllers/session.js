@@ -1,5 +1,5 @@
 wizerApp.controller('sessionController',
-    function ($scope, $rootScope, $routeParams, $location, $window, $interval, AuthService, SessionService, $http, UploadService/*,socketIO*/) {
+    function ($scope, $rootScope, $routeParams, $location, $window, $interval, AuthService, SessionService, $http, UploadService, socketIO) {
 
         console.log("Hello from sessionController");
         $scope.sessionID = "";
@@ -56,7 +56,8 @@ wizerApp.controller('sessionController',
                         console.log("Connected to session as " + $scope.sessionUserName !== "" ? $scope.sessionUserName : $scope.sessionUserName);// + JSON.stringify(data.session));
                         console.log("SESSION DATA = " + JSON.stringify(data));
                         io.connect();
-                        if (data.session) {
+                        if (data._id) {
+                            // console.log("YES");
                             $scope.isConnectedToSession = true;
                             $scope.session = data.session;
                             getting();
@@ -71,8 +72,7 @@ wizerApp.controller('sessionController',
         };
 
         $scope.sendMessage = function () {
-
-            SessionService.sendMessage($scope.sessionID, $scope.message.type, $scope.message.body)
+            SessionService.sendMessage(AuthService.user_id, $scope.sessionID, $scope.message.type, $scope.message.body)
                 .then(function (data) {
                     console.log("Sent message");
                     $scope.getMessages();
@@ -83,9 +83,7 @@ wizerApp.controller('sessionController',
                 });
         };
 
-
         $scope.createSession = function () {
-
             SessionService.createSession($scope.createSessionID, $scope.createSessionName, $scope.createSessionLocation)
                 .then(function (data) {
                     if (data.error) {
@@ -110,10 +108,9 @@ wizerApp.controller('sessionController',
                     console.log(err);
                     $scope.firstConnectionTry = false;
                 });
-
         };
 
-        $scope.getMessages = function () {
+        $scope.getMessages = function (){
 
             SessionService.getMessages($scope.sessionID)
                 .then(function (data) {
@@ -139,6 +136,7 @@ wizerApp.controller('sessionController',
                     }
                 })
                 .catch(function (err) {
+                    console.log(err);
                     console.log("Error with getting messages");
                 });
 
@@ -151,7 +149,6 @@ wizerApp.controller('sessionController',
 
 
         $scope.disconnect = function () {
-
             SessionService.disconnect($scope.sessionID)
                 .then(function (data) {
                     $scope.isConnectedToSession = false;
@@ -160,9 +157,7 @@ wizerApp.controller('sessionController',
                 .catch(function (err) {
                     console.log("Error with disconnecting from session");
                 });
-
         };
-
 
         $scope.$on('$locationChangeStart', function (event) {
             if ($scope.isConnectedToSession) {

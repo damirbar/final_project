@@ -1,14 +1,14 @@
 package com.ariel.wizeup.entry;
 
+import android.app.DialogFragment;
+import android.app.Fragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.base.BaseActivity;
+import com.ariel.wizeup.dialogs.LanguageDialog;
+import com.ariel.wizeup.dialogs.MyDateDialog;
 import com.ariel.wizeup.dialogs.ResetPasswordDialog;
 import com.ariel.wizeup.model.User;
 import com.ariel.wizeup.network.RetrofitRequests;
@@ -40,7 +42,6 @@ import static com.ariel.wizeup.utils.Constants.PROFILE_IMG;
 import static com.ariel.wizeup.utils.Constants.TOKEN;
 import static com.ariel.wizeup.utils.Constants.USER_NAME;
 import static com.ariel.wizeup.utils.Validation.validateEmail;
-import static com.ariel.wizeup.utils.Validation.validateFields;
 
 public class LoginFragment extends Fragment{
 
@@ -86,7 +87,7 @@ public class LoginFragment extends Fragment{
         mNewAccountButton.setOnClickListener(view -> goToRegister());
         mBtLogin.setOnClickListener(view -> login());
         mTvForgotPassword.setOnClickListener(view -> resetPassDialog());
-        mLangTextView.setOnClickListener(view -> changeLanguage.changeLanguageDialog());
+        mLangTextView.setOnClickListener(view -> askUserLang());
 
 
         mEtEmail.addTextChangedListener(new TextWatcher() {
@@ -137,6 +138,12 @@ public class LoginFragment extends Fragment{
             }
         });
     }
+
+    private void askUserLang() {
+        LanguageDialog fragment = new LanguageDialog();
+        fragment.show(getFragmentManager(), LanguageDialog.TAG);
+        }
+
     private void autoLogin() {
         if(!mToken.isEmpty()){
         Intent intent = new Intent(getActivity(), BaseActivity.class);

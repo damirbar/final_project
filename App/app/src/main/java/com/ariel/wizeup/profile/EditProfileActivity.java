@@ -1,22 +1,19 @@
 package com.ariel.wizeup.profile;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ariel.wizeup.R;
+import com.ariel.wizeup.dialogs.GenderDialog;
 import com.ariel.wizeup.dialogs.MyDateDialog;
 import com.ariel.wizeup.imageCrop.ImageCropActivity;
 import com.ariel.wizeup.imageCrop.IntentExtras;
@@ -48,7 +45,8 @@ import rx.subscriptions.CompositeSubscription;
 import static com.ariel.wizeup.network.RetrofitRequests.getBytes;
 import static com.ariel.wizeup.utils.Validation.validateFields;
 
-public class EditProfileActivity extends AppCompatActivity implements MyDateDialog.OnCallbackReceived, PicModeSelectDialogFragment.IPicModeSelectListener {
+public class EditProfileActivity extends AppCompatActivity implements MyDateDialog.OnCallbackReceived, PicModeSelectDialogFragment.IPicModeSelectListener
+    ,GenderDialog.OnCallbackGender{
 
     private EditText mETFirstName;
     private EditText mETLastName;
@@ -199,23 +197,14 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     }
 
     public void genderViewClick() {
-        final String[] items = {"Male", "Female", "Not Specified"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this, R.style.Theme_Report_Dialog_Alert);
-        builder.setTitle("choose gender");
-        builder.setItems(items, (dialog, item) -> {
-            switch (items[item]) {
-                case "Male":
-                    mETGender.setText(items[item]);
-                    break;
-                case "Female":
-                    mETGender.setText(items[item]);
-                    break;
-                case "Not Specified":
-                    mETGender.setText(items[item]);
-                    break;
-            }
-        });
-        builder.show();
+        GenderDialog newFragment = new GenderDialog();
+        String g = mETGender.getText().toString().trim();
+        if (!(g.isEmpty())) {
+            Bundle bundle = new Bundle();
+            bundle.putString("gender", g);
+            newFragment.setArguments(bundle);
+        }
+        newFragment.show(getSupportFragmentManager(), GenderDialog.TAG);
     }
 
 
@@ -380,5 +369,11 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     public void onDestroy() {
         super.onDestroy();
         mSubscriptions.unsubscribe();
+    }
+
+    @Override
+    public void UpdateGender(String gender) {
+        mETGender.setText(gender);
+
     }
 }

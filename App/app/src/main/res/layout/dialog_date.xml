@@ -15,7 +15,9 @@
         android:layout_centerHorizontal="true"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
-        android:spinnersShown="true" />
+        android:spinnersShown="true"
+        android:theme="@style/DefaultPickerTheme" />
+
 
     <Button
         android:id="@+id/button_cancel"

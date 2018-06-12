@@ -71,7 +71,6 @@
                 android:focusable="false"
                 android:gravity="start"
                 android:maxLines="2"
-                android:text="Shay Cohen"
                 android:textAlignment="viewStart"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/subhead_size" />

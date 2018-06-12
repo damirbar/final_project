@@ -1,273 +1,226 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_session_info"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_session_info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/def_background"
-    xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true">
-
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/def_background"
+            android:layout_marginTop="25dp"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="20dp"
-                android:divider="@drawable/divider"
-                android:orientation="vertical"
-                android:showDividers="none|end">
+                android:layout_height="77dp"
+                android:layout_marginBottom="20dp">
 
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="@dimen/top_margin30"
+                    android:layout_marginStart="44dp"
+                    android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/tvName"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:text="Session Number"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="21dp"
+                    android:layout_marginRight="21dp"
+                    android:gravity="left|center"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvTeacher"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/tvName"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignStart="@+id/tvName"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="left|center"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="10dp"
+                android:visibility="visible">
+
+                <CheckBox
+                    android:id="@+id/dislike_cbx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="67dp"
+                    android:layout_marginRight="60dp"
+                    android:background="@null"
+                    android:button="@drawable/dislike_checkbox" />
+
+                <TextView
+                    android:id="@+id/tvRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="start|center"
+                    android:paddingBottom="5dp"
+                    android:text="0"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="18sp" />
+
+                <CheckBox
+                    android:id="@+id/like_cbx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginStart="74dp"
+                    android:background="@null"
+                    android:button="@drawable/like_checkbox" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/divider_img"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/author_details"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginStart="61dp"
+                android:background="?attr/colorButtonNormal" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="@dimen/top_margin30"
+                android:layout_marginRight="@dimen/top_margin30"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center"
+                    android:text="Session"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tvSid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:gravity="start|center"
-                    android:paddingBottom="5dp"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                    android:gravity="end"
+                    android:textSize="15sp" />
 
-            </LinearLayout>
+            </TableRow>
 
-            <LinearLayout
+
+            <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="20dp"
-                android:divider="@drawable/divider"
-                android:orientation="vertical"
-                android:showDividers="none|end">
-
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="@dimen/top_margin30"
+                android:layout_marginRight="@dimen/top_margin30"
+                android:layout_marginTop="10dp">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Name"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:gravity="start|center"
-                    android:paddingBottom="5dp"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:divider="@drawable/divider"
-                android:orientation="vertical"
-                android:showDividers="none|end">
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Creation Date"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:gravity="start|center"
-                    android:paddingBottom="5dp"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:divider="@drawable/divider"
-                android:orientation="vertical"
-                android:showDividers="none|end">
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Teacher"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvTeacher"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:gravity="start|center"
-                    android:paddingBottom="5dp"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:divider="@drawable/divider"
-                android:orientation="vertical"
-                android:showDividers="none|end">
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center"
                     android:text="Location"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tvLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:gravity="start|center"
-                    android:paddingBottom="5dp"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                    android:gravity="end"
+                    android:textSize="15sp" />
 
+            </TableRow>
 
-            </LinearLayout>
-
-            <LinearLayout
+            <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:divider="@drawable/divider"
-                android:orientation="vertical"
-                android:showDividers="none|end">
-
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="@dimen/top_margin30"
+                android:layout_marginRight="@dimen/top_margin30"
+                android:layout_marginTop="10dp">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="User Online"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center"
+                    android:text="Users"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tvOnlineNum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:gravity="start|center"
-                    android:paddingBottom="5dp"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                    android:gravity="end"
+                    android:textSize="15sp" />
 
+            </TableRow>
 
-            </LinearLayout>
-
-            <LinearLayout
+            <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:divider="@drawable/divider"
-                android:orientation="vertical"
-                android:showDividers="none|end">
-
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="@dimen/top_margin30"
+                android:layout_marginRight="@dimen/top_margin30"
+                android:layout_marginTop="10dp">
 
                 <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center"
+                    android:text="Creation Date"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Rate The Session !"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:gravity="end"
+                    android:textSize="15sp" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="30dp"
-                    android:layout_marginTop="10dp">
-
-                    <CheckBox
-                        android:id="@+id/dislike_cbx"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginEnd="67dp"
-                        android:layout_marginRight="67dp"
-                        android:background="@null"
-                        android:button="@drawable/dislike_checkbox" />
-
-                    <TextView
-                        android:id="@+id/tvRating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="start|center"
-                        android:paddingBottom="5dp"
-                        android:text="0"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="18sp" />
-
-                    <CheckBox
-                        android:id="@+id/like_cbx"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="74dp"
-                        android:layout_marginStart="74dp"
-                        android:background="@null"
-                        android:button="@drawable/like_checkbox" />
-
-                </RelativeLayout>
-
-
-            </LinearLayout>
-
+            </TableRow>
 
         </LinearLayout>
     </ScrollView>

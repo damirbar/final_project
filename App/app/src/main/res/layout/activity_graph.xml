@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:graph="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_graph"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -12,7 +13,8 @@
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
@@ -58,5 +60,32 @@
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
+
+    <com.robinhood.spark.SparkView
+        android:id="@+id/sparkview"
+        style="@style/spark_SparkView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tool_bar"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:visibility="visible"
+        app:spark_lineColor="@color/user_selected"
+        app:spark_scrubEnabled="true" />
+
+    <TextView
+        android:id="@+id/scrub_info_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sparkview"
+        android:layout_marginTop="-39dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/scrub_empty"
+        android:textAppearance="?android:textAppearanceLarge" />
 
 </RelativeLayout>
