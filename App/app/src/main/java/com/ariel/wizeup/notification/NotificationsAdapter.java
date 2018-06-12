@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.ariel.wizeup.R;
-import com.ariel.wizeup.model.Notification;
+import com.ariel.wizeup.model.NotificationMsg;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -18,18 +18,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class NotificationsAdapter extends ArrayAdapter<Notification> {
+public class NotificationsAdapter extends ArrayAdapter<NotificationMsg> {
     private Context mContext;
-    private List<Notification> notificationsList;
+    private List<NotificationMsg> notificationsList;
 
 
-    public NotificationsAdapter(Activity context, ArrayList<Notification> list) {
+    public NotificationsAdapter(Activity context, ArrayList<NotificationMsg> list) {
         super(context, 0, list);
         mContext = context;
         notificationsList = list;
     }
 
-    public List<Notification> getNotificationList() {
+    public List<NotificationMsg> getNotificationList() {
         return notificationsList;
     }
 
@@ -48,7 +48,7 @@ public class NotificationsAdapter extends ArrayAdapter<Notification> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
-        Notification currentNotification = notificationsList.get(position);
+        NotificationMsg currentNotificationMsg = notificationsList.get(position);
 
         MyNotificationHolder holder;
         if (view == null) {
@@ -61,14 +61,14 @@ public class NotificationsAdapter extends ArrayAdapter<Notification> {
 
         }
 
-        String type = currentNotification.getType().substring(0, 1).toUpperCase() + currentNotification.getType().substring(1);
+        String type = currentNotificationMsg.getType().substring(0, 1).toUpperCase() + currentNotificationMsg.getType().substring(1);
         holder.mNotificationType.setText(type);
 
-        String event = currentNotification.getBody().substring(0, 1).toUpperCase() + currentNotification.getBody().substring(1);
+        String event = currentNotificationMsg.getBody().substring(0, 1).toUpperCase() + currentNotificationMsg.getBody().substring(1);
         holder.mBody.setText(event);
 
         //Date
-        Date date = currentNotification.getDate();
+        Date date = currentNotificationMsg.getDate();
         if (date != null) {
             Format formatter = new SimpleDateFormat("HH:mm EEE, d MMM yyyy");
             String s = formatter.format(date);

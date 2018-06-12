@@ -22,7 +22,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="77dp"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="@dimen/top_margin30">
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -41,25 +41,25 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="21dp"
+                    android:layout_marginRight="21dp"
                     android:gravity="left|center"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="21dp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_teacher"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/tv_name"
                     android:layout_alignParentBottom="true"
                     android:layout_alignStart="@+id/tv_name"
                     android:layout_marginBottom="5dp"
                     android:gravity="left|center"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp"
-                    android:layout_alignLeft="@+id/tv_name" />
+                    android:textSize="14sp" />
 
             </RelativeLayout>
 

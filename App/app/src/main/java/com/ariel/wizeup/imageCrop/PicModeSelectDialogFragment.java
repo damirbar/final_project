@@ -1,34 +1,64 @@
 package com.ariel.wizeup.imageCrop;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetDialogFragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
-public class PicModeSelectDialogFragment extends DialogFragment {
+import com.ariel.wizeup.R;
 
-    private String[] picMode = {PicModes.CAMERA, PicModes.GALLERY};
+public class PicModeSelectDialogFragment extends BottomSheetDialogFragment {
 
-    private IPicModeSelectListener iPicModeSelectListener;
+    public static final String TAG = PicModeSelectDialogFragment.class.getSimpleName();
+
+    private Button btn1;
+    private Button btn2;
+    IPicModeSelectListener iPicModeSelectListener;
+
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setItems(picMode, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                if (iPicModeSelectListener != null)
-                    iPicModeSelectListener.onPicModeSelected(picMode[which]);
-            }
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_profile_pic_dialog, container, false);
+
+        initViews(v);
+
+        btn1.setOnClickListener(v1 -> {
+            iPicModeSelectListener.onPicModeSelected(PicModes.CAMERA);
+            dismiss();
         });
-        return builder.create();
+        btn2.setOnClickListener(v12 -> {
+            iPicModeSelectListener.onPicModeSelected(PicModes.GALLERY);
+            dismiss();
+        });
+
+
+        return v;
     }
 
-    public void setiPicModeSelectListener(IPicModeSelectListener iPicModeSelectListener) {
-        this.iPicModeSelectListener = iPicModeSelectListener;
+
+    private void initViews(View v) {
+        btn1 = v.findViewById(R.id.bottom_sheet_cam_btn);
+        btn2 = v.findViewById(R.id.bottom_sheet_gallery_btn);
+
     }
+
 
     public interface IPicModeSelectListener {
         void onPicModeSelected(String mode);
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            iPicModeSelectListener = (PicModeSelectDialogFragment.IPicModeSelectListener) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

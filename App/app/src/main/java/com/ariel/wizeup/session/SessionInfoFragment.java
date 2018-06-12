@@ -161,6 +161,16 @@ public class SessionInfoFragment extends Fragment {
             mDateTextView.setText(s);
         }
 
+        int rating = 0;
+        for(int i=0 ; i<_session.getStudents().length; i++){
+            if(_session.getStudents()[i].getRating_val().equals("0"))
+                rating-=1;
+            else if(_session.getStudents()[i].getRating_val().equals("1"))
+                rating+=1;
+        }
+
+        mRatingNum.setText(String.valueOf(rating));
+
 
         String teacher = _session.getTeacher_fname()+" "+_session.getTeacher_lname();
         mTeacherTextView.setText(teacher);
@@ -172,6 +182,7 @@ public class SessionInfoFragment extends Fragment {
         if (pic != null && !(pic.isEmpty()))
             Picasso.with(getActivity())
                     .load(pic)
+                    .error(R.drawable.wizeup_logo)
                     .into(imageView);
     }
 

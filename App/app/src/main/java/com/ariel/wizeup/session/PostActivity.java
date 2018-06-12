@@ -1,7 +1,9 @@
 package com.ariel.wizeup.session;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -15,10 +17,13 @@ import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.SessionMessage;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
+import com.ariel.wizeup.utils.Constants;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+
+import static com.ariel.wizeup.utils.Constants.EMAIL;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -32,6 +37,7 @@ public class PostActivity extends AppCompatActivity {
     private String sid;
     private TextView mTextCount;
     private final int MAX_COUNT = 400;
+    private String mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,7 @@ public class PostActivity extends AppCompatActivity {
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.laout_post));
+        initSharedPreferences();
         if (!getData()) {
             finish();
         }
@@ -56,6 +63,11 @@ public class PostActivity extends AppCompatActivity {
         mPostText.addTextChangedListener(mTextEditorWatcher);
         mPostText.setText("");
     }
+
+    private void initSharedPreferences() {
+        mId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID, "");
+    }
+
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
@@ -79,6 +91,7 @@ public class PostActivity extends AppCompatActivity {
         message.setSid(sid);
         message.setType(question);
         message.setBody(strMessage);
+        message.setPoster_id(mId);
         sendPost(message);
     }
 

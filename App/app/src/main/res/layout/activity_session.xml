@@ -31,7 +31,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:fontFamily="sans-serif"
-                android:gravity="start"
+                android:gravity="top|start"
                 android:text="Quit"
                 android:textAllCaps="false"
                 android:textColor="@color/white"

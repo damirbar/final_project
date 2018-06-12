@@ -15,6 +15,8 @@ public class Constants {
     public static final String PROFILE_IMG = "profile_img";
     public static final String PASS = "pass";
     public static final String LANG = "en";
+    public static final String NOTIFICATION‬‏ = "on";
+
 
 
 }

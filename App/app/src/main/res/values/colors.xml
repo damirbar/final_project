@@ -3,6 +3,8 @@
 
     <color name="user_selected">#eb5d62</color>
     <color name="user_selected2">#ec8b8e</color>
+    <color name="user_selected3">#ec252e</color>
+
     <color name="default_circle_indicator_page_color">#3e4a5b</color>
     <color name="black">#222222</color>
     <color name="primary_text">#ff222222</color>

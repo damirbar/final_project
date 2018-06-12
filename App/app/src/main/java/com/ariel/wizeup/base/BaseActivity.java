@@ -21,11 +21,11 @@ import com.ariel.wizeup.R;
 import com.ariel.wizeup.TermsActivity;
 import com.ariel.wizeup.course.MyCourseActivity;
 import com.ariel.wizeup.entry.EntryActivity;
-import com.ariel.wizeup.model.Notification;
+import com.ariel.wizeup.model.NotificationMsg;
 import com.ariel.wizeup.model.User;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
-import com.ariel.wizeup.notification.BService;
+import com.ariel.wizeup.notification.NotificationService;
 import com.ariel.wizeup.notification.NotificationsAdapter;
 import com.ariel.wizeup.profile.ProfileActivity;
 import com.ariel.wizeup.search.SearchActivity;
@@ -45,6 +45,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.ariel.wizeup.utils.Constants.EMAIL;
+import static com.ariel.wizeup.utils.Constants.NOTIFICATION‬‏;
 
 public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.DrawerCallBack {
 
@@ -62,6 +63,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     private DrawerHeader mDrawerHeader;
     private NotificationsAdapter mAdapter;
     private ChangeLanguage changeLanguage;
+    private String currentNoti;
     private static int ADD_ITEMS = 10;
 
 
@@ -69,7 +71,6 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        startService(new Intent(getBaseContext(), BService.class));///rm
         changeLanguage =new ChangeLanguage(this);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
@@ -77,6 +78,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         initSharedPreferences();
         initViews();
         setupDrawer();
+        initNoti();
 
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
@@ -114,6 +116,12 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
     }
 
+    private void initNoti() {
+        if(currentNoti.equalsIgnoreCase("on")){
+            startService(new Intent(getBaseContext(), NotificationService.class));
+        }
+    }
+
     private EndlessScrollListener mEndlessScrollListener = new EndlessScrollListener() {
 
         @Override
@@ -148,7 +156,8 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     private void initSharedPreferences() {
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEmail = mSharedPreferences.getString(EMAIL, "");
-        mId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID, "");
+        mId = mSharedPreferences.getString(Constants.ID, "");
+        currentNoti = mSharedPreferences.getString(NOTIFICATION‬‏, "");
         String lang = mSharedPreferences.getString(Constants.LANG,"");
         changeLanguage.setLocale(lang);
 
@@ -252,6 +261,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     }
 
     private void logout() {
+        stopService(new Intent(getBaseContext(), NotificationService.class));
         RetrofitRequests mRetrofitRequests = new RetrofitRequests(this);
         SharedPreferences.Editor editor = mRetrofitRequests.getSharedPreferences().edit();
         editor.putString(Constants.PASS, "");
@@ -259,6 +269,8 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         editor.putString(Constants.ID, "");
         editor.putString(Constants.USER_NAME, "");
         editor.putString(Constants.PROFILE_IMG, "");
+//        editor.putString(Constants.LANG, "en");
+//        editor.putString(Constants.NOTIFICATION‬‏, "on");
 
         editor.apply();
         Intent intent = new Intent(this, EntryActivity.class);
@@ -281,11 +293,11 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
     }
 
-    private void handleResponseNotificationsInit(Notification notification[]) {
-        if (!(notification.length == 0)) {
-            ArrayList<Notification> saveNotifications = new ArrayList<>(Arrays.asList(notification));
+    private void handleResponseNotificationsInit(NotificationMsg notificationMsg[]) {
+        if (!(notificationMsg.length == 0)) {
+            ArrayList<NotificationMsg> saveNotificationMsgs = new ArrayList<>(Arrays.asList(notificationMsg));
             mTvNoResults.setVisibility(View.GONE);
-            mAdapter = new NotificationsAdapter(this, new ArrayList<>(saveNotifications));
+            mAdapter = new NotificationsAdapter(this, new ArrayList<>(saveNotificationMsgs));
             notificationsList.setAdapter(mAdapter);
         } else {
             mTvNoResults.setVisibility(View.VISIBLE);
@@ -301,10 +313,10 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
     }
 
-    private void handleResponseNotifications(Notification notification[]) {
-        if (!(notification.length == 0)) {
-            ArrayList<Notification> saveNotifications = new ArrayList<>(Arrays.asList(notification));
-            mAdapter.getNotificationList().addAll(saveNotifications);
+    private void handleResponseNotifications(NotificationMsg notificationMsg[]) {
+        if (!(notificationMsg.length == 0)) {
+            ArrayList<NotificationMsg> saveNotificationMsgs = new ArrayList<>(Arrays.asList(notificationMsg));
+            mAdapter.getNotificationList().addAll(saveNotificationMsgs);
             mAdapter.notifyDataSetChanged();
         }
     }

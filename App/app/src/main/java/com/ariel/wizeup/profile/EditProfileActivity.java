@@ -179,9 +179,12 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     }
 
     private void showAddProfilePicDialog() {
-        PicModeSelectDialogFragment dialogFragment = new PicModeSelectDialogFragment();
-        dialogFragment.setiPicModeSelectListener(this);
-        dialogFragment.show(getFragmentManager(), "picModeSelector");
+        PicModeSelectDialogFragment newFragment = new PicModeSelectDialogFragment();
+        newFragment.show(getSupportFragmentManager(), PicModeSelectDialogFragment.TAG);
+
+//        PicModeSelectDialogFragment dialogFragment = new PicModeSelectDialogFragment();
+//        dialogFragment.setiPicModeSelectListener(this);
+//        dialogFragment.show(getFragmentManager(), "picModeSelector");
     }
 
     private void actionProfilePic(String action) {

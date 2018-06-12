@@ -62,9 +62,9 @@
             <ImageView
                 android:id="@+id/img_logo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:src="@mipmap/ic_launcher_round"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/wizeup_logo"
                 android:visibility="visible" />
 
 

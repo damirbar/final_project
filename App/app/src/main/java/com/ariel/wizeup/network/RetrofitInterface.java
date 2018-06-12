@@ -3,7 +3,7 @@ package com.ariel.wizeup.network;
 import com.ariel.wizeup.model.Course;
 import com.ariel.wizeup.model.CourseFile;
 import com.ariel.wizeup.model.Event;
-import com.ariel.wizeup.model.Notification;
+import com.ariel.wizeup.model.NotificationMsg;
 import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.Searchable;
 import com.ariel.wizeup.model.Session;
@@ -67,7 +67,7 @@ public interface RetrofitInterface {
     Observable<Event[]> getEvents(@Query("start") int start ,@Query("end") int end);
 
     @GET("students/get-notifications")
-    Observable<Notification[]> getNotifications(@Query("start") int start , @Query("end") int end);
+    Observable<NotificationMsg[]> getNotifications(@Query("start") int start , @Query("end") int end);
 
 
     //////////////////Session//////////////////

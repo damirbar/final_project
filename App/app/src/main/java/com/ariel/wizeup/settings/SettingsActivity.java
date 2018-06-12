@@ -5,17 +5,23 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.base.BaseActivity;
 import com.ariel.wizeup.model.Language;
+import com.ariel.wizeup.notification.NotificationService;
 import com.ariel.wizeup.utils.Constants;
 
 import java.util.ArrayList;
+
+import static com.ariel.wizeup.utils.Constants.LANG;
+import static com.ariel.wizeup.utils.Constants.NOTIFICATION‬‏;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -23,6 +29,9 @@ public class SettingsActivity extends AppCompatActivity {
     private ListView langListView;
     private LanguageAdapter mAdapter;
     private String currentLang;
+    private SwitchCompat noti;
+    private String currentNoti;
+    private SharedPreferences mSharedPreferences;
 
 
     @Override
@@ -31,6 +40,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         initSharedPreferences();
         initViews();
+        initNoti();
         initListView();
 
         langListView.setOnItemClickListener((parent, view1, position, id) -> {
@@ -46,6 +56,33 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        noti.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                currentLang = "on";
+                SharedPreferences.Editor editor = mSharedPreferences.edit();
+                editor.putString(NOTIFICATION‬‏, currentLang);
+                editor.apply();
+                startService(new Intent(getBaseContext(), NotificationService.class));
+
+            }
+            else{
+                currentLang = "off";
+                SharedPreferences.Editor editor = mSharedPreferences.edit();
+                editor.putString(NOTIFICATION‬‏, currentLang);
+                editor.apply();
+                stopService(new Intent(getBaseContext(), NotificationService.class));
+            }
+        });
+
+    }
+
+    private void initNoti() {
+        noti = findViewById(R.id.noti_select);
+        if(currentNoti.equalsIgnoreCase("on")){
+            noti.setChecked(true);
+        }
+        else
+            noti.setChecked(false);
     }
 
     private void initViews() {
@@ -96,8 +133,10 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void initSharedPreferences() {
-        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         currentLang = mSharedPreferences.getString(Constants.LANG, "");
+        currentNoti = mSharedPreferences.getString(NOTIFICATION‬‏, "");
+
     }
 
 

@@ -16,6 +16,15 @@ public class SessionMessage  {
     private String _id;
     private Date date;
     private String mid;
+    private String poster_id;
+
+    public String getPoster_id() {
+        return poster_id;
+    }
+
+    public void setPoster_id(String poster_id) {
+        this.poster_id = poster_id;
+    }
 
     public void setDate(Date date) {
         this.date = date;

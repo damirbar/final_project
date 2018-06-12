@@ -66,9 +66,9 @@ public class SessionActivity extends AppCompatActivity {
         initViews();
 
         buttonVid.setOnClickListener(v -> {
-            if ((session.getVideoUrl().isEmpty())) {
+            if (session.getVideoUrl() == null || (session.getVideoUrl().isEmpty())) {
                 pullSession();
-                if ((session.getVideoUrl().isEmpty())){
+                if (session.getVideoUrl() == null || (session.getVideoUrl().isEmpty())){
                     mServerResponse.downSnackBarMessage("No video.");
                     return;
                 }
@@ -104,7 +104,7 @@ public class SessionActivity extends AppCompatActivity {
             }
         });
 
-        if (!(session.getVideoUrl().isEmpty())) {
+        if (session.getVideoUrl() !=null && !(session.getVideoUrl().isEmpty())) {
             playVideo();
         }
     }
@@ -200,10 +200,12 @@ public class SessionActivity extends AppCompatActivity {
 
     private void sendSidSms() {
         String smsBody = "Hi, please join my session.\nSession ID: " + session.getSid();
-        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-        sendIntent.putExtra("sms_body", smsBody);
-        sendIntent.setType("vnd.android-dir/mms-sms");
-        startActivity(sendIntent);
+
+        Intent sharingIntent = new Intent ( android.content.Intent.ACTION_SEND );
+        sharingIntent.setType ( "text/plain" );
+        sharingIntent.putExtra ( android.content.Intent.EXTRA_TEXT, smsBody );
+        startActivity(Intent.createChooser(sharingIntent, "Share using?"));
+
     }
 
     private boolean getData() {
@@ -267,7 +269,7 @@ public class SessionActivity extends AppCompatActivity {
 
     private void handleResponsePullSession(Session _session) {
         session = _session;
-        if (!(session.getVideoUrl().isEmpty())) {
+        if (session.getVideoUrl() != null && !(session.getVideoUrl().isEmpty())) {
             playVideo();
         }
     }
