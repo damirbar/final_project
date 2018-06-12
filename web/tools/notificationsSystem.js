@@ -35,6 +35,5 @@ exports.saveAndEmitNotification = function (notification){
                 socketIOEmitter.emitEvent(notification.receiver_id, 'newNotification', notification);
             });
         })
-
     })
 }

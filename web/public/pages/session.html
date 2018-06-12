@@ -63,8 +63,8 @@
                 <!--<source ng-src="{{session.videoUrl}}"-->
                 <!--type="video/mp4">-->
                 <!--</video>-->
-                <video style="max-width: 100%"
-                    poster="../imgs/wizeup-logo.png" controls ng-src="{{session.videoUrl}}"
+                <video id = "session-video" style="max-width: 100%"
+                poster="../imgs/wizeup-logo.png" controls ng-src="{{session.videoUrl}}"
                             type="video/mp4">
                 </video>
             </div>
@@ -117,7 +117,7 @@
                         <h4 class="card-title bs-card-text">Teacher: {{session.teacher_fname}} {{session.teacher_lname}}</h4>
                         <div class="card-text bs-card-text">Location: {{session.location}}</div>
                         <div class="card-text bs-card-text">Contact: {{session.admin}}</div>
-                        <div class="card-text bs-card-text">{{session.students.length}} students connected</div>
+                        <div class="card-text bs-card-text">{{session.connectedUsers}} students connected</div>
                         </div>
 
                         <div class="session-rating container">
