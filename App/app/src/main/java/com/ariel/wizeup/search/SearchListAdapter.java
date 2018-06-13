@@ -150,73 +150,6 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
             }
 
 
-            btStart.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String url = file.getUrl();
-                    String fileName = url.substring(url.lastIndexOf('/') + 1, url.length());
-
-                    File file = new File(dirPath(mContext) + "/" + fileName);
-                    if (file.exists()) {
-                        openFile(file, mContext);
-                        return;
-                    }
-
-                    progressBar.setVisibility(View.VISIBLE);
-                    progressBar.setIndeterminate(true);
-                    progressBar.getIndeterminateDrawable().setColorFilter(
-                            Color.BLUE, PorterDuff.Mode.SRC_IN);
-
-                    PRDownloader.download(url, dirPath(mContext), fileName)
-                            .build()
-                            .setOnStartOrResumeListener(new OnStartOrResumeListener() {
-                                @Override
-                                public void onStartOrResume() {
-//                                    progressState[position] = true;
-                                    progressBar.setIndeterminate(false);
-                                }
-                            })
-                            .setOnPauseListener(new OnPauseListener() {
-                                @Override
-                                public void onPause() {
-                                }
-                            })
-                            .setOnCancelListener(new OnCancelListener() {
-                                @Override
-                                public void onCancel() {
-                                }
-                            })
-                            .setOnProgressListener(new OnProgressListener() {
-                                @Override
-                                public void onProgress(Progress progress) {
-                                    long progressPercent = progress.currentBytes * 100 / progress.totalBytes;
-                                    progressBar.setProgress((int) progressPercent);
-                                    progressInfo.setText(DownloadFile.getProgressDisplayLine(progress.currentBytes, progress.totalBytes));
-                                }
-                            })
-                            .start(new OnDownloadListener() {
-                                @Override
-                                public void onDownloadComplete() {
-                                    progressBar.setVisibility(View.GONE);
-                                    progressInfo.setText("");
-                                    progressState[position] = false;
-                                    File file = new File(dirPath(mContext) + "/" + fileName);
-                                    openFile(file, mContext);
-                                }
-
-                                @Override
-                                public void onError(Error error) {
-                                    Toast.makeText(mContext, "     Invalid File     ", Toast.LENGTH_LONG).show();
-                                    progressInfo.setText("");
-                                    progressBar.setProgress(0);
-                                    progressBar.setIndeterminate(false);
-                                    progressBar.setVisibility(View.GONE);
-                                    progressState[position] = false;
-                                }
-                            });
-                }
-            });
-
             try {
                 menu.setOnClickListener(v -> {
                     switch (v.getId()) {
@@ -239,8 +172,68 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
                                         mContext.startActivity(Intent.createChooser(sharingIntent, "Share using?"));
                                         break;
                                     case R.id.action_download:
-//                                        String url = file.getUrl();
-//                                        downloadFile(position, url);
+                                        String url = file.getUrl();
+                                        String fileName = url.substring(url.lastIndexOf('/') + 1, url.length());
+
+                                        File file_temp = new File(dirPath(mContext) + "/" + fileName);
+                                        if (file_temp.exists()) {
+                                            openFile(file_temp, mContext);
+                                            break;
+                                        }
+
+                                        progressBar.setVisibility(View.VISIBLE);
+                                        progressBar.setIndeterminate(true);
+                                        progressBar.getIndeterminateDrawable().setColorFilter(
+                                                Color.BLUE, PorterDuff.Mode.SRC_IN);
+
+                                        PRDownloader.download(url, dirPath(mContext), fileName)
+                                                .build()
+                                                .setOnStartOrResumeListener(new OnStartOrResumeListener() {
+                                                    @Override
+                                                    public void onStartOrResume() {
+                                                        progressState[position] = true;
+                                                        progressBar.setIndeterminate(false);
+                                                    }
+                                                })
+                                                .setOnPauseListener(new OnPauseListener() {
+                                                    @Override
+                                                    public void onPause() {
+                                                    }
+                                                })
+                                                .setOnCancelListener(new OnCancelListener() {
+                                                    @Override
+                                                    public void onCancel() {
+                                                    }
+                                                })
+                                                .setOnProgressListener(new OnProgressListener() {
+                                                    @Override
+                                                    public void onProgress(Progress progress) {
+                                                        long progressPercent = progress.currentBytes * 100 / progress.totalBytes;
+                                                        progressBar.setProgress((int) progressPercent);
+                                                        progressInfo.setText(DownloadFile.getProgressDisplayLine(progress.currentBytes, progress.totalBytes));
+                                                    }
+                                                })
+                                                .start(new OnDownloadListener() {
+                                                    @Override
+                                                    public void onDownloadComplete() {
+                                                        progressBar.setVisibility(View.GONE);
+                                                        progressInfo.setText("");
+                                                        progressState[position] = false;
+                                                        File file = new File(dirPath(mContext) + "/" + fileName);
+                                                        openFile(file, mContext);
+                                                    }
+
+                                                    @Override
+                                                    public void onError(Error error) {
+                                                        Toast.makeText(mContext, "     Invalid File     ", Toast.LENGTH_LONG).show();
+                                                        progressInfo.setText("");
+                                                        progressBar.setProgress(0);
+                                                        progressBar.setIndeterminate(false);
+                                                        progressBar.setVisibility(View.GONE);
+                                                        progressState[position] = false;
+                                                    }
+                                                });
+
                                         break;
                                     default:
                                         break;
