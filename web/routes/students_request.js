@@ -192,6 +192,7 @@ router.get("/get-events", function (req, res) {
     User.findOne({email: req.verifiedEmail}, function (err, user) {
         if (err) return err;
         if (user) {
+            console.log(user.events.reverse().slice(req.query.start, req.query.start + req.query.end).length);
             res.status(200).json(user.events.reverse().slice(req.query.start, req.query.start + req.query.end))
         }
         else {

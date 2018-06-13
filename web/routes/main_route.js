@@ -4,6 +4,8 @@ let path = require("path");
 let jwt = require('jsonwebtoken');
 let User = require("../schemas/user");
 let Session = require("../schemas/session");
+let Session_Message = require("../schemas/session_message");
+let Course = require("../schemas/course");
 let config = require('../config/config');
 
 
@@ -53,27 +55,58 @@ router.all("*", function (req, res, next) {
                                 };
                                 break;
                             case "/sessions/connect-session":
-                                Session.findOne({sid:req.body.sid},function (err,sess) {
+                                Session.findOne({sid:req.body.sid},function (err, sess) {
                                     if(err) console.log(err);
                                     if(sess){
                                         event = {
                                             type: "session",
                                             event: "connect to session " + sess.name,
                                         };
+                                        user.events.push(event);
+                                        user.save();
+                                        event = undefined
                                     }
                                 });
                                 break;
                             case "/sessions/messages":
-                                event = {
-                                    type: "session",
-                                    event: "posted the question " + req.body.body +"  in session " + req.body.sid,//can extract the message if wanted
-                                };
+                                Session.findOne({sid:req.body.sid},function (err, sess) {
+                                    if (err) console.log(err);
+                                    if (sess) {
+                                        event = {
+                                            type: "session",
+                                            event: "posted the question: '" + req.body.body + "'  in session: " + sess.name,//can extract the message if wanted
+                                            date : Date.now()
+                                        };
+                                        user.events.push(event);
+                                        user.save();
+                                        event = undefined
+                                    }
+                                });
                                 break;
                             case "/sessions/reply":
-                                event = {
-                                    type: "session",
-                                    event: "replied "+ req.body.body +" to a question in session " + req.body.sid,//can extract the message if wanted
-                                };
+                                Session.findOne({sid:req.body.sid},function (err, sess) {
+                                    if (err) console.log(err);
+                                    if (sess) {
+                                    Session_Message.findOne({_id: req.body.mid},function (err, msg) {
+                                        if (err) console.log(err);
+                                        if(msg){
+                                            User.findOne({email: msg.email},function (err, student) {
+                                                if (err) console.log(err);
+                                                if (student) {
+                                                    event = {
+                                                        type: "session",
+                                                        event: "replied '"+ req.body.body +"' to " + student.first_name +"'s question: '" + msg.body + "' in session: " + req.body.sid,
+                                                        date : Date.now()
+                                                    };
+                                                    user.events.push(event);
+                                                    user.save();
+                                                    event = undefined
+                                                }
+                                            });
+                                        }
+                                    });
+                                    }
+                                });
                                 break;
                             case "/sessions/create-session":
                                 event = {
@@ -88,31 +121,34 @@ router.all("*", function (req, res, next) {
                                     event: "created course: " + req.body.name + " with teacher: " + req.body.teacher,
                                 };
                                 break;
-
-                            // change so self rating wont count
-                            // and unlike and undislike as well
+                            // unlike and undislike as well
                             case "/sessions/rate-message":
-                                let type = req.query.rating === "1" ? "liked" : "disliked";
-                                event = {
-                                    type: "session",
-                                    event: type + " a question (" + req.query.msgid + ") in session " + req.query.sid,//can extract the message if wanted
-                                };
+                                Session_Message.findOne({_id: req.query.msgid},function (err, msg) {
+                                    if (err) console.log(err);
+                                    if (msg) {
+                                        let type = req.query.rating === "1" ? "liked" : "disliked";
+                                        event = {
+                                            type: "session",
+                                            event: type + " the question '" + msg.body + "' in session: " + req.query.sid,
+                                            date : Date.now()
+                                        };
+                                        user.events.push(event);
+                                        user.save();
+                                        event = undefined
+                                    }
+                                });
                                 break;
-                            //test this
-                            case "/free-text-search":
+                            case "/search/free-text-search":
                                 event = {
                                     type: "search",
                                     event: "searched for: " + req.query.keyword
                                 };
                                 break;
-                            //test this
                             case "/sessions/post-video":
-                                if(req.file) {
                                     event = {
                                         type: "session",
-                                        event: "added video (" + req.file.originalname + ") to session: " + req.query.sid,
+                                        event: "added video to session: " + req.query.sid,
                                     };
-                                }
                                 break;
                             //test this
                             case "/courses/add-students-to-course":
@@ -121,15 +157,23 @@ router.all("*", function (req, res, next) {
                                         event: "added a student (" + req.query.student + ") to course: " + req.query.cid,
                                     };
                                 break;
-                            //test this
                             case "/courses/get-course":
-                                event = {
-                                    type: "course",
-                                    event: "viewed course " + req.query.cid,
-                                };
+                                Course.findOne({cid: req.query.cid},function (err, course) {
+                                    if(err) console.log(err);
+                                    if(course){
+                                        event = {
+                                            type: "course",
+                                            event: "viewed course: " + course.name,
+                                            date : Date.now()
+                                        };
+                                        user.events.push(event);
+                                        user.save();
+                                        event = undefined
+                                    }
+                                });
                                 break;
-
                         }
+
                         if(event){
                             event.date = Date.now();
                             user.events.push(event);
