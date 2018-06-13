@@ -127,7 +127,7 @@
                 android:layout_marginTop="10dp">
 
                 <TextView
-                    android:layout_width="130dp"
+                    android:layout_width="160dp"
                     android:layout_height="match_parent"
                     android:gravity="left|center"
                     android:text="Session"
@@ -154,7 +154,7 @@
                 android:layout_marginTop="10dp">
 
                 <TextView
-                    android:layout_width="130dp"
+                    android:layout_width="160dp"
                     android:layout_height="match_parent"
                     android:gravity="left|center"
                     android:text="Location"
@@ -179,10 +179,10 @@
                 android:layout_marginTop="10dp">
 
                 <TextView
-                    android:layout_width="130dp"
+                    android:layout_width="160dp"
                     android:layout_height="match_parent"
                     android:gravity="left|center"
-                    android:text="Users"
+                    android:text="Number of students"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -204,7 +204,7 @@
                 android:layout_marginTop="10dp">
 
                 <TextView
-                    android:layout_width="130dp"
+                    android:layout_width="160dp"
                     android:layout_height="match_parent"
                     android:gravity="left|center"
                     android:text="Creation Date"

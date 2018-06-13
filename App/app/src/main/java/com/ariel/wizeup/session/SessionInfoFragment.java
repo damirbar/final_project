@@ -178,12 +178,12 @@ public class SessionInfoFragment extends Fragment {
         String numStudents = Integer.toString(_session.getStudents().length);
         mOnlineNum.setText(numStudents);
 
-        String pic = _session.getPicID();
-        if (pic != null && !(pic.isEmpty()))
-            Picasso.with(getActivity())
-                    .load(pic)
-                    .error(R.drawable.wizeup_logo)
-                    .into(imageView);
+//        String pic = _session.getPicID();
+//        if (pic != null && !(pic.isEmpty()))
+//            Picasso.with(getActivity())
+//                    .load(pic)
+//                    .error(R.drawable.wizeup_logo)
+//                    .into(imageView);
     }
 
 

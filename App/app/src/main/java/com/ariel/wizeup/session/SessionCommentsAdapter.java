@@ -14,7 +14,6 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.Response;
@@ -92,7 +91,7 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
         ImageButton menu = listItem.findViewById(R.id.feed_item_menu);
 
 
-        mEmail.setText(currentMessage.getEmail());
+        mEmail.setText(currentMessage.getNickname());
         mLikeNum.setText(String.valueOf(currentMessage.getLikes()));
         mDislikeNum.setText(String.valueOf(currentMessage.getDislikes()));
         msg.setText(currentMessage.getBody());

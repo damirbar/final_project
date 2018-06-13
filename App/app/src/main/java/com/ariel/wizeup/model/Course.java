@@ -10,12 +10,30 @@ public class Course {
     private String teacher_fname;
     private String teacher_lname;
     private String teacher;
+    private String teacher_email;
+    private String students[];
 
 
     private String location;
     private Double points;
     private Date creation_date;
     private String files[];
+
+    public String[] getStudents() {
+        return students;
+    }
+
+    public void setStudents(String[] students) {
+        this.students = students;
+    }
+
+    public String getTeacher_email() {
+        return teacher_email;
+    }
+
+    public void setTeacher_email(String teacher_email) {
+        this.teacher_email = teacher_email;
+    }
 
     public String getTeacher() {
         return teacher;

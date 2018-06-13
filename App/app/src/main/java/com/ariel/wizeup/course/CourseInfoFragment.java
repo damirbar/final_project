@@ -33,6 +33,9 @@ public class CourseInfoFragment extends Fragment {
     private TextView mTPoints;
     private TextView mTCreationDate;
     private TextView mTLoc;
+    private TextView mTTeacherEmail;
+    private TextView mTStudentsCount;
+
     private String cid;
 
 
@@ -48,6 +51,8 @@ public class CourseInfoFragment extends Fragment {
     }
 
     private void initViews(View v) {
+        mTTeacherEmail = v.findViewById(R.id.tv_teacher_email);
+        mTStudentsCount = v.findViewById(R.id.tv_students);
         mTCid = v.findViewById(R.id.tv_cid);
         mTName = v.findViewById(R.id.tv_name);
         mTDepartment = v.findViewById(R.id.tv_department);
@@ -82,6 +87,8 @@ public class CourseInfoFragment extends Fragment {
         String points = Double.toString(course.getPoints());
         mTPoints.setText(points);
         mTLoc.setText(course.getLocation());
+        mTTeacherEmail.setText(course.getTeacher_email());
+        mTStudentsCount.setText(String.valueOf(course.getStudents().length));
 
         //Date
         Date date = course.getCreation_date();

@@ -15,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.Response;
@@ -100,7 +99,7 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
         }
 
         comCount.setText(String.valueOf(currentMessage.getReplies().length));
-        mEmail.setText(currentMessage.getEmail());
+        mEmail.setText(currentMessage.getNickname());
         msg.setText(currentMessage.getBody());
         mLikeNum.setText(String.valueOf(currentMessage.getLikes()));
         mDislikeNum.setText(String.valueOf(currentMessage.getDislikes()));

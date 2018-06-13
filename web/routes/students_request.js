@@ -192,7 +192,7 @@ router.get("/get-events", function (req, res) {
     User.findOne({email: req.verifiedEmail}, function (err, user) {
         if (err) return err;
         if (user) {
-            res.status(200).json(user.events.reverse().slice(req.query.start, req.query.start + req.query.end))
+            res.status(200).json(user.events.reverse().slice(req.query.start, (Number(req.query.start) + Number(req.query.end))))
         }
         else {
             res.status(404).json({message: "user not found"})
@@ -207,7 +207,7 @@ router.get("/get-notifications", function (req, res) {
         if (user) {
             Notification.find({receiver_id: user.id},function (err, notifications) {
                 if (err) return err;
-                res.status(200).json(notifications.reverse().slice(req.query.start, req.query.start + req.query.end))
+                res.status(200).json(notifications.reverse().slice(req.query.start, (Number(req.query.start) + Number(req.query.end))))
             });
         }
         else {

@@ -598,7 +598,7 @@ router.get("/get-message", function (req, res) {
     var msg_id = req.query.mid;
 
     Session_Message.findOne({_id: msg_id}, function (err, msg) {
-        if (err) return next(err);
+        if (err) console.log(err);
 
         res.status(200).json(msg);
     });

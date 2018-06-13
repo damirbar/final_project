@@ -211,21 +211,6 @@ router.get("/add-student-to-course", function (req, res) {
                             course.students.push(student.id);
                             course.save();
                             res.status(200).json({message: "added" + student.email + " to course"});
-
-                            //notify users
-                            //todo test this!!!
-                            User.find({id: {$in: course.students}}, function (err, students) {
-                                students.forEach(function (stud) {
-                                    let notify = {
-                                        type: "Course",
-                                        body: student.first_name + " joined the course " + course.name,
-                                        date: Date.now()
-                                    };
-                                    stud.notifications.push(notify);
-                                    stud.save();
-                                });
-                            });
-                            //
                         }
                         else res.status(404).json({message: "no student " + req.query.student});
 
@@ -365,9 +350,9 @@ router.post("/reply", function (req, res) {
 
 router.post("/create-session", function (req, res) {
 
-    Course.findOne({cid:req.body.cid},function (err, course) {
-        if(err) return err;
-        if(course) {
+    Course.findOne({cid: req.body.cid}, function (err, course) {
+        if (err) return err;
+        if (course) {
             User.findOne({email: req.verifiedEmail}, function (err, user) {
                 if (err) return err;
                 if (user) {
@@ -399,9 +384,9 @@ router.post("/create-session", function (req, res) {
                             console.log(err);
                             return res.status(500).send(err);
                         }
-                        course.update({$push: {sessions: sess._id}},function () {
+                        course.update({$push: {sessions: sess._id}}, function () {
                             res.status(200).json(sess);
-                            console.log("successfully added session " + sess.name + " to course:" +course.cid);
+                            console.log("successfully added session " + sess.name + " to course:" + course.cid);
                         });
                     });
                 }
@@ -410,11 +395,27 @@ router.post("/create-session", function (req, res) {
                 }
             });
         }
-        else{
+        else {
             return res.status(500).json({message: 'no such course: ' + course.cid});
         }
     });
 });
 
+
+router.get("/get-all-sessions", function (req, res) {
+    let course_id = req.query.cid;
+    Course.findOne({cid: course_id}, function (err, course) {
+        if (err) console.log(err);
+        if (course) {
+            Session.find({id: {$in: course.sessions}}, function (err, sessions) {
+                if (err) console.log(err);
+                res.status(200).json(sessions);
+            });
+        }
+        else {
+            return res.status(500).json({message: 'no such course: ' + course.cid});
+        }
+    });
+});
 
 module.exports = router;

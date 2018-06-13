@@ -75,7 +75,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/dark_edit_text"
                     android:gravity="center"
-                    android:hint="Student (email)"
+                    android:hint="Student (nickname)"
                     android:inputType="textEmailAddress"
                     android:textSize="14sp" />
             </android.support.design.widget.TextInputLayout>
