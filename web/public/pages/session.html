@@ -96,8 +96,28 @@
                 <!--<button ng-click = "uploadFile()">upload me</button>-->
                 <!--</div>-->
 
-                <input type="file" name='recfile' file-model="myFile"/><br><br>
-                <button ng-click="uploadFile()">Upload</button>
+                <div class="row upload-file-container">
+
+                    <div class="col-2"></div>
+                    <div class="col-4">
+
+                        <label class="upload-file-label rad-button warning">
+                            <span class="upload-text">Choose file</span>
+                            <input style="display: none" type="file" name='recfile' file-model="myFile"/>
+                        </label>
+
+                    </div>
+
+                    <div class="col-4">
+
+                        <button class="upload-file-btn rad-button wwt" ng-click="uploadFile()">Upload</button>
+
+                    </div>
+                    <div class="col-2"></div>
+
+                </div>
+
+
 
             </div>
 
