@@ -1,10 +1,9 @@
 var mongoose = require('mongoose');
 
-var SessionMessageSchema = new mongoose.Schema({
+var CourseMessageSchema = new mongoose.Schema({
     email: {type: String, default: ""},    // mail of sender
-    nickname: {type: String, default: "Anon"},
     poster_id: {type: String, required: true},// message poster ID
-    sid: {type: String, default: ""} ,   // session ID
+    cid: {type: String, default: ""} ,   // session ID
     type: {type: String, default: ""},  // question or answer
     likes: {type : Number, default: 0},
     dislikes: {type : Number, default: 0},
@@ -16,4 +15,4 @@ var SessionMessageSchema = new mongoose.Schema({
     replies: Array
 }, {usePushEach: true});
 
-module.exports = mongoose.model('Session_Message', SessionMessageSchema);
+module.exports = mongoose.model('Course_Message', CourseMessageSchema);

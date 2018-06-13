@@ -116,7 +116,7 @@ function unregisterClientFromClients(user_id, socket){
 
 exports.setIO = function (io){
     if(IO == null) IO = io;
-}
+};
 
 
 function getAllSessions(){
@@ -140,13 +140,13 @@ exports.emitEvent = function (user_id, eventName, args) {
         return true;
     }
     return false;
-}
+};
 
 exports.emitEventToSessionRoom = function (room_id, eventName, args) {
     console.log('emitting "' + eventName + '" to session room ' + room_id);
     IO.to(room_id).emit(eventName, args);
-}
+};
 
 exports.isRegistered = function(user_id){
     return clients.has(user_id);
-}
+};

@@ -3,6 +3,8 @@ var router = express.Router();
 var Course = require("../schemas/course");
 var User = require("../schemas/user");
 var File = require("../schemas/file");
+var Session = require("../schemas/session");
+let Course_Message = require("../schemas/course_message");
 
 
 let globalCid = "000001";
@@ -14,7 +16,7 @@ router.post("/create-course", function (req, res) {
             globalCid = String(Number(ans.cid) + 1);
         }
         User.findOne({email: req.body.teacher}, function (err, teacher) {
-            if(teacher) {
+            if (teacher) {
                 const course = new Course({
                     cid: globalCid,
                     name: req.body.name,
@@ -23,7 +25,8 @@ router.post("/create-course", function (req, res) {
                     teacher_lname: teacher.last_name,
                     location: req.body.location,
                     points: req.body.points,
-                    students: [teacher.id]
+                    students: [teacher.id],
+                    teacher_email: req.body.teacher
                 });
 
                 course.save(function (err) {
@@ -81,7 +84,7 @@ router.get('/get-all-courses-by-id', function (req, res) { // You get: Array of 
 
 router.get('/get-my-courses', function (req, res) {
 
-    User.findOne({email: req.verifiedEmail}, function(err, user) {
+    User.findOne({email: req.verifiedEmail}, function (err, user) {
         Course.find({students: user._id}, function (err, courses) {
             if (err) return err;
             res.status(200).json(courses);
@@ -89,8 +92,6 @@ router.get('/get-my-courses', function (req, res) {
     });
 
 });
-
-
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,7 +119,6 @@ router.get('/search-by-name', function (req, res, next) {
         }
     });
 });
-
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -151,7 +151,6 @@ router.post('/post-file', type, function (req, res) {
                 res.status(400).json({message: 'wrong file'});
             }
             else {
-                res.status(200).json({message: 'received file'});
                 console.log(path);
                 Course.findOne({cid: req.query.cid}, function (err, course) {
                     if (err) return next(err);
@@ -179,7 +178,9 @@ router.post('/post-file', type, function (req, res) {
                                         ans.save(function (err, updated_file) {
                                             if (err) return (err);
                                             course.files.push(updated_file.id);
-                                            course.save();
+                                            course.save().then(function () {
+                                                res.status(200).json({message: 'received file'});
+                                            });
                                         });
                                     }
                                 });
@@ -206,19 +207,19 @@ router.get("/add-student-to-course", function (req, res) {
                 if (err) return err;
                 if (user && user.role === "teacher") {
                     User.findOne({email: req.query.student}, function (err, student) {
-                        if(student) {
+                        if (student) {
                             course.students.push(student.id);
                             course.save();
-                            res.status(200).json(course);
+                            res.status(200).json({message: "added" + student.email + " to course"});
 
                             //notify users
                             //todo test this!!!
-                            User.find({id: {$in :course.students}}, function (err, students) {
-                                students.forEach(function(stud){
-                                    let notify ={
-                                        type:  "Course",
-                                        body: student.first_name + " joined the course "+ course.name,
-                                        date:  Date.now()
+                            User.find({id: {$in: course.students}}, function (err, students) {
+                                students.forEach(function (stud) {
+                                    let notify = {
+                                        type: "Course",
+                                        body: student.first_name + " joined the course " + course.name,
+                                        date: Date.now()
                                     };
                                     stud.notifications.push(notify);
                                     stud.save();
@@ -226,11 +227,11 @@ router.get("/add-student-to-course", function (req, res) {
                             });
                             //
                         }
-                        else res.status(404).json({message: "no student " +  req.query.student});
+                        else res.status(404).json({message: "no student " + req.query.student});
 
                     });
                 }
-                else res.status(404).json({message: "no such user" + req.verifiedEmail +" or not teacher"});
+                else res.status(404).json({message: "no such user" + req.verifiedEmail + " or not teacher"});
             });
         }
         else res.status(404).json({message: "no such course" + req.query.cid});
@@ -249,12 +250,171 @@ router.get("/get-course-files", function (req, res) {
     Course.findOne({cid: req.query.cid}, function (err, course) {
         if (err) return err;
         if (course) {
-            File.find({_id: {$in : course.files}},function (err, files) {
-                if(err) return err;
+            File.find({_id: {$in: course.files}}, function (err, files) {
+                if (err) return err;
                 res.status(200).json(files);
             });
         }
         else res.status(404).json({message: "no such course"});
     })
 });
+
+router.post("/messages", function (req, res) {
+
+    const decoded = req.verifiedEmail;
+
+    User.findOne({email: decoded}, function (err, user) {
+        if (err) return err;
+        if (user) {
+            Course.findOne({cid: req.body.cid}, function (err, course) {
+                if (err) return err;
+                if (course) {
+                    const msg = new Course_Message({
+                        poster_id: req.body.poster_id,
+                        cid: req.body.cid,
+                        type: req.body.type,
+                        body: req.body.body,
+                        email: decoded,
+                        date: Date.now(),
+                        name: user.first_name + " " + user.last_name
+                    });
+                    msg.save(function (err) {
+                        if (err) {
+                            console.log(err);
+                            return res.status(500).send(err);
+                        }
+                        course.update({$push: {messages: msg._id}}, function (err) {
+                            console.log('pushing message to messages');
+                            if (err) {
+                                return console.log(err);
+                            } else {
+                                socketIOEmitter.emitEventToSessionRoom(msg.cid, 'newCourseMessage', msg);
+                            }
+                        });
+                        res.status(200).json({message: "successfully added message " + msg.body + " to db"});
+                        console.log("successfully added message " + msg.body + " to db");
+                    });
+                }
+            });
+        }
+    });
+});
+
+router.get("/get-all-messages", function (req, res) {
+    let course_id = req.query.cid;
+    Course.aggregate([
+            {
+                $lookup: {
+                    from: "course_messages",
+                    localField: "messages",
+                    foreignField: "_id",
+                    as: "messages_list"
+                }
+            }, {
+                $match: {
+                    "cid": course_id
+                }
+            },
+            {
+                $project: {
+                    "_id": 0,
+                    "messages_list": 1
+                }
+            }
+        ],
+        function (err, list) {
+            if (err) {
+                console.log(err);
+                return err;
+            } else {
+                return res.status(200).json(list[0].messages_list);
+            }
+        }
+    );
+});
+
+
+router.post("/reply", function (req, res) {
+
+    const decoded = req.verifiedEmail;
+    User.findOne({email: decoded}, function (err, user) {
+        if (err) return err;
+        if (user) {
+            const msg = new Course_Message({
+                    poster_id: req.body.poster_id,
+                    cid: req.body.cid,
+                    type: req.body.type,
+                    body: req.body.body,
+                    email: decoded,
+                    date: Date.now(),
+                    name: user.first_name + " " + user.last_name
+                }
+            );
+            Session_Message.update({_id: req.body.mid}, {$push: {replies: msg}}, function (err, msg) {
+                // console.log('pushing reply to messages');
+                if (err) {
+                    return console.log(err);
+                }
+                console.log('success pushing reply to messages');
+                res.status(200).json({message: "successfully added reply " + msg.body + " to db"});
+                console.log("successfully added message " + msg.body + " to db");
+            });
+        }
+    });
+});
+
+router.post("/create-session", function (req, res) {
+
+    Course.findOne({cid:req.body.cid},function (err, course) {
+        if(err) return err;
+        if(course) {
+            User.findOne({email: req.verifiedEmail}, function (err, user) {
+                if (err) return err;
+                if (user) {
+                    const sess = new Session({
+                        sid: req.body.sid,
+                        name: req.body.name,
+                        admin: req.verifiedEmail,
+                        teacher_fname: user.first_name,
+                        teacher_lname: user.last_name,
+                        location: req.body.location,
+                        endTime: req.body.finish,
+                        cid: req.body.cid
+                    });
+                    sess.save(function (err) {
+                        if (err) {
+                            if (err.name === 'MongoError' && err.code === 11000) {
+                                // Duplicate username
+                                console.log('Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!');
+                                return res.status(500).json({message: 'Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!'});
+                            }
+                            if (err.name === 'ValidationError') {
+                                //ValidationError
+                                for (field in err.errors) {
+                                    console.log("you must provide: " + field + " field");
+                                    return res.status(500).json({message: "you must provide: " + field + " field"});
+                                }
+                            }
+                            // Some other error
+                            console.log(err);
+                            return res.status(500).send(err);
+                        }
+                        course.update({$push: {sessions: sess._id}},function () {
+                            res.status(200).json(sess);
+                            console.log("successfully added session " + sess.name + " to course:" +course.cid);
+                        });
+                    });
+                }
+                else {
+                    return res.status(500).json({message: 'User ' + user.name + " cannot open a session "});
+                }
+            });
+        }
+        else{
+            return res.status(500).json({message: 'no such course: ' + course.cid});
+        }
+    });
+});
+
+
 module.exports = router;

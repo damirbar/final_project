@@ -35,4 +35,4 @@ exports.saveAndEmitNotification = function (notification){
             });
         })
     })
-}
+};
