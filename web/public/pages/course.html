@@ -1,6 +1,8 @@
 
-<div class="course-page container">
+<div class="course-page container-fluid">
 
+
+    <!--<div class="file-icon">TEST</div>-->
     <div class="row">
         <div class="course-header display-4">{{course.name}}</div>
     </div>
@@ -11,52 +13,44 @@
 
         <div class="col-3 left-hand-side picture-and-details">
 
-            <div class="container basic-details-and-picture">
-                <div class="course-picture-and-name">
+            <div class="container basic-details-cont">
+                <div class="course-name">
 
-                    <div class="course-upload-file">
 
-                        <div class="upload-file-header">
-                            Upload a new file!
-                        </div>
-
-                        <input id="file-course-image" type="file" name='recfile' file-model="myFile"/><br><br>
-                        <button ng-click="uploadPhoto()" ng-disabled="true">Upload</button>
-                    </div>
-
-                    <h2>{{course.name}}</h2>
+                    <!--<h2>{{course.name}}</h2>-->
                 </div>
                 <div class="basic-details container">
-                    <div class="teacher-name-and-locations" style="display: -webkit-box">
+                    <div class="teacher-name-and-locations row">
 
-                        <div class="teacher-name">
-                            <div class="name-header">Teacher:</div>
-                            {{course.teacher_fname}} {{course.teacher_lname}}
+                        <div class="teacher-name-cont c-cont col-12">
+                            <span class="name-header c-header col-6">Teacher: </span>
+                            <span class="teacher-name c-info col-6">{{course.teacher_fname}} {{course.teacher_lname}}</span>
                         </div>
+
+                        <div class="dept-name-cont c-cont col-12">
+                            <span class="dept-header c-header col-6">Department: </span>
+                            <span class="dept-name c-info col-6">{{course.department}}</span>
+                        </div>
+
+                        <div class="location-cont c-cont col-12">
+                            <span class="location-header c-header col-6">Location: </span>
+                            <span class="location-name c-info col-6">{{course.location}}</span>
+                        </div>
+
+
+                        <div class="points-cont c-cont col-12">
+                            <span class="points-header c-header col-6">Points: </span>
+                            <span class="points-name c-info col-6">{{course.points}}</span>
+                        </div>
+
+                        <div class="students-num-cont c-cont col-12">
+                            <span class="students-num-header c-header col-12">{{course.students.length}} students attend this class</span>
+                            <!--<span class="students-num-name c-info col-9"> </span>-->
+                        </div>
+
 
                     </div>
 
-                    <div class="message-me row">
-                        <button class="btn btn-info" data-placement="right" data-toggle="tooltip"
-                                title="Temporarily unavailable">Message
-                        </button>
-                    </div>
-
-                    <div class="about-me" ng-show="course.about_me != ''">
-                        <h3 class="about-me-header">About me:</h3>
-                        <!--<div class="about-me-text read-more-activation"></div>-->
-
-                        <div class="read-more-cut" ng-show="!readMore">
-                            {{course.about_me.substring(0, 40) + "..."}}
-                        </div>
-                        <div id="about-me-text" class="collapse read-more-uncut" ng-show="readMore">
-                            {{course.about_me}}
-                        </div>
-                        <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#about-me-text"
-                                ng-click="readMoreButton()">Read {{readMore ? "less" : "more"}}
-                        </button>
-
-                    </div>
 
 
                 </div>
@@ -75,18 +69,18 @@
             <div class="d-flex flex-row mt-2">
                 <ul class="nav nav-tabs nav-tabs--vertical nav-tabs--left" role="tablist">
                     <li class="nav-item">
-                        <a href="#overview" class="nav-link active" target="_self" data-toggle="tab" role="tab" aria-controls="lorem">Overview</a>
+                        <a href="#overview" class="nav-link active" target="_self" data-toggle="tab" role="tab" aria-controls="lorem">Sessions</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#sessions" class="nav-link" target="_self" data-toggle="tab" role="tab" aria-controls="ipsum">Sessions</a>
+                        <a href="#sessions" class="nav-link" target="_self" data-toggle="tab" role="tab" aria-controls="ipsum">Messages</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#files" class="nav-link" target="_self" data-toggle="tab" role="tab" aria-controls="ipsum">Files</a>
+                        <a href="#files" class="nav-link" target="_self" data-toggle="tab" role="tab" aria-controls="ipsum" ng-click="getFiles()">Files</a>
                     </li>
 
 
                 </ul>
-                <div class="tab-content">
+                <div class="tab-content container">
                     <div class="tab-pane fade show active" id="overview" role="tabpanel">
                         <h1>Lorem</h1>
 
@@ -102,9 +96,45 @@
                         <p>In faucibus tempus ante, et tempor magna luctus id. Ut a maximus ipsum. Duis eu velit nec libero pretium pellentesque. Maecenas auctor hendrerit pulvinar. Donec sed tortor interdum, sodales elit vel, tempor turpis. In tristique vestibulum eros vel congue. Vivamus maximus posuere fringilla. Nullam in est commodo, tristique ligula eu, tincidunt enim. Duis iaculis sodales lectus vitae cursus.</p>
                     </div>
                     <div class="tab-pane fade" id="files" role="tabpanel">
-                        <h1>Dolor</h1>
+                        <h1>Files</h1>
 
-                        <p>Ut eget lectus tristique, tempus purus sit amet, porta augue. Mauris lobortis sem nec augue ultricies blandit. Nullam sed sem venenatis, pretium urna eget, scelerisque dolor. Morbi nec volutpat leo, quis faucibus tortor. Aenean vel rutrum mauris. Pellentesque lectus massa, tincidunt quis leo non, sodales sagittis nulla. Proin interdum est at nulla laoreet, pulvinar pretium nisl rutrum. In vel elit a risus rhoncus accumsan vulputate non sapien. Sed et rhoncus velit. Nunc commodo augue fermentum, hendrerit neque at, ullamcorper arcu. Nulla tincidunt orci a lectus efficitur elementum. Donec molestie urna vestibulum augue placerat faucibus. In vitae orci vel mauris cursus viverra ac sit amet nisl. Phasellus odio tortor, ullamcorper eget ullamcorper eget, molestie eget justo. Integer elementum purus eget arcu fermentum tincidunt. Nullam erat tellus, dictum sit amet nisi eu, rutrum fermentum odio.</p>
+                        <div class="course-upload-file">
+
+                            <div class="upload-file-header">
+                                Upload a new file!
+                            </div>
+
+                            <input id="file-course-image" type="file" name='recfile' file-model="myFile"/>
+                            <button ng-click="uploadFile()">Upload</button>
+                        </div>
+
+
+                        <div class="courses-file container">
+                            <div class="row">
+
+                                <div class="col-3" ng-repeat="file in courseFiles">
+                                    <!--<div class="file-item file-icon">{{file.type}}</div>-->
+                                    <!--<div class="file-name">{{file.originalName}}</div>-->
+
+                                    <!--<a class="file-item file-icon" ng-href="{{file.url}}" data-extension="{{file.type}}">{{file.originalName}}</a>-->
+
+                                    <div class="container">
+
+                                        <div class="col-12">
+                                            <div class="file-icon2">
+                                                <span class="file__type">{{file.type}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 file-name">{{file.originalName | limitTo: 20}}</div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
                     </div>
 
 

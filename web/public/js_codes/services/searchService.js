@@ -8,6 +8,7 @@ wizerApp.service('SearchService', function ($http) {
                 return results;
             }, function() {
                 console.log("Error getting results for: " + keywords);
+                return [];
             });
-    }
+    };
 });

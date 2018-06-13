@@ -1,4 +1,3 @@
-
 wizerApp.service('CourseService', function($http) {
 
     this.getCourses = function() {
@@ -52,5 +51,54 @@ wizerApp.service('CourseService', function($http) {
                     console.log("Error getting courses with the name " + courseName);
                 });
     };
+
+
+
+
+
+    this.createCourse = function(course) {
+
+        return $http.post('courses/create-course', course)
+            .then(function(data) {
+
+                    console.log("This is a print from create course.\nI got: " + data.data);
+                    return data.data;
+                },
+                function(err) {
+                    console.log("Error creating the course courses with the name " + err);
+                });
+    };
+
+
+    this.addStudent = function(cid, student_id) {
+
+        var query = '?cid=' + cid + '&id=' + student_id;
+        return $http.get('courses/add-student-to-course' + query)
+            .then(function(data) {
+
+                    console.log("This is a print from add student to course.\nI got: " + data.data);
+                    return data.data;
+                },
+                function(err) {
+                    console.log("Error adding the student. " + err);
+                });
+    };
+
+
+    this.getFiles = function(cid) {
+
+        var query = '?cid=' + cid;
+        return $http.get('courses/get-course-files' + query)
+            .then(function(data) {
+
+                    console.log("This is a print from get course's files.\nI got: " + data.data);
+                    return data.data;
+                },
+                function(err) {
+                    console.log("Error getting the course files. " + err);
+                });
+    };
+
+
 
 });
