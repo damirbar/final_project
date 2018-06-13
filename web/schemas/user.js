@@ -13,7 +13,7 @@ var UserSchema = new mongoose.Schema({
     address: {type: String, default: ""},
     birthday: Date,
     gender: {type: String, default: ""},
-    profile_img: {type: String, default: ""},
+    profile_img: {type: String, default: "https://res.cloudinary.com/wizeup/image/upload/v1528900132/default_user_image.jpg"},
     profile_file_id: {type: String, default: ""},
     register_date: {type: Date, default: Date.now()},
     last_modified: {type: Date, default: Date.now()},
