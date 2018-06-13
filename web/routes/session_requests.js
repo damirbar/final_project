@@ -132,6 +132,7 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
 });
 
 
+
 router.post("/create-session", function (req, res) {
 
     User.findOne({email: req.verifiedEmail}, function (err, user) {
@@ -194,7 +195,7 @@ router.get("/rate-message", function (req, res) {
         if (err) throw err;
 
         //finds the message and fetches its likers and dislikers arrays.
-        Session_Message.findOne({_id: mess_id}, {_id: 0,sid:1 , likers: 1, dislikers: 1,poster_id: 1, email:1}, function (err, message) {
+        Session_Message.findOne({_id: mess_id}, {_id: 0,sid:1 , likers: 1, dislikers: 1,poster_id: 1, email:1, reply: 1}, function (err, message) {
 
             if (err) return err;
             let likers = message.likers;
@@ -245,11 +246,12 @@ router.get("/rate-message", function (req, res) {
             Session_Message.update({_id: mess_id},ratingUpdate, function(err){
                if(err) console.log(err);
                else{
-                   socketIOEmitter.emitEventToSessionRoom(sess_id, 'updateMessageRating', updateEvent);
+                   let eventName = message.reply ? 'updateMessageReplyRating' : 'updateMessageRating';
+                   socketIOEmitter.emitEventToSessionRoom(sess_id, eventName, updateEvent);
                    let notification = new Notification({
                        receiver_id: message.poster_id,
                        sender_id: user._id,
-                       type: rating,
+                       action: rating,
                        subject: 'message',
                        subject_id: mess_id
                    });
@@ -263,6 +265,21 @@ router.get("/rate-message", function (req, res) {
                     return err;
                 }
         });
+    });
+});
+
+
+router.get("/get-message-replies", function(req,res){
+
+    let message_id = req.query.mid;
+
+    console.log(message_id);
+
+    Session_Message.find({parent_id: message_id}, function(err, messages){
+       if(err) return console.log(err);
+       console.log("messages:::::::::");
+       console.log(messages);
+       return res.status(200).json(messages);
     });
 });
 
@@ -384,6 +401,9 @@ router.post("/messages", function (req, res) {
 
     const decoded = req.verifiedEmail;
 
+
+    console.log(req.body.poster_id);
+
     const msg = new Session_Message({
             poster_id: req.body.poster_id,
             sid: req.body.sid,
@@ -393,7 +413,6 @@ router.post("/messages", function (req, res) {
             date: Date.now()
         }
     );
-
 
     msg.save(function (err) {
         if (err) {
@@ -414,6 +433,7 @@ router.post("/messages", function (req, res) {
 });
 
 
+
 router.get("/get-all-messages", function (req, res) {
     var sess_id = req.query.sid;
     Session.aggregate([
@@ -426,7 +446,8 @@ router.get("/get-all-messages", function (req, res) {
                 }
             }, {
                 $match: {
-                    "sid": sess_id
+                    "sid": sess_id,
+                    "messages_list.reply": false
                 }
             },
             {
@@ -441,7 +462,8 @@ router.get("/get-all-messages", function (req, res) {
                 console.log(err);
                 return err;
             } else {
-                return res.status(200).json(list[0].messages_list);
+                let response = list.length > 0 ? list[0].messages_list : [];
+                return res.status(200).json(response);
             }
         }
     );
@@ -579,32 +601,47 @@ router.post('/post-video', type, function (req, res) {
 router.post("/reply", function (req, res) {
 
     const decoded = req.verifiedEmail;
-    const msg = new Session_Message({
-            mid: req.body.mid,
+
+    let notified_id = req.body.poster_id; //The user to be notified
+    let replier_id = req.body.replier_id; // The user who replied
+    let subject_id = req.body.mid;
+
+    console.log('Request:');
+    console.log(req.body);
+
+    let newReply = new Session_Message({
+            poster_id: req.body.replier_id,
+            parent_id: req.body.mid,
             sid: req.body.sid,
             type: req.body.type,
+            reply: true,
             body: req.body.body,
-            email: decoded,
             date: Date.now()
         }
     );
 
-    // Session_Message.update({_id: mess_id}, ratingUpdate, function (err) {
-    //     console.log('updating session message');
-    //     if (err) {
-    //         console.log(err);
-    //         return err;
-    //     }
-    // });
+    newReply.save(function(err, reply){
 
-    Session_Message.update({_id: req.body.mid}, {$push: {replies: msg}}, function (err, msg) {
-        // console.log('pushing reply to messages');
-        if (err) {
-            return console.log(err);
-        }
-        console.log('success pushing reply to messages');
-        res.status(200).json({message: "successfully added reply " + msg.body + " to db"});
-        console.log("successfully added message " + msg.body + " to db");
+        if(err) return console.log(err);
+
+        Session_Message.update({_id: reply.parent_id}, {$push: {replies: reply._id}, $inc: {num_of_replies: 1}}, function(err){
+            if(err) return console.log(err);
+
+            socketIOEmitter.emitEventToSessionRoom(reply.sid, 'newSessionMessageReply', reply);
+
+            let notification = new Notification({
+                receiver_id: notified_id,
+                sender_id: replier_id, // the user who replied
+                action: 4,
+                subject: 'message',
+                subject_id: subject_id
+            });
+
+
+            notificationsSystem.saveAndEmitNotification(notification);
+
+        });
+
     });
 
 });
@@ -614,7 +651,7 @@ router.get("/get-message", function (req, res) {
     var msg_id = req.query.mid;
 
     Session_Message.findOne({_id: msg_id}, function (err, msg) {
-        if (err) return next(err);
+        if (err) return console.log(err);
 
         res.status(200).json(msg);
     });
