@@ -54,10 +54,9 @@
 
     <div class="container-fluid connected-container" ng-show="isConnectedToSession">
 
-
         <div class="row">
 
-            <div class="col-6 session-vid" ng-show="isConnectedToSession && session.videoUrl != ''">
+            <div class="col-6 session-vid" ng-show="isConnectedToSession && session.videoUrl && session.videoUrl != ''">
                 <!--<video style="max-width: 100%"-->
                 <!--poster="{{session.picID}}" controls>-->
                 <!--<source ng-src="{{session.videoUrl}}"-->
@@ -73,7 +72,7 @@
             <!--<source src="http://localhost:3000/sessions/getVideo?sid={{sessionID}}&token={{getToken()}}"-->
 
 
-            <div class="col-6 session-vid-upload" ng-show="isConnectedToSession && session.videoUrl == ''">
+            <div class="col-6 session-vid-upload" ng-show="isConnectedToSession && (!session.videoUrl || session.videoUrl == '')">
                 <!--<form action="/sessions/post-video" method="post" enctype="multipart/form-data">-->
                 <!--<input type="file" name='recfile' placeholder="Select file"/>-->
                 <!--<br/>-->
@@ -117,15 +116,15 @@
                         <h4 class="card-title bs-card-text">Teacher: {{session.teacher_fname}} {{session.teacher_lname}}</h4>
                         <div class="card-text bs-card-text">Location: {{session.location}}</div>
                         <div class="card-text bs-card-text">Contact: {{session.admin}}</div>
-                        <div class="card-text bs-card-text">{{session.connectedUsers}} students connected</div>
+                        <div class="card-text bs-card-text">{{session.students.length}} students connected</div>
                         </div>
 
                         <div class="session-rating container">
                             <!--Session rating: {{((session.curr_rating / session.students.length) * 100).toFixed(2)}}%-->
                             <div class="row">
                                 <span class="session-rating-header col-4 retroshadow">Session rating:</span>
-                                <div class="col-4 text-success session-dis-like">{{session.likes}} Likes</div>
-                                <div class="col-4 text-danger session-dis-like">{{session.dislikes}} Dislikes</div>
+                                <div class="col-4 text-success session-dis-like">{{(session.likes / session.students.length) * 100}}% Understand</div>
+                                <div class="col-4 text-danger session-dis-like">{{(session.dislikes / session.students.length) * 100}}% Don't understand</div>
                             </div>
                         </div>
                         <div class="like-unlike-session btn-group btn-group-toggle" data-toggle="buttons">
@@ -307,11 +306,11 @@
 
                         <tr ng-repeat="rpl in messageToReply.replies | reverse">
 
-                            <td class="text-success" scope="row text-success">{{rpl.likes}}</td>
-                            <td class="text-danger" scope="row">{{rpl.dislikes}}</td>
+                            <td class="reply-dis-likes text-success" scope="row text-success">{{rpl.likes}}</td>
+                            <td class="reply-dis-likes text-danger" scope="row">{{rpl.dislikes}}</td>
                             <td>
 
-                                <div class="message-text col-8">{{rpl.body}}</div>
+                                <div class="reply-text col-8">{{rpl.body}}</div>
                                 <div class="col-4 message-fix-place"></div>
                             </td>
                             <td class="">

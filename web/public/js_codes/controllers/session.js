@@ -7,7 +7,6 @@ wizerApp.controller('sessionController',
         $scope.sessionUserName = "";
         $scope.loggedUser = {};
         $scope.isConnectedToSession = false;
-        $scope.session = null;
         $scope.session = {};
         $scope.message = {type: "question", body: ""};
 
@@ -27,9 +26,8 @@ wizerApp.controller('sessionController',
 
         socketIO.on('newSessionMessage', function(message){
 
-            let message_id = message._id;
-            let index = $scope.sessionMessages.length;
-
+            var message_id = message._id;
+            var index = $scope.sessionMessages.length;
             $scope.sessionMessagesMap[message_id] = index;
            $scope.sessionMessages.push(message);
 
@@ -42,7 +40,7 @@ wizerApp.controller('sessionController',
 
         socketIO.on('updateMessageRating', function(update){
 
-            let mess = $scope.sessionMessages[$scope.sessionMessagesMap[update.message_id]];
+            var mess = $scope.sessionMessages[$scope.sessionMessagesMap[update.message_id]];
             mess.likes += update.likes;
             mess.dislikes += update.dislikes;
 
@@ -89,7 +87,7 @@ wizerApp.controller('sessionController',
                         if (data._id) {
                             // console.log("YES");
                             $scope.isConnectedToSession = true;
-                            $scope.session = data.session;
+                            $scope.session = data;
                             // $('session-video').attr('src',$scope.session.videoUrl);
                             getting();
                         }
@@ -130,7 +128,7 @@ wizerApp.controller('sessionController',
                         io.connect();
                         if (data.session) {
                             $scope.isConnectedToSession = true;
-                            $scope.session = data.session;
+                            $scope.session = data;
                             // $('session-video').attr('src',$scope.session.videoUrl);
                             getting();
                         }
@@ -156,7 +154,7 @@ wizerApp.controller('sessionController',
                     // $scope.msgLikes = [];
                     // $scope.msgHates = [];
                     //
-                    // for (let i = 0; i < $scope.sessionMessages.length; ++i) {
+                    // for (var i = 0; i < $scope.sessionMessages.length; ++i) {
                     //     if ($scope.sessionMessages[i].likers.includes($rootScope.loggedUser._id)) {
                     //         $scope.msgLikes.push(true);
                     //     } else {
@@ -169,7 +167,7 @@ wizerApp.controller('sessionController',
                     //     }
                     // }
 
-                    let index = 0;
+                    var index = 0;
 
                     $scope.sessionMessages = data;
                     $scope.sessionMessages.forEach(function(message){
@@ -229,6 +227,7 @@ wizerApp.controller('sessionController',
             SessionService.getSession($scope.sessionID)
                 .then(function (data) {
                     $scope.session = data;
+                    $scope.isConnectedToSession = true;
                     // $('session-video').attr('src',$scope.session.videoUrl);
                     console.log(JSON.stringify(data));
                 })
@@ -248,7 +247,7 @@ wizerApp.controller('sessionController',
             SessionService.rateMessage(sid, mid, rate)
                 .then(function (data) {
                     // $scope.getMessages();
-                    let message = $scope.sessionMessages[$scope.sessionMessagesMap[mid]];
+                    var message = $scope.sessionMessages[$scope.sessionMessagesMap[mid]];
                     console.log('Pressedddddd');
                     console.log(message);
                     if(rate == 1){
