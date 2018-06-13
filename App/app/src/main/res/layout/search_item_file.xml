@@ -45,12 +45,13 @@
         android:layout_height="25dp"
         android:layout_alignBottom="@+id/feed_item_menu"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_marginBottom="5dp"
         android:layout_marginEnd="62dp"
+        android:layout_marginRight="62dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/download"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="62dp" />
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/author_details"
