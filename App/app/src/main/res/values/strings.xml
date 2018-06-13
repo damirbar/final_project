@@ -23,7 +23,7 @@
     <string name="log_in">Log In</string>
     <string name="register">Register</string>
     <string name="multi_language_support">Hebrew • English • More…</string>
-    <string name="email">Email</string>
+    <string name="nickname">Email</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="sign_up">Sign Up</string>

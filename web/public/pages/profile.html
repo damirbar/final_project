@@ -194,6 +194,7 @@
                     <div class="course-list row">
                         <div class="single-course col-5 container" ng-repeat="course in courses">
                             <!--{{course}} <br><br> {{courses}}-->
+                            <a class="course-anchor" ng-href="/courses/{{course.cid}}">
                             <div class="course-header">{{course.name}}</div>
                             <div class="course-no row">
                                 <div class="col-6 courses-right-side">Course #:</div>
@@ -214,6 +215,7 @@
                                 <div class="col-6 courses-right-side">Room:</div>
                                 <div class="col-6 course-left-side">{{course.location}}</div>
                             </div>
+                            </a>
                         </div>
                         <div class="col-1"></div>
                     </div>

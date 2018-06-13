@@ -140,7 +140,7 @@
                     android:layout_height="40dp"
                     android:background="@drawable/dark_edit_text"
                     android:gravity="start|center"
-                    android:hint="@string/email"
+                    android:hint="@string/nickname"
                     android:inputType="textEmailAddress"
                     android:maxLength="@integer/def_max"
                     android:paddingLeft="10dp"

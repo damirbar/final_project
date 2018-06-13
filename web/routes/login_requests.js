@@ -165,6 +165,7 @@ router.post("/new-user", function (req, res) {
                         return res.status(500).send(err);
                     }
                     console.log(user);
+                    emailService.sendMail(user.email, 'Registration to wizeUp', emailMessages.registration(user));
                     const newStudent = new Student({
                         user_id: user._id
                     });
@@ -222,7 +223,7 @@ router.post("/reset-pass-init", function (req, res) {
         user.temp_password_time = new Date();
         user.save(function () {
             emailService.init();
-            emailService.sendMail('stermaneran@gmail.com', 'Reset Password Request', emailMessages.reset_password(user, random));
+            emailService.sendMail(user.email, 'Reset Password', emailMessages.reset_password(user, random));
             res.status(200).json({message: 'see mail for more information'});
         });
         }
@@ -238,7 +239,7 @@ router.post("/reset-pass-finish", function (req, res) {
         const diff = new Date() - new Date(user.temp_password_time);
         const seconds = Math.floor(diff / 1000);
         console.log("Seconds :" + seconds);
-        if (seconds < 600) {
+        if (seconds < 6000) {
             if (token === user.temp_password){
 
                 const salt = bcrypt.genSaltSync(10);
@@ -249,7 +250,7 @@ router.post("/reset-pass-finish", function (req, res) {
                 user.temp_password_time = undefined;
 
                 user.save().then(function () {
-                    res.status(200).json(user);
+                    res.status(200).json({message: 'Password reset successfully'});
                 });
             } else {
                 res.status(401).json({message: 'Invalid Token !'});

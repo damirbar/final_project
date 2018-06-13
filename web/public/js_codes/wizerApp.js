@@ -55,6 +55,11 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
             controller: 'courseController'
         })
 
+        .when('/search/:keyword', {
+            templateUrl: '../pages/search-results.html',
+            controller: 'searchController'
+        })
+
     .otherwise({ redirectTo: '/'});
 
 

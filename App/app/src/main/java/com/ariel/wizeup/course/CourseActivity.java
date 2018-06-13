@@ -59,6 +59,8 @@ public class CourseActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Course"));
+        tabLayout.addTab(tabLayout.newTab().setText("Updates"));
+        tabLayout.addTab(tabLayout.newTab().setText("Sessions"));
         tabLayout.addTab(tabLayout.newTab().setText("Files"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
@@ -89,8 +91,22 @@ public class CourseActivity extends AppCompatActivity {
         if (id == R.id.add_user) {
             openAddUser();
             return true;
+
         }
+        else if (id == R.id.action_session) {
+            openCreateSession();
+            return true;
+
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openCreateSession() {
+        Intent intent = new Intent(this,CourseSessionActivity.class);
+        intent.putExtra("cid", cid);
+        startActivity(intent);
+
     }
 
     private void openAddUser() {

@@ -1,8 +1,10 @@
 wizerApp.controller('coursesController',
-    function ($scope, $routeParams, $location, CourseService) {
+    function ($scope, $routeParams, $rootScope, $location, CourseService) {
 
     $scope.courses = [];
     $scope.loading = true;
+    $scope.isTeacher = $rootScope.loggedUser.role === 'teacher';
+    $scope.courseCreate = {};
 
     $scope.getMyCourses = function() {
         CourseService.getMyCourses()
@@ -13,12 +15,23 @@ wizerApp.controller('coursesController',
             }, function(){
                 console.log("Error getting my courses");
                 $scope.loading = false;
-            })
+            });
     };
 
     $scope.getMyCourses();
 
-    console.log($location.path());
+    // console.log($location.path());
+
+
+    $scope.createCourse = function() {
+        CourseService.createCourse($scope.courseCreate)
+            .then(function(data) {
+                $scope.courseCreate = {};
+                console.log("data = " + data);
+            }, function(err) {
+                console.log("error = " + err);
+            });
+    };
 
     });
 

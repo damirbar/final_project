@@ -36,4 +36,4 @@ exports.saveAndEmitNotification = function (notification){
             });
         })
     })
-}
+};

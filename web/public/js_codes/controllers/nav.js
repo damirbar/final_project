@@ -1,5 +1,4 @@
-wizerApp.controller('navController', ['$scope','AuthService', '$location', '$timeout', 'ProfileService','socketIO', 'SearchService', '$rootScope', '$interval',
-    '$http', function ($scope, AuthService, $location, $timeout, ProfileService, socketIO, SearchService, $rootScope, $interval, $http) {
+wizerApp.controller('navController', function ($scope, AuthService, $location, $timeout, ProfileService, socketIO, SearchService, $rootScope, $interval, $http) {
 
         $scope.loadingNotifications = true;
         $scope.notifications = [];
@@ -11,9 +10,7 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
             $('.search-nav-form').removeClass('ng-hide');
         };
 
-        console.log('From nav: ');
 
-        console.log("PATH ===================== " + $location.path());
         $scope.loggedUser = {};
         $scope.user = {};
         // $scope.user.role = "student";
@@ -162,8 +159,9 @@ wizerApp.controller('navController', ['$scope','AuthService', '$location', '$tim
 
         $scope.freeTextSearch = function(){
             console.log($scope.searchTerm.keywords);
-            SearchService.freeTextSearch($scope.searchTerm.keywords);
-        }
+            // SearchService.freeTextSearch($scope.searchTerm.keywords);
+            $location.path("/search/" + $scope.searchTerm.keywords);
+        };
 
 
-    }]);
+    });

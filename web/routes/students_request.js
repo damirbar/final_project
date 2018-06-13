@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var User = require("../schemas/user");
 var File = require("../schemas/file");
+const Notification = require("../schemas/notification");
+
 
 
 router.get("/get-profile", function (req, res, next) {
@@ -136,7 +138,6 @@ router.post('/post-profile-image', type, function (req, res) {
                 res.status(400).json({message: 'wrong file'});
             }
             else {
-                res.status(200).json({message: 'received file'});
                 console.log(path);
                 User.findOne({email: req.verifiedEmail}, function (err, user) {
                     if (err) return next(err);
@@ -172,6 +173,7 @@ router.post('/post-profile-image', type, function (req, res) {
                             });
                             user.update({profile_img: result.url}).then(function () {
                                 console.log("updated user profile image");
+                                res.status(200).json({message: 'received file'});
                             });
                             first = true;
                         });
@@ -190,7 +192,7 @@ router.get("/get-events", function (req, res) {
     User.findOne({email: req.verifiedEmail}, function (err, user) {
         if (err) return err;
         if (user) {
-            res.status(200).json(user.events.reverse().slice(req.query.start, req.query.start + req.query.end))
+            res.status(200).json(user.events.reverse().slice(req.query.start, (Number(req.query.start) + Number(req.query.end))))
         }
         else {
             res.status(404).json({message: "user not found"})
@@ -203,7 +205,10 @@ router.get("/get-notifications", function (req, res) {
     User.findOne({email: req.verifiedEmail}, function (err, user) {
         if (err) return err;
         if (user) {
-            res.status(200).json(user.notifications.reverse().slice(req.query.start, req.query.start + req.query.end))
+            Notification.find({receiver_id: user.id},function (err, notifications) {
+                if (err) return err;
+                res.status(200).json(notifications.reverse().slice(req.query.start, (Number(req.query.start) + Number(req.query.end))))
+            });
         }
         else {
             res.status(404).json({message: "user not found"})

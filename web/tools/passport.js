@@ -57,7 +57,7 @@ module.exports.init = function () {
                                 user.save(function (err, user) {
                                     if (err) console.log(err);
                                     console.log("new user saved");
-                                    email.sendMail([user.email], 'Registration to Swaps', emailMessages.registration(user));
+                                    email.sendMail(user.email, 'Registration to wizeUp', emailMessages.registration(user));
                                     return done(null, user);
                                 });
                             }, function (err) {

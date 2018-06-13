@@ -1,0 +1,114 @@
+<div class="search-page container">
+
+    <ul id="clothing-nav" class="nav nav-pills nav-fill" role="tablist">
+
+        <li class="nav-item">
+            <a class="active nav-link" target="_self" href="#courses-res" id="courses-tab" role="tab" data-toggle="tab"
+               aria-controls="courses-res" aria-expanded="true">Courses ({{results.courses.length}})</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" target="_self" href="#files-res" role="tab" id="files-tab" data-toggle="tab"
+               aria-controls="files-res">Files ({{results.files.length}})</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" target="_self" href="#sessions-res" role="tab" id="sessions-tab" data-toggle="tab"
+               aria-controls="sessions-res">Sessions ({{results.sessions.length}})</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" target="_self" href="#users-res" role="tab" id="users-tab" data-toggle="tab"
+               aria-controls="users-res">Users ({{results.users.length}})</a>
+        </li>
+
+
+    </ul>
+
+    <div id="sol" class="esfera"></div>
+    <div id="container">
+        <div id="tierra" class="esfera"></div>
+    </div>
+
+    <div class="loading" ng-show="loading" style="text-align: center;">
+        <div class="fa fa-spinner fa-spin" style="font-size:184px; margin: auto; width: 100%; margin-top: 8%;"></div>
+    </div>
+
+
+    <div id="clothing-nav-content" class="tab-content search-results-cont">
+
+        <div role="tabpanel" class="tab-pane active show fade" id="courses-res" aria-labelledby="edit-profile-tab">
+
+            <div class="res-container">
+                <div class="res-item" ng-repeat="course in results.courses">
+                    <a class="course-item" ng-href="/courses/{{course.cid}}">
+                        {{course.name}}
+                        {{course.cid}}
+                        {{course.teacher_fname}} {{course.teacher_lname}}
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="files-res" aria-labelledby="edit-profile-tab">
+
+
+            <div class="res-container">
+                <div class="res-item" ng-repeat="file in results.files">
+                    <a class="file-item" ng-href="{{file.url}}">
+                        <div>Name: {{file.originalName}}</div>
+                        <div>Type: {{file.type}}</div>
+                        <div>Uploaded by {{file.uploaderid}}</div>
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="sessions-res" aria-labelledby="edit-profile-tab">
+
+            <div class="res-container">
+                <div class="res-item" ng-repeat="session in results.sessions">
+                    <div class="session-item">Name: {{session.name}}</div>
+                    <div>Session ID: {{session.sid}}</div>
+                    <div>Teacher: {{session.teacher_fname}} {{session.teacher_lname}}</div>
+                    <div>{{session.messages.length}} messages</div>
+                    <div>{{session.students.length}} students</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div role="tabpanel" class="tab-pane fade users" id="users-res" aria-labelledby="edit-profile-tab">
+
+            <div class="res-container row">
+                <div class="res-item col-3" ng-repeat="user in results.users">
+                    <div class="">
+                        <div class="container">
+                            <div class="col-12">
+                                <img class="profile-img" ng-src="{{user.profile_img}}">
+                            </div>
+                            <div class="col-12">
+                                <a class="user-item" ng-href="/profile/{{user._id}}">
+                                    <div>{{user.first_name}} {{user.last_name}}</div>
+                                    <div>Role: {{user.role.charAt(0).toUpperCase() + user.role.substr(1).toLowerCase()}}
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</div>

@@ -5,7 +5,7 @@ import java.util.Date;
 public class SessionMessage  {
 
     private String sid;
-    private String email;
+    private String nickname;
     private int likes;
     private int dislikes;
     private SessionMessage replies[];
@@ -83,12 +83,12 @@ public class SessionMessage  {
         this.sid = sid;
     }
 
-    public String getEmail() {
-        return email;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getType() {

@@ -108,72 +108,6 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
             holder.mFileDate.setText(s);
         }
 
-        holder.btStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String url = filesList.get(position).getUrl();
-                String fileName = url.substring(url.lastIndexOf('/') + 1, url.length());
-
-                File file = new File(dirPath(mContext) + "/" + fileName);
-                if (file.exists()) {
-                    openFile(file, mContext);
-                    return;
-                }
-
-                holder.progressBar.setVisibility(View.VISIBLE);
-                holder.progressBar.setIndeterminate(true);
-                holder.progressBar.getIndeterminateDrawable().setColorFilter(
-                        Color.BLUE, PorterDuff.Mode.SRC_IN);
-
-                PRDownloader.download(url, dirPath(mContext), fileName)
-                        .build()
-                        .setOnStartOrResumeListener(new OnStartOrResumeListener() {
-                            @Override
-                            public void onStartOrResume() {
-                                progressState[position] = true;
-                                holder.progressBar.setIndeterminate(false);
-                            }
-                        })
-                        .setOnPauseListener(new OnPauseListener() {
-                            @Override
-                            public void onPause() {
-                            }
-                        })
-                        .setOnCancelListener(new OnCancelListener() {
-                            @Override
-                            public void onCancel() {
-                            }
-                        })
-                        .setOnProgressListener(new OnProgressListener() {
-                            @Override
-                            public void onProgress(Progress progress) {
-                                long progressPercent = progress.currentBytes * 100 / progress.totalBytes;
-                                holder.progressBar.setProgress((int) progressPercent);
-                                holder.progressInfo.setText(DownloadFile.getProgressDisplayLine(progress.currentBytes, progress.totalBytes));
-                            }
-                        })
-                        .start(new OnDownloadListener() {
-                            @Override
-                            public void onDownloadComplete() {
-                                holder.progressBar.setVisibility(View.GONE);
-                                holder.progressInfo.setText("");
-                                progressState[position] = false;
-                                File file = new File(dirPath(mContext) + "/" + fileName);
-                                openFile(file, mContext);
-                            }
-
-                            @Override
-                            public void onError(Error error) {
-                                Toast.makeText(mContext, "     Invalid File     ", Toast.LENGTH_LONG).show();
-                                holder.progressInfo.setText("");
-                                holder.progressBar.setProgress(0);
-                                holder.progressBar.setIndeterminate(false);
-                                holder.progressBar.setVisibility(View.GONE);
-                                progressState[position] = false;
-                            }
-                        });
-            }
-        });
         try {
             holder.menu.setOnClickListener(v -> {
                 switch (v.getId()) {
@@ -184,21 +118,80 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
                         popup.show();
                         popup.setOnMenuItemClickListener(item -> {
                             switch (item.getItemId()) {
-                                    case R.id.report:
-                                        AlertDialogTheme();
+                                case R.id.report:
+                                    AlertDialogTheme();
+                                    break;
+                                case R.id.action_share:
+                                    String smsBody = "I believe this will be of interest to you. Please let me know what you think.\n" +
+                                            filesList.get(position).getUrl();
+                                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                                    sharingIntent.setType("text/plain");
+                                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, smsBody);
+                                    mContext.startActivity(Intent.createChooser(sharingIntent, "Share using?"));
+                                    break;
+                                case R.id.action_download:
+                                    String url = filesList.get(position).getUrl();
+                                    String fileName = url.substring(url.lastIndexOf('/') + 1, url.length());
+
+                                    File file = new File(dirPath(mContext) + "/" + fileName);
+                                    if (file.exists()) {
+                                        openFile(file, mContext);
                                         break;
-                                    case R.id.action_share:
-                                        String smsBody = "I believe this will be of interest to you. Please let me know what you think.\n" +
-                                                filesList.get(position).getUrl();
-                                        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                                        sharingIntent.setType("text/plain");
-                                        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, smsBody);
-                                        mContext.startActivity(Intent.createChooser(sharingIntent, "Share using?"));
-                                        break;
-                                    case R.id.action_download:
-//                                        String url = file.getUrl();
-//                                        downloadFile(position, url);
-                                        break;
+                                    }
+
+                                    holder.progressBar.setVisibility(View.VISIBLE);
+                                    holder.progressBar.setIndeterminate(true);
+                                    holder.progressBar.getIndeterminateDrawable().setColorFilter(
+                                            Color.BLUE, PorterDuff.Mode.SRC_IN);
+
+                                    PRDownloader.download(url, dirPath(mContext), fileName)
+                                            .build()
+                                            .setOnStartOrResumeListener(new OnStartOrResumeListener() {
+                                                @Override
+                                                public void onStartOrResume() {
+                                                    progressState[position] = true;
+                                                    holder.progressBar.setIndeterminate(false);
+                                                }
+                                            })
+                                            .setOnPauseListener(new OnPauseListener() {
+                                                @Override
+                                                public void onPause() {
+                                                }
+                                            })
+                                            .setOnCancelListener(new OnCancelListener() {
+                                                @Override
+                                                public void onCancel() {
+                                                }
+                                            })
+                                            .setOnProgressListener(new OnProgressListener() {
+                                                @Override
+                                                public void onProgress(Progress progress) {
+                                                    long progressPercent = progress.currentBytes * 100 / progress.totalBytes;
+                                                    holder.progressBar.setProgress((int) progressPercent);
+                                                    holder.progressInfo.setText(DownloadFile.getProgressDisplayLine(progress.currentBytes, progress.totalBytes));
+                                                }
+                                            })
+                                            .start(new OnDownloadListener() {
+                                                @Override
+                                                public void onDownloadComplete() {
+                                                    holder.progressBar.setVisibility(View.GONE);
+                                                    holder.progressInfo.setText("");
+                                                    progressState[position] = false;
+                                                    File file = new File(dirPath(mContext) + "/" + fileName);
+                                                    openFile(file, mContext);
+                                                }
+
+                                                @Override
+                                                public void onError(Error error) {
+                                                    Toast.makeText(mContext, "     Invalid File     ", Toast.LENGTH_LONG).show();
+                                                    holder.progressInfo.setText("");
+                                                    holder.progressBar.setProgress(0);
+                                                    holder.progressBar.setIndeterminate(false);
+                                                    holder.progressBar.setVisibility(View.GONE);
+                                                    progressState[position] = false;
+                                                }
+                                            });
+                                    break;
                                 default:
                                     break;
                             }
