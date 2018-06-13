@@ -20,6 +20,9 @@ let passportService = require('./tools/passport');
 app.use(passport.initialize());
 app.use(passport.session());
 passportService.init();
+
+let emailService = require('./tools/email');
+emailService.init();
 //
 
 let teacherRequests = require('./routes/teacher_requests');

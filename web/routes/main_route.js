@@ -3,6 +3,7 @@ let router = express.Router();
 let path = require("path");
 let jwt = require('jsonwebtoken');
 let User = require("../schemas/user");
+let Session = require("../schemas/session");
 let config = require('../config/config');
 
 
@@ -52,10 +53,15 @@ router.all("*", function (req, res, next) {
                                 };
                                 break;
                             case "/sessions/connect-session":
-                                event = {
-                                    type: "session",
-                                    event: "connect to session " + req.body.sid,
-                                };
+                                Session.findOne({sid:req.body.sid},function (err,sess) {
+                                    if(err) console.log(err);
+                                    if(sess){
+                                        event = {
+                                            type: "session",
+                                            event: "connect to session " + sess.name,
+                                        };
+                                    }
+                                });
                                 break;
                             case "/sessions/messages":
                                 event = {
