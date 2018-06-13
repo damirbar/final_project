@@ -16,11 +16,11 @@
         <div class="borders down-borders"></div>
 
         <div class="row search-something">
-            <div class="input-group input-group-lg search-input-group">
-                <input type="text" class="form-control" placeholder="University,   Course,   whatever..."
+            <form class="input-group input-group-lg search-input-group">
+                <input ng-model="searchTerm.keywords" type="text" class="form-control" placeholder="University,   Course,   whatever..."
                        aria-describedby="sizing-addon1">
-                <button class="input-group-addon" type="submit">Search</button>
-            </div>
+                <button class="input-group-addon" type="submit" ng-click="freeTextSearch()">Search</button>
+            </form>
         </div>
 
     </div>
