@@ -3,7 +3,7 @@
     <string name="log_in">התחבר</string>
     <string name="register">הרשם</string>
     <string name="multi_language_support">עברית • אנגלית • עוד…</string>
-    <string name="email">דוא\"ל</string>
+    <string name="nickname">דוא\"ל</string>
     <string name="password">סיסמה</string>
     <string name="forgot_password">שכחת את הסיסמה?</string>
     <string name="sign_up">הרשם</string>

@@ -132,7 +132,7 @@
                     android:layout_height="40dp"
                     android:background="@drawable/dark_edit_text"
                     android:gravity="center"
-                    android:hint="Teacher (email)"
+                    android:hint="Teacher (nickname)"
                     android:inputType="textEmailAddress"
                     android:maxLength="@integer/def_max"
                     android:textSize="14sp" />

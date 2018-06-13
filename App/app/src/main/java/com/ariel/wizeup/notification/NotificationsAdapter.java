@@ -61,14 +61,14 @@ public class NotificationsAdapter extends ArrayAdapter<NotificationMsg> {
 
         }
 
-        String type = currentNotificationMsg.getType().substring(0, 1).toUpperCase() + currentNotificationMsg.getType().substring(1);
+        String type = currentNotificationMsg.getSubject().substring(0, 1).toUpperCase() + currentNotificationMsg.getSubject().substring(1);
         holder.mNotificationType.setText(type);
 
-        String event = currentNotificationMsg.getBody().substring(0, 1).toUpperCase() + currentNotificationMsg.getBody().substring(1);
+        String event = currentNotificationMsg.getContent().substring(0, 1).toUpperCase() + currentNotificationMsg.getContent().substring(1);
         holder.mBody.setText(event);
 
         //Date
-        Date date = currentNotificationMsg.getDate();
+        Date date = currentNotificationMsg.getCreation_date();
         if (date != null) {
             Format formatter = new SimpleDateFormat("HH:mm EEE, d MMM yyyy");
             String s = formatter.format(date);
