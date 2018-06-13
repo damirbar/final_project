@@ -8,9 +8,13 @@ let Session_Message = require("../schemas/session_message");
 let Course = require("../schemas/course");
 let config = require('../config/config');
 
-
+const multer = require('multer');
+const upload = multer({dest: 'upload/'});
+const type = upload.single('recfile');
+const cloudinary = require('cloudinary');
+const fs = require('fs');
 //make sure that all request contain a valid token
-router.all("*", function (req, res, next) {
+router.all("*", type, function (req, res, next) {
     if (req.url === '/' || req.url === '/favicon.ico'
         || req.url.includes('/auth/auth-login-user-pass')
         || req.url.includes('/auth/new-user')
@@ -43,10 +47,12 @@ router.all("*", function (req, res, next) {
 
                         switch (req.params[0]){
                             case "/students/post-profile-image":
-                                event = {
-                                    type: "personal",
-                                    event: "change profile image",
-                                };
+                                if(req.file) {
+                                    event = {
+                                        type: "personal",
+                                        event: "change profile image to "+req.file.filename,
+                                    };
+                                }
                                 break;
                             case "/students/edit-profile":
                                 event = {
@@ -145,10 +151,12 @@ router.all("*", function (req, res, next) {
                                 };
                                 break;
                             case "/sessions/post-video":
+                                if(req.file) {
                                     event = {
                                         type: "session",
-                                        event: "added video to session: " + req.query.sid,
+                                        event: "added the video " + req.file.filename + "to session: " + req.query.sid,
                                     };
+                                }
                                 break;
                             //test this
                             case "/courses/add-students-to-course":
