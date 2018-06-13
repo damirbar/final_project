@@ -3,7 +3,7 @@
     <ul id="clothing-nav" class="nav nav-pills nav-fill" role="tablist">
 
         <li class="nav-item">
-            <a class="nav-link active" target="_self" href="#courses-res" id="courses-tab" role="tab" data-toggle="tab"
+            <a class="active nav-link" target="_self" href="#courses-res" id="courses-tab" role="tab" data-toggle="tab"
                aria-controls="courses-res" aria-expanded="true">Courses ({{results.courses.length}})</a>
         </li>
 
@@ -37,7 +37,7 @@
 
     <div id="clothing-nav-content" class="tab-content search-results-cont">
 
-        <div role="tabpanel" class="tab-pane fade" id="courses-res" aria-labelledby="edit-profile-tab">
+        <div role="tabpanel" class="tab-pane active show fade" id="courses-res" aria-labelledby="edit-profile-tab">
 
             <div class="res-container">
                 <div class="res-item" ng-repeat="course in results.courses">
