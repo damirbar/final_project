@@ -159,9 +159,9 @@ wizerApp.controller('navController', function ($scope, AuthService, $location, $
 
         $scope.freeTextSearch = function(){
             console.log($scope.searchTerm.keywords);
-            console.log(SearchService);
-            SearchService.freeTextSearch($scope.searchTerm.keywords);
-        }
+            // SearchService.freeTextSearch($scope.searchTerm.keywords);
+            $location.path("/search/" + $scope.searchTerm.keywords);
+        };
 
 
     });
