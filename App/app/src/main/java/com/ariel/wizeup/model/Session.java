@@ -18,6 +18,7 @@ public class Session implements Parcelable {
     private String picID;
     private Date creation_date;
     private SessionUser students[];
+    private String cid;
 
     public Session(){}
 
@@ -30,6 +31,8 @@ public class Session implements Parcelable {
         picID = in.readString();
         teacher_fname = in.readString();
         teacher_lname = in.readString();
+        cid = in.readString();
+
 
     }
 
@@ -44,6 +47,14 @@ public class Session implements Parcelable {
             return new Session[size];
         }
     };
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
+    }
 
     public SessionUser[] getStudents() {
         return students;
@@ -142,6 +153,8 @@ public class Session implements Parcelable {
         parcel.writeString(picID);
         parcel.writeString(teacher_fname);
         parcel.writeString(teacher_lname);
+        parcel.writeString(cid);
+
 
     }
 }
