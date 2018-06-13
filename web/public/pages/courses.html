@@ -7,8 +7,59 @@
     <div class="list-group container courses-list-container" ng-show="!loading">
 
         <div class="courses-header my-courses display-4 row font-weight-bold">
-            My courses
+            Courses
         </div>
+
+        <div class="add-course-cont">
+
+            <div class="add-course-div" data-toggle="collapse" data-target="#collapseExample" ng-if="isTeacher">
+                <a class="fas fa-plus-square"></a>
+                Add course
+            </div>
+
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+
+                    <form class="form-horizontal" role="form" name="createCourseForm" ng-show="true">
+
+                        <!--name, dept, teacher(email), location, points-->
+
+                        <div class="name-div row">
+                            <div class="text col-3">Course name:</div>
+                            <input class="col-5" type="text" name="name" ng-model="courseCreate.name" required>
+                            <div class="col-4"></div>
+
+                            <div class="text col-3">Department name:</div>
+                            <input class="col-5" type="text" name="dept" ng-model="courseCreate.department" required>
+                            <div class="col-4"></div>
+
+                            <div class="text col-3">Teacher email:</div>
+                            <input class="col-5" type="email" name="teacher" ng-model="courseCreate.teacher" required>
+                            <div class="col-4"></div>
+
+                            <div class="text col-3">Location:</div>
+                            <input class="col-5" type="text" name="location" ng-model="courseCreate.location" required>
+                            <div class="col-4"></div>
+
+                            <div class="text col-3">Points:</div>
+                            <input class="col-5" type="number" name="points" ng-model="courseCreate.points" required>
+                            <div class="col-4"></div>
+
+
+
+                            <button class="btn btn-success" type="submit" ng-click="createCourse()">Save</button>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+
 
         <a ng-href="/courses/{{course.cid}}" class="list-group-item list-group-item-action row course-item" ng-repeat="course in courses">
 
