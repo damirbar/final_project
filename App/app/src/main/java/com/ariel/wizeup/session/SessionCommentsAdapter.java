@@ -1,7 +1,9 @@
 package com.ariel.wizeup.session;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
@@ -172,13 +174,13 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
                 switch (v.getId()) {
                     case R.id.feed_item_menu:
                         PopupMenu popup = new PopupMenu(mContext, v);
-                        popup.getMenuInflater().inflate(R.menu.file_clipboard_popup,
+                        popup.getMenuInflater().inflate(R.menu.post_popup,
                                 popup.getMenu());
                         popup.show();
                         popup.setOnMenuItemClickListener(item -> {
                             switch (item.getItemId()) {
                                 case R.id.report:
-                                    Toast.makeText(mContext, " Report Clicked at position " + " : " + position, Toast.LENGTH_LONG).show();
+                                    AlertDialogTheme();
                                     break;
                                 default:
                                     break;
@@ -218,6 +220,27 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
     public void finalize() {
         mSubscriptions.unsubscribe();
     }
+
+    public void AlertDialogTheme() {
+        AlertDialog.Builder AlertBuilder = new AlertDialog.Builder(
+                mContext,R.style.Theme_Report_Dialog_Alert);
+        AlertBuilder.setTitle("Report");
+        AlertBuilder.setMessage("Would you like to report this post?");
+        AlertBuilder.setCancelable(false);
+        AlertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertBuilder.setNegativeButton("N0", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = AlertBuilder.create();
+        dialog.show();
+    }
+
 
 
 }

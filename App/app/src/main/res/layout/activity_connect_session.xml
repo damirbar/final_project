@@ -78,7 +78,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/dark_edit_text"
                     android:gravity="center"
-                    android:hint="PIN"
+                    android:hint="Session"
                     android:textSize="14sp" />
             </android.support.design.widget.TextInputLayout>
 

@@ -2,9 +2,12 @@ package com.ariel.wizeup.search;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -138,10 +141,10 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
                 mDate.setText(s);
             }
 
-            if(progressState[position]){
+            if (progressState[position]) {
                 progressBar.setVisibility(View.VISIBLE);
 
-            }else{
+            } else {
                 progressBar.setVisibility(View.GONE);
                 progressInfo.setText("");
             }
@@ -155,7 +158,7 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
 
                     File file = new File(dirPath(mContext) + "/" + fileName);
                     if (file.exists()) {
-                        openFile(file,mContext);
+                        openFile(file, mContext);
                         return;
                     }
 
@@ -198,7 +201,7 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
                                     progressInfo.setText("");
                                     progressState[position] = false;
                                     File file = new File(dirPath(mContext) + "/" + fileName);
-                                    openFile(file,mContext);
+                                    openFile(file, mContext);
                                 }
 
                                 @Override
@@ -225,7 +228,19 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
                             popup.setOnMenuItemClickListener(item -> {
                                 switch (item.getItemId()) {
                                     case R.id.report:
-                                        Toast.makeText(mContext, " Report Clicked at position " + " : " + position, Toast.LENGTH_LONG).show();
+                                        AlertDialogTheme();
+                                        break;
+                                    case R.id.action_share:
+                                        String smsBody = "I believe this will be of interest to you. Please let me know what you think.\n" +
+                                                file.getUrl();
+                                        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                                        sharingIntent.setType("text/plain");
+                                        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, smsBody);
+                                        mContext.startActivity(Intent.createChooser(sharingIntent, "Share using?"));
+                                        break;
+                                    case R.id.action_download:
+//                                        String url = file.getUrl();
+//                                        downloadFile(position, url);
                                         break;
                                     default:
                                         break;
@@ -257,5 +272,26 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
 
         return listItem;
     }
+
+    public void AlertDialogTheme() {
+        AlertDialog.Builder AlertBuilder = new AlertDialog.Builder(
+                mContext, R.style.Theme_Report_Dialog_Alert);
+        AlertBuilder.setTitle("Report");
+        AlertBuilder.setMessage("Would you like to report this file?");
+        AlertBuilder.setCancelable(false);
+        AlertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertBuilder.setNegativeButton("N0", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = AlertBuilder.create();
+        dialog.show();
+    }
+
 }
 

@@ -48,7 +48,9 @@
         android:layout_marginBottom="5dp"
         android:layout_marginEnd="62dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/download" />
+        android:background="@drawable/download"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="62dp" />
 
     <LinearLayout
         android:id="@+id/author_details"
@@ -68,13 +70,12 @@
 
         <TextView
             android:id="@+id/file_name"
-            android:layout_width="190.0dip"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:focusable="false"
             android:gravity="start"
-            android:maxLines="2"
-            android:text="file"
+            android:maxLines="1"
             android:textAlignment="viewStart"
             android:textColor="@color/primary_text"
             android:textSize="14sp" />

@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ariel.wizeup.R;
+import com.ariel.wizeup.dialogs.PostBottomDialog;
+import com.ariel.wizeup.dialogs.UploadingDialog;
 import com.ariel.wizeup.model.Course;
 import com.ariel.wizeup.model.CourseFile;
 import com.ariel.wizeup.model.Response;
@@ -52,6 +54,7 @@ public class CourseFilesFragment extends Fragment {
     private CourseFilesAdapter mAdapter;
     private String cid;
     private static final int INTENT_REQUEST_CODE = 100;
+    private UploadingDialog tab1;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -126,6 +129,12 @@ public class CourseFilesFragment extends Fragment {
         if (requestCode == INTENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 try {
+
+                    tab1 = new UploadingDialog();
+                    tab1.setCancelable(false);
+                    tab1.show(getActivity().getSupportFragmentManager(), "Dialog");
+
+
                     Uri uri= data.getData();
                     File file= new File(uri.getPath());
                     InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
@@ -144,13 +153,19 @@ public class CourseFilesFragment extends Fragment {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body, Integer.parseInt(cid))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseUploadFile, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseUploadFile, this::handleError));
     }
 
 
     private void handleResponseUploadFile(Response response) {
-        mServerResponse.showSnackBarMessage(response.getMessage());
+        tab1.dismiss();
     }
+
+    public void handleError(Throwable error) {
+        mServerResponse.handleError(error);
+        tab1.dismiss();
+    }
+
 
 
     private void pullFiles() {

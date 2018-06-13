@@ -2,8 +2,11 @@ package com.ariel.wizeup.course;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -181,9 +184,21 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
                         popup.show();
                         popup.setOnMenuItemClickListener(item -> {
                             switch (item.getItemId()) {
-                                case R.id.report:
-                                    Toast.makeText(mContext, " Report Clicked at position " + " : " + position, Toast.LENGTH_LONG).show();
-                                    break;
+                                    case R.id.report:
+                                        AlertDialogTheme();
+                                        break;
+                                    case R.id.action_share:
+                                        String smsBody = "I believe this will be of interest to you. Please let me know what you think.\n" +
+                                                filesList.get(position).getUrl();
+                                        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                                        sharingIntent.setType("text/plain");
+                                        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, smsBody);
+                                        mContext.startActivity(Intent.createChooser(sharingIntent, "Share using?"));
+                                        break;
+                                    case R.id.action_download:
+//                                        String url = file.getUrl();
+//                                        downloadFile(position, url);
+                                        break;
                                 default:
                                     break;
                             }
@@ -200,5 +215,26 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
 
         return view;
     }
+
+    public void AlertDialogTheme() {
+        AlertDialog.Builder AlertBuilder = new AlertDialog.Builder(
+                mContext, R.style.Theme_Report_Dialog_Alert);
+        AlertBuilder.setTitle("Report");
+        AlertBuilder.setMessage("Would you like to report this file?");
+        AlertBuilder.setCancelable(false);
+        AlertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertBuilder.setNegativeButton("N0", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = AlertBuilder.create();
+        dialog.show();
+    }
+
 }
 

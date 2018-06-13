@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.ariel.wizeup.R;
+import com.ariel.wizeup.dialogs.UploadingDialog;
 import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.Session;
 import com.ariel.wizeup.network.RetrofitRequests;
@@ -50,6 +51,8 @@ public class SessionActivity extends AppCompatActivity {
     private FullscreenVideoLayout vid;
     private RelativeLayout mVideoViewRelative;
     private static final int INTENT_REQUEST_CODE = 100;
+    private UploadingDialog tab1;
+
 
 
     @Override
@@ -199,7 +202,7 @@ public class SessionActivity extends AppCompatActivity {
     }
 
     private void sendSidSms() {
-        String smsBody = "Hi, please join my session.\nSession ID: " + session.getSid();
+        String smsBody = "I would like to invite you to join our session oup on wizeUp.\nSession: " + session.getSid();
 
         Intent sharingIntent = new Intent ( android.content.Intent.ACTION_SEND );
         sharingIntent.setType ( "text/plain" );
@@ -237,6 +240,12 @@ public class SessionActivity extends AppCompatActivity {
         if (requestCode == INTENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 try {
+
+                    tab1 = new UploadingDialog();
+                    tab1.setCancelable(false);
+                    tab1.show(this.getSupportFragmentManager(), "Dialog");
+
+
                     InputStream is = getContentResolver().openInputStream(data.getData());
                     tryUploadVid(getBytes(is));
                     is.close();
@@ -253,12 +262,18 @@ public class SessionActivity extends AppCompatActivity {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadVid(body, session.getSid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseUploadVid, i -> mServerResponse.handleErrorDown(i)));
+                .subscribe(this::handleResponseUploadVid, this::handleError));
     }
 
     private void handleResponseUploadVid(Response response) {
-        mServerResponse.showSnackBarMessage(response.getMessage());
+        tab1.dismiss();
     }
+
+    public void handleError(Throwable error) {
+        mServerResponse.handleError(error);
+        tab1.dismiss();
+    }
+
 
     private void pullSession() {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getSessionById(session.getSid())

@@ -169,7 +169,7 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
                 switch (v.getId()) {
                     case R.id.feed_item_menu:
                         PopupMenu popup = new PopupMenu(mContext, v);
-                        popup.getMenuInflater().inflate(R.menu.file_clipboard_popup,
+                        popup.getMenuInflater().inflate(R.menu.post_popup,
                                 popup.getMenu());
                         popup.show();
                         popup.setOnMenuItemClickListener(item -> {
@@ -219,7 +219,6 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
         AlertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(mContext, "You Have Selected YES.", Toast.LENGTH_LONG).show();
             }
         });
         AlertBuilder.setNegativeButton("N0", new DialogInterface.OnClickListener() {

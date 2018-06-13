@@ -1,10 +1,12 @@
 package com.ariel.wizeup.base;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.TermsActivity;
 import com.ariel.wizeup.course.MyCourseActivity;
+import com.ariel.wizeup.dialogs.UploadingDialog;
 import com.ariel.wizeup.entry.EntryActivity;
 import com.ariel.wizeup.model.NotificationMsg;
 import com.ariel.wizeup.model.User;

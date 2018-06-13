@@ -5,6 +5,6 @@
     <item
         android:id="@+id/add_user"
         android:orderInCategory="100"
-        android:title="Add User"
+        android:title="Add Student"
         app:showAsAction="never" />
 </menu>
