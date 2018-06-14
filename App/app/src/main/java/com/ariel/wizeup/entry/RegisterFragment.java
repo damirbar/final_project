@@ -40,6 +40,7 @@ import rx.subscriptions.CompositeSubscription;
 import static com.ariel.wizeup.utils.Constants.EMAIL;
 import static com.ariel.wizeup.utils.Constants.ID;
 import static com.ariel.wizeup.utils.Constants.PASS;
+import static com.ariel.wizeup.utils.Constants.TYPE;
 import static com.ariel.wizeup.utils.Constants.USER_NAME;
 import static com.ariel.wizeup.utils.Validation.validateEmail;
 import static com.ariel.wizeup.utils.Validation.validateFields;
@@ -200,7 +201,7 @@ public class RegisterFragment extends Fragment {
         editor.putString(PASS, mPass);
         editor.putString(USER_NAME, user.getFname() + " " + user.getLname());
         editor.putString(ID, user.getId_num());
-//        editor.putString(PROFILE_IMG,user.getPhotos()[0]);
+        editor.putString(TYPE,user.getRole());
         editor.apply();
 
         Intent intent = new Intent(getActivity(), BaseActivity.class);

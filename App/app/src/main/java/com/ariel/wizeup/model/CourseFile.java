@@ -8,7 +8,25 @@ public class CourseFile {
     private Date creation_date;
     private String originalName;
     private String size;
+    private String publicid;
+    private String uploaderid;
 
+
+    public String getPublicid() {
+        return publicid;
+    }
+
+    public void setPublicid(String publicid) {
+        this.publicid = publicid;
+    }
+
+    public String getUploaderid() {
+        return uploaderid;
+    }
+
+    public void setUploaderid(String uploaderid) {
+        this.uploaderid = uploaderid;
+    }
 
     public String getSize() {
         return size;

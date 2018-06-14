@@ -78,7 +78,7 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
             listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_user, parent, false);
             TextView mName = (TextView) listItem.findViewById(R.id.user_name);
             ImageView profileImage = (ImageView) listItem.findViewById(R.id.user_image);
-            ;
+
 
 
             String disName = user.getDisplay_name();

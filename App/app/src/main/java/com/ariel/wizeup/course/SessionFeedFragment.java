@@ -1,10 +1,10 @@
 package com.ariel.wizeup.course;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -17,35 +17,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ariel.wizeup.R;
-import com.ariel.wizeup.dialogs.UploadingDialog;
-import com.ariel.wizeup.model.Course;
-import com.ariel.wizeup.model.CourseFile;
-import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.Session;
-import com.ariel.wizeup.model.User;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
-import com.ariel.wizeup.profile.ProfileActivity;
 import com.ariel.wizeup.session.ConnectSessionActivity;
-import com.ariel.wizeup.session.SessionActivity;
 import com.ariel.wizeup.utils.Constants;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
-
-import static android.app.Activity.RESULT_OK;
-import static com.ariel.wizeup.network.RetrofitRequests.getBytes;
 
 public class SessionFeedFragment extends Fragment {
 
@@ -66,6 +50,7 @@ public class SessionFeedFragment extends Fragment {
         getData();
         initViews(view);
         initSharedPreferences();
+        userAdmin();
 
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
@@ -109,6 +94,7 @@ public class SessionFeedFragment extends Fragment {
         return view;
     }
 
+
     private void initViews(View v) {
         mTvNoResults = v.findViewById(R.id.tv_no_results);
         sessionsList = v.findViewById(R.id.sessions_list);
@@ -119,7 +105,14 @@ public class SessionFeedFragment extends Fragment {
     }
 
     private void initSharedPreferences() {
-        userType = mRetrofitRequests.getSharedPreferences().getString(Constants.ID, "");
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        userType = mSharedPreferences.getString(Constants.TYPE, "");
+    }
+
+    private void userAdmin() {
+        if(!userType.equalsIgnoreCase("teacher")){
+            mFBAddSession.setVisibility(View.GONE);
+        }
     }
 
 
