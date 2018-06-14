@@ -61,11 +61,11 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".session.PostActivity"
+            android:name=".session.SessionPostActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".session.CommentActivity"
+            android:name=".session.SessionCommentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
@@ -146,6 +146,14 @@
         <activity
             android:name=".course.CourseSessionActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".course.CoursePostActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".course.CourseCommentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
 
     </application>

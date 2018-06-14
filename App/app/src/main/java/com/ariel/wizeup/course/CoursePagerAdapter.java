@@ -27,7 +27,7 @@ public class CoursePagerAdapter extends FragmentStatePagerAdapter {
                 tab1.setArguments(bundle);
                 return tab1;
             case 1:
-                CourseFilesFragment tab2 = new CourseFilesFragment();
+                CourseMessagesFragment tab2 = new CourseMessagesFragment();
                 bundle.putString("cid", cid);
                 tab2.setArguments(bundle);
                 return tab2;

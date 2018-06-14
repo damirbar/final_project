@@ -12,7 +12,24 @@ public class CourseMessage {
     private String name;
     private Date date;
     private CourseMessage replies[];
+    private String _id;
+    private String mid;
 
+    public String getMid() {
+        return mid;
+    }
+
+    public void setMid(String mid) {
+        this.mid = mid;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public String getEmail() {
         return email;
