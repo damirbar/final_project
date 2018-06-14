@@ -7,6 +7,7 @@ wizerApp.controller('coursesController',
     $scope.courseCreate = {};
 
     $scope.getMyCourses = function() {
+        $scope.loading = true;
         CourseService.getMyCourses()
             .then(function (data) {
                 $scope.courses = data;
@@ -27,6 +28,7 @@ wizerApp.controller('coursesController',
         CourseService.createCourse($scope.courseCreate)
             .then(function(data) {
                 $scope.courseCreate = {};
+                $scope.getMyCourses();
                 console.log("data = " + data);
             }, function(err) {
                 console.log("error = " + err);
