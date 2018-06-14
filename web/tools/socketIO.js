@@ -5,6 +5,7 @@ var clients = new HashMap();
 var sockets = new HashMap();
 var pendingSockets = new HashMap();
 var sessionsRooms = new HashMap();
+var courses = new HashMap();
 
 var IO = null;
 
@@ -56,8 +57,15 @@ exports.socketInit = function (socket){
         });
     });
 
-    socket.on('', function(){
-
+    socket.on('joinCourseMessages', function(cid){
+        console.log('joined course ' + cid);
+        if(courses.has(cid)){
+            socket.join(cid, function (){
+                courses.get(cid).connected_users++;
+                console.log("Connected to course chat " + cid);
+                console.log(courses.get(cid));
+            });
+        }
     });
 
     socket.on('', function(){
@@ -84,7 +92,7 @@ exports.socketInit = function (socket){
 
     });
 
-}
+};
 
 
 function onDisconnect(socket){
@@ -145,6 +153,11 @@ exports.emitEvent = function (user_id, eventName, args) {
 exports.emitEventToSessionRoom = function (room_id, eventName, args) {
     console.log('emitting "' + eventName + '" to session room ' + room_id);
     IO.to(room_id).emit(eventName, args);
+};
+
+exports.emitEventToCourse = function (cid, eventName, args) {
+    console.log('emitting "' + eventName + '" to course ' + cid);
+    IO.to(cid).emit(eventName, args);
 };
 
 exports.isRegistered = function(user_id){

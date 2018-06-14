@@ -1,5 +1,5 @@
 wizerApp.controller('courseController',
-    function ($scope, $routeParams, $rootScope, $http, CourseService) {
+    function ($scope, $routeParams, $rootScope, $http, CourseService, socketIO) {
 
         // console.log("Hello from profileController");
         $rootScope.showSearchNav = true;
@@ -74,9 +74,9 @@ wizerApp.controller('courseController',
         $scope.getMessages = function(){
             CourseService.getMessages($routeParams.id)
                 .then(function (data) {
-                    console.log("got messages from getFiles");
+                    console.log("got messages from getMessages");
                     console.log(data);
-                    $scope.courseFiles = data;
+                    $scope.messages = data;
                 });
         };
 
@@ -91,4 +91,14 @@ wizerApp.controller('courseController',
                     console.log(err);
                 });
         };
+
+
+        socketIO.on('newCourseMessage', function(message){
+            var message_id = message._id;
+            var index = $scope.messages.length;
+            $scope.messages[message_id] = index;
+            $scope.messages.push(message);
+            console.log("Pushing message (in course) " + message);
+
+        });
     });
