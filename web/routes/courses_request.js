@@ -434,4 +434,19 @@ router.get("/get-all-sessions", function (req, res) {
     });
 });
 
+router.get("/get-message", function (req, res) {
+
+    let msg_id = req.query.mid;
+
+    Course_Message.findOne({_id: msg_id}, function (err, msg) {
+        if (err) return console.log(err);
+        if(msg) {
+            res.status(200).json(msg);
+        }
+        else{
+            res.status(404).json({message: 'no such message'});
+        }
+    });
+});
+
 module.exports = router;
