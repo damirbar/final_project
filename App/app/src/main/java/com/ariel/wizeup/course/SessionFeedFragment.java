@@ -28,6 +28,7 @@ import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.profile.ProfileActivity;
 import com.ariel.wizeup.session.ConnectSessionActivity;
 import com.ariel.wizeup.session.SessionActivity;
+import com.ariel.wizeup.utils.Constants;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,12 +58,14 @@ public class SessionFeedFragment extends Fragment {
     private FloatingActionButton mFBAddSession;
     private SessionsAdapter mAdapter;
     private String cid;
+    private String userType;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_session_feed, container, false);
         getData();
         initViews(view);
+        initSharedPreferences();
 
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
@@ -114,6 +117,11 @@ public class SessionFeedFragment extends Fragment {
         mSwipeRefreshLayout.setVisibility(View.GONE);
         mFBAddSession.setOnClickListener(view -> addSession());
     }
+
+    private void initSharedPreferences() {
+        userType = mRetrofitRequests.getSharedPreferences().getString(Constants.ID, "");
+    }
+
 
     private void getData() {
         Bundle bundle = this.getArguments();

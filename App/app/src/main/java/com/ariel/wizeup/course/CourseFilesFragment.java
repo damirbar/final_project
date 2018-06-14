@@ -114,7 +114,7 @@ public class CourseFilesFragment extends Fragment {
 
     private void addFile() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("application/pdf");
+        intent.setType("application/*|text/*");
         try {
             startActivityForResult(intent, INTENT_REQUEST_CODE);
 
@@ -139,7 +139,7 @@ public class CourseFilesFragment extends Fragment {
                     Uri uri= data.getData();
                     File file= new File(uri.getPath());
                     InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
-                    tryUploadFile(getBytes(is),file.getName().trim());
+                    tryUploadFile(getBytes(is),file.getName().trim(),uri.getPath().substring(uri.getPath().lastIndexOf(".")));
                     is.close();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -148,8 +148,8 @@ public class CourseFilesFragment extends Fragment {
         }
     }
 
-    private void tryUploadFile(byte[] bytes,String fileName) {
-        RequestBody requestFile = RequestBody.create(MediaType.parse("application/pdf"), bytes);
+    private void tryUploadFile(byte[] bytes,String fileName,String fileType) {
+        RequestBody requestFile = RequestBody.create(MediaType.parse(fileType), bytes);
         MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", fileName, requestFile);
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body, Integer.parseInt(cid))
                 .observeOn(AndroidSchedulers.mainThread())
