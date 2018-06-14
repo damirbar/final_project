@@ -7,12 +7,10 @@ let Session = require("../schemas/session");
 let Session_Message = require("../schemas/session_message");
 let Course = require("../schemas/course");
 let config = require('../config/config');
+let multer = require('multer');
+let upload = multer({dest: 'upload/'});
+let type = upload.single('recfile');
 
-const multer = require('multer');
-const upload = multer({dest: 'upload/'});
-const type = upload.single('recfile');
-const cloudinary = require('cloudinary');
-const fs = require('fs');
 //make sure that all request contain a valid token
 router.all("*", type, function (req, res, next) {
     if (req.url === '/' || req.url === '/favicon.ico'
@@ -23,7 +21,7 @@ router.all("*", type, function (req, res, next) {
         || req.url.includes('/auth/google')
         || req.url.includes('/auth/google/callback')
         || req.url.includes('/auth/get-user-from-google')
-        //remove this
+        //remove! this is only for testing
         || req.url.includes('/get-all-sessions')) {
 
         return next();
@@ -104,7 +102,7 @@ router.all("*", type, function (req, res, next) {
                                                 if (student) {
                                                     event = {
                                                         type: "session",
-                                                        event: "replied '"+ req.body.body +"' to " + student.first_name +"'s question: '" + msg.body + "' in session: " + req.body.sid,
+                                                        event: "replied '"+ req.body.body +"' to " + student.first_name +"'s question: '" + msg.body + "' in session: " + sess.name,
                                                         date : Date.now()
                                                     };
                                                     user.events.push(event);
@@ -129,20 +127,25 @@ router.all("*", type, function (req, res, next) {
                                     event: "created course: '" + req.body.name + "' with teacher: " + req.body.teacher + " At: "+ req.body.location,
                                 };
                                 break;
-                            // unlike and undislike as well
+                            // remove un-like and un-dislike
                             case "/sessions/rate-message":
                                 Session_Message.findOne({_id: req.query.msgid},function (err, msg) {
                                     if (err) console.log(err);
                                     if (msg) {
-                                        let type = req.query.rating === "1" ? "liked" : "disliked";
-                                        event = {
-                                            type: "session",
-                                            event: type + " the question '" + msg.body + "' in session: " + req.query.sid,
-                                            date : Date.now()
-                                        };
-                                        user.events.push(event);
-                                        user.save();
-                                        event = undefined
+                                        Session.findOne({sid: req.query.sid}, function (err, sess) {
+                                            if (err) console.log(err);
+                                            if (sess) {
+                                                let type = req.query.rating === "1" ? "liked" : "disliked";
+                                                event = {
+                                                    type: "session",
+                                                    event: type + " the question '" + msg.body + "' in session: " + sess.name,
+                                                    date: Date.now()
+                                                };
+                                                user.events.push(event);
+                                                user.save();
+                                                event = undefined
+                                            }
+                                        });
                                     }
                                 });
                                 break;
@@ -154,10 +157,19 @@ router.all("*", type, function (req, res, next) {
                                 break;
                             case "/sessions/post-video":
                                 if(req.file) {
-                                    event = {
-                                        type: "session",
-                                        event: "added the video " + req.file.filename + "to session: " + req.query.sid,
-                                    };
+                                    Session.findOne({sid: req.query.sid}, function (err, sess) {
+                                        if (err) console.log(err);
+                                        if (sess) {
+                                            event = {
+                                                type: "session",
+                                                event: "added the video " + req.file.filename + "to session: " + sess.name,
+                                                date: Date.now()
+                                            };
+                                            user.events.push(event);
+                                            user.save();
+                                            event = undefined
+                                        }
+                                    });
                                 }
                                 break;
                             //test this!!!
