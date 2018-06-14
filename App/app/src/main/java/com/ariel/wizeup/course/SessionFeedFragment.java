@@ -26,6 +26,7 @@ import com.ariel.wizeup.model.User;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.profile.ProfileActivity;
+import com.ariel.wizeup.session.ConnectSessionActivity;
 import com.ariel.wizeup.session.SessionActivity;
 
 import java.io.File;
@@ -74,7 +75,7 @@ public class SessionFeedFragment extends Fragment {
 
         sessionsList.setOnItemClickListener((parent, view1, position, id) -> {
             Session session = mAdapter.getItem(position);
-            Intent intent = new Intent(getActivity(), SessionActivity.class);
+            Intent intent = new Intent(getActivity(), ConnectSessionActivity.class);
             intent.putExtra("sid", session.getSid());
             startActivity(intent);
         });

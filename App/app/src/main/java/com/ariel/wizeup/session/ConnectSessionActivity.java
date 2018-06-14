@@ -39,6 +39,11 @@ public class ConnectSessionActivity extends AppCompatActivity {
         mServerResponse = new ServerResponse(findViewById(R.id.scroll_view));
         initViews();
 
+        if (!getData()) {
+            mEditTextSid.setText(sid);
+        }
+
+
     }
 
     private void initViews() {
@@ -52,9 +57,21 @@ public class ConnectSessionActivity extends AppCompatActivity {
         buttonBack.setOnClickListener(view -> finish());
     }
 
+    private boolean getData() {
+        if (getIntent().getExtras() != null) {
+            String _sid = getIntent().getExtras().getString("sid");
+            if (_sid != null) {
+                sid = _sid;
+                return true;
+            } else
+                return false;
+        } else
+            return false;
+    }
+
 
     private void createSession() {
-        this.startActivity(new Intent (this, CreateSessionActivity.class));
+        this.startActivity(new Intent(this, CreateSessionActivity.class));
 
     }
 
@@ -75,19 +92,19 @@ public class ConnectSessionActivity extends AppCompatActivity {
             name = "Anon";
         }
 
-            loginProcess(sid,name);
+        loginProcess(sid, name);
     }
 
     private void loginProcess(String sid, String name) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().connectSession(sid,name)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().connectSession(sid, name)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponse(Session session){
+    private void handleResponse(Session session) {
         Intent intent = new Intent(getBaseContext(), SessionActivity.class);
-        intent.putExtra("session",session);
+        intent.putExtra("session", session);
         startActivity(intent);
         finish();
     }

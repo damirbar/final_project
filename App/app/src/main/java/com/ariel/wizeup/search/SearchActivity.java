@@ -17,6 +17,7 @@ import com.ariel.wizeup.model.User;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.profile.ProfileActivity;
+import com.ariel.wizeup.session.ConnectSessionActivity;
 import com.ariel.wizeup.session.SessionActivity;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class SearchActivity extends AppCompatActivity {
             }
             else if(a instanceof Session) {
                 Session session = (Session) a;
-                Intent intent = new Intent(this, SessionActivity.class);
+                Intent intent = new Intent(this, ConnectSessionActivity.class);
                 intent.putExtra("sid", session.getSid());
                 startActivity(intent);
             }
