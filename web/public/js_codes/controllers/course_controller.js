@@ -8,6 +8,8 @@ wizerApp.controller('courseController',
         $scope.courseFiles = [];
         $scope.message = {type: "question", body: ""};
         $scope.messages = [];
+        $scope.reply = {type: "question", body: ""};
+        $scope.messageToReply = {};
 
 
         $scope.getCourse = function () {
@@ -92,6 +94,17 @@ wizerApp.controller('courseController',
                 });
         };
 
+
+        $scope.sendReply = function () {
+            CourseService.sendReply($rootScope.loggedUser._id, $scope.messageToReply.poster_id, $scope.course.cid, $scope.reply.type, $scope.reply.body, $scope.messageToReply._id)
+                .then(function (data) {
+                    console.log("Sent message");
+                    $scope.reply = {body: ""};
+                })
+                .catch(function (err) {
+                    console.log(err);
+                });
+        };
 
         socketIO.on('newCourseMessage', function(message){
             var message_id = message._id;

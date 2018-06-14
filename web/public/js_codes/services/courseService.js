@@ -122,9 +122,20 @@ wizerApp.service('CourseService', function($http, socketIO) {
                 socketIO.emit('postCourseMessage', );
                 return data.data;
             }, function () {
-                console.log("Error sending message to session with ID = " + sessionId);
+                console.log("Error sending message to course with ID = " + courseId);
             });
     };
+
+
+    this.sendReply = function(replierID, posterID,courseId, type, message, message_id) {
+        return $http.post('/courses/reply', {poster_id: posterID, replier_id: replierID, cid: courseId, type: type, body: message, mid: message_id})
+            .then(function (data) {
+                return data.data;
+            }, function () {
+                console.log("Error sending reply to course with ID = " + courseId);
+            });
+    };
+
 
 
 });
