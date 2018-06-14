@@ -5,9 +5,9 @@ let mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 let path = require("path");
 let bodyParser = require("body-parser");
-// var logger = require('morgan');
+var logger = require('morgan');
 const router = express.Router();
-// app.use(logger('dev'));
+app.use(logger('dev'));
 
 
 //passport login
