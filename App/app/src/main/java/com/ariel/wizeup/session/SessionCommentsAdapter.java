@@ -199,7 +199,7 @@ public class SessionCommentsAdapter extends ArrayAdapter<SessionMessage> {
     }
 
     private void addRate(String sid, String msgId,int rate) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().ratereplyMessage(sid,msgId,rate)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().rateReplyMessage(sid,msgId,rate)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, ServerResponse::handleErrorQuiet));

@@ -39,7 +39,7 @@ public class ConnectSessionActivity extends AppCompatActivity {
         mServerResponse = new ServerResponse(findViewById(R.id.scroll_view));
         initViews();
 
-        if (!getData()) {
+        if (getData()) {
             mEditTextSid.setText(sid);
         }
 

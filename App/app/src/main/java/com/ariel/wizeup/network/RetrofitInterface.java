@@ -87,8 +87,7 @@ public interface RetrofitInterface {
     Observable<Response> rateMessage(@Query("sid") String sid, @Query("msgid") String msgid, @Query("rating") int rating);
 
     @GET("sessions/rate-reply-message")
-    Observable<Response> ratereplyMessage(@Query("sid") String sid, @Query("msgid") String msgid, @Query("rating") int rating);
-
+    Observable<Response> rateReplyMessage(@Query("sid") String sid, @Query("msgid") String msgid, @Query("rating") int rating);
 
     @GET("sessions/get-students-count")
     Observable<Response> getStudentsCount(@Query("id") String id);
@@ -117,6 +116,10 @@ public interface RetrofitInterface {
 
     @GET("sessions/get-session")
     Observable<Session> getSessionById(@Query("sid") String sid);
+
+    @GET("sessions/get-message-replies")
+    Observable<SessionMessage[]> getSessionMessageReplies(@Query("mid") String mid);
+
 
 
     //////////////////Courses//////////////////
@@ -161,6 +164,9 @@ public interface RetrofitInterface {
 
     @POST("courses/reply")
     Observable<Response> publishCourseReply(@Body CourseMessage message);
+
+    @GET("sessions/get-message-replies")
+    Observable<CourseMessage[]> getCourseMessageReplies(@Query("mid") String mid);
 
 
 }

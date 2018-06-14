@@ -155,5 +155,12 @@ public class SessionFeedFragment extends Fragment {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        pullSessions();
+    }
+
 }
 

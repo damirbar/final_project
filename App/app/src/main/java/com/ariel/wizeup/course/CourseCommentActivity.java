@@ -37,8 +37,7 @@ public class CourseCommentActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private EditText mCommentText;
     private TextView buttonSend;
-    private String cid;
-    private String mid;
+    private CourseMessage mainMessage;
     private String userId;
     private CourseCommentsAdapter mAdapter;
 
@@ -78,11 +77,9 @@ public class CourseCommentActivity extends AppCompatActivity {
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            String _sid = getIntent().getExtras().getString("cid");
-            String _mid = getIntent().getExtras().getString("mid");
-            if (_sid != null && _mid != null) {
-                cid = _sid;
-                mid = _mid;
+            CourseMessage _courseMessage = (CourseMessage) getIntent().getExtras().getParcelable("courseMessage");
+            if (_courseMessage != null ) {
+                mainMessage =_courseMessage;
                 return true;
             } else
                 return false;
@@ -91,15 +88,15 @@ public class CourseCommentActivity extends AppCompatActivity {
     }
 
     private void pullComments() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getCourseMessage(mid)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getCourseMessageReplies(mainMessage.getMid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull, i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponsePull(CourseMessage courseMessages) {
-        ArrayList<CourseMessage> saveComments = new ArrayList<>(Arrays.asList(courseMessages.getReplies()));
-        saveComments.add(courseMessages);
+    private void handleResponsePull(CourseMessage courseMessages[]) {
+        ArrayList<CourseMessage> saveComments = new ArrayList<>(Arrays.asList(courseMessages));
+        saveComments.add(mainMessage);
         Collections.reverse(saveComments);
         mAdapter = new CourseCommentsAdapter(this, new ArrayList<>(saveComments));
         commentsList.setAdapter(mAdapter);
@@ -113,8 +110,9 @@ public class CourseCommentActivity extends AppCompatActivity {
             return;
         }
         CourseMessage message = new CourseMessage();
-        message.setMid(mid);
-        message.setCid(cid);
+        message.setMid(mainMessage.getMid());
+        message.setCid(mainMessage.getCid());
+        message.setPoster_id(userId);
         message.setType("answer");
         message.setBody(strMessage);
         sendCom(message);
