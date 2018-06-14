@@ -12,6 +12,7 @@ wizerApp.controller('profileController',
         $scope.readMore = false;
         $scope.courses = [];
         $scope.editUser = {};
+        $scope.editUser.gender = 'unspecified';
 
 
         // NEEDS TO CHANGE
@@ -125,4 +126,16 @@ wizerApp.controller('profileController',
             }, 6000);
         };
         angular.element(document.querySelector('#file-profile-image')).on('change',handleFileSelect);
+
+
+
+        $scope.genderChoose = function(gender) {
+            console.log("Called role choose");
+            $('.dropdown-header').text(gender.charAt(0).toUpperCase() + gender.slice(1));
+            $scope.editUser.gender = gender;
+        };
+
+
+
+
     });
