@@ -120,21 +120,16 @@
 
                         </form>
 
-                        <table class="table table-hover" ng-if="sessionMessages.length > 0">
+                        <table class="table table-hover" ng-if="messages.length > 0">
                             <thead>
                             <tr>
-                                <th>Likes</th>
-                                <th>Dislikes</th>
-                                <!--<th>Question / Answer</th>-->
                                 <th>Message</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody class="messages-table-body">
-                            <tr ng-repeat="msg in sessionMessages | reverse" ng-if="sessionMessages.length > 0">
-                                <td class="message-likes text-success" scope="row">{{msg.likes}}</td>
-                                <td class="message-likes text-danger" scope="row">{{msg.dislikes}}</td>
-                                <!--<td>{{msg.type.charAt(0).toUpperCase() + msg.type.slice(1)}}</td>-->
+
+                            <tr ng-repeat="msg in messages | reverse" ng-if="messages.length > 0">
                                 <td>
 
                                     <div class="message-text col-8">{{msg.body}}</div>
@@ -143,14 +138,7 @@
                                 <td class="float-right">
                                     <div class="message-content">
 
-                                        <button type="button"
-                                                ng-class="msg.liked ? 'active btn btn-outline-success' : 'btn btn-outline-success'"
-                                                ng-click="rateMessage(1, msg.sid, msg._id, 1)">Like
-                                        </button>
-                                        <button type="button"
-                                                ng-class="msg.disliked ? 'active btn btn-outline-danger' : 'btn btn-outline-danger'"
-                                                ng-click="rateMessage(1, msg.sid, msg._id, 0)">Hate
-                                        </button>
+
                                         <!--<button type="button" class="btn btn-outline-dark float-right" ng-click="assignReply(msg)">-->
 
                                         <button type="button" class="reply btn btn-outline-dark" data-toggle="modal"
@@ -179,12 +167,14 @@
 
                         <div class="course-upload-file">
 
-                            <div class="upload-file-header">
-                                Upload a new file!
-                            </div>
 
-                            <input id="file-course-image" type="file" name='recfile' file-model="myFile"/>
-                            <button ng-click="uploadFile()">Upload</button>
+
+                            <label class="upload-file-label rad-button warning">
+                                <span class="upload-text">Choose file</span>
+                                <input style="display: none" id="file-course-image" type="file" name='recfile' file-model="myFile"/>
+                            </label>
+
+                            <button class="rad-button wwt" ng-click="uploadFile()">Upload</button>
                         </div>
 
 
@@ -200,8 +190,10 @@
                                     <div class="container">
 
                                         <div class="col-12">
-                                            <div class="file-icon2">
-                                                <span class="file__type">{{file.type}}</span>
+                                            <div class="file-icon2 file-link">
+                                                <a ng-href="{{file.url}}">
+                                                    <span class="file__type">{{file.type}}</span>
+                                                </a>
                                             </div>
                                         </div>
                                         <div class="col-12 file-name">{{file.originalName | limitTo: 20}}</div>

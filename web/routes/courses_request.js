@@ -290,7 +290,7 @@ router.post("/messages", function (req, res) {
                             if (err) {
                                 return console.log(err);
                             } else {
-                                socketIOEmitter.emitEventToSessionRoom(msg.cid, 'newCourseMessage', msg);
+                                socketIOEmitter.emitEventToCourse(msg.cid, 'newCourseMessage', msg);
                             }
                         });
                         res.status(200).json({message: "successfully added message " + msg.body + " to db"});
