@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.ariel.wizeup.R;
+import com.ariel.wizeup.dialogs.MyDateDialog;
 import com.ariel.wizeup.dialogs.UploadingDialog;
 import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.Session;
@@ -51,7 +53,7 @@ public class SessionActivity extends AppCompatActivity {
     private FullscreenVideoLayout vid;
     private RelativeLayout mVideoViewRelative;
     private static final int INTENT_REQUEST_CODE = 100;
-    private UploadingDialog tab1;
+    public static final String TAG = SessionActivity.class.getSimpleName();
 
 
 
@@ -241,15 +243,12 @@ public class SessionActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 try {
 
-                    tab1 = new UploadingDialog();
-                    tab1.setCancelable(false);
-                    tab1.show(this.getSupportFragmentManager(), "Dialog");
-
+                    showLoadingDialog();
 
                     InputStream is = getContentResolver().openInputStream(data.getData());
                     tryUploadVid(getBytes(is));
                     is.close();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -263,16 +262,40 @@ public class SessionActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseUploadVid, this::handleError));
+
     }
 
     private void handleResponseUploadVid(Response response) {
-        tab1.dismiss();
+        mServerResponse.downSnackBarMessage(response.getMessage());
+        hideLoadingDialog();
     }
 
     public void handleError(Throwable error) {
         mServerResponse.handleError(error);
-        tab1.dismiss();
+        hideLoadingDialog();
     }
+
+    public void showLoadingDialog() {
+        UploadingDialog fragment = (UploadingDialog) getSupportFragmentManager().findFragmentByTag(UploadingDialog.TAG);
+        if (fragment == null) {
+            fragment = new UploadingDialog();
+            fragment.setCancelable(false);
+            getSupportFragmentManager().beginTransaction()
+                    .add(fragment, UploadingDialog.TAG)
+                    .commitAllowingStateLoss();
+
+            // fragment.show(getSupportFragmentManager().beginTransaction(), LoadingDialogFragment.FRAGMENT_TAG);
+        }
+    }
+
+    public void hideLoadingDialog() {
+        UploadingDialog fragment = (UploadingDialog) getSupportFragmentManager().findFragmentByTag(UploadingDialog.TAG);
+        if (fragment != null) {
+            // fragment.dismissAllowingStateLoss();
+            getSupportFragmentManager().beginTransaction().remove(fragment).commitAllowingStateLoss();
+        }
+    }
+
 
 
     private void pullSession() {

@@ -5,8 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.ariel.wizeup.session.SessionFeedFragment;
-import com.ariel.wizeup.session.SessionInfoFragment;
+import com.ariel.wizeup.session.SessionMessagesFragment;
 
 public class CoursePagerAdapter extends FragmentStatePagerAdapter {
     private int mNumOfTabs;
@@ -33,7 +32,7 @@ public class CoursePagerAdapter extends FragmentStatePagerAdapter {
                 tab2.setArguments(bundle);
                 return tab2;
             case 2:
-                CourseFilesFragment tab3 = new CourseFilesFragment();
+                SessionFeedFragment tab3 = new SessionFeedFragment();
                 bundle.putString("cid", cid);
                 tab3.setArguments(bundle);
                 return tab3;

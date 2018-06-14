@@ -17,11 +17,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ariel.wizeup.R;
-import com.ariel.wizeup.dialogs.PostBottomDialog;
 import com.ariel.wizeup.dialogs.UploadingDialog;
-import com.ariel.wizeup.model.Course;
 import com.ariel.wizeup.model.CourseFile;
 import com.ariel.wizeup.model.Response;
+import com.ariel.wizeup.model.Session;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 
@@ -42,36 +41,34 @@ import rx.subscriptions.CompositeSubscription;
 import static android.app.Activity.RESULT_OK;
 import static com.ariel.wizeup.network.RetrofitRequests.getBytes;
 
-public class CourseFilesFragment extends Fragment {
+public class SessionFeedFragment extends Fragment {
 
     private CompositeSubscription mSubscriptions;
-    private ListView filesList;
+    private ListView sessionsList;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private TextView mTvNoResults;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private FloatingActionButton mFBAddFile;
-    private CourseFilesAdapter mAdapter;
+    private FloatingActionButton mFBAddSession;
+    private SessionsAdapter mAdapter;
     private String cid;
-    private static final int INTENT_REQUEST_CODE = 100;
-    private UploadingDialog tab1;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_course_files, container, false);
+        View view = inflater.inflate(R.layout.fragment_session_feed, container, false);
         getData();
         initViews(view);
 
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
-        mServerResponse = new ServerResponse(view.findViewById(R.id.activity_files_feed));
+        mServerResponse = new ServerResponse(view.findViewById(R.id.activity_sessions_feed));
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
-            pullFiles();
+            pullSessions();
             mSwipeRefreshLayout.setRefreshing(false);
         }, 1000));
 
-        filesList.setOnScrollListener(new AbsListView.OnScrollListener() {
+        sessionsList.setOnScrollListener(new AbsListView.OnScrollListener() {
             private int mLastFirstVisibleItem;
 
             @Override
@@ -83,26 +80,26 @@ public class CourseFilesFragment extends Fragment {
                                  int visibleItemCount, int totalItemCount) {
 
                 if (mLastFirstVisibleItem < firstVisibleItem) {
-                    mFBAddFile.hide();
+                    mFBAddSession.hide();
                 }
                 if (mLastFirstVisibleItem > firstVisibleItem) {
-                    mFBAddFile.show();
+                    mFBAddSession.show();
                 }
                 mLastFirstVisibleItem = firstVisibleItem;
 
             }
         });
-        pullFiles();
+        pullSessions();
         return view;
     }
 
     private void initViews(View v) {
         mTvNoResults = v.findViewById(R.id.tv_no_results);
-        filesList = v.findViewById(R.id.files_list);
+        sessionsList = v.findViewById(R.id.sessions_list);
         mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
-        mFBAddFile = v.findViewById(R.id.fb_add_file);
+        mFBAddSession = v.findViewById(R.id.fb_add_session);
         mSwipeRefreshLayout.setVisibility(View.GONE);
-        mFBAddFile.setOnClickListener(view -> addFile());
+        mFBAddSession.setOnClickListener(view -> addSession());
     }
 
     private void getData() {
@@ -112,77 +109,28 @@ public class CourseFilesFragment extends Fragment {
         }
     }
 
-    private void addFile() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("application/pdf");
-        try {
-            startActivityForResult(intent, INTENT_REQUEST_CODE);
+    private void addSession() {
+        Intent intent = new Intent(getActivity(),CourseSessionActivity.class);
+        intent.putExtra("cid", cid);
+        startActivity(intent);
 
-        } catch (ActivityNotFoundException e) {
-
-            e.printStackTrace();
-        }
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == INTENT_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                try {
-
-                    tab1 = new UploadingDialog();
-                    tab1.setCancelable(false);
-                    tab1.show(getActivity().getSupportFragmentManager(), "Dialog");
-
-
-                    Uri uri= data.getData();
-                    File file= new File(uri.getPath());
-                    InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
-                    tryUploadFile(getBytes(is),file.getName().trim());
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private void tryUploadFile(byte[] bytes,String fileName) {
-        RequestBody requestFile = RequestBody.create(MediaType.parse("application/pdf"), bytes);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", fileName, requestFile);
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body, Integer.parseInt(cid))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseUploadFile, this::handleError));
-    }
-
-
-    private void handleResponseUploadFile(Response response) {
-        tab1.dismiss();
-    }
-
-    public void handleError(Throwable error) {
-        mServerResponse.handleError(error);
-        tab1.dismiss();
-    }
-
-
-
-    private void pullFiles() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getCourseFiles(cid)
+    private void pullSessions() {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getCourseSessions(cid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull, i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponsePull(CourseFile files[]) {
-        if (!(files.length == 0)) {
-            ArrayList<CourseFile> saveFiles = new ArrayList<>(Arrays.asList(files));
-            Collections.reverse(saveFiles);
+    private void handleResponsePull(Session sessions[]) {
+        if (!(sessions.length == 0)) {
+            ArrayList<Session> saveSessions = new ArrayList<>(Arrays.asList(sessions));
+            Collections.reverse(saveSessions);
             mTvNoResults.setVisibility(View.GONE);
-            mAdapter = new CourseFilesAdapter(this.getActivity(), new ArrayList<>(saveFiles));
-            filesList.setAdapter(mAdapter);
+            mAdapter = new SessionsAdapter(this.getActivity(), new ArrayList<>(saveSessions));
+            sessionsList.setAdapter(mAdapter);
         } else {
             mTvNoResults.setVisibility(View.VISIBLE);
         }
@@ -194,5 +142,5 @@ public class CourseFilesFragment extends Fragment {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
-
 }
+

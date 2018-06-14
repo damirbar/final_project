@@ -96,7 +96,7 @@ public class SearchActivity extends AppCompatActivity {
         if (!(items.getUsers().length == 0) || !(items.getSessions().length == 0) || !(items.getFiles().length == 0)) {
             ArrayList<Object> saveItems = new ArrayList<>();
             saveItems.addAll(Arrays.asList(items.getUsers()));
-//            saveItems.addAll(Arrays.asList(items.getSessions()));
+            saveItems.addAll(Arrays.asList(items.getSessions()));
             saveItems.addAll(Arrays.asList(items.getCourses()));
             saveItems.addAll(Arrays.asList(items.getFiles()));
 

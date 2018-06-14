@@ -2,6 +2,7 @@ package com.ariel.wizeup.network;
 
 import com.ariel.wizeup.model.Course;
 import com.ariel.wizeup.model.CourseFile;
+import com.ariel.wizeup.model.CourseMessage;
 import com.ariel.wizeup.model.Event;
 import com.ariel.wizeup.model.NotificationMsg;
 import com.ariel.wizeup.model.Response;
@@ -145,6 +146,26 @@ public interface RetrofitInterface {
 
     @GET("courses/get-course-files")
     Observable<CourseFile[]> getCourseFiles(@Query("cid") String cid);
+
+    @GET("courses/get-all-sessions")
+    Observable<Session[]> getCourseSessions(@Query("cid") String cid);
+
+
+
+
+    @GET("courses/get-all-messages")
+    Observable<CourseMessage []> CourseGetAllMessages(@Query("cid") String cid);
+
+//    @GET("courses/get-message")
+//    Observable<CourseMessage> getMessage(@Query("mid") String mid);
+
+    @POST("courses/messages")
+    Observable<Response> publishCoureMessage(@Body CourseMessage message);
+
+
+
+    @POST("courses/reply")
+    Observable<Response> publishCourseReply(@Body CourseMessage message);
 
 
 }
