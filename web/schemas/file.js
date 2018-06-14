@@ -7,7 +7,8 @@ var fileSchema = new mongoose.Schema({
     type: {type: String, default: ""},
     creation_date:{type: Date, default: Date.now()},
     size: {type: String, default: ""},
-    hidden: Boolean
+    hidden: Boolean,
+    publicid: String
 });
 
 module.exports = mongoose.model('File', fileSchema);
