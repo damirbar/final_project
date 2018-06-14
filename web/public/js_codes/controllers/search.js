@@ -6,7 +6,7 @@ wizerApp.controller('searchController',
         SearchService.freeTextSearch($routeParams.keyword)
             .then(function (data) {
                 $scope.results = data;
-                $scope.loading = true;
+                $scope.loading = false;
                 console.log(data);
             }, function (err) {
 
