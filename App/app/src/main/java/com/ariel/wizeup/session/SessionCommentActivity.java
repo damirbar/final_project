@@ -121,9 +121,10 @@ public class SessionCommentActivity extends AppCompatActivity {
             return;
         }
         SessionMessage message = new SessionMessage();
-        message.setPoster_id(userId);
-        message.set_id(mainMessage.get_id());
+        message.setMid(mainMessage.get_id());
         message.setSid(mainMessage.getSid());
+        message.setPoster_id(mainMessage.getPoster_id());
+        message.setReplier_id(userId);
         message.setType("answer");
         message.setBody(strMessage);
         sendCom(message);

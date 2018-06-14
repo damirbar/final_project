@@ -20,6 +20,7 @@ public class SessionMessage implements Parcelable {
     private String mid;
     private String poster_id;
     private String replies[];
+    private String replier_id;
 
 
     public SessionMessage() { }
@@ -37,6 +38,7 @@ public class SessionMessage implements Parcelable {
         mid = in.readString();
         poster_id = in.readString();
         replies = in.createStringArray();
+        replier_id = in.readString();
     }
 
     public static final Creator<SessionMessage> CREATOR = new Creator<SessionMessage>() {
@@ -50,6 +52,14 @@ public class SessionMessage implements Parcelable {
             return new SessionMessage[size];
         }
     };
+
+    public String getReplier_id() {
+        return replier_id;
+    }
+
+    public void setReplier_id(String replier_id) {
+        this.replier_id = replier_id;
+    }
 
     public String[] getReplies() {
         return replies;
@@ -175,5 +185,6 @@ public class SessionMessage implements Parcelable {
         parcel.writeString(mid);
         parcel.writeString(poster_id);
         parcel.writeStringArray(replies);
+        parcel.writeString(replier_id);
     }
 }

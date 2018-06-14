@@ -17,8 +17,8 @@ public class CourseMessage implements Parcelable {
     private String _id;
     private String mid;
     private String replies[];
+    private String replier_id;
 
-    public CourseMessage() { }
 
     protected CourseMessage(Parcel in) {
         email = in.readString();
@@ -30,6 +30,7 @@ public class CourseMessage implements Parcelable {
         _id = in.readString();
         mid = in.readString();
         replies = in.createStringArray();
+        replier_id = in.readString();
     }
 
     public static final Creator<CourseMessage> CREATOR = new Creator<CourseMessage>() {
@@ -43,6 +44,17 @@ public class CourseMessage implements Parcelable {
             return new CourseMessage[size];
         }
     };
+
+    public String getReplier_id() {
+        return replier_id;
+    }
+
+    public void setReplier_id(String replier_id) {
+        this.replier_id = replier_id;
+    }
+
+    public CourseMessage() { }
+
 
     public String[] getReplies() {
         return replies;
@@ -140,5 +152,6 @@ public class CourseMessage implements Parcelable {
         parcel.writeString(_id);
         parcel.writeString(mid);
         parcel.writeStringArray(replies);
+        parcel.writeString(replier_id);
     }
 }
