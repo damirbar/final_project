@@ -168,6 +168,7 @@ router.post('/post-file', type, function (req, res) {
                                     if (err) return err;
                                     if (user) {
                                         const ans = new File({
+                                            publicid: result.public_id,
                                             originalName: req.file.originalname,
                                             uploaderid: user.id,
                                             url: result.url,
@@ -197,6 +198,21 @@ router.post('/post-file', type, function (req, res) {
             fs.unlinkSync(path);
         }
     }
+});
+
+router.delete('/remove-file',function (req, res) {
+
+    let publicid = req.body.publicid;
+
+    cloudinary.v2.uploader.destroy(publicid,
+        function(err, result) {
+            console.log(result);
+            File.remove({publicid: publicid},function (err) {
+                if(err) console.log(err);
+                else console.log("deleted file");
+                res.status(200).json({message: "file deleted"})
+            })
+        });
 });
 
 router.get("/add-student-to-course", function (req, res) {
