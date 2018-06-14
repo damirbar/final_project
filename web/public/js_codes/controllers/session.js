@@ -180,7 +180,7 @@ wizerApp.controller('sessionController',
                         console.log("Created session with ID = " + $scope.createSessionID);// + JSON.stringify(data.session));
                         console.log("SESSION DATA = " + JSON.stringify(data));
                         io.connect();
-                        if (data.session) {
+                        if (data) {
                             $scope.isConnectedToSession = true;
                             $scope.session = data;
                             // $('session-video').attr('src',$scope.session.videoUrl);
