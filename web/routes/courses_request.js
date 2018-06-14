@@ -419,11 +419,13 @@ router.post("/create-session", function (req, res) {
 
 
 router.get("/get-all-sessions", function (req, res) {
+
     let course_id = req.query.cid;
+
     Course.findOne({cid: course_id}, function (err, course) {
         if (err) console.log(err);
         if (course) {
-            Session.find({id: {$in: course.sessions}}, function (err, sessions) {
+            Session.find({_id: {$in: course.sessions}}, function (err, sessions) {
                 if (err) console.log(err);
                 res.status(200).json(sessions);
             });
