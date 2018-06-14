@@ -144,9 +144,30 @@ wizerApp.service('CourseService', function($http, socketIO) {
             }).catch(function(err){
                 console.log("error getting replies");
             });
-    }
+    };
 
 
+    this.getCourseSessions = function (cid){
+        return $http.get('/courses/get-all-sessions?cid=' + cid)
+            .then(function(data){
+                return data.data;
+            }).catch(function(err){
+                console.log("error getting replies");
+            });
+    };
 
+
+    this.createSession = function(sess) {
+
+        return $http.post('courses/create-session', sess)
+            .then(function(data) {
+
+                    console.log("This is a print from create course.\nI got: " + data.data);
+                    return data.data;
+                },
+                function(err) {
+                    console.log("Error creating the course courses with the name " + err);
+                });
+    };
 
 });

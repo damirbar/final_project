@@ -45,6 +45,11 @@ wizerApp.config(function ($routeProvider, $locationProvider) {
             controller: 'sessionController'
         })
 
+        .when('/sessions/:id', {
+            templateUrl: '../pages/session.html',
+            controller: 'sessionController'
+        })
+
         .when('/courses/', {
             templateUrl: '../pages/courses.html',
             controller: 'coursesController'

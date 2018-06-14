@@ -2,7 +2,7 @@ wizerApp.controller('sessionController',
     function ($scope, $rootScope, $routeParams, $location, $window, $interval, AuthService, SessionService, $http, UploadService, socketIO) {
 
         console.log("Hello from sessionController");
-        $scope.sessionID = "";
+        $scope.sessionID = $routeParams.id ? $routeParams.id : "";
         $scope.defaultSessionUserName = "Anon";
         $scope.sessionUserName = "";
         $scope.loggedUser = {};
@@ -91,7 +91,7 @@ wizerApp.controller('sessionController',
 
         $scope.connectSession = function () {
             console.log("SESSION ID = " + $scope.sessionID);
-            SessionService.connectSession($scope.sessionID, $scope.sessionUserName !== "" ? $scope.sessionUserName : $scope.sessionUserName)
+            SessionService.connectSession($scope.sessionID, $scope.sessionUserName !== "" ? $scope.sessionUserName : "Anon")
                 .then(function (data) {
 
                     if (data.error) {
