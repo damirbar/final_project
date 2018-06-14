@@ -105,6 +105,7 @@ wizerApp.controller('courseController',
             CourseService.sendMessage($rootScope.loggedUser._id, $scope.course.cid, $scope.message.type, $scope.message.body)
                 .then(function (data) {
                     console.log("Sent message");
+                    $scope.getMessages();
                     // $scope.getMessages();
                     $scope.message = {body: ""};
                 })
@@ -117,6 +118,7 @@ wizerApp.controller('courseController',
         $scope.sendReply = function () {
             CourseService.sendReply($rootScope.loggedUser._id, $scope.messageToReply.poster_id, $scope.course.cid, $scope.reply.type, $scope.reply.body, $scope.messageToReply._id)
                 .then(function (data) {
+                    $scope.getMessageReplies($scope.messageToReply._id);
                     console.log("Sent message");
                     $scope.reply = {body: ""};
                 })
@@ -164,9 +166,10 @@ wizerApp.controller('courseController',
             $scope.sessionCreate.cid = $scope.course.cid;
             CourseService.createSession($scope.sessionCreate)
                 .then(function(data) {
+                    $('#collapseSessionCreate').collapse('hide');
+                    $scope.getCourseSessions();
                     $scope.sessionCreate = {};
                     $scope.sessionCreate.cid = $scope.course.cid;
-                    $('#collapseSessionCreate').collapse('hide');
                     console.log("data = " + data);
                 }, function(err) {
                     console.log("error = " + err);
