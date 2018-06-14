@@ -352,7 +352,7 @@ router.post("/reply", function (req, res) {
                     name: user.first_name + " " + user.last_name
                 }
             );
-            Session_Message.update({_id: req.body.mid}, {$push: {replies: msg}}, function (err, msg) {
+            Course_Message.update({_id: req.body.mid}, {$push: {replies: msg}}, function (err, msg) {
                 // console.log('pushing reply to messages');
                 if (err) {
                     return console.log(err);
