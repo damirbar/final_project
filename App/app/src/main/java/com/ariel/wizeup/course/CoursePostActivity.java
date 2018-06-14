@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.CourseMessage;
 import com.ariel.wizeup.model.Response;
-import com.ariel.wizeup.model.SessionMessage;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.utils.Constants;
@@ -93,7 +92,7 @@ public class CoursePostActivity extends AppCompatActivity {
     }
 
     private void sendPost(CourseMessage  message) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().publishCoureMessage(message)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().publishCourseMessage(message)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseSendPost,i -> mServerResponse.handleError(i)));

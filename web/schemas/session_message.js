@@ -13,7 +13,6 @@ var SessionMessageSchema = new mongoose.Schema({
     likers: [String],
     dislikers: [String],
     body: {type: String, default: ""},
-    name: {type: String, default: ""},
     date:{type: Date, default: Date.now()},
     replies: Array,
     num_of_replies: {type: Number, default: 0}

@@ -1,14 +1,16 @@
 package com.ariel.wizeup.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class SessionMessage  {
+public class SessionMessage implements Parcelable {
 
     private String sid;
     private String nickname;
     private int likes;
     private int dislikes;
-    private SessionMessage replies[];
     private String likers[];
     private String dislikers[];
     private String body;
@@ -17,6 +19,45 @@ public class SessionMessage  {
     private Date date;
     private String mid;
     private String poster_id;
+    private String replies[];
+
+
+    public SessionMessage() { }
+
+    protected SessionMessage(Parcel in) {
+        sid = in.readString();
+        nickname = in.readString();
+        likes = in.readInt();
+        dislikes = in.readInt();
+        likers = in.createStringArray();
+        dislikers = in.createStringArray();
+        body = in.readString();
+        type = in.readString();
+        _id = in.readString();
+        mid = in.readString();
+        poster_id = in.readString();
+        replies = in.createStringArray();
+    }
+
+    public static final Creator<SessionMessage> CREATOR = new Creator<SessionMessage>() {
+        @Override
+        public SessionMessage createFromParcel(Parcel in) {
+            return new SessionMessage(in);
+        }
+
+        @Override
+        public SessionMessage[] newArray(int size) {
+            return new SessionMessage[size];
+        }
+    };
+
+    public String[] getReplies() {
+        return replies;
+    }
+
+    public void setReplies(String[] replies) {
+        this.replies = replies;
+    }
 
     public String getPoster_id() {
         return poster_id;
@@ -40,14 +81,6 @@ public class SessionMessage  {
 
     public void setMid(String mid) {
         this.mid = mid;
-    }
-
-    public SessionMessage[] getReplies() {
-        return replies;
-    }
-
-    public void setReplies(SessionMessage[] replies) {
-        this.replies = replies;
     }
 
     public void setLikers(String[] likers) {
@@ -123,4 +156,24 @@ public class SessionMessage  {
         this.dislikes = dislikes;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(sid);
+        parcel.writeString(nickname);
+        parcel.writeInt(likes);
+        parcel.writeInt(dislikes);
+        parcel.writeStringArray(likers);
+        parcel.writeStringArray(dislikers);
+        parcel.writeString(body);
+        parcel.writeString(type);
+        parcel.writeString(_id);
+        parcel.writeString(mid);
+        parcel.writeString(poster_id);
+        parcel.writeStringArray(replies);
+    }
 }

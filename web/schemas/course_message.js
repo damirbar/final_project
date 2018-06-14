@@ -5,14 +5,12 @@ var CourseMessageSchema = new mongoose.Schema({
     poster_id: {type: String, required: true},// message poster ID
     cid: {type: String, default: ""} ,   // session ID
     type: {type: String, default: ""},  // question or answer
-    likes: {type : Number, default: 0},
-    dislikes: {type : Number, default: 0},
-    likers: [String],
-    dislikers: [String],
     body: {type: String, default: ""},
     name: {type: String, default: ""},
     date:{type: Date, default: Date.now()},
-    replies: Array
+    replies: Array,
+    parent_id: {type: String, default: ""},
+    reply: {type: Boolean, default: false},
 }, {usePushEach: true});
 
 module.exports = mongoose.model('Course_Message', CourseMessageSchema);
