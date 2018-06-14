@@ -41,7 +41,10 @@
 
 
                         <label for="file-profile-image">
-                            <img class="profile-picture" ng-src="{{profile.profile_img}}" style="width: 100%;">
+                            <img class="profile-picture" ng-show="!pictureLoading" ng-src="{{profile.profile_img}}" style="width: 100%;">
+                            <div class="picture-loading" ng-show="pictureLoading" style="text-align: center;">
+                                <div class="fa fa-spinner fa-spin"></div>
+                            </div>
                             <!--<img class="profile-picture" ng-src="{{myCroppedImage}}" style="width: 100%;">-->
                         </label>
 
