@@ -28,7 +28,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-public class SessionFeedFragment extends android.support.v4.app.Fragment {
+public class SessionMessagesFragment extends android.support.v4.app.Fragment {
 
     private CompositeSubscription mSubscriptions;
     private ListView messagesList;
@@ -44,7 +44,7 @@ public class SessionFeedFragment extends android.support.v4.app.Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_session_feed,container,false);
+        view = inflater.inflate(R.layout.fragment_session_posts,container,false);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
         mServerResponse = new ServerResponse(view.findViewById(R.id.activity_session_feed));

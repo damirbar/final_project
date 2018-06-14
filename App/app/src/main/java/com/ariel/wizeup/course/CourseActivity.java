@@ -93,21 +93,9 @@ public class CourseActivity extends AppCompatActivity {
             return true;
 
         }
-        else if (id == R.id.action_session) {
-            openCreateSession();
-            return true;
-
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
-    private void openCreateSession() {
-        Intent intent = new Intent(this,CourseSessionActivity.class);
-        intent.putExtra("cid", cid);
-        startActivity(intent);
-
-    }
 
     private void openAddUser() {
         Intent intent = new Intent(this,AddUserActivity.class);
