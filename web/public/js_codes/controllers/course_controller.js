@@ -141,20 +141,23 @@ wizerApp.controller('courseController',
                 .then(function(data){
 
                     var index = 0;
+                    console.log("trigerred getMessageReplies")
                     $scope.currentMessageReplies = data;
 
-                    $scope.currentMessageReplies.forEach(function(message){
-                        message.liked = message.disliked = false;
-                        if(message.likers.includes($rootScope.loggedUser._id)){
-                            message.liked = true;
-                        }else if(message.dislikers.includes($rootScope.loggedUser._id)){
-                            message.disliked = true;
-                        }
+                    if ($scope.currentMessageReplies) {
+                        $scope.currentMessageReplies.forEach(function (message) {
+                            message.liked = message.disliked = false;
+                            if (message.likers.includes($rootScope.loggedUser._id)) {
+                                message.liked = true;
+                            } else if (message.dislikers.includes($rootScope.loggedUser._id)) {
+                                message.disliked = true;
+                            }
 
-                        $scope.currentMessageRepliesMap[message._id] = index;
-                        ++index;
+                            $scope.currentMessageRepliesMap[message._id] = index;
+                            ++index;
 
-                    });
+                        });
+                    }
 
                 });
         };
