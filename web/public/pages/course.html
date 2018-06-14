@@ -69,10 +69,10 @@
             <div class="d-flex flex-row mt-2">
                 <ul class="nav nav-tabs nav-tabs--vertical nav-tabs--left" role="tablist">
                     <li class="nav-item">
-                        <a href="#overview" class="nav-link active" target="_self" data-toggle="tab" role="tab" aria-controls="lorem">Sessions</a>
+                        <a href="#sessions" class="nav-link active" target="_self" data-toggle="tab" role="tab" aria-controls="lorem">Sessions</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#sessions" class="nav-link" target="_self" data-toggle="tab" role="tab" aria-controls="ipsum">Messages</a>
+                        <a href="#messages" class="nav-link" target="_self" data-toggle="tab" role="tab" aria-controls="ipsum" ng-click="getMessages()">Messages</a>
                     </li>
                     <li class="nav-item">
                         <a href="#files" class="nav-link" target="_self" data-toggle="tab" role="tab" aria-controls="ipsum" ng-click="getFiles()">Files</a>
@@ -81,19 +81,98 @@
 
                 </ul>
                 <div class="tab-content container">
-                    <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                    <div class="tab-pane fade show active" id="sessions" role="tabpanel">
                         <h1>Lorem</h1>
 
                         <p>Aenean sed lacus id mi scelerisque tristique. Nunc sed ex sed turpis fringilla aliquet in in neque. Praesent posuere, neque rhoncus sollicitudin fermentum, erat ligula volutpat dui, nec dapibus ligula lorem ac mauris. Etiam et leo venenatis purus pharetra dictum.</p>
 
                         <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin tempor mi ut risus laoreet molestie. Duis augue risus, fringilla et nibh ac, convallis cursus purus. Suspendisse potenti. Praesent pretium eros eleifend posuere facilisis. Proin ut magna vitae nulla suscipit eleifend. Ut bibendum pulvinar sapien, vel tristique felis scelerisque et. Sed elementum sapien magna, placerat interdum lacus placerat ut. Integer varius, ligula bibendum laoreet sollicitudin, eros metus fringilla lectus, quis consequat nisl nibh ut nisi. Aenean dignissim, nibh ac fermentum condimentum, ante nisl rutrum sapien, at commodo eros sapien vulputate arcu. Fusce neque leo, blandit nec lectus eu, vestibulum commodo tellus. Aliquam sem libero, tristique at condimentum ac, luctus nec nulla.</p>
                     </div>
-                    <div class="tab-pane fade" id="sessions" role="tabpanel">
-                        <h1>Ipsum</h1>
+                    <div class="tab-pane fade" id="messages" role="tabpanel">
 
-                        <p>Aenean pharetra risus quis placerat euismod. Praesent mattis lorem eget massa euismod sollicitudin. Donec porta nulla ut blandit vehicula. Mauris sagittis lorem nec mauris placerat, et molestie elit vehicula. Donec libero ex, condimentum et mi dapibus, euismod ornare ligula.</p>
 
-                        <p>In faucibus tempus ante, et tempor magna luctus id. Ut a maximus ipsum. Duis eu velit nec libero pretium pellentesque. Maecenas auctor hendrerit pulvinar. Donec sed tortor interdum, sodales elit vel, tempor turpis. In tristique vestibulum eros vel congue. Vivamus maximus posuere fringilla. Nullam in est commodo, tristique ligula eu, tincidunt enim. Duis iaculis sodales lectus vitae cursus.</p>
+                        <form class="message-input">
+                            <div class="form-group row">
+                                <label for="inputMessage" class="col-sm-2 col-form-label enter-message"><h4>Enter message</h4></label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="message.body" id="inputMessage" placeholder="">
+                                </div>
+
+                                <div class="form-group col-sm-2">
+
+                                    <!--<div class="dropdown btn-group col-sm-6">-->
+                                    <!--<button class="btn btn-secondary dropdown-toggle msg-type-dropdown-header"-->
+                                    <!--type="button" id="dropdownMsg" data-toggle="dropdown"-->
+                                    <!--aria-haspopup="true" aria-expanded="false">-->
+                                    <!--Type-->
+                                    <!--</button>-->
+                                    <!--<div class="dropdown-menu" aria-labelledby="dropdownMenu1">-->
+                                    <!--<div class="dropdown-item" ng-click="typeChoose('question')">Question</div>-->
+                                    <!--<div class="dropdown-item" ng-click="typeChoose('answer')">Answer</div>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+
+                                    <div class="">
+                                        <button type="submit" class="btn btn-primary" ng-click="sendMessage()">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                        <table class="table table-hover" ng-if="sessionMessages.length > 0">
+                            <thead>
+                            <tr>
+                                <th>Likes</th>
+                                <th>Dislikes</th>
+                                <!--<th>Question / Answer</th>-->
+                                <th>Message</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody class="messages-table-body">
+                            <tr ng-repeat="msg in sessionMessages | reverse" ng-if="sessionMessages.length > 0">
+                                <td class="message-likes text-success" scope="row">{{msg.likes}}</td>
+                                <td class="message-likes text-danger" scope="row">{{msg.dislikes}}</td>
+                                <!--<td>{{msg.type.charAt(0).toUpperCase() + msg.type.slice(1)}}</td>-->
+                                <td>
+
+                                    <div class="message-text col-8">{{msg.body}}</div>
+                                    <div class="col-4 message-fix-place"></div>
+                                </td>
+                                <td class="float-right">
+                                    <div class="message-content">
+
+                                        <button type="button"
+                                                ng-class="msg.liked ? 'active btn btn-outline-success' : 'btn btn-outline-success'"
+                                                ng-click="rateMessage(1, msg.sid, msg._id, 1)">Like
+                                        </button>
+                                        <button type="button"
+                                                ng-class="msg.disliked ? 'active btn btn-outline-danger' : 'btn btn-outline-danger'"
+                                                ng-click="rateMessage(1, msg.sid, msg._id, 0)">Hate
+                                        </button>
+                                        <!--<button type="button" class="btn btn-outline-dark float-right" ng-click="assignReply(msg)">-->
+
+                                        <button type="button" class="reply btn btn-outline-dark" data-toggle="modal"
+                                                data-target="#replyModal"
+                                                style="cursor: pointer" ng-click="setMsgToReply(msg)">
+                                            {{msg.replies.length}} Replies
+                                            <div class="underlined"></div>
+                                        </button>
+
+                                        <!--<button type="button" class="btn btn-outline-dark"-->
+                                        <!--ng-click="message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[1]">-->
+
+                                        <!--Reply-->
+                                        <!--</button>-->
+                                    </div>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+
                     </div>
                     <div class="tab-pane fade" id="files" role="tabpanel">
                         <h1>Files</h1>
