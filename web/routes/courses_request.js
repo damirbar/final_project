@@ -340,14 +340,14 @@ router.post("/reply", function (req, res) {
 
     let notified_id = req.body.poster_id; //The user to be notified
     let replier_id = req.body.replier_id; // The user who replied
-    let subject_id = req.body.id;
+    let subject_id = req.body.mid;
     const decoded = req.verifiedEmail;
     User.findOne({email: decoded}, function (err, user) {
         if (err) return err;
         if (user) {
             let newReply = new Course_Message({
                     poster_id: req.body.poster_id,
-                    parent_id: req.body.id,
+                    parent_id: req.body.mid,
                     cid: req.body.cid,
                     type: req.body.type,
                     reply: true,
@@ -363,16 +363,16 @@ router.post("/reply", function (req, res) {
                     $inc: {num_of_replies: 1}
                 }, function (err) {
                     if (err) return console.log(err);
-                    socketIOEmitter.emitEventToSessionRoom(reply.cid, 'newCourseMessageReply', reply);
-
-                    let notification = new Notification({
-                        receiver_id: notified_id,
-                        sender_id: replier_id, // the user who replied
-                        action: 4,
-                        subject: 'message',
-                        subject_id: subject_id
-                    });
-                    notificationsSystem.saveAndEmitNotification(notification);
+                    // socketIOEmitter.emitEventToSessionRoom(reply.cid, 'newCourseMessageReply', reply);
+                    //
+                    // let notification = new Notification({
+                    //     receiver_id: notified_id,
+                    //     sender_id: replier_id, // the user who replied
+                    //     action: 4,
+                    //     subject: 'message',
+                    //     subject_id: subject_id
+                    // });
+                    // notificationsSystem.saveAndEmitNotification(notification);
                 });
             });
         }

@@ -11,6 +11,7 @@ var CourseMessageSchema = new mongoose.Schema({
     replies: Array,
     parent_id: {type: String, default: ""},
     reply: {type: Boolean, default: false},
+    num_of_replies: {type: Number, default: 0}
 }, {usePushEach: true});
 
 module.exports = mongoose.model('Course_Message', CourseMessageSchema);
