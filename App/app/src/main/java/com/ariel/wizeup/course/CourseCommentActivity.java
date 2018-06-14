@@ -110,7 +110,7 @@ public class CourseCommentActivity extends AppCompatActivity {
             return;
         }
         CourseMessage message = new CourseMessage();
-        message.setMid(mainMessage.getMid());
+        message.set_id(mainMessage.get_id());
         message.setCid(mainMessage.getCid());
         message.setPoster_id(userId);
         message.setType("answer");
