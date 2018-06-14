@@ -603,7 +603,7 @@ router.post("/reply", function (req, res) {
             sess.students.forEach(function (stud) {
                 if (stud.email === decoded) {
                     let newReply = new Session_Message({
-                        poster_id: req.body.replier_id,
+                        poster_id: req.body.poster_id,
                         parent_id: req.body.mid,
                         sid: req.body.sid,
                         type: req.body.type,
