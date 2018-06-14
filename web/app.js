@@ -1,18 +1,14 @@
 let express = require("express");
 let app = express();
 let http = require('http').Server(app);
-
 let mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
-
 let path = require("path");
-
 let bodyParser = require("body-parser");
-
 // var logger = require('morgan');
-
 const router = express.Router();
 // app.use(logger('dev'));
+
 
 //passport login
 let passport       = require("passport");
@@ -21,6 +17,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 passportService.init();
 
+//email service
 let emailService = require('./tools/email');
 emailService.init();
 //
@@ -31,6 +28,7 @@ let coursesRequests = require('./routes/courses_request');
 let mainRequests = require('./routes/main_route');
 let sessionRequests = require('./routes/session_requests');
 let searchRequests = require('./routes/search_routes');
+let authRouts = require("./routes/login_requests");
 
 
 app.use(bodyParser.json());
@@ -61,14 +59,12 @@ app.use('/students', studentRequests);
 app.use('/courses', coursesRequests);
 app.use('/sessions', sessionRequests);
 app.use('/search', searchRequests);
-
-
-let chatRequests = require('./routes/chat_request');///////shay chat
-app.use('/chat', chatRequests);////shay chat
-
-
-let authRouts = require("./routes/login_requests");
 app.use('/auth', authRouts);
+
+
+
+// let authRouts = require("./routes/login_requests");
+// app.use('/auth', authRouts);
 
 
 //////////SOCKET.IO
@@ -87,7 +83,6 @@ io.on('connection', function (socket) {
 http.listen(3000, function () {
     console.log("listening...");
 });
-////////////////
 
 
 //The 404 Route (ALWAYS Keep this as the last route)
@@ -95,44 +90,46 @@ app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname + "/index.html"));
 });
 
+//
+// let chatRequests = require('./routes/chat_request');///////shay chat
+// app.use('/chat', chatRequests);////shay chat
 
-let addChat = function () {
-    let channel = new Channel(
-        {
-            guid: "money",
-            name: "bank2"
-        }
-    );
-    channel.save()
-        .then(function (item) {
-            console.log("Saved a channel to the DB");
-        })
-        .catch(function (err) {
-            console.log("\nCouldn't save the channel to the DB\nError: " + err + "\n");
-        })
-};
-
-//addChat();
-
-let addMessage = function () {
-    let message = new Message(
-        {
-            guid: "shay",
-            channel_guid: "money",
-            user_guid: "avi",
-            content: "bye",
-            timestamp: Date.now()
-        }
-    );
-    message.save()
-        .then(function (item) {
-            console.log("Saved a message to the DB");
-        })
-        .catch(function (err) {
-            console.log("\nCouldn't save the message to the DB\nError: " + err + "\n");
-        })
-};
-
-
+//
+// let addChat = function () {
+//     let channel = new Channel(
+//         {
+//             guid: "money",
+//             name: "bank2"
+//         }
+//     );
+//     channel.save()
+//         .then(function (item) {
+//             console.log("Saved a channel to the DB");
+//         })
+//         .catch(function (err) {
+//             console.log("\nCouldn't save the channel to the DB\nError: " + err + "\n");
+//         })
+// };
+//
+// //addChat();
+//
+// let addMessage = function () {
+//     let message = new Message(
+//         {
+//             guid: "shay",
+//             channel_guid: "money",
+//             user_guid: "avi",
+//             content: "bye",
+//             timestamp: Date.now()
+//         }
+//     );
+//     message.save()
+//         .then(function (item) {
+//             console.log("Saved a message to the DB");
+//         })
+//         .catch(function (err) {
+//             console.log("\nCouldn't save the message to the DB\nError: " + err + "\n");
+//         })
+// };
 // addMessage();
 

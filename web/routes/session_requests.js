@@ -277,7 +277,6 @@ router.get("/get-message-replies", function(req,res){
 
     Session_Message.find({parent_id: message_id}, function(err, messages){
        if(err) return console.log(err);
-       console.log("messages:::::::::");
        console.log(messages);
        return res.status(200).json(messages);
     });
@@ -346,45 +345,6 @@ router.get("/rate-reply-message", function (req, res) {
                    newArray.push(newMesssage);
                    message.update({replies: newArray },function (err) {
                        console.log("done rating message");
-                       let emails = [];
-                       emails.push(decoded);
-                       emails.push(to);
-
-                       User.find({email: {$in :emails}},function (err,users) {
-                           if(err) return err;
-                           if(users){
-                               let type = rating === 1 ? "liked" : "disliked";
-                               if(users.length === 1)
-                               {
-                                   let notify ={
-                                       type:  "Session",
-                                       body: "you " +type + " your reply ( " + mess_id +" ) ",
-                                       date:  Date.now()
-                                   };
-                                   users[0].notifications.push(notify);
-                                   users[0].save();
-                                   return;
-                               }
-                               if(users[0].email===to){
-                                   let notify ={
-                                       type:  "Session",
-                                       body: users[1].first_name + " " + users[1].last_name + " " +type + " your reply ( " + mess_id +" ) ",
-                                       date:  Date.now()
-                                   };
-                                   users[0].notifications.push(notify);
-                                   users[0].save();
-                               }
-                               else{
-                                   let notify ={
-                                       type:  "Session",
-                                       body: users[0].first_name + " " + users[0].last_name + " " +type + " your reply ( " + mess_id +" ) ",
-                                       date:  Date.now()
-                                   };
-                                   users[1].notifications.push(notify);
-                                   users[1].save()
-                               }
-                           }
-                       });
                        console.log('updating session message');
                        if (err) {
                            console.log(err);
