@@ -51,8 +51,8 @@ wizerApp.service('SessionService', function ($http, socketIO) {
             });
     };
 
-    this.sendReply = function(sessionId, type, message, message_id) {
-        return $http.post('/sessions/reply', {sid: sessionId, type: type, body: message, mid: message_id})
+    this.sendReply = function(replierID, posterID,sessionId, type, message, message_id) {
+        return $http.post('/sessions/reply', {poster_id: posterID, replier_id: replierID, sid: sessionId, type: type, body: message, mid: message_id})
             .then(function (data) {
                 return data.data;
             }, function () {
@@ -61,10 +61,18 @@ wizerApp.service('SessionService', function ($http, socketIO) {
     };
 
 
+    this.getMessageReplies = function (message_id){
+        return $http.get('/sessions/get-message-replies?mid=' + message_id)
+            .then(function(data){
+            return data.data;
+        }).catch(function(err){
+            console.log("error getting replies");
+        })
+    }
+
     this.getSession = function(sessionId) {
-        return $http.get('/sessions/get-session?sid=' + sessionId)
+        return $http.get('/session/get-session?sid=' + sessionId)
             .then(function (data) {
-                // console.log('joined session');
                 return data.data;
             }, function () {
                 console.log("Error getting session with ID = " + sessionId);

@@ -22,7 +22,10 @@ router.all("*", type, function (req, res, next) {
         || req.url.includes('/auth/reset-pass-init')
         || req.url.includes('/auth/google')
         || req.url.includes('/auth/google/callback')
-        || req.url.includes('/auth/get-user-from-google')) {
+        || req.url.includes('/auth/get-user-from-google')
+        //remove this
+        || req.url.includes('/courses/remove-file')) {
+
         return next();
     }
     let token = req.headers["x-access-token"] || req.query.token;

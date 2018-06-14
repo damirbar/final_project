@@ -20,18 +20,28 @@ wizerApp.controller('sessionController',
         $scope.reply = {type: "question", body: ""};
         $scope.messageToReply = {};
         $scope.repliesWindowOpen = false;
-
+        $scope.currentMessageReplies = [];
+        $scope.currentMessageRepliesMap = {};
         $scope.firstConnectionTry = true;
 
 
         socketIO.on('newSessionMessage', function(message){
-
             var message_id = message._id;
             var index = $scope.sessionMessages.length;
             $scope.sessionMessagesMap[message_id] = index;
            $scope.sessionMessages.push(message);
 
-           console.log($scope.sessionMessagesMap);
+        });
+
+
+        socketIO.on('newSessionMessageReply', function(message){
+
+            if($scope.messageToReply._id != message.parent_id) return;
+
+            var message_id = message._id;
+            var index = $scope.currentMessageReplies.length;
+            $scope.currentMessageRepliesMap[message_id] = index;
+            $scope.currentMessageReplies.push(message);
         });
 
         socketIO.on('updateSessionConnectedUsers', function(update){
@@ -41,6 +51,17 @@ wizerApp.controller('sessionController',
         socketIO.on('updateMessageRating', function(update){
 
             var mess = $scope.sessionMessages[$scope.sessionMessagesMap[update.message_id]];
+            mess.likes += update.likes;
+            mess.dislikes += update.dislikes;
+
+            console.log(mess);
+        });
+
+        socketIO.on('updateMessageReplyRating', function(update){
+
+            if($scope.currentMessageReplies.length === 0) return;
+
+            var mess = $scope.currentMessageReplies[$scope.currentMessageRepliesMap[update.message_id]];
             mess.likes += update.likes;
             mess.dislikes += update.dislikes;
 
@@ -101,7 +122,7 @@ wizerApp.controller('sessionController',
         };
 
         $scope.sendMessage = function () {
-            SessionService.sendMessage(AuthService.user_id, $scope.sessionID, $scope.message.type, $scope.message.body)
+            SessionService.sendMessage($rootScope.loggedUser._id, $scope.sessionID, $scope.message.type, $scope.message.body)
                 .then(function (data) {
                     console.log("Sent message");
                     // $scope.getMessages();
@@ -111,6 +132,39 @@ wizerApp.controller('sessionController',
                     console.log(err);
                 });
         };
+
+        $scope.getMessageReplies = function (message_id){
+            SessionService.getMessageReplies(message_id)
+                .then(function(data){
+
+                    var index = 0;
+                    $scope.currentMessageReplies = data;
+
+                    $scope.currentMessageReplies.forEach(function(message){
+                        message.liked = message.disliked = false;
+                        if(message.likers.includes($rootScope.loggedUser._id)){
+                            message.liked = true;
+                        }else if(message.dislikers.includes($rootScope.loggedUser._id)){
+                            message.disliked = true;
+                        }
+
+                        $scope.currentMessageRepliesMap[message._id] = index;
+                        ++index;
+
+                    });
+
+                });
+        }
+
+        $scope.closeRepliesWindow = function(){
+            $scope.repliesWindowOpen = false;
+            $scope.flushCurrentMessageReplies();
+        }
+
+        $scope.flushCurrentMessageReplies = function(){
+            $scope.currentMessageReplies = [];
+            $scope.currentMessageRepliesMap = {};
+        }
 
         $scope.createSession = function () {
             SessionService.createSession($scope.createSessionID, $scope.createSessionName, $scope.createSessionLocation)
@@ -126,7 +180,7 @@ wizerApp.controller('sessionController',
                         console.log("Created session with ID = " + $scope.createSessionID);// + JSON.stringify(data.session));
                         console.log("SESSION DATA = " + JSON.stringify(data));
                         io.connect();
-                        if (data.session) {
+                        if (data) {
                             $scope.isConnectedToSession = true;
                             $scope.session = data;
                             // $('session-video').attr('src',$scope.session.videoUrl);
@@ -144,28 +198,6 @@ wizerApp.controller('sessionController',
         $scope.getMessages = function (){
             SessionService.getMessages($scope.sessionID)
                 .then(function (data) {
-
-                    // console.log(JSON.stringify(data));
-                    // var oldMessagesLength = $scope.sessionMessages.length;
-                    // $scope.sessionMessages = data;
-                    // if (oldMessagesLength != $scope.sessionMessages.length) {
-                    //     $("#msg-cnt").animate({scrollTop: 0}, 1000);
-                    // }
-                    // $scope.msgLikes = [];
-                    // $scope.msgHates = [];
-                    //
-                    // for (var i = 0; i < $scope.sessionMessages.length; ++i) {
-                    //     if ($scope.sessionMessages[i].likers.includes($rootScope.loggedUser._id)) {
-                    //         $scope.msgLikes.push(true);
-                    //     } else {
-                    //         $scope.msgLikes.push(false);
-                    //     }
-                    //     if ($scope.sessionMessages[i].dislikers.includes($rootScope.loggedUser._id)) {
-                    //         $scope.msgHates.push(true);
-                    //     } else {
-                    //         $scope.msgHates.push(false);
-                    //     }
-                    // }
 
                     var index = 0;
 
@@ -242,31 +274,40 @@ wizerApp.controller('sessionController',
             $scope.reply.type = type;
         };
 
-        $scope.rateMessage = function (sid, mid, rate){
+        $scope.rateMessage = function (type, sid, mid, rate){
 
             SessionService.rateMessage(sid, mid, rate)
                 .then(function (data) {
-                    // $scope.getMessages();
-                    var message = $scope.sessionMessages[$scope.sessionMessagesMap[mid]];
-                    console.log('Pressedddddd');
-                    console.log(message);
+
+                    var messagesArray;
+                    var messagesMap;
+
+                    if(type === 1){
+                         messagesArray = $scope.sessionMessages;
+                         messagesMap = $scope.sessionMessagesMap;
+                    }else{
+                        messagesArray = $scope.currentMessageReplies;
+                        messagesMap = $scope.currentMessageRepliesMap;
+                    }
+
+
                     if(rate == 1){
-                        if(message.disliked){
-                            message.liked = true;
-                            message.disliked = false;
-                        }else if(message.liked){
-                            message.liked = false;
+                        if(messagesArray[messagesMap[mid]].disliked){
+                            messagesArray[messagesMap[mid]].liked = true;
+                            messagesArray[messagesMap[mid]].disliked = false;
+                        }else if(messagesArray[messagesMap[mid]].liked){
+                            messagesArray[messagesMap[mid]].liked = false;
                         }else{
-                            message.liked = true;
+                            messagesArray[messagesMap[mid]].liked = true;
                         }
                     }else{
-                        if(message.liked){
-                            message.liked = false;
-                            message.disliked = true;
-                        }else if(message.disliked){
-                            message.disliked = false;
+                        if(messagesArray[messagesMap[mid]].liked){
+                            messagesArray[messagesMap[mid]].liked = false;
+                            messagesArray[messagesMap[mid]].disliked = true;
+                        }else if(messagesArray[messagesMap[mid]].disliked){
+                            messagesArray[messagesMap[mid]].disliked = false;
                         }else{
-                            message.disliked = false;
+                            messagesArray[messagesMap[mid]].disliked = false;
                         }
                     }
                 })
@@ -280,7 +321,6 @@ wizerApp.controller('sessionController',
                 .then(function (data) {
                     // console.log(JSON.stringify(data));
                     $scope.getMessages();
-                    $scope.setMsgIdToReplyAndGetMessage(mid);
                 })
                 .catch(function (err) {
                     console.log("Error with getting messages");
@@ -298,13 +338,6 @@ wizerApp.controller('sessionController',
                 $scope.videoCurrentTime = $element[0].currentTime;
             });
         };
-
-        // $interval(function () {
-        //     if ($scope.isConnectedToSession) {
-        //         getting();
-        //         $scope.getSession();
-        //     }
-        // }, 3000);
 
 
         $scope.uploadFile = function () {
@@ -327,36 +360,24 @@ wizerApp.controller('sessionController',
         };
 
 
-        $scope.setMsgIdToReplyAndGetMessage = function (id) {
-            $scope.reply.msgID = id;
-
-            SessionService.getMessage(id)
-                .then(function (data) {
-                    console.log("Got message: " + JSON.stringify(data));
-                    $scope.messageToReply = data;
-                    $scope.repliesWindowOpen = true;
-
-                })
-                .catch(function (err) {
-                    console.log(err);
-                });
-
+        $scope.setMsgToReply = function (msg) {
+            console.log(msg);
+            $scope.repliesWindowOpen = true;
+           $scope.messageToReply = msg;
+           $scope.getMessageReplies(msg._id);
         };
 
 
         $scope.sendReply = function () {
-
-            SessionService.sendReply($scope.sessionID, $scope.reply.type, $scope.reply.body, $scope.reply.msgID)
+            SessionService.sendReply($rootScope.loggedUser._id,$scope.messageToReply.poster_id,
+                $scope.sessionID, $scope.reply.type, $scope.reply.body, $scope.messageToReply._id)
                 .then(function (data) {
                     console.log("Sent message");
-                    $scope.getMessages();
-                    $scope.setMsgIdToReplyAndGetMessage($scope.reply.msgID);
                     $scope.reply = {body: ""};
                 })
                 .catch(function (err) {
                     console.log(err);
                 });
-
         };
 
 
@@ -366,7 +387,6 @@ wizerApp.controller('sessionController',
                 .then(function (data) {
                     console.log("Sent rating = " + val + " successfully.");
                     $scope.session = data;
-                    // $('session-video').attr('src',$scope.session.videoUrl);
                 })
                 .catch(function (err) {
                     console.log(err);
