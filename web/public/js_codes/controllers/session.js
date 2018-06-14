@@ -154,7 +154,7 @@ wizerApp.controller('sessionController',
                     });
 
                 });
-        }
+        };
 
         $scope.closeRepliesWindow = function(){
             $scope.repliesWindowOpen = false;
