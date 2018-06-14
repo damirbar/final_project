@@ -32,6 +32,7 @@ wizerApp.controller('navController', function ($scope, AuthService, $location, $
 
                         console.log(JSON.stringify(data.data));
                         $scope.isLogged = true;
+                        $("#loginModal").modal('hide');
                         if ($rootScope.loggedUser) $('.profile-link').attr("href", "/profile/" + $rootScope.loggedUser._id);
                         else console.log("$rootScope.loggedUser is null");
                         return true;
@@ -93,6 +94,7 @@ wizerApp.controller('navController', function ($scope, AuthService, $location, $
                         $scope.login();
                         console.log(JSON.stringify(data.data));
                         $scope.isLogged = true;
+                        $("#loginModal").modal('hide');
                     } else {
                         console.log("An error occurred during sign up!");
                     }
