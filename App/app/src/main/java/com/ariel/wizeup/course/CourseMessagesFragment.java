@@ -14,14 +14,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ariel.wizeup.R;
-import com.ariel.wizeup.dialogs.PostBottomDialog;
 import com.ariel.wizeup.model.CourseMessage;
-import com.ariel.wizeup.model.SessionMessage;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
-import com.ariel.wizeup.session.CommentActivity;
-import com.ariel.wizeup.session.PostActivity;
-import com.ariel.wizeup.session.SessionPostsAdapter;
 import com.ariel.wizeup.utils.Constants;
 
 import java.util.ArrayList;
@@ -43,7 +38,7 @@ public class CourseMessagesFragment extends android.support.v4.app.Fragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private FloatingActionButton mFBPost;
     private String cid;
-    private SessionPostsAdapter mAdapter;
+    private CoursePostsAdapter mAdapter;
     private String mId;
     private View view;
 
@@ -66,7 +61,7 @@ public class CourseMessagesFragment extends android.support.v4.app.Fragment {
         messagesList.setOnItemClickListener((parent, view1, position, id) -> {
             long viewId = view1.getId();
             if (viewId == R.id.comment_btn) {
-                Intent intent = new Intent(getActivity(), CommentActivity.class);
+                Intent intent = new Intent(getActivity(), CourseCommentActivity.class);
                 intent.putExtra("cid", cid);
                 intent.putExtra("mid", mAdapter.getMessagesList().get(position).get_id());
                 startActivity(intent);
@@ -111,9 +106,9 @@ public class CourseMessagesFragment extends android.support.v4.app.Fragment {
     }
 
     private void addPost(){
-//        Intent intent = new Intent(getActivity(), PostActivity.class);
-//        intent.putExtra("cid", cid);
-//        startActivity(intent);
+        Intent intent = new Intent(getActivity(), CoursePostActivity.class);
+        intent.putExtra("cid", cid);
+        startActivity(intent);
     }
 
     private void getData() {
@@ -132,19 +127,19 @@ public class CourseMessagesFragment extends android.support.v4.app.Fragment {
     }
 
     private void handleResponsePull(CourseMessage courseMessages[]) {
-//        if(!(courseMessages.length == 0)){
-//            ArrayList<CourseMessage> savePosts = new ArrayList<>(Arrays.asList(courseMessages));
-//            Collections.reverse(savePosts);
-//            mTvNoResults.setVisibility(View.GONE);
-//            mAdapter = new SessionPostsAdapter(this.getActivity(), new ArrayList<>(savePosts));
-//
-//            messagesList.setAdapter(mAdapter);
-//
-//        } else {
-//            mTvNoResults.setVisibility(View.VISIBLE);
-//        }
-//
-//        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        if(!(courseMessages.length == 0)){
+            ArrayList<CourseMessage> savePosts = new ArrayList<>(Arrays.asList(courseMessages));
+            Collections.reverse(savePosts);
+            mTvNoResults.setVisibility(View.GONE);
+            mAdapter = new CoursePostsAdapter(this.getActivity(), new ArrayList<>(savePosts));
+
+            messagesList.setAdapter(mAdapter);
+
+        } else {
+            mTvNoResults.setVisibility(View.VISIBLE);
+        }
+
+        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -150,9 +150,6 @@ public interface RetrofitInterface {
     @GET("courses/get-all-sessions")
     Observable<Session[]> getCourseSessions(@Query("cid") String cid);
 
-
-
-
     @GET("courses/get-all-messages")
     Observable<CourseMessage []> CourseGetAllMessages(@Query("cid") String cid);
 

@@ -1,9 +1,7 @@
 package com.ariel.wizeup.session;
 
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -23,9 +21,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.ariel.wizeup.utils.Constants.EMAIL;
-
-public class PostActivity extends AppCompatActivity {
+public class SessionPostActivity extends AppCompatActivity {
 
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
@@ -42,7 +38,7 @@ public class PostActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post);
+        setContentView(R.layout.activity_session_post);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.laout_post));

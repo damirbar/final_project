@@ -26,7 +26,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-public class CommentActivity extends AppCompatActivity {
+public class SessionCommentActivity extends AppCompatActivity {
 
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
@@ -37,13 +37,13 @@ public class CommentActivity extends AppCompatActivity {
     private TextView buttonSend;
     private String sid;
     private String mid;
-    private String mId;
+    private String userId;
     private SessionCommentsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comment);
+        setContentView(R.layout.activity_session_comment);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.activity_comment));
@@ -60,7 +60,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void initSharedPreferences() {
-        mId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID, "");
+        userId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID, "");
     }
 
     private void initViews() {
@@ -102,12 +102,12 @@ public class CommentActivity extends AppCompatActivity {
         mAdapter = new SessionCommentsAdapter(this, new ArrayList<>(saveComments));
         for (int i = 0; i < mAdapter.getMessagesList().size(); i++) {
             for (int j = 0; j < mAdapter.getMessagesList().get(i).getLikers().length; j++) {
-                if (mAdapter.getMessagesList().get(i).getLikers()[j].equalsIgnoreCase(mId)) {
+                if (mAdapter.getMessagesList().get(i).getLikers()[j].equalsIgnoreCase(userId)) {
                     mAdapter.getLikeCheckBoxState()[i] = true;
                 }
             }
             for (int j = 0; j < mAdapter.getMessagesList().get(i).getDislikers().length; j++) {
-                if (mAdapter.getMessagesList().get(i).getDislikers()[j].equalsIgnoreCase(mId)) {
+                if (mAdapter.getMessagesList().get(i).getDislikers()[j].equalsIgnoreCase(userId)) {
                     mAdapter.getDislikeCheckBoxState()[i] = true;
                 }
             }

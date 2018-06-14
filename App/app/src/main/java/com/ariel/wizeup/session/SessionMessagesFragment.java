@@ -61,7 +61,7 @@ public class SessionMessagesFragment extends android.support.v4.app.Fragment {
         messagesList.setOnItemClickListener((parent, view1, position, id) -> {
             long viewId = view1.getId();
             if (viewId == R.id.comment_btn) {
-                Intent intent = new Intent(getActivity(), CommentActivity.class);
+                Intent intent = new Intent(getActivity(), SessionCommentActivity.class);
                 intent.putExtra("sid", sid);
                 intent.putExtra("mid", mAdapter.getMessagesList().get(position).get_id());
                 startActivity(intent);

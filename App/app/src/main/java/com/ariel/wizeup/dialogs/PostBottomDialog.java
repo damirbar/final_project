@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ariel.wizeup.R;
-import com.ariel.wizeup.session.PostActivity;
+import com.ariel.wizeup.session.SessionPostActivity;
 import com.ariel.wizeup.session.QuizActivity;
 
 public class PostBottomDialog extends BottomSheetDialogFragment {
@@ -27,7 +27,7 @@ public class PostBottomDialog extends BottomSheetDialogFragment {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), PostActivity.class);
+                Intent intent = new Intent(getActivity(), SessionPostActivity.class);
                 intent.putExtra("sid", sid);
                 startActivity(intent);
                 dismiss();
