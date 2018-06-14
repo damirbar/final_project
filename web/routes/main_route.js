@@ -24,7 +24,7 @@ router.all("*", type, function (req, res, next) {
         || req.url.includes('/auth/google/callback')
         || req.url.includes('/auth/get-user-from-google')
         //remove this
-        || req.url.includes('/courses/remove-file')) {
+        || req.url.includes('/get-all-sessions')) {
 
         return next();
     }
