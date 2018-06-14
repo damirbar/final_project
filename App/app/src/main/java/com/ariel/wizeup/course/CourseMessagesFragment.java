@@ -62,8 +62,7 @@ public class CourseMessagesFragment extends android.support.v4.app.Fragment {
             long viewId = view1.getId();
             if (viewId == R.id.comment_btn) {
                 Intent intent = new Intent(getActivity(), CourseCommentActivity.class);
-                intent.putExtra("cid", cid);
-                intent.putExtra("mid", mAdapter.getMessagesList().get(position).get_id());
+                intent.putExtra("courseMessage", mAdapter.getMessagesList().get(position));
                 startActivity(intent);
             }
         });

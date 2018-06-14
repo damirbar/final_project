@@ -1,8 +1,11 @@
 package com.ariel.wizeup.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class CourseMessage {
+public class CourseMessage implements Parcelable {
 
     private String email;
     private String poster_id;
@@ -11,9 +14,43 @@ public class CourseMessage {
     private String body;
     private String name;
     private Date date;
-    private CourseMessage replies[];
     private String _id;
     private String mid;
+    private String replies[];
+
+    public CourseMessage() { }
+
+    protected CourseMessage(Parcel in) {
+        email = in.readString();
+        poster_id = in.readString();
+        cid = in.readString();
+        type = in.readString();
+        body = in.readString();
+        name = in.readString();
+        _id = in.readString();
+        mid = in.readString();
+        replies = in.createStringArray();
+    }
+
+    public static final Creator<CourseMessage> CREATOR = new Creator<CourseMessage>() {
+        @Override
+        public CourseMessage createFromParcel(Parcel in) {
+            return new CourseMessage(in);
+        }
+
+        @Override
+        public CourseMessage[] newArray(int size) {
+            return new CourseMessage[size];
+        }
+    };
+
+    public String[] getReplies() {
+        return replies;
+    }
+
+    public void setReplies(String[] replies) {
+        this.replies = replies;
+    }
 
     public String getMid() {
         return mid;
@@ -87,11 +124,21 @@ public class CourseMessage {
         this.date = date;
     }
 
-    public CourseMessage[] getReplies() {
-        return replies;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setReplies(CourseMessage[] replies) {
-        this.replies = replies;
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(email);
+        parcel.writeString(poster_id);
+        parcel.writeString(cid);
+        parcel.writeString(type);
+        parcel.writeString(body);
+        parcel.writeString(name);
+        parcel.writeString(_id);
+        parcel.writeString(mid);
+        parcel.writeStringArray(replies);
     }
 }

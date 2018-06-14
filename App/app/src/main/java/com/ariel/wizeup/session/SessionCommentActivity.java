@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.Response;
+import com.ariel.wizeup.model.Session;
 import com.ariel.wizeup.model.SessionMessage;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
@@ -35,10 +36,9 @@ public class SessionCommentActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private EditText mCommentText;
     private TextView buttonSend;
-    private String sid;
-    private String mid;
     private String userId;
     private SessionCommentsAdapter mAdapter;
+    private SessionMessage mainMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,11 +76,9 @@ public class SessionCommentActivity extends AppCompatActivity {
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            String _sid = getIntent().getExtras().getString("sid");
-            String _mid = getIntent().getExtras().getString("mid");
-            if (_sid != null && _mid != null) {
-                sid = _sid;
-                mid = _mid;
+            SessionMessage _SessionMessage = (SessionMessage) getIntent().getExtras().getParcelable("sessionMessage");
+            if (_SessionMessage != null ) {
+                mainMessage = _SessionMessage;
                 return true;
             } else
                 return false;
@@ -89,15 +87,15 @@ public class SessionCommentActivity extends AppCompatActivity {
     }
 
     private void pullComments() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getMessage(mid)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getSessionMessageReplies(mainMessage.getMid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull, i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponsePull(SessionMessage sessionMessages) {
-        ArrayList<SessionMessage> saveComments = new ArrayList<>(Arrays.asList(sessionMessages.getReplies()));
-        saveComments.add(sessionMessages);
+    private void handleResponsePull(SessionMessage sessionMessages[]) {
+        ArrayList<SessionMessage> saveComments = new ArrayList<>(Arrays.asList(sessionMessages));
+        saveComments.add(mainMessage);
         Collections.reverse(saveComments);
         mAdapter = new SessionCommentsAdapter(this, new ArrayList<>(saveComments));
         for (int i = 0; i < mAdapter.getMessagesList().size(); i++) {
@@ -123,8 +121,9 @@ public class SessionCommentActivity extends AppCompatActivity {
             return;
         }
         SessionMessage message = new SessionMessage();
-        message.setMid(mid);
-        message.setSid(sid);
+        message.setPoster_id(userId);
+        message.setMid(mainMessage.getMid());
+        message.setSid(mainMessage.getSid());
         message.setType("answer");
         message.setBody(strMessage);
         sendCom(message);
