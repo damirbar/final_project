@@ -152,18 +152,18 @@ router.post('/post-file', type, function (req, res) {
                 res.status(400).json({message: 'wrong file'});
             }
             else {
-                console.log(path);
                 Course.findOne({cid: req.query.cid}, function (err, course) {
                     if (err) return next(err);
                     if (course) {
                         console.log("starting to upload " + req.file.originalname);
                         cloudinary.v2.uploader.upload(path,
                             {
+                                resource_type: 'raw',
                                 public_id: "courses/" + course.cid + "/" + req.file.filename
                             },
                             function (err, result) {
                                 fs.unlinkSync(path);
-                                if (err) return err;
+                                if (err) console.log(err);
                                 console.log(result);//test this
                                 User.findOne({email: req.verifiedEmail}, function (err, user) {
                                     if (err) return err;
@@ -338,13 +338,16 @@ router.get("/get-all-messages", function (req, res) {
 
 router.post("/reply", function (req, res) {
 
+    let notified_id = req.body.poster_id; //The user to be notified
+    let replier_id = req.body.replier_id; // The user who replied
+    let subject_id = req.body.id;
     const decoded = req.verifiedEmail;
     User.findOne({email: decoded}, function (err, user) {
         if (err) return err;
         if (user) {
-            const msg = new Course_Message({
+            let newReply = new Course_Message({
                     poster_id: req.body.poster_id,
-                    parent_id: req.body.mid,
+                    parent_id: req.body.id,
                     cid: req.body.cid,
                     type: req.body.type,
                     reply: true,
@@ -353,14 +356,24 @@ router.post("/reply", function (req, res) {
                     name: user.first_name + " " + user.last_name
                 }
             );
-            Course_Message.update({_id: req.body.mid}, {$push: {replies: msg._id}}, function (err, msg) {
-                // console.log('pushing reply to messages');
-                if (err) {
-                    return console.log(err);
-                }
-                console.log('success pushing reply to messages');
-                res.status(200).json({message: "successfully added reply " + msg.body + " to db"});
-                console.log("successfully added message " + msg.body + " to db");
+            newReply.save(function (err, reply) {
+                if (err) return console.log(err);
+                Course_Message.update({_id: reply.parent_id}, {
+                    $push: {replies: reply._id},
+                    $inc: {num_of_replies: 1}
+                }, function (err) {
+                    if (err) return console.log(err);
+                    socketIOEmitter.emitEventToSessionRoom(reply.cid, 'newCourseMessageReply', reply);
+
+                    let notification = new Notification({
+                        receiver_id: notified_id,
+                        sender_id: replier_id, // the user who replied
+                        action: 4,
+                        subject: 'message',
+                        subject_id: subject_id
+                    });
+                    notificationsSystem.saveAndEmitNotification(notification);
+                });
             });
         }
     });
