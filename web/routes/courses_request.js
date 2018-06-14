@@ -147,7 +147,7 @@ router.post('/post-file', type, function (req, res) {
         const path = req.file.path;
         if (first) {
             first = false;
-            if (!req.file.originalname.match(/\.(pdf)$/)) {
+            if (!req.file.originalname.match(/\.(pdf|doc|docx|ppt|pptx)$/)) {
                 fs.unlinkSync(path);
                 res.status(400).json({message: 'wrong file'});
             }
@@ -344,15 +344,16 @@ router.post("/reply", function (req, res) {
         if (user) {
             const msg = new Course_Message({
                     poster_id: req.body.poster_id,
+                    parent_id: req.body.mid,
                     cid: req.body.cid,
                     type: req.body.type,
+                    reply: true,
                     body: req.body.body,
-                    email: decoded,
                     date: Date.now(),
                     name: user.first_name + " " + user.last_name
                 }
             );
-            Course_Message.update({_id: req.body.mid}, {$push: {replies: msg}}, function (err, msg) {
+            Course_Message.update({_id: req.body.mid}, {$push: {replies: msg._id}}, function (err, msg) {
                 // console.log('pushing reply to messages');
                 if (err) {
                     return console.log(err);
@@ -449,6 +450,20 @@ router.get("/get-message", function (req, res) {
         else{
             res.status(404).json({message: 'no such message'});
         }
+    });
+});
+
+
+router.get("/get-message-replies", function(req,res){
+
+    let message_id = req.query.mid;
+
+    console.log(message_id);
+
+    Course_Message.find({parent_id: message_id}, function(err, messages){
+        if(err) return console.log(err);
+        console.log(messages);
+        return res.status(200).json(messages);
     });
 });
 
