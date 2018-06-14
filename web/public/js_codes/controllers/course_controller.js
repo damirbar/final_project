@@ -1,17 +1,20 @@
 wizerApp.controller('courseController',
     function ($scope, $routeParams, $rootScope, $http, CourseService, socketIO) {
 
-        // console.log("Hello from profileController");
-        $rootScope.showSearchNav = true;
-        $scope.course = {};
-        $scope.courseToCreate = {};
-        $scope.courseFiles = [];
-        $scope.message = {type: "question", body: ""};
-        $scope.messages = [];
-        $scope.reply = {type: "question", body: ""};
-        $scope.messageToReply = {};
-        $scope.currentMessageReplies = [];
+        $scope.loading                  = true;
+        $rootScope.showSearchNav        = true;
+        $scope.course                   = {};
+        $scope.courseToCreate           = {};
+        $scope.courseFiles              = [];
+        $scope.message                  = {type: "question", body: ""};
+        $scope.messages                 = [];
+        $scope.reply                    = {type: "question", body: ""};
+        $scope.messageToReply           = {};
+        $scope.currentMessageReplies    = [];
         $scope.currentMessageRepliesMap = {};
+        $scope.sessions                 = [];
+        $scope.sessionCreate            = {};
+
 
 
         $scope.getCourse = function () {
@@ -21,6 +24,9 @@ wizerApp.controller('courseController',
                     console.log("in controller Looking for " + $routeParams.id);
                     console.log(data);
                     $scope.course = data;
+                    $scope.loading = false;
+                }, function(err) {
+                    $scope.loading = false;
                 });
         };
         $scope.getCourse();
@@ -84,6 +90,17 @@ wizerApp.controller('courseController',
                 });
         };
 
+
+        $scope.getCourseSessions = function(){
+            CourseService.getCourseSessions($routeParams.id)
+                .then(function (data) {
+                    console.log("got sessions from getCourseSessions");
+                    console.log(data);
+                    $scope.sessions = data;
+                });
+        };
+        $scope.getCourseSessions();
+
         $scope.sendMessage = function() {
             CourseService.sendMessage($rootScope.loggedUser._id, $scope.course.cid, $scope.message.type, $scope.message.body)
                 .then(function (data) {
@@ -141,6 +158,23 @@ wizerApp.controller('courseController',
         };
 
 
+
+
+        $scope.createSession = function() {
+            $scope.sessionCreate.cid = $scope.course.cid;
+            CourseService.createSession($scope.sessionCreate)
+                .then(function(data) {
+                    $scope.sessionCreate = {};
+                    $scope.sessionCreate.cid = $scope.course.cid;
+                    $('#collapseSessionCreate').collapse('hide');
+                    console.log("data = " + data);
+                }, function(err) {
+                    console.log("error = " + err);
+                });
+        };
+
+
+
         socketIO.on('newCourseMessage', function(message){
             var message_id = message._id;
             var index = $scope.messages.length;
@@ -149,4 +183,5 @@ wizerApp.controller('courseController',
             console.log("Pushing message (in course) " + message);
 
         });
+
     });

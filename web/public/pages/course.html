@@ -2,301 +2,365 @@
 <div class="course-page container-fluid">
 
 
-    <!--<div class="file-icon">TEST</div>-->
-    <div class="row">
-        <div class="course-header display-4">{{course.name}}</div>
+    <div class="loading" ng-show="loading" style="text-align: center;">
+        <div class="fa fa-spinner fa-spin" style="font-size:184px; margin: auto; width: 100%; margin-top: 8%;"></div>
     </div>
 
-    <br><br>
+    <div class="page-ready" ng-show="!loading">
 
-    <div class="row">
+        <div class="row">
+            <div class="course-header display-4">{{course.name}}</div>
+        </div>
 
-        <div class="col-3 left-hand-side picture-and-details">
+        <br><br>
 
-            <div class="container basic-details-cont">
-                <div class="course-name">
+        <div class="row">
+
+            <div class="col-3 left-hand-side picture-and-details">
+
+                <div class="container basic-details-cont">
+                    <div class="course-name">
 
 
-                    <!--<h2>{{course.name}}</h2>-->
+                        <!--<h2>{{course.name}}</h2>-->
+                    </div>
+                    <div class="basic-details container">
+                        <div class="teacher-name-and-locations row">
+
+                            <div class="teacher-name-cont c-cont col-12">
+                                <span class="name-header c-header col-4">Teacher: </span>
+                                <span class="teacher-name c-info col-6">{{course.teacher_fname}} {{course.teacher_lname}}</span>
+                                <span class="fixcols col-2"></span>
+                            </div>
+
+                            <div class="dept-name-cont c-cont col-12">
+                                <span class="dept-header c-header col-4">Department: </span>
+                                <span class="dept-name c-info col-6">{{course.department}}</span>
+                                <span class="fixcols col-2"></span>
+                            </div>
+
+                            <div class="location-cont c-cont col-12">
+                                <span class="location-header c-header col-4">Location: </span>
+                                <span class="location-name c-info col-6">{{course.location}}</span>
+                                <span class="fixcols col-2"></span>
+                            </div>
+
+
+                            <div class="points-cont c-cont col-12">
+                                <span class="points-header c-header col-4">Points: </span>
+                                <span class="points-name c-info col-6">{{course.points}}</span>
+                                <span class="fixcols col-2"></span>
+                            </div>
+
+                            <div class="students-num-cont c-cont col-12">
+                                <span class="students-num-header c-header col-12">{{course.students.length}} students attend this class</span>
+                                <!--<span class="students-num-name c-info col-9"> </span>-->
+                            </div>
+
+
+                        </div>
+
+
+
+                    </div>
                 </div>
-                <div class="basic-details container">
-                    <div class="teacher-name-and-locations row">
 
-                        <div class="teacher-name-cont c-cont col-12">
-                            <span class="name-header c-header col-6">Teacher: </span>
-                            <span class="teacher-name c-info col-6">{{course.teacher_fname}} {{course.teacher_lname}}</span>
+            </div>
+
+
+
+            <div class="col-9 right-hand-side">
+
+
+
+
+
+                <div class="d-flex flex-row mt-2">
+                    <ul class="nav nav-tabs nav-tabs--vertical nav-tabs--left" role="tablist">
+                        <li class="nav-item">
+                            <a href="#sessions" class="nav-link active" target="_self" data-toggle="tab" role="tab" aria-controls="lorem" ng-click="getCourseSessions()">Sessions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#messages" class="nav-link" target="_self" data-toggle="tab" role="tab" aria-controls="ipsum" ng-click="getMessages()">Messages</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#files" class="nav-link" target="_self" data-toggle="tab" role="tab" aria-controls="ipsum" ng-click="getFiles()">Files</a>
+                        </li>
+
+
+                    </ul>
+                    <div class="tab-content container">
+                        <div class="tab-pane fade show active" id="sessions" role="tabpanel">
+
+
+                            <ul class="list-group">
+
+                                <div class="new-session-cont">
+
+                                    <div class="add-session-div" data-toggle="collapse" data-target="#collapseSessionCreate" ng-if="loggedUser.email == course.teacher_email">
+                                        <a class="fas fa-plus-square"></a>
+                                        Add session
+                                    </div>
+
+                                    <div class="collapse" id="collapseSessionCreate">
+                                        <div class="card card-body">
+
+                                            <form class="form-horizontal form-group" role="form" name="createSessionForm" ng-show="true">
+
+                                                <div class="name-div row">
+                                                    <div class="text col-3">Session name:</div>
+                                                    <input class="col-5" type="text" name="name" ng-model="sessionCreate.name" required>
+                                                    <div class="col-4"></div>
+
+                                                    <div class="text col-3">Session ID:</div>
+                                                    <input class="col-5" type="text" name="dept" ng-model="sessionCreate.sid" required>
+                                                    <div class="col-4"></div>
+
+                                                    <div class="text col-3">Location:</div>
+                                                    <input class="col-5" type="text" name="location" ng-model="sessionCreate.location">
+                                                    <div class="col-4"></div>
+
+                                                    <button class="btn btn-success save-session" type="submit" ng-click="createSession()">Save</button>
+
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="container">
+
+                                    <li class="list-group-item justify-content-between row session-desc" ng-repeat="session in sessions">
+                                        <div class="session-name col-4">Name: {{session.name}}</div>
+                                        <div class="session-id col-4">Session ID: {{session.sid}}</div>
+                                        <a class="col-2" ng-href="/sessions/{{session.sid}}">Go to session</a>
+                                        <div class="col-2">
+
+                                            <span class="badge badge-default badge-pill">{{session.messages.length}}</span>
+                                        </div>
+                                    </li>
+
+                                </div>
+
+
+                            </ul>
+
+
                         </div>
+                        <div class="tab-pane fade" id="messages" role="tabpanel">
 
-                        <div class="dept-name-cont c-cont col-12">
-                            <span class="dept-header c-header col-6">Department: </span>
-                            <span class="dept-name c-info col-6">{{course.department}}</span>
+
+                            <form class="message-input">
+                                <div class="form-group row">
+                                    <label for="inputMessage" class="col-sm-2 col-form-label enter-message"><h4>Enter message</h4></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="message.body" id="inputMessage" placeholder="">
+                                    </div>
+
+                                    <div class="form-group col-sm-2">
+
+                                        <!--<div class="dropdown btn-group col-sm-6">-->
+                                        <!--<button class="btn btn-secondary dropdown-toggle msg-type-dropdown-header"-->
+                                        <!--type="button" id="dropdownMsg" data-toggle="dropdown"-->
+                                        <!--aria-haspopup="true" aria-expanded="false">-->
+                                        <!--Type-->
+                                        <!--</button>-->
+                                        <!--<div class="dropdown-menu" aria-labelledby="dropdownMenu1">-->
+                                        <!--<div class="dropdown-item" ng-click="typeChoose('question')">Question</div>-->
+                                        <!--<div class="dropdown-item" ng-click="typeChoose('answer')">Answer</div>-->
+                                        <!--</div>-->
+                                        <!--</div>-->
+
+                                        <div class="">
+                                            <button type="submit" class="btn btn-primary" ng-click="sendMessage()">Send</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                            <table class="table table-hover" ng-if="messages.length > 0">
+                                <thead>
+                                <tr>
+                                    <th>Message</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody class="messages-table-body">
+
+                                <tr ng-repeat="msg in messages | reverse" ng-if="messages.length > 0">
+                                    <td>
+
+                                        <div class="message-text col-8">{{msg.body}}</div>
+                                        <div class="col-4 message-fix-place"></div>
+                                    </td>
+                                    <td class="float-right">
+                                        <div class="message-content">
+
+
+                                            <!--<button type="button" class="btn btn-outline-dark float-right" ng-click="assignReply(msg)">-->
+
+                                            <button type="button" class="reply btn btn-outline-dark" data-toggle="modal"
+                                                    data-target="#replyModal"
+                                                    style="cursor: pointer" ng-click="setMsgToReply(msg)">
+                                                {{msg.replies.length}} Replies
+                                                <div class="underlined"></div>
+                                            </button>
+
+                                            <!--<button type="button" class="btn btn-outline-dark"-->
+                                            <!--ng-click="message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[1]">-->
+
+                                            <!--Reply-->
+                                            <!--</button>-->
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+
                         </div>
+                        <div class="tab-pane fade" id="files" role="tabpanel">
+                            <h1>Files</h1>
 
-                        <div class="location-cont c-cont col-12">
-                            <span class="location-header c-header col-6">Location: </span>
-                            <span class="location-name c-info col-6">{{course.location}}</span>
-                        </div>
+                            <div class="course-upload-file">
 
 
-                        <div class="points-cont c-cont col-12">
-                            <span class="points-header c-header col-6">Points: </span>
-                            <span class="points-name c-info col-6">{{course.points}}</span>
-                        </div>
 
-                        <div class="students-num-cont c-cont col-12">
-                            <span class="students-num-header c-header col-12">{{course.students.length}} students attend this class</span>
-                            <!--<span class="students-num-name c-info col-9"> </span>-->
+                                <label class="upload-file-label rad-button warning">
+                                    <span class="upload-text">Choose file</span>
+                                    <input style="display: none" id="file-course-image" type="file" name='recfile' file-model="myFile"/>
+                                </label>
+
+                                <button class="rad-button wwt" ng-click="uploadFile()">Upload</button>
+                            </div>
+
+
+                            <div class="courses-file container">
+                                <div class="row">
+
+                                    <div class="col-3" ng-repeat="file in courseFiles">
+                                        <!--<div class="file-item file-icon">{{file.type}}</div>-->
+                                        <!--<div class="file-name">{{file.originalName}}</div>-->
+
+                                        <!--<a class="file-item file-icon" ng-href="{{file.url}}" data-extension="{{file.type}}">{{file.originalName}}</a>-->
+
+                                        <div class="container">
+
+                                            <div class="col-12">
+                                                <div class="file-icon2 file-link">
+                                                    <a ng-href="{{file.url}}">
+                                                        <span class="file__type">{{file.type}}</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 file-name">{{file.originalName | limitTo: 20}}</div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
                         </div>
 
 
                     </div>
-
-
-
                 </div>
+
+
+
+
+
+
+
+
+
             </div>
 
         </div>
 
-
-
-        <div class="col-9 right-hand-side">
-
+    </div>
 
 
 
 
-            <div class="d-flex flex-row mt-2">
-                <ul class="nav nav-tabs nav-tabs--vertical nav-tabs--left" role="tablist">
-                    <li class="nav-item">
-                        <a href="#sessions" class="nav-link active" target="_self" data-toggle="tab" role="tab" aria-controls="lorem">Sessions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#messages" class="nav-link" target="_self" data-toggle="tab" role="tab" aria-controls="ipsum" ng-click="getMessages()">Messages</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#files" class="nav-link" target="_self" data-toggle="tab" role="tab" aria-controls="ipsum" ng-click="getFiles()">Files</a>
-                    </li>
 
 
-                </ul>
-                <div class="tab-content container">
-                    <div class="tab-pane fade show active" id="sessions" role="tabpanel">
-                        <h1>Lorem</h1>
 
-                        <p>Aenean sed lacus id mi scelerisque tristique. Nunc sed ex sed turpis fringilla aliquet in in neque. Praesent posuere, neque rhoncus sollicitudin fermentum, erat ligula volutpat dui, nec dapibus ligula lorem ac mauris. Etiam et leo venenatis purus pharetra dictum.</p>
+    <div id="replyModal" class="modal fade reply-modal" role="dialog">
+        <div class="modal-dialog modal-width">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="container modal-container">
 
-                        <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin tempor mi ut risus laoreet molestie. Duis augue risus, fringilla et nibh ac, convallis cursus purus. Suspendisse potenti. Praesent pretium eros eleifend posuere facilisis. Proin ut magna vitae nulla suscipit eleifend. Ut bibendum pulvinar sapien, vel tristique felis scelerisque et. Sed elementum sapien magna, placerat interdum lacus placerat ut. Integer varius, ligula bibendum laoreet sollicitudin, eros metus fringilla lectus, quis consequat nisl nibh ut nisi. Aenean dignissim, nibh ac fermentum condimentum, ante nisl rutrum sapien, at commodo eros sapien vulputate arcu. Fusce neque leo, blandit nec lectus eu, vestibulum commodo tellus. Aliquam sem libero, tristique at condimentum ac, luctus nec nulla.</p>
+                    <div class="container message-replying-to">
+                        <h4>Replying to:</h4>
+                        <p class="message-text">{{messageToReply.body}}</p>
                     </div>
-                    <div class="tab-pane fade" id="messages" role="tabpanel">
 
+                    <form>
+                        <div class="form-group row">
 
-                        <form class="message-input">
-                            <div class="form-group row">
-                                <label for="inputMessage" class="col-sm-2 col-form-label enter-message"><h4>Enter message</h4></label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="message.body" id="inputMessage" placeholder="">
-                                </div>
-
-                                <div class="form-group col-sm-2">
-
-                                    <!--<div class="dropdown btn-group col-sm-6">-->
-                                    <!--<button class="btn btn-secondary dropdown-toggle msg-type-dropdown-header"-->
-                                    <!--type="button" id="dropdownMsg" data-toggle="dropdown"-->
-                                    <!--aria-haspopup="true" aria-expanded="false">-->
-                                    <!--Type-->
-                                    <!--</button>-->
-                                    <!--<div class="dropdown-menu" aria-labelledby="dropdownMenu1">-->
-                                    <!--<div class="dropdown-item" ng-click="typeChoose('question')">Question</div>-->
-                                    <!--<div class="dropdown-item" ng-click="typeChoose('answer')">Answer</div>-->
-                                    <!--</div>-->
-                                    <!--</div>-->
-
-                                    <div class="">
-                                        <button type="submit" class="btn btn-primary" ng-click="sendMessage()">Send</button>
-                                    </div>
-                                </div>
+                            <label for="inputReply" class="col-sm-3 col-form-label"><h4>Enter reply</h4></label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" ng-model="reply.body" id="inputReply"
+                                       placeholder="">
                             </div>
 
-                        </form>
+                            <div class="form-group col-sm-2">
 
-                        <table class="table table-hover" ng-if="messages.length > 0">
+                                <div class="col-sm-6">
+                                    <button type="submit" class="btn btn-primary" ng-click="sendReply()">Send</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+
+                    <div class="replies" ng-if="repliesWindowOpen">
+
+                        <table class="table table-hover">
                             <thead>
                             <tr>
+
                                 <th>Message</th>
-                                <th></th>
                             </tr>
                             </thead>
                             <tbody class="messages-table-body">
 
-                            <tr ng-repeat="msg in messages | reverse" ng-if="messages.length > 0">
+                            <tr ng-repeat="rpl in currentMessageReplies | reverse">
+
                                 <td>
 
-                                    <div class="message-text col-8">{{msg.body}}</div>
+                                    <div class="reply-text col-8">{{rpl.body}}</div>
                                     <div class="col-4 message-fix-place"></div>
                                 </td>
-                                <td class="float-right">
-                                    <div class="message-content">
 
-
-                                        <!--<button type="button" class="btn btn-outline-dark float-right" ng-click="assignReply(msg)">-->
-
-                                        <button type="button" class="reply btn btn-outline-dark" data-toggle="modal"
-                                                data-target="#replyModal"
-                                                style="cursor: pointer" ng-click="setMsgToReply(msg)">
-                                            {{msg.replies.length}} Replies
-                                            <div class="underlined"></div>
-                                        </button>
-
-                                        <!--<button type="button" class="btn btn-outline-dark"-->
-                                        <!--ng-click="message.replyTo = msg.type.charAt(0).toUpperCase() + msg.type.slice(1) + ': ' + msg.body[1]">-->
-
-                                        <!--Reply-->
-                                        <!--</button>-->
-                                    </div>
-                                </td>
                             </tr>
+
 
                             </tbody>
                         </table>
 
 
                     </div>
-                    <div class="tab-pane fade" id="files" role="tabpanel">
-                        <h1>Files</h1>
-
-                        <div class="course-upload-file">
 
 
-
-                            <label class="upload-file-label rad-button warning">
-                                <span class="upload-text">Choose file</span>
-                                <input style="display: none" id="file-course-image" type="file" name='recfile' file-model="myFile"/>
-                            </label>
-
-                            <button class="rad-button wwt" ng-click="uploadFile()">Upload</button>
-                        </div>
-
-
-                        <div class="courses-file container">
-                            <div class="row">
-
-                                <div class="col-3" ng-repeat="file in courseFiles">
-                                    <!--<div class="file-item file-icon">{{file.type}}</div>-->
-                                    <!--<div class="file-name">{{file.originalName}}</div>-->
-
-                                    <!--<a class="file-item file-icon" ng-href="{{file.url}}" data-extension="{{file.type}}">{{file.originalName}}</a>-->
-
-                                    <div class="container">
-
-                                        <div class="col-12">
-                                            <div class="file-icon2 file-link">
-                                                <a ng-href="{{file.url}}">
-                                                    <span class="file__type">{{file.type}}</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 file-name">{{file.originalName | limitTo: 20}}</div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-
-
-
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeRepliesWindow()">Close</button>
                     </div>
-
-
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
         </div>
 
     </div>
 
-</div>
-
-
-
-
-
-
-
-<div id="replyModal" class="modal fade reply-modal" role="dialog">
-    <div class="modal-dialog modal-width">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="container modal-container">
-
-                <div class="container message-replying-to">
-                    <h4>Replying to:</h4>
-                    <p class="message-text">{{messageToReply.body}}</p>
-                </div>
-
-                <form>
-                    <div class="form-group row">
-
-                        <label for="inputReply" class="col-sm-3 col-form-label"><h4>Enter reply</h4></label>
-                        <div class="col-sm-7">
-                            <input type="text" class="form-control" ng-model="reply.body" id="inputReply"
-                                   placeholder="">
-                        </div>
-
-                        <div class="form-group col-sm-2">
-
-                            <div class="col-sm-6">
-                                <button type="submit" class="btn btn-primary" ng-click="sendReply()">Send</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-
-
-                <div class="replies" ng-if="repliesWindowOpen">
-
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-
-                            <th>Message</th>
-                        </tr>
-                        </thead>
-                        <tbody class="messages-table-body">
-
-                        <tr ng-repeat="rpl in currentMessageReplies | reverse">
-
-                            <td>
-
-                                <div class="reply-text col-8">{{rpl.body}}</div>
-                                <div class="col-4 message-fix-place"></div>
-                            </td>
-
-                        </tr>
-
-
-                        </tbody>
-                    </table>
-
-
-                </div>
-
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeRepliesWindow()">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
