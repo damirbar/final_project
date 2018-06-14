@@ -67,7 +67,7 @@ router.all("*", type, function (req, res, next) {
                                     if(sess){
                                         event = {
                                             type: "session",
-                                            event: "connect to session " + sess.name,
+                                            event: "connected to session " + sess.name,
                                         };
                                         user.events.push(event);
                                         user.save();
