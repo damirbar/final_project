@@ -137,5 +137,16 @@ wizerApp.service('CourseService', function($http, socketIO) {
     };
 
 
+    this.getMessageReplies = function (message_id){
+        return $http.get('/courses/get-message-replies?mid=' + message_id)
+            .then(function(data){
+                return data.data;
+            }).catch(function(err){
+                console.log("error getting replies");
+            });
+    }
+
+
+
 
 });

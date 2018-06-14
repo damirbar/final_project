@@ -67,7 +67,7 @@ wizerApp.service('SessionService', function ($http, socketIO) {
             return data.data;
         }).catch(function(err){
             console.log("error getting replies");
-        })
+        });
     }
 
     this.getSession = function(sessionId) {

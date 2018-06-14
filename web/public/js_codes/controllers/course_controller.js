@@ -10,6 +10,8 @@ wizerApp.controller('courseController',
         $scope.messages = [];
         $scope.reply = {type: "question", body: ""};
         $scope.messageToReply = {};
+        $scope.currentMessageReplies = [];
+        $scope.currentMessageRepliesMap = {};
 
 
         $scope.getCourse = function () {
@@ -105,6 +107,39 @@ wizerApp.controller('courseController',
                     console.log(err);
                 });
         };
+
+        $scope.setMsgToReply = function (msg) {
+            console.log(msg);
+            $scope.repliesWindowOpen = true;
+            $scope.messageToReply = msg;
+            $scope.getMessageReplies(msg._id);
+        };
+
+
+
+        $scope.getMessageReplies = function (message_id){
+            CourseService.getMessageReplies(message_id)
+                .then(function(data){
+
+                    var index = 0;
+                    $scope.currentMessageReplies = data;
+
+                    $scope.currentMessageReplies.forEach(function(message){
+                        message.liked = message.disliked = false;
+                        if(message.likers.includes($rootScope.loggedUser._id)){
+                            message.liked = true;
+                        }else if(message.dislikers.includes($rootScope.loggedUser._id)){
+                            message.disliked = true;
+                        }
+
+                        $scope.currentMessageRepliesMap[message._id] = index;
+                        ++index;
+
+                    });
+
+                });
+        };
+
 
         socketIO.on('newCourseMessage', function(message){
             var message_id = message._id;
