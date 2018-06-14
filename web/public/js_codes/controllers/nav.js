@@ -103,6 +103,7 @@ wizerApp.controller('navController', function ($scope, AuthService, $location, $
         };
 
         $scope.getNotifications = function () {
+            console.log("Called get notifications");
             ProfileService.getNotifications(0, 10)
                 .then(function (data) {
                     console.log("Got " + data.length + " notifications");
