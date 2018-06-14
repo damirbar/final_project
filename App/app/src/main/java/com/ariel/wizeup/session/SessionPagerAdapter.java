@@ -26,7 +26,7 @@ public class SessionPagerAdapter extends FragmentStatePagerAdapter {
                 tab1.setArguments(bundle);
                 return tab1;
             case 1:
-                SessionFeedFragment tab2 = new SessionFeedFragment();
+                SessionMessagesFragment tab2 = new SessionMessagesFragment();
                 bundle.putString("sid", sid);
                 tab2.setArguments(bundle);
                 return tab2;

@@ -3,12 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/action_session"
-        android:orderInCategory="100"
-        android:title="Create Session"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/add_user"
         android:orderInCategory="100"
         android:title="Add Student"
