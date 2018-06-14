@@ -159,12 +159,12 @@ wizerApp.controller('sessionController',
         $scope.closeRepliesWindow = function(){
             $scope.repliesWindowOpen = false;
             $scope.flushCurrentMessageReplies();
-        }
+        };
 
         $scope.flushCurrentMessageReplies = function(){
             $scope.currentMessageReplies = [];
             $scope.currentMessageRepliesMap = {};
-        }
+        };
 
         $scope.createSession = function () {
             SessionService.createSession($scope.createSessionID, $scope.createSessionName, $scope.createSessionLocation)
@@ -363,8 +363,8 @@ wizerApp.controller('sessionController',
         $scope.setMsgToReply = function (msg) {
             console.log(msg);
             $scope.repliesWindowOpen = true;
-           $scope.messageToReply = msg;
-           $scope.getMessageReplies(msg._id);
+            $scope.messageToReply = msg;
+            $scope.getMessageReplies(msg._id);
         };
 
 
