@@ -88,7 +88,7 @@ public class CourseCommentActivity extends AppCompatActivity {
     }
 
     private void pullComments() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getCourseMessageReplies(mainMessage.getMid())
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getCourseMessageReplies(mainMessage.get_id())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull, i -> mServerResponse.handleError(i)));

@@ -87,7 +87,7 @@ public class SessionCommentActivity extends AppCompatActivity {
     }
 
     private void pullComments() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getSessionMessageReplies(mainMessage.getMid())
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getSessionMessageReplies(mainMessage.get_id())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull, i -> mServerResponse.handleError(i)));
