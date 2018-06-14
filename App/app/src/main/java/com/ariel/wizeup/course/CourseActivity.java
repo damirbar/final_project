@@ -1,6 +1,8 @@
 package com.ariel.wizeup.course;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -8,9 +10,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 
 import com.ariel.wizeup.R;
+import com.ariel.wizeup.utils.Constants;
 
 public class CourseActivity extends AppCompatActivity {
 
@@ -18,6 +22,8 @@ public class CourseActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ImageButton buttonBack;
     private String cid;
+    private String userType;
+
 
 
     @Override
@@ -28,6 +34,8 @@ public class CourseActivity extends AppCompatActivity {
             finish();
         }
         initViews();
+        initSharedPreferences();
+
 
         final ViewPager viewPager = findViewById(R.id.pager);
         final CoursePagerAdapter adapter = new CoursePagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),cid);
@@ -65,6 +73,12 @@ public class CourseActivity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
 
+    private void initSharedPreferences() {
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userType = mSharedPreferences.getString(Constants.TYPE, "");
+    }
+
+
     private boolean getData() {
         if (getIntent().getExtras() != null) {
             String _cid = getIntent().getExtras().getString("cid");
@@ -81,7 +95,9 @@ public class CourseActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_course, menu);
+        if(userType.equalsIgnoreCase("teacher")){
+            getMenuInflater().inflate(R.menu.menu_course, menu);
+        }
         return true;
     }
 

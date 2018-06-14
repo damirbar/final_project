@@ -18,6 +18,7 @@ public class CourseMessage implements Parcelable {
     private String mid;
     private String replies[];
     private String replier_id;
+    private String profile_img;
 
 
     protected CourseMessage(Parcel in) {
@@ -31,6 +32,7 @@ public class CourseMessage implements Parcelable {
         mid = in.readString();
         replies = in.createStringArray();
         replier_id = in.readString();
+        profile_img = in.readString();
     }
 
     public static final Creator<CourseMessage> CREATOR = new Creator<CourseMessage>() {
@@ -44,6 +46,14 @@ public class CourseMessage implements Parcelable {
             return new CourseMessage[size];
         }
     };
+
+    public String getProfile_img() {
+        return profile_img;
+    }
+
+    public void setProfile_img(String profile_img) {
+        this.profile_img = profile_img;
+    }
 
     public String getReplier_id() {
         return replier_id;
@@ -153,5 +163,6 @@ public class CourseMessage implements Parcelable {
         parcel.writeString(mid);
         parcel.writeStringArray(replies);
         parcel.writeString(replier_id);
+        parcel.writeString(profile_img);
     }
 }

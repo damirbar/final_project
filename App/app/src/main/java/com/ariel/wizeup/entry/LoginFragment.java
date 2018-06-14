@@ -40,6 +40,7 @@ import static com.ariel.wizeup.utils.Constants.ID;
 import static com.ariel.wizeup.utils.Constants.PASS;
 import static com.ariel.wizeup.utils.Constants.PROFILE_IMG;
 import static com.ariel.wizeup.utils.Constants.TOKEN;
+import static com.ariel.wizeup.utils.Constants.TYPE;
 import static com.ariel.wizeup.utils.Constants.USER_NAME;
 import static com.ariel.wizeup.utils.Validation.validateEmail;
 
@@ -204,6 +205,8 @@ public class LoginFragment extends Fragment{
         editor.putString(USER_NAME,user.getFname() + " " + user.getLname());
         editor.putString(ID,user.getId_num());
         editor.putString(PROFILE_IMG,user.getProfile_img());
+        editor.putString(TYPE,user.getRole());
+
         editor.apply();
 
         Intent intent = new Intent(getActivity(), BaseActivity.class);

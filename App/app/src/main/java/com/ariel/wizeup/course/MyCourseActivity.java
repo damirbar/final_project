@@ -37,6 +37,7 @@ public class MyCourseActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoursesAdapter mAdapter;
     private FloatingActionButton mFB;
+    private String userType;
 //    private RelativeLayout layout;
 
     @Override
@@ -47,6 +48,9 @@ public class MyCourseActivity extends AppCompatActivity {
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.relative));
         initViews();
+        initSharedPreferences();
+        userAdmin();
+
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
             pullCourses();
@@ -97,6 +101,17 @@ public class MyCourseActivity extends AppCompatActivity {
         mFB.setOnClickListener(view -> addCourse());
 
     }
+
+    private void initSharedPreferences() {
+        userType = mRetrofitRequests.getSharedPreferences().getString(Constants.TYPE, "");
+    }
+
+    private void userAdmin() {
+        if(!userType.equalsIgnoreCase("teacher")){
+            mFB.setVisibility(View.GONE);
+        }
+    }
+
 
     private void addCourse() {
         Intent intent = new Intent(this,CreateCourseActivity.class);

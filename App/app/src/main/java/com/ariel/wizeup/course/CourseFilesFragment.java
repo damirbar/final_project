@@ -3,6 +3,7 @@ package com.ariel.wizeup.course;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -113,12 +114,34 @@ public class CourseFilesFragment extends Fragment {
     }
 
     private void addFile() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("application/*|text/*");
         try {
-            startActivityForResult(intent, INTENT_REQUEST_CODE);
 
-        } catch (ActivityNotFoundException e) {
+            String[] mimeTypes =
+                    {"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
+                            "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+                            "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
+                            "text/plain",
+                            "application/pdf",
+                            "application/zip"};
+
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                intent.setType(mimeTypes.length == 1 ? mimeTypes[0] : "*/*");
+                if (mimeTypes.length > 0) {
+                    intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+                }
+            } else {
+                String mimeTypesStr = "";
+                for (String mimeType : mimeTypes) {
+                    mimeTypesStr += mimeType + "|";
+                }
+                intent.setType(mimeTypesStr.substring(0, mimeTypesStr.length() - 1));
+            }
+            startActivityForResult(Intent.createChooser(intent, "ChooseFile"), INTENT_REQUEST_CODE);
+
+        } catch (Exception e) {
 
             e.printStackTrace();
         }
@@ -136,20 +159,22 @@ public class CourseFilesFragment extends Fragment {
                     tab1.show(getActivity().getSupportFragmentManager(), "Dialog");
 
 
-                    Uri uri= data.getData();
-                    File file= new File(uri.getPath());
+                    Uri uri = data.getData();
+                    File file = new File(uri.getPath());
                     InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
-                    tryUploadFile(getBytes(is),file.getName().trim(),uri.getPath().substring(uri.getPath().lastIndexOf(".")));
+                    tryUploadFile(getBytes(is), file.getName().trim(), uri.getPath().substring(uri.getPath().lastIndexOf(".")));
                     is.close();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
+                    tab1.dismiss();
+                    mServerResponse.showSnackBarMessage("File didn't upload.");
                 }
             }
         }
     }
 
-    private void tryUploadFile(byte[] bytes,String fileName,String fileType) {
-        RequestBody requestFile = RequestBody.create(MediaType.parse(fileType), bytes);
+    private void tryUploadFile(byte[] bytes, String fileName, String fileType) {
+        RequestBody requestFile = RequestBody.create(MediaType.parse("application/" + fileType), bytes);
         MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", fileName, requestFile);
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body, Integer.parseInt(cid))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -160,13 +185,14 @@ public class CourseFilesFragment extends Fragment {
 
     private void handleResponseUploadFile(Response response) {
         tab1.dismiss();
+        mServerResponse.showSnackBarMessage(response.getMessage());
+
     }
 
     public void handleError(Throwable error) {
         mServerResponse.handleError(error);
         tab1.dismiss();
     }
-
 
 
     private void pullFiles() {

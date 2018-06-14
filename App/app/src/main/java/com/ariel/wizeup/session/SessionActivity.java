@@ -180,6 +180,7 @@ public class SessionActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_session, menu);
         return true;
     }
@@ -204,7 +205,7 @@ public class SessionActivity extends AppCompatActivity {
     }
 
     private void sendSidSms() {
-        String smsBody = "I would like to invite you to join our session oup on wizeUp.\nSession: " + session.getSid();
+        String smsBody = "I would like to invite you to join our session in wizeUp.\nSession: " + session.getSid();
 
         Intent sharingIntent = new Intent ( android.content.Intent.ACTION_SEND );
         sharingIntent.setType ( "text/plain" );
@@ -266,13 +267,14 @@ public class SessionActivity extends AppCompatActivity {
     }
 
     private void handleResponseUploadVid(Response response) {
-        mServerResponse.downSnackBarMessage(response.getMessage());
         hideLoadingDialog();
+        mServerResponse.downSnackBarMessage(response.getMessage());
+        pullSession();
     }
 
     public void handleError(Throwable error) {
-        mServerResponse.handleError(error);
         hideLoadingDialog();
+        mServerResponse.handleErrorDown(error);
     }
 
     public void showLoadingDialog() {
@@ -283,15 +285,12 @@ public class SessionActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(fragment, UploadingDialog.TAG)
                     .commitAllowingStateLoss();
-
-            // fragment.show(getSupportFragmentManager().beginTransaction(), LoadingDialogFragment.FRAGMENT_TAG);
-        }
+            }
     }
 
     public void hideLoadingDialog() {
         UploadingDialog fragment = (UploadingDialog) getSupportFragmentManager().findFragmentByTag(UploadingDialog.TAG);
         if (fragment != null) {
-            // fragment.dismissAllowingStateLoss();
             getSupportFragmentManager().beginTransaction().remove(fragment).commitAllowingStateLoss();
         }
     }

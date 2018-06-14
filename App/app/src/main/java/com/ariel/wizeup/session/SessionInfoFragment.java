@@ -48,8 +48,9 @@ public class SessionInfoFragment extends Fragment {
     private String sid;
     private int LIKE = 1;
     private int DISLIKE = 0;
+    private int understand;
 
-//    private int delay = 5000;
+    private int delay = 5000;
 
 
     @Override
@@ -62,13 +63,13 @@ public class SessionInfoFragment extends Fragment {
         initViews(view);
         pullSession();
 
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            public void run() {
-//                pullSession();
-//                handler.postDelayed(this, delay);
-//            }
-//        }, delay);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                pullSession();
+                handler.postDelayed(this, delay);
+            }
+        }, delay);
 
 
         likeCbx.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -161,15 +162,15 @@ public class SessionInfoFragment extends Fragment {
             mDateTextView.setText(s);
         }
 
-        int rating = 0;
+        understand = 0;
         for(int i=0 ; i<_session.getStudents().length; i++){
-            if(_session.getStudents()[i].getRating_val().equals("0"))
-                rating-=1;
-            else if(_session.getStudents()[i].getRating_val().equals("1"))
-                rating+=1;
+            if(_session.getStudents()[i].getRating_val().equals("1"))
+                understand+=1;
         }
 
-        mRatingNum.setText(String.valueOf(rating));
+        int result = (understand/_session.getStudents().length)*100;
+
+        mRatingNum.setText(String.valueOf(result)+"%");
 
 
         String teacher = _session.getTeacher_fname()+" "+_session.getTeacher_lname();

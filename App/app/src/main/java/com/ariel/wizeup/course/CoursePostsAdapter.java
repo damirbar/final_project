@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.CourseMessage;
+import com.squareup.picasso.Picasso;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -55,6 +56,8 @@ public class CoursePostsAdapter extends ArrayAdapter<CourseMessage> {
         TextView comCount = (TextView) listItem.findViewById(R.id.comments_num);
         TextView mDate = (TextView) listItem.findViewById(R.id.creation_date);
         ImageButton menu = listItem.findViewById(R.id.feed_item_menu);
+        ImageView profileImage = (ImageView) listItem.findViewById(R.id.user_image);
+
 
 
         //Date
@@ -64,6 +67,14 @@ public class CoursePostsAdapter extends ArrayAdapter<CourseMessage> {
             String s = formatter.format(date);
             mDate.setText(s);
         }
+
+        String pic = currentMessage.getProfile_img();
+        if (pic != null && !(pic.isEmpty()))
+            Picasso.with(mContext)
+                    .load(pic)
+                    .error(R.drawable.default_user_image)
+                    .into(profileImage);
+
 
         comCount.setText(String.valueOf(currentMessage.getReplies().length));
         mEmail.setText(currentMessage.getName());
