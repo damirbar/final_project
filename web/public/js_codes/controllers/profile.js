@@ -16,8 +16,8 @@ wizerApp.controller('profileController',
 
 
         // NEEDS TO CHANGE
-        $scope.editUser.birthday = new Date("00-00-0000");
-        $scope.profile = new Date("00-00-0000");
+        // $scope.editUser.birthday = new Date("00-00-0000");
+        // $scope.profile = new Date("00-00-0000");
 
 
         var initPage = function() {
@@ -36,6 +36,7 @@ wizerApp.controller('profileController',
                     console.log("Looking for " + $routeParams.id);
                     $scope.profile = data;
                     $scope.editUser = data;
+                    $scope.editUser.birthday = new Date($scope.editUser.birthday);
                     console.log(data);
                     initPage();
                     $scope.loading = false;

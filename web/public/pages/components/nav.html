@@ -61,15 +61,18 @@
         <div class="fade-in first" ng-show="isLoggedIn()">
             <button type="button" class="fas fa-bell btn btn-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             </button>
-            <div class="dropdown-menu dropdown-menu-right notifications-background">
+            <div class="dropdown-menu dropdown-menu-right notifications-cont">
 
                 <div class="loading" ng-show="loadingNotifications" style="text-align: center;">
                     <div class="fa fa-spinner fa-spin" style="font-size:34px; margin: auto; width: 100%; margin-top: 8%;"></div>
                 </div>
 
+                <div class="no-nofitifications" ng-if="notifications.length === 0">
+                    No notifications
+                </div>
                 <div class="dropdown-item" ng-repeat="notification in notifications">
-                    <div class="notification-body font-weight-bold">{{notification.body}}</div>
-                    <div class="notification-date">{{notification.date | date: 'medium'}}</div>
+                    <div class="notification-body font-weight-bold">{{notification.content}}</div>
+                    <div class="notification-date">{{notification.creation_date | date: 'medium'}}</div>
 
                 </div>
             </div>
@@ -99,7 +102,7 @@
 </nav>
 
 <!--<div id="loginModal" class="modal fade" role="dialog" ng-controller="navController">-->
-<div id="loginModal" class="modal fade" role="dialog">
+<div id="loginModal" ng-show="!isLoggedIn()" class="modal fade" role="dialog">
     <div class="modal-dialog modal-width">
         <!-- Modal content-->
         <div class="modal-content">
