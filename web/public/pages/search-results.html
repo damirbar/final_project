@@ -37,14 +37,36 @@
 
     <div id="clothing-nav-content" class="tab-content search-results-cont">
 
+        <div class="loading" ng-show="loading" style="text-align: center;">
+            <div class="fa fa-spinner fa-spin" style="font-size:184px; margin: auto; width: 100%; margin-top: 8%;"></div>
+        </div>
+
         <div role="tabpanel" class="tab-pane active show fade" id="courses-res" aria-labelledby="edit-profile-tab">
 
             <div class="res-container">
-                <div class="res-item" ng-repeat="course in results.courses">
-                    <a class="course-item" ng-href="/courses/{{course.cid}}">
-                        {{course.name}}
-                        {{course.cid}}
-                        {{course.teacher_fname}} {{course.teacher_lname}}
+                <div class="res-item single-course col-4" ng-repeat="course in results.courses">
+
+                    <a class="course-anchor" ng-href="/courses/{{course.cid}}">
+                        <div class="course-header">{{course.name}}</div>
+                        <div class="course-no row">
+                            <div class="col-6 courses-right-side">Course #:</div>
+                            <div class="col-6 course-left-side">{{course.cid}}</div>
+                        </div>
+
+                        <div class="course-dep row">
+                            <div class="col-6 courses-right-side">Department:</div>
+                            <div class="col-6 course-left-side">{{course.department}}</div>
+                        </div>
+
+                        <div class="course-points row">
+                            <div class="col-6 courses-right-side">Points:</div>
+                            <div class="col-6 course-left-side">{{course.points}}</div>
+                        </div>
+
+                        <div class="course-class-room row">
+                            <div class="col-6 courses-right-side">Room:</div>
+                            <div class="col-6 course-left-side">{{course.location}}</div>
+                        </div>
                     </a>
                 </div>
             </div>
@@ -54,30 +76,51 @@
         <div role="tabpanel" class="tab-pane fade" id="files-res" aria-labelledby="edit-profile-tab">
 
 
-            <div class="res-container">
-                <div class="res-item" ng-repeat="file in results.files">
-                    <a class="file-item" ng-href="{{file.url}}">
-                        <div>Name: {{file.originalName}}</div>
-                        <div>Type: {{file.type}}</div>
-                        <div>Uploaded by {{file.uploaderid}}</div>
-                    </a>
+            <div class="files container">
+                <div class="row">
+
+                    <div class="col-3" ng-repeat="file in results.files">
+                        <!--<div class="file-item file-icon">{{file.type}}</div>-->
+                        <!--<div class="file-name">{{file.originalName}}</div>-->
+
+                        <!--<a class="file-item file-icon" ng-href="{{file.url}}" data-extension="{{file.type}}">{{file.originalName}}</a>-->
+
+                        <div class="container">
+
+                            <div class="col-12">
+                                <div class="file-icon2 file-link">
+                                    <a ng-href="{{file.url}}">
+                                        <span class="file__type">{{file.type}}</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-12 file-name">{{file.originalName | limitTo: 20}}</div>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
-
 
         </div>
 
         <div role="tabpanel" class="tab-pane fade" id="sessions-res" aria-labelledby="edit-profile-tab">
 
-            <div class="res-container">
-                <div class="res-item" ng-repeat="session in results.sessions">
-                    <div class="session-item">Name: {{session.name}}</div>
-                    <div>Session ID: {{session.sid}}</div>
-                    <div>Teacher: {{session.teacher_fname}} {{session.teacher_lname}}</div>
-                    <div>{{session.messages.length}} messages</div>
-                    <div>{{session.students.length}} students</div>
-                </div>
+
+            <div class="res-container container">
+
+                <li class="list-group-item justify-content-between row session-desc res-item" ng-repeat="session in results.sessions">
+                    <div class="session-name col-4">Name: {{session.name}}</div>
+                    <div class="session-id col-4">Session ID: {{session.sid}}</div>
+                    <a class="col-2" ng-href="/sessions/{{session.sid}}">Go to session</a>
+                    <div class="col-2">
+
+                        <span class="badge badge-default badge-pill">{{session.students.length}}</span>
+                    </div>
+                </li>
+
             </div>
+
         </div>
 
 
