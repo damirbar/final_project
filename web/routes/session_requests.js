@@ -619,7 +619,7 @@ router.post("/reply", function (req, res) {
                             $inc: {num_of_replies: 1}
                         }, function (err) {
                             if (err) return console.log(err);
-
+                            res.status(200).json({message: "added reply"});
                             socketIOEmitter.emitEventToSessionRoom(reply.sid, 'newSessionMessageReply', reply);
 
                             let notification = new Notification({
