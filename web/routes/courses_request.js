@@ -329,7 +329,11 @@ router.get("/get-all-messages", function (req, res) {
                 console.log(err);
                 return err;
             } else {
-                return res.status(200).json(list[0].messages_list);
+                if (list[0]) {
+                    return res.status(200).json(list[0].messages_list);
+                } else {
+                    return res.status(200).json([]);
+                }
             }
         }
     );
