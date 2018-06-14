@@ -5,6 +5,7 @@ var User = require("../schemas/user");
 var File = require("../schemas/file");
 var Session = require("../schemas/session");
 let Course_Message = require("../schemas/course_message");
+const socketIOEmitter = require('../tools/socketIO');
 
 
 let globalCid = "000001";

@@ -6,6 +6,8 @@ wizerApp.controller('courseController',
         $scope.course = {};
         $scope.courseToCreate = {};
         $scope.courseFiles = [];
+        $scope.message = {type: "question", body: ""};
+        $scope.messages = [];
 
 
         $scope.getCourse = function () {
@@ -69,5 +71,24 @@ wizerApp.controller('courseController',
                     });
         };
 
+        $scope.getMessages = function(){
+            CourseService.getMessages($routeParams.id)
+                .then(function (data) {
+                    console.log("got messages from getFiles");
+                    console.log(data);
+                    $scope.courseFiles = data;
+                });
+        };
 
+        $scope.sendMessage = function() {
+            CourseService.sendMessage($rootScope.loggedUser._id, $scope.course.cid, $scope.message.type, $scope.message.body)
+                .then(function (data) {
+                    console.log("Sent message");
+                    // $scope.getMessages();
+                    $scope.message = {body: ""};
+                })
+                .catch(function (err) {
+                    console.log(err);
+                });
+        };
     });
