@@ -28,6 +28,7 @@ wizerApp.controller('coursesController',
         CourseService.createCourse($scope.courseCreate)
             .then(function(data) {
                 $scope.courseCreate = {};
+                $('#collapseExample').collapse('hide');
                 $scope.getMyCourses();
                 console.log("data = " + data);
             }, function(err) {
