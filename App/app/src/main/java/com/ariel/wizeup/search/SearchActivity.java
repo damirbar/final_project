@@ -9,11 +9,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ariel.wizeup.R;
+import com.ariel.wizeup.course.CourseActivity;
+import com.ariel.wizeup.model.Course;
 import com.ariel.wizeup.model.Searchable;
+import com.ariel.wizeup.model.Session;
 import com.ariel.wizeup.model.User;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.profile.ProfileActivity;
+import com.ariel.wizeup.session.SessionActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,6 +77,20 @@ public class SearchActivity extends AppCompatActivity {
                 intent.putExtra("id", user.getId_num());
                 startActivity(intent);
             }
+            else if(a instanceof Session) {
+                Session session = (Session) a;
+                Intent intent = new Intent(this, SessionActivity.class);
+                intent.putExtra("sid", session.getSid());
+                startActivity(intent);
+            }
+            else if(a instanceof Course) {
+                Course course = (Course) a;
+                Intent intent = new Intent(this, CourseActivity.class);
+                intent.putExtra("cid", course.getCid());
+                startActivity(intent);
+            }
+
+
         });
 
     }

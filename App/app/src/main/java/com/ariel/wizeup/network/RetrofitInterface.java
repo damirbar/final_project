@@ -157,7 +157,7 @@ public interface RetrofitInterface {
     Observable<CourseMessage> getCourseMessage(@Query("mid") String mid);
 
     @POST("courses/messages")
-    Observable<Response> publishCoureMessage(@Body CourseMessage message);
+    Observable<Response> publishCourseMessage(@Body CourseMessage message);
 
     @POST("courses/reply")
     Observable<Response> publishCourseReply(@Body CourseMessage message);

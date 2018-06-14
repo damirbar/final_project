@@ -18,11 +18,15 @@ import android.widget.TextView;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.dialogs.UploadingDialog;
+import com.ariel.wizeup.model.Course;
 import com.ariel.wizeup.model.CourseFile;
 import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.Session;
+import com.ariel.wizeup.model.User;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
+import com.ariel.wizeup.profile.ProfileActivity;
+import com.ariel.wizeup.session.SessionActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,6 +72,14 @@ public class SessionFeedFragment extends Fragment {
             mSwipeRefreshLayout.setRefreshing(false);
         }, 1000));
 
+        sessionsList.setOnItemClickListener((parent, view1, position, id) -> {
+            Session session = mAdapter.getItem(position);
+            Intent intent = new Intent(getActivity(), SessionActivity.class);
+            intent.putExtra("sid", session.getSid());
+            startActivity(intent);
+        });
+
+
         sessionsList.setOnScrollListener(new AbsListView.OnScrollListener() {
             private int mLastFirstVisibleItem;
 
@@ -110,7 +122,7 @@ public class SessionFeedFragment extends Fragment {
     }
 
     private void addSession() {
-        Intent intent = new Intent(getActivity(),CourseSessionActivity.class);
+        Intent intent = new Intent(getActivity(), CourseSessionActivity.class);
         intent.putExtra("cid", cid);
         startActivity(intent);
 
