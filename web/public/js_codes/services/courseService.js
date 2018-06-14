@@ -1,4 +1,4 @@
-wizerApp.service('CourseService', function($http) {
+wizerApp.service('CourseService', function($http, socketIO) {
 
     this.getCourses = function() {
         return $http.get('/courses')
@@ -99,6 +99,32 @@ wizerApp.service('CourseService', function($http) {
                 });
     };
 
+
+    this.getMessages = function(cid) {
+
+        var query = '?cid=' + cid;
+        return $http.get('courses/get-all-messages' + query)
+            .then(function(data) {
+
+                    socketIO.emit('joinCourseMessages', cid);
+                    console.log("This is a print from get course's messages.\nI got: " + data.data);
+                    return data.data;
+                },
+                function(err) {
+                    console.log("Error getting the course messages. " + err);
+                });
+    };
+
+
+    this.sendMessage = function(posterID, courseId, type, message) {
+        return $http.post('/courses/messages', {poster_id: posterID, cid: courseId, type: type, body: message})
+            .then(function (data) {
+                socketIO.emit('postCourseMessage', );
+                return data.data;
+            }, function () {
+                console.log("Error sending message to session with ID = " + sessionId);
+            });
+    };
 
 
 });
