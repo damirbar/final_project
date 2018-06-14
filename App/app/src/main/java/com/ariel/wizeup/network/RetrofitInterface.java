@@ -156,13 +156,11 @@ public interface RetrofitInterface {
     @GET("courses/get-all-messages")
     Observable<CourseMessage []> CourseGetAllMessages(@Query("cid") String cid);
 
-//    @GET("courses/get-message")
-//    Observable<CourseMessage> getMessage(@Query("mid") String mid);
+    @GET("courses/get-message")
+    Observable<CourseMessage> getCourseMessage(@Query("mid") String mid);
 
     @POST("courses/messages")
     Observable<Response> publishCoureMessage(@Body CourseMessage message);
-
-
 
     @POST("courses/reply")
     Observable<Response> publishCourseReply(@Body CourseMessage message);

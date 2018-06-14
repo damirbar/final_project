@@ -1,109 +1,161 @@
 package com.ariel.wizeup.course;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.ariel.wizeup.R;
+import com.ariel.wizeup.dialogs.PostBottomDialog;
+import com.ariel.wizeup.model.CourseMessage;
+import com.ariel.wizeup.model.SessionMessage;
+import com.ariel.wizeup.network.RetrofitRequests;
+import com.ariel.wizeup.network.ServerResponse;
+import com.ariel.wizeup.session.CommentActivity;
+import com.ariel.wizeup.session.PostActivity;
+import com.ariel.wizeup.session.SessionPostsAdapter;
+import com.ariel.wizeup.utils.Constants;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CourseMessagesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CourseMessagesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class CourseMessagesFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
-    private OnFragmentInteractionListener mListener;
 
-    public CourseMessagesFragment() {
-        // Required empty public constructor
-    }
+public class CourseMessagesFragment extends android.support.v4.app.Fragment {
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CourseMessagesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CourseMessagesFragment newInstance(String param1, String param2) {
-        CourseMessagesFragment fragment = new CourseMessagesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private CompositeSubscription mSubscriptions;
+    private ListView messagesList;
+    private RetrofitRequests mRetrofitRequests;
+    private ServerResponse mServerResponse;
+    private TextView mTvNoResults;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private FloatingActionButton mFBPost;
+    private String cid;
+    private SessionPostsAdapter mAdapter;
+    private String mId;
+    private View view;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_course_messages,container,false);
+        mSubscriptions = new CompositeSubscription();
+        mRetrofitRequests = new RetrofitRequests(this.getActivity());
+        mServerResponse = new ServerResponse(view.findViewById(R.id.msg_feed));
+
+        initSharedPreferences();
+        getData();
+        initViews(view);
+
+        mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+            pullMessages();
+            mSwipeRefreshLayout.setRefreshing(false);
+        }, 1000));
+
+        messagesList.setOnItemClickListener((parent, view1, position, id) -> {
+            long viewId = view1.getId();
+            if (viewId == R.id.comment_btn) {
+                Intent intent = new Intent(getActivity(), CommentActivity.class);
+                intent.putExtra("cid", cid);
+                intent.putExtra("mid", mAdapter.getMessagesList().get(position).get_id());
+                startActivity(intent);
+            }
+        });
+
+        messagesList.setOnScrollListener(new AbsListView.OnScrollListener(){
+            private int mLastFirstVisibleItem;
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                if(mLastFirstVisibleItem<firstVisibleItem)
+                {
+                    mFBPost.hide();
+                }
+                if(mLastFirstVisibleItem>firstVisibleItem)
+                {
+                    mFBPost.show();
+                }
+                mLastFirstVisibleItem=firstVisibleItem;
+            }
+        });
+        return view;
+    }
+
+    private void initSharedPreferences() {
+        mId = mRetrofitRequests.getSharedPreferences().getString(Constants.ID,"");
+    }
+
+
+    private void initViews(View v) {
+        mTvNoResults = v.findViewById(R.id.tv_no_results);
+        messagesList = v.findViewById(R.id.courseMessagesList);
+        mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
+        mSwipeRefreshLayout.setVisibility(View.GONE);
+        mFBPost = v.findViewById(R.id.fb_post);
+        mFBPost.setOnClickListener(view -> addPost());
+    }
+
+    private void addPost(){
+//        Intent intent = new Intent(getActivity(), PostActivity.class);
+//        intent.putExtra("cid", cid);
+//        startActivity(intent);
+    }
+
+    private void getData() {
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            cid = bundle.getString("cid");
+
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_course_messages, container, false);
+    private void pullMessages(){
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().CourseGetAllMessages(cid)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponsePull,i -> mServerResponse.handleError(i)));
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+    private void handleResponsePull(CourseMessage courseMessages[]) {
+//        if(!(courseMessages.length == 0)){
+//            ArrayList<CourseMessage> savePosts = new ArrayList<>(Arrays.asList(courseMessages));
+//            Collections.reverse(savePosts);
+//            mTvNoResults.setVisibility(View.GONE);
+//            mAdapter = new SessionPostsAdapter(this.getActivity(), new ArrayList<>(savePosts));
+//
+//            messagesList.setAdapter(mAdapter);
+//
+//        } else {
+//            mTvNoResults.setVisibility(View.VISIBLE);
+//        }
+//
+//        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onDestroy() {
+        super.onDestroy();
+        mSubscriptions.unsubscribe();
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void onResume(){
+        super.onResume();
+        pullMessages();
     }
 }
