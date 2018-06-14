@@ -5,12 +5,14 @@ wizerApp.controller('profileController',
         var defaultProfilePicture = "https://images.youtrendit.com/1487525287/desktop/avatar-600/youtrendit_Australopitekus.jpg";
 
         $scope.loading = true;
+        $scope.pictureLoading = true;
 
         $scope.userArr = [];
         $scope.profile = {};
         $scope.readMore = false;
         $scope.courses = [];
         $scope.editUser = {};
+        $scope.editUser.gender = 'unspecified';
 
 
         // NEEDS TO CHANGE
@@ -37,6 +39,7 @@ wizerApp.controller('profileController',
                     console.log(data);
                     initPage();
                     $scope.loading = false;
+                    $scope.pictureLoading = false;
                 });
         };
         $scope.getProfile();
@@ -116,9 +119,23 @@ wizerApp.controller('profileController',
                 });
             };
             reader.readAsDataURL(file);
+            $scope.pictureLoading = true;
             $timeout(function() {
                 $scope.getProfile();
-            }, 6000)
+
+            }, 6000);
         };
         angular.element(document.querySelector('#file-profile-image')).on('change',handleFileSelect);
+
+
+
+        $scope.genderChoose = function(gender) {
+            console.log("Called role choose");
+            $('.dropdown-header').text(gender.charAt(0).toUpperCase() + gender.slice(1));
+            $scope.editUser.gender = gender;
+        };
+
+
+
+
     });

@@ -41,7 +41,10 @@
 
 
                         <label for="file-profile-image">
-                            <img class="profile-picture" ng-src="{{profile.profile_img}}" style="width: 100%;">
+                            <img class="profile-picture" ng-show="!pictureLoading" ng-src="{{profile.profile_img}}" style="width: 100%;">
+                            <div class="picture-loading" ng-show="pictureLoading" style="text-align: center;">
+                                <div class="fa fa-spinner fa-spin"></div>
+                            </div>
                             <!--<img class="profile-picture" ng-src="{{myCroppedImage}}" style="width: 100%;">-->
                         </label>
 
@@ -226,49 +229,59 @@
                 <div role="tabpanel" class="tab-pane fade" id="edit-profile" aria-labelledby="edit-profile-tab">
 
 
-                    <form class="form-horizontal" role="form" name="editProfileForm" ng-show="true">
+                    <form class="form-horizontal form-group" role="form" name="editProfileForm" ng-show="true">
 
 
                         <div class="name-div row">
                             <div class="text col-3">First name:</div>
 
-                            <input class="col-5" type="text" name="fname" ng-model="editUser.first_name" required>
+                            <input class="col-5 form-control" type="text" name="fname" ng-model="editUser.first_name" required>
                             <div class="col-4"></div>
 
                             <div class="text col-3">Last name:</div>
 
-                            <input class="col-5" type="text" name="lname" ng-model="editUser.last_name" required>
+                            <input class="col-5 form-control" type="text" name="lname" ng-model="editUser.last_name" required>
                             <div class="col-4"></div>
 
                             <div class="text col-3">Display name:</div>
 
-                            <input class="col-5" type="text" name="dname" ng-model="editUser.display_name">
+                            <input class="col-5 form-control" type="text" name="dname" ng-model="editUser.display_name">
                             <div class="col-4"></div>
 
                             <div class="text col-3">Country:</div>
 
-                            <input class="col-5" type="text" name="country" ng-model="editUser.country">
+                            <input class="col-5 form-control" type="text" name="country" ng-model="editUser.country">
                             <div class="col-4"></div>
 
                             <div class="text col-3">Address:</div>
 
-                            <input class="col-5" type="text" name="address" ng-model="editUser.address">
+                            <input class="col-5 form-control" type="text" name="address" ng-model="editUser.address">
                             <div class="col-4"></div>
 
                             <div class="text col-3">Birthday:</div>
 
-                            <input class="col-5" type="date" name="birthday" ng-model="editUser.birthday">
+                            <input class="col-5 form-control" type="date" name="birthday" ng-model="editUser.birthday">
                             <div class="col-4"></div>
 
 
                             <div class="text col-3">Gender:</div>
 
-                            <input class="col-5" type="text" name="gender" ng-model="editUser.gender">
-                            <div class="col-4"></div>
+                            <div class="dropdown btn-group col-5 form-control">
+                                <button class="btn btn-secondary dropdown-toggle dropdown-header"
+                                        type="button" id="dropdownMenu1" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    {{(editUser.gender && editUser.gender !== '')? editUser.gender : 'Unspecified'}}
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <div class="dropdown-item" ng-click="genderChoose('Male')">Male</div>
+                                    <div class="dropdown-item" ng-click="genderChoose('Female')">Female</div>
+                                    <div class="dropdown-item" ng-click="genderChoose('Unspecified')">Unspecified</div>
+                                </div>
+                            </div>                            <div class="col-4"></div>
 
                             <div class="text col-3">About me:</div>
 
-                            <textarea rows="4" cols="50" class="col-5" type="text" name="about_me"
+                            <textarea rows="4" cols="50" class="col-5 form-control" type="text" name="about_me"
                                       ng-model="editUser.about_me"></textarea>
                             <div class="col-4"></div>
 
