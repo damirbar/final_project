@@ -124,6 +124,7 @@ public class CourseFilesFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == INTENT_REQUEST_CODE) {

@@ -154,7 +154,7 @@ public interface RetrofitInterface {
 
 
     @GET("courses/get-all-messages")
-    Observable<CourseMessage []> CoursegetAllMessages(@Query("cid") String cid);
+    Observable<CourseMessage []> CourseGetAllMessages(@Query("cid") String cid);
 
 //    @GET("courses/get-message")
 //    Observable<CourseMessage> getMessage(@Query("mid") String mid);
