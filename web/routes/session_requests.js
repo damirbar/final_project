@@ -593,10 +593,7 @@ router.post("/reply", function (req, res) {
 
     let notified_id = req.body.poster_id; //The user to be notified
     let replier_id = req.body.replier_id; // The user who replied
-    let subject_id = req.body.mid;
-
-    console.log('Request:');
-    console.log(req.body);
+    let subject_id = req.body.id;
     Session.findOne({sid: req.body.sid}, function (err, sess) {
         if (err) console.log(err);
         if (sess) {
@@ -604,7 +601,7 @@ router.post("/reply", function (req, res) {
                 if (stud.email === decoded) {
                     let newReply = new Session_Message({
                         poster_id: req.body.poster_id,
-                        parent_id: req.body.mid,
+                        parent_id: req.body.id,
                         sid: req.body.sid,
                         type: req.body.type,
                         reply: true,
