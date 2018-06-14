@@ -120,6 +120,10 @@ public interface RetrofitInterface {
 
     //////////////////Courses//////////////////
 
+    @POST("courses/create-session")
+    Observable<Response> createCourseSession(@Body Session session);
+
+
     @GET("courses/get-all-courses")
     Observable<Course[]> getAllCourses();
 

@@ -120,11 +120,10 @@ router.all("*", type, function (req, res, next) {
                                     event: "created session: " + req.body.name + " at: " + req.body.location,
                                 };
                                 break;
-                            //test this!!!
-                            case "/course/create-course":
+                            case "/courses/create-course":
                                 event = {
                                     type: "create",
-                                    event: "created course: " + req.body.name + " with teacher: " + req.body.teacher,
+                                    event: "created course: '" + req.body.name + "' with teacher: " + req.body.teacher + " At: "+ req.body.location,
                                 };
                                 break;
                             // unlike and undislike as well
@@ -158,7 +157,7 @@ router.all("*", type, function (req, res, next) {
                                     };
                                 }
                                 break;
-                            //test this
+                            //test this!!!
                             case "/courses/add-students-to-course":
                                     event = {
                                         type: "course",
