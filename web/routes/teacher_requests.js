@@ -1,8 +1,7 @@
 var express = require('express');
-var router = express.Router();
-var path = require("path");
+let router = express.Router();
 
-var Teacher = require("../schemas/teacher");
+let Teacher = require("../schemas/teacher");
 
 
 
