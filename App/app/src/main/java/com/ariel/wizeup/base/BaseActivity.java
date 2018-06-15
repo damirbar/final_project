@@ -143,6 +143,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
     private void initViews() {
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmerAnimation();
         mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
         mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerView = (PlaceHolderView) findViewById(R.id.drawerView);
