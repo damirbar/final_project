@@ -278,7 +278,8 @@ router.post("/messages", function (req, res) {
                         body: req.body.body,
                         email: decoded,
                         date: Date.now(),
-                        name: user.first_name + " " + user.last_name
+                        name: user.first_name + " " + user.last_name,
+                        image: user.profile_img,
                     });
                     msg.save(function (err) {
                         if (err) {
@@ -293,9 +294,12 @@ router.post("/messages", function (req, res) {
                                 socketIOEmitter.emitEventToCourse(msg.cid, 'newCourseMessage', msg);
                             }
                         });
-                        res.status(200).json({message: "successfully added message " + msg.body + " to db"});
+                        res.status(200).json(msg);
                         console.log("successfully added message " + msg.body + " to db");
                     });
+                }
+                else{
+                    return res.status(404).json({message: "no such course"});
                 }
             });
         }
@@ -303,7 +307,7 @@ router.post("/messages", function (req, res) {
 });
 
 router.get("/get-all-messages", function (req, res) {
-    let course_id = req.query.cid;
+    let course_id = Number(req.query.cid);
     Course.aggregate([
             {
                 $lookup: {
@@ -314,7 +318,8 @@ router.get("/get-all-messages", function (req, res) {
                 }
             }, {
                 $match: {
-                    "cid": course_id
+                    "cid": course_id,
+                    "messages_list.reply": false
                 }
             },
             {
@@ -357,7 +362,8 @@ router.post("/reply", function (req, res) {
                     reply: true,
                     body: req.body.body,
                     date: Date.now(),
-                    name: user.first_name + " " + user.last_name
+                    name: user.first_name + " " + user.last_name,
+                    image: user.profile_img,
                 }
             );
             newReply.save(function (err, reply) {
