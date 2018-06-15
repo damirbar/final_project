@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,7 +19,6 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.ariel.wizeup.R;
-import com.ariel.wizeup.dialogs.MyDateDialog;
 import com.ariel.wizeup.dialogs.UploadingDialog;
 import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.Session;
@@ -28,6 +26,9 @@ import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.settings.ChangeLanguage;
 import com.ariel.wizeup.utils.Constants;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.github.rtoshiro.view.video.FullscreenVideoLayout;
 
 import java.io.IOException;
@@ -69,6 +70,16 @@ public class SessionActivity extends AppCompatActivity {
             finish();
         }
         initViews();
+
+
+        Target viewTarget = new ViewTarget(R.id.vid_button_close, this);
+        new ShowcaseView.Builder(this)
+                .setTarget(viewTarget)
+                .setContentTitle("Session tutorial")
+                .setContentText("Press the arrow to open the video.")
+                .singleShot(2)
+                .build();
+
 
         buttonVid.setOnClickListener(v -> {
             if (session.getVideoUrl() == null || (session.getVideoUrl().isEmpty())) {

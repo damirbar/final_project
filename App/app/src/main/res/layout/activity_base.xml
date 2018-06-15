@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/def_background"
     android:focusable="true"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     android:focusableInTouchMode="true">
 
     <android.support.v4.widget.DrawerLayout
@@ -13,7 +14,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@color/def_background">
+        android:background="@color/def_background"
+        android:layout_alignParentLeft="true">
 
         <LinearLayout
             android:id="@+id/layout"
@@ -53,7 +55,8 @@
                             android:layout_marginLeft="55dp"
                             android:layout_marginTop="10dp"
                             android:src="@drawable/wizeup_logo"
-                            android:visibility="visible" />
+                            android:visibility="visible"
+                            android:layout_marginStart="55dp" />
 
                         <TextView
                             android:id="@+id/name_app"
@@ -68,7 +71,9 @@
                             android:text="@string/app_name"
                             android:textColor="@color/white"
                             android:textSize="35sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginStart="5dp" />
 
                     </LinearLayout>
 
@@ -90,6 +95,8 @@
                     app:iconifiedByDefault="true"
                     app:queryHint="Search.." />
 
+
+
                 <android.support.v4.widget.SwipeRefreshLayout
                     android:id="@+id/activity_main_swipe_refresh_layout"
                     android:layout_width="match_parent"
@@ -110,6 +117,39 @@
                         android:visibility="visible" />
 
                 </android.support.v4.widget.SwipeRefreshLayout>
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer_view_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/toolbar"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    shimmer:duration="800">
+
+                    <!-- Adding 7 rows of placeholders -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <include layout="@layout/data_placeholder_layout" />
+
+                        <include layout="@layout/data_placeholder_layout" />
+
+                        <include layout="@layout/data_placeholder_layout" />
+
+                        <include layout="@layout/data_placeholder_layout" />
+
+                        <include layout="@layout/data_placeholder_layout" />
+
+                        <include layout="@layout/data_placeholder_layout" />
+
+                        <include layout="@layout/data_placeholder_layout" />
+                    </LinearLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
 
 
             </RelativeLayout>

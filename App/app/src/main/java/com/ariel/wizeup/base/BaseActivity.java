@@ -1,5 +1,6 @@
 package com.ariel.wizeup.base;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,6 +35,10 @@ import com.ariel.wizeup.settings.ChangeLanguage;
 import com.ariel.wizeup.settings.SettingsActivity;
 import com.ariel.wizeup.utils.Constants;
 import com.ariel.wizeup.utils.EndlessScrollListener;
+import com.facebook.shimmer.ShimmerFrameLayout;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.mindorks.placeholderview.PlaceHolderView;
 import com.squareup.picasso.Picasso;
 
@@ -65,6 +70,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     private ChangeLanguage changeLanguage;
     private String currentNoti;
     private static int ADD_ITEMS = 10;
+    private ShimmerFrameLayout mShimmerViewContainer;
 
 
     @Override
@@ -79,6 +85,8 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         initViews();
         setupDrawer();
         initNoti();
+
+
 
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
@@ -116,6 +124,8 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
     }
 
+
+
     private void initNoti() {
         if(currentNoti.equalsIgnoreCase("on")){
             startService(new Intent(getBaseContext(), NotificationService.class));
@@ -132,6 +142,8 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     };
 
     private void initViews() {
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmerAnimation();
         mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
         mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerView = (PlaceHolderView) findViewById(R.id.drawerView);
@@ -282,7 +294,6 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     protected void onResume() {
         super.onResume();
         loadProfile();
-
     }
 
     private void loadNotificationsInit() {
@@ -302,6 +313,9 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         } else {
             mTvNoResults.setVisibility(View.VISIBLE);
         }
+
+        mShimmerViewContainer.stopShimmerAnimation();
+        mShimmerViewContainer.setVisibility(View.GONE);
 
     }
 

@@ -7,9 +7,12 @@ import android.util.Base64;
 
 import com.ariel.wizeup.utils.Constants;
 
+import org.apache.http.params.HttpConnectionParams;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -38,6 +41,7 @@ public class RetrofitRequests {
 
     public SharedPreferences getSharedPreferences() {return sharedPreferences; }
 
+
     private void initSharedPreferences() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.activity);
         token = sharedPreferences.getString(Constants.TOKEN,"");
@@ -60,7 +64,10 @@ public class RetrofitRequests {
 
         String credentials = email + ":" + password;
         String basic = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.NO_WRAP);
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS);
 
         httpClient.addInterceptor(chain -> {
 
@@ -84,7 +91,11 @@ public class RetrofitRequests {
 
     public  RetrofitInterface getTokenRetrofit() {
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS);
+
 
         httpClient.addInterceptor(chain -> {
 
@@ -95,6 +106,7 @@ public class RetrofitRequests {
             return  chain.proceed(builder.build());
 
         });
+
 
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
 

@@ -57,7 +57,7 @@ public class ServerResponse {
                 Response response = gson.fromJson(errorBody, Response.class);
                 showSnackBarMessage(response.getMessage());
             } else {
-                showSnackBarMessage("Network Error.");
+                showSnackBarMessage("No Internet Connection.");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,7 +74,7 @@ public class ServerResponse {
                 Response response = gson.fromJson(errorBody, Response.class);
                 downSnackBarMessage(response.getMessage());
             } else {
-                downSnackBarMessage("Network Error.");
+                downSnackBarMessage("No Internet Connection.");
             }
         } catch (Exception e) {
             e.printStackTrace();
