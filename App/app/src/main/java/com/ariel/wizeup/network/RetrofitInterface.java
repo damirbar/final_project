@@ -139,7 +139,7 @@ public interface RetrofitInterface {
 
     @Multipart
     @POST("courses/post-file")
-    Observable<Response> uploadFile(@Part MultipartBody.Part file, @Query("cid") int cid);
+    Observable<Response> uploadFile(@Part MultipartBody.Part file, @Query("cid") String cid);
 
     @POST("courses/create-course")
     Observable<Course> createCourse(@Body Course course);

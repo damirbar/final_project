@@ -3,15 +3,7 @@ package com.ariel.wizeup.model;
 public class SessionUser {
     private String email;
     private String display_name;
-    private String rating_val;
 
-    public String getRating_val() {
-        return rating_val;
-    }
-
-    public void setRating_val(String rating_val) {
-        this.rating_val = rating_val;
-    }
 
     public String getEmail() {
         return email;

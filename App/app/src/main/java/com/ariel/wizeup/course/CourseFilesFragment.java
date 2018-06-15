@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -60,6 +61,8 @@ public class CourseFilesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_files, container, false);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         getData();
         initViews(view);
 
@@ -139,6 +142,7 @@ public class CourseFilesFragment extends Fragment {
                 }
                 intent.setType(mimeTypesStr.substring(0, mimeTypesStr.length() - 1));
             }
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivityForResult(Intent.createChooser(intent, "ChooseFile"), INTENT_REQUEST_CODE);
 
         } catch (Exception e) {
@@ -162,7 +166,7 @@ public class CourseFilesFragment extends Fragment {
                     Uri uri = data.getData();
                     File file = new File(uri.getPath());
                     InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
-                    tryUploadFile(getBytes(is), file.getName().trim(), uri.getPath().substring(uri.getPath().lastIndexOf(".")));
+                    tryUploadFile(getBytes(is), file.getName().trim());
                     is.close();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -173,10 +177,10 @@ public class CourseFilesFragment extends Fragment {
         }
     }
 
-    private void tryUploadFile(byte[] bytes, String fileName, String fileType) {
-        RequestBody requestFile = RequestBody.create(MediaType.parse("application/" + fileType), bytes);
+    private void tryUploadFile(byte[] bytes, String fileName) {
+        RequestBody requestFile = RequestBody.create(MediaType.parse("file"), bytes);
         MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", fileName, requestFile);
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body, Integer.parseInt(cid))
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body, cid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseUploadFile, this::handleError));

@@ -68,20 +68,22 @@ public class SessionInfoFragment extends Fragment {
         initSharedPreferences();
         initViews(view);
 
-        mRadioUnderstand.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            tryChangeVal(LIKE);
-            pullSession();
-        });
+        toggle.setOnCheckedChangeListener((group, checkedId) -> {
+            if(mRadioUnderstand.isChecked()) {
+                tryChangeVal(LIKE);
+                pullSession();
 
-        mRadioDontUnderstand.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            tryChangeVal(DISLIKE);
-            pullSession();
-
+            } else if(mRadioDontUnderstand.isChecked()) {
+                tryChangeVal(DISLIKE);
+                pullSession();
+            }
         });
 
         return view;
 
     }
+
+
 
     private Runnable runnable = new Runnable() {
         @Override
@@ -150,8 +152,35 @@ public class SessionInfoFragment extends Fragment {
     }
 
     private void handleResponsePullSession(Session _session) {
-        mSNameTextView.setText(_session.getName());
-        mSidTextView.setText(_session.getSid());
+
+        if (_session.getAdmin().equalsIgnoreCase(email)) {
+            toggle.setVisibility(View.GONE);
+        }
+        else{
+//            for (int i = 0; i < _session.getLikers().length; i++) {
+//                if (_session.getLikers()[i].equalsIgnoreCase(email)) {
+//                    mRadioUnderstand.setChecked(true);
+//                }
+//            }
+//            ////temp
+//
+//            for (int i = 0; i < _session.getDislikers().length; i++) {
+//                if (_session.getDislikers()[i].equalsIgnoreCase(email)) {
+//                    mRadioDontUnderstand.setChecked(true);
+//                }
+//            }
+        }
+
+        int all = _session.getLikers().length + _session.getDislikers().length;
+        if(all == 0){
+            all = 1;
+        }
+        double Likers = _session.getLikers().length;
+        double dislikers = _session.getDislikers().length;
+
+        double result = (Likers / all) * 100;
+        double result2 = (dislikers / all) * 100;
+
 
         //Date
         Date date = _session.getCreation_date();
@@ -161,29 +190,11 @@ public class SessionInfoFragment extends Fragment {
             mDateTextView.setText(s);
         }
 
-        if (_session.getAdmin().equalsIgnoreCase(email)) {
-            toggle.setVisibility(View.GONE);
-        }
-
-
-        for (int i = 0; i < _session.getLikers().length; i++) {
-            if (_session.getLikers()[i].equalsIgnoreCase(email)) {
-                mRadioUnderstand.setChecked(true);
-            }
-        }
-        ////temp
-        for (int i = 0; i < _session.getDislikers().length; i++) {
-            if (_session.getLikers()[i].equalsIgnoreCase(email)) {
-                mRadioDontUnderstand.setChecked(true);
-            }
-        }
-
-        double result = (_session.getLikes() / _session.getLikers().length) * 100;
-        double result2 = (_session.getDislikes() / _session.getDislikers().length) * 100;
         mRatingNum.setText(String.valueOf((int) result) + "%");
         mRatingNum2.setText(String.valueOf((int) result2) + "%");
 
-
+        mSNameTextView.setText(_session.getName());
+        mSidTextView.setText(_session.getSid());
         String teacher = _session.getTeacher_fname() + " " + _session.getTeacher_lname();
         mTeacherTextView.setText(teacher);
         mLocTextView.setText(_session.getLocation());
