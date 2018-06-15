@@ -5,8 +5,7 @@ let mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 let path = require("path");
 let bodyParser = require("body-parser");
-var logger = require('morgan');
-const router = express.Router();
+let logger = require('morgan');
 app.use(logger('dev'));
 
 
@@ -49,9 +48,6 @@ mongoose.connect(mongoDB, {
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 
-require('./routes/routes')(router);
-app.use('/api/v1', router);
-
 
 app.use('/', mainRequests);
 app.use('/teachers', teacherRequests);
@@ -61,10 +57,6 @@ app.use('/sessions', sessionRequests);
 app.use('/search', searchRequests);
 app.use('/auth', authRouts);
 
-
-
-// let authRouts = require("./routes/login_requests");
-// app.use('/auth', authRouts);
 
 
 //////////SOCKET.IO
