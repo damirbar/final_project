@@ -83,13 +83,13 @@
 
                         <!--<a class="file-item file-icon" ng-href="{{file.url}}" data-extension="{{file.type}}">{{file.originalName}}</a>-->
 
-                        <div class="container">
+                        <div class="container single-file-container">
 
                             <div class="col-12">
-                                <div class="file-icon2 file-link">
-                                    <a ng-href="{{file.url}}">
+                                <div class="file-icon2 file-link" ng-click="openFile(file.url)">
+                                    <!--<a ng-href="{{file.url}}">-->
                                         <span class="file__type">{{file.type}}</span>
-                                    </a>
+                                    <!--</a>-->
                                 </div>
                             </div>
                             <div class="col-12 file-name">{{file.originalName | limitTo: 20}}</div>

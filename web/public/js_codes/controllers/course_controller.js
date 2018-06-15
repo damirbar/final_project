@@ -1,5 +1,5 @@
 wizerApp.controller('courseController',
-    function ($scope, $routeParams, $rootScope, $http, CourseService, socketIO) {
+    function ($scope, $routeParams, $rootScope, $http, $window, CourseService, socketIO) {
 
         $scope.loading                  = true;
         $rootScope.showSearchNav        = true;
@@ -177,6 +177,11 @@ wizerApp.controller('courseController',
                 }, function(err) {
                     console.log("error = " + err);
                 });
+        };
+
+
+        $scope.openFile = function(link){
+            $window.open(link, '_blank');
         };
 
 
