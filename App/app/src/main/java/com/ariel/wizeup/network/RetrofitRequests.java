@@ -7,6 +7,8 @@ import android.util.Base64;
 
 import com.ariel.wizeup.utils.Constants;
 
+import org.apache.http.params.HttpConnectionParams;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,11 +41,6 @@ public class RetrofitRequests {
 
     public SharedPreferences getSharedPreferences() {return sharedPreferences; }
 
-    static final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-            .connectTimeout(20, TimeUnit.SECONDS)
-            .writeTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .build();
 
     private void initSharedPreferences() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.activity);
@@ -56,7 +53,6 @@ public class RetrofitRequests {
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
 
         return new Retrofit.Builder()
-                .client(okHttpClient)
                 .baseUrl(Constants.BASE_URL)
                 .addCallAdapterFactory(rxAdapter)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -68,7 +64,10 @@ public class RetrofitRequests {
 
         String credentials = email + ":" + password;
         String basic = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.NO_WRAP);
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS);
 
         httpClient.addInterceptor(chain -> {
 
@@ -84,8 +83,7 @@ public class RetrofitRequests {
 
         return new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
-//                .client(httpClient.build())
-                .client(okHttpClient)
+                .client(httpClient.build())
                 .addCallAdapterFactory(rxAdapter)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(RetrofitInterface.class);
@@ -93,7 +91,11 @@ public class RetrofitRequests {
 
     public  RetrofitInterface getTokenRetrofit() {
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS);
+
 
         httpClient.addInterceptor(chain -> {
 
@@ -105,12 +107,12 @@ public class RetrofitRequests {
 
         });
 
+
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
 
         return new Retrofit.Builder()
-                .client(okHttpClient)
                 .baseUrl(Constants.BASE_URL)
-//                .client(httpClient.build())
+                .client(httpClient.build())
                 .addCallAdapterFactory(rxAdapter)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(RetrofitInterface.class);

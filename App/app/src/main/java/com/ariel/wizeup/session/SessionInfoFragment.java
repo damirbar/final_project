@@ -91,7 +91,10 @@ public class SessionInfoFragment extends Fragment {
             }
 //            result = (understand / numStudents) * 100;
 //            mRatingNum.setText(String.valueOf((int)result) + "%");
+
             tryChangeVal(LIKE);
+            pullSession();
+
 
         });
 
@@ -113,7 +116,10 @@ public class SessionInfoFragment extends Fragment {
             }
 //            result2 = (dontUnderstand / numStudents) * 100;
 //            mRatingNum2.setText(String.valueOf((int)result2) + "%");
+
             tryChangeVal(DISLIKE);
+            pullSession();
+
         });
 
         return view;

@@ -14,6 +14,8 @@
 
     <color name="dialog_color">#009688</color>
 
+    <color name="background">#dddddd</color>
+
     <color name="highlight_default_color">#2196f3</color>
     <color name="secondary_post_text">#989898</color>
     <color name="steelGrey">#888b8e</color>

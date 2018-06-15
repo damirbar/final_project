@@ -58,6 +58,9 @@ dependencies {
     implementation 'com.github.nkzawa:socket.io-client:0.4.2'
     implementation 'io.pristine:libjingle:8871@aar'
 
+    //Tutorial
     implementation 'com.github.amlcurran.showcaseview:library:5.4.3'
 
+    //loading view
+    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
 }

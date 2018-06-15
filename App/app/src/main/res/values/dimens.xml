@@ -1,4 +1,10 @@
 <resources>
+
+    <dimen name="activityPadding">16dp</dimen>
+    <dimen name="placeholderImage">60dp</dimen>
+    <dimen name="placeholderTextHeight">8dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+
     <dimen name="horizontal_margin8">8.0dip</dimen>
     <dimen name="card_items_margin">8dp</dimen>
     <dimen name="zero">0.0dip</dimen>
