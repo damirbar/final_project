@@ -90,10 +90,9 @@
             <div class="logout-activator" ng-click="logout()">Log Out</div>
             <div class="underlined"></div>
         </div>
-        <form class="form-inline my-2 my-lg-0 search-nav-form animate-show-hide" ng-hide="true">
+        <form class="form-inline my-2 my-lg-0 search-nav-form animate-show-hide" ng-show="showSearchNav">
         <!--<form class="form-inline my-2 my-lg-0" ng-if="$location.path() == '/'">-->
 
-            <!--TODO free text search-->
             <input class="form-control mr-sm-2" type="text" placeholder="Search" ng-model="searchTerm.keywords">
             <button class="btn btn-warning my-2 my-sm-0" type="submit"  ng-click="freeTextSearch()" >Search</button>
 
