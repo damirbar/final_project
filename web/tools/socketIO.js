@@ -1,16 +1,17 @@
 const HashMap = require('hashmap');
 const Session = require('../schemas/session');
+const Course = require('../schemas/course');
 
 var clients = new HashMap();
 var sockets = new HashMap();
 var pendingSockets = new HashMap();
 var sessionsRooms = new HashMap();
-var courses = new HashMap();
+var coursesRooms = new HashMap();
 
 var IO = null;
 
 getAllSessions();
-
+getAllCourses();
 
 exports.socketInit = function (socket){
 
@@ -59,7 +60,7 @@ exports.socketInit = function (socket){
 
     socket.on('joinCourseMessages', function(cid){
         console.log('joined course ' + cid);
-        if(courses.has(cid)){
+        if(coursesRooms.has(cid)){
             socket.join(cid, function (){
                 courses.get(cid).connected_users++;
                 console.log("Connected to course chat " + cid);
@@ -139,6 +140,19 @@ function getAllSessions(){
     });
 }
 
+function getAllCourses(){
+    Course.find({},{cid: 1} ,function(err,courses){
+        if(err){
+            console.log(err);
+        }else{
+            courses.forEach(function(course){
+                coursesRooms.set(course.cid, {connected_users: 0});
+                console.log(course);
+            });
+        }
+    });
+}
+
 exports.emitEvent = function (user_id, eventName, args) {
 
     console.log('emitting event ' + eventName);
@@ -151,6 +165,11 @@ exports.emitEvent = function (user_id, eventName, args) {
 };
 
 exports.emitEventToSessionRoom = function (room_id, eventName, args) {
+    console.log('emitting "' + eventName + '" to session room ' + room_id);
+    IO.to(room_id).emit(eventName, args);
+};
+
+exports.emitEventToCourseRoom = function (room_id, eventName, args) {
     console.log('emitting "' + eventName + '" to session room ' + room_id);
     IO.to(room_id).emit(eventName, args);
 };
