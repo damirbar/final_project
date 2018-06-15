@@ -1,22 +1,29 @@
 package com.ariel.wizeup.course;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.dialogs.PostBottomDialog;
@@ -33,6 +40,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -42,6 +51,8 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static android.app.Activity.RESULT_OK;
+import static com.ariel.wizeup.file.OpenFile.getFileDetailFromUri;
+import static com.ariel.wizeup.imageCrop.ImageCropActivity.REQUEST_CODE_PICK_GALLERY;
 import static com.ariel.wizeup.network.RetrofitRequests.getBytes;
 
 public class CourseFilesFragment extends Fragment {
@@ -118,7 +129,6 @@ public class CourseFilesFragment extends Fragment {
 
     private void addFile() {
         try {
-
             String[] mimeTypes =
                     {"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
                             "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
@@ -164,10 +174,12 @@ public class CourseFilesFragment extends Fragment {
 
 
                     Uri uri = data.getData();
-                    File file = new File(uri.getPath());
+                    String fileName = getFileDetailFromUri(getContext(), uri);
+
                     InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
-                    tryUploadFile(getBytes(is), file.getName().trim());
+                    tryUploadFile(getBytes(is), fileName);
                     is.close();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     tab1.dismiss();
@@ -177,8 +189,9 @@ public class CourseFilesFragment extends Fragment {
         }
     }
 
+
     private void tryUploadFile(byte[] bytes, String fileName) {
-        RequestBody requestFile = RequestBody.create(MediaType.parse("file"), bytes);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("*/*"), bytes);
         MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", fileName, requestFile);
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body, cid)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -190,6 +203,7 @@ public class CourseFilesFragment extends Fragment {
     private void handleResponseUploadFile(Response response) {
         tab1.dismiss();
         mServerResponse.showSnackBarMessage(response.getMessage());
+        pullFiles();
 
     }
 

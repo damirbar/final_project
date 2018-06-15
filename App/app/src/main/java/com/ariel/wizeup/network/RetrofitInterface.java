@@ -13,6 +13,7 @@ import com.ariel.wizeup.model.User;
 
 import okhttp3.MultipartBody;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -167,6 +168,11 @@ public interface RetrofitInterface {
 
     @GET("courses/get-message-replies")
     Observable<CourseMessage[]> getCourseMessageReplies(@Query("mid") String mid);
+
+    @FormUrlEncoded
+    @DELETE("courses/remove-file")
+    Observable<Response> removeFile(@Field("publicid") String publicid);
+
 
 
 }
