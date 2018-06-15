@@ -111,11 +111,10 @@ router.post("/new-user", function (req, res) {
     req.checkBody("first_name", "First Name is required").notEmpty();
     req.checkBody("last_name", "Last Name is required").notEmpty();
     req.checkBody("email", "Email is required").notEmpty();
-    // req.checkBody("email".toLowerCase(), "Email is not valid").isEmail();
     if (!validator.validate(email)) {
         console.log("Email is not valid");
         res.status(400).json({message: "Email is not valid"});
-    }// true
+    }
     req.checkBody("password", "Password is required").notEmpty();
     req.checkBody("role", "role is required").notEmpty();
 
@@ -211,7 +210,7 @@ router.put("/change-password", function (req, res) {
 
 router.post("/reset-pass-init", function (req, res) {
 
-    User.findOne({email: req.body.email}, function (err, user) {
+    User.findOne({email: req.body.email.toLowerCase()}, function (err, user) {
         if (err) return next(err);
         if(user){
         const salt = bcrypt.genSaltSync(10);
@@ -235,7 +234,7 @@ router.post("/reset-pass-init", function (req, res) {
 
 router.post("/reset-pass-finish", function (req, res) {
     let token = req.body.accessToken;
-    User.findOne({email: req.body.email}, function (err, user) {
+    User.findOne({email: req.body.email.toLowerCase()}, function (err, user) {
         const diff = new Date() - new Date(user.temp_password_time);
         const seconds = Math.floor(diff / 1000);
         console.log("Seconds :" + seconds);
