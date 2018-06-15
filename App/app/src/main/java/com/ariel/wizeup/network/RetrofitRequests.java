@@ -10,6 +10,7 @@ import com.ariel.wizeup.utils.Constants;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -38,6 +39,12 @@ public class RetrofitRequests {
 
     public SharedPreferences getSharedPreferences() {return sharedPreferences; }
 
+    static final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .connectTimeout(20, TimeUnit.SECONDS)
+            .writeTimeout(20, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .build();
+
     private void initSharedPreferences() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.activity);
         token = sharedPreferences.getString(Constants.TOKEN,"");
@@ -49,6 +56,7 @@ public class RetrofitRequests {
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
 
         return new Retrofit.Builder()
+                .client(okHttpClient)
                 .baseUrl(Constants.BASE_URL)
                 .addCallAdapterFactory(rxAdapter)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -76,7 +84,8 @@ public class RetrofitRequests {
 
         return new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
-                .client(httpClient.build())
+//                .client(httpClient.build())
+                .client(okHttpClient)
                 .addCallAdapterFactory(rxAdapter)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(RetrofitInterface.class);
@@ -99,8 +108,9 @@ public class RetrofitRequests {
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
 
         return new Retrofit.Builder()
+                .client(okHttpClient)
                 .baseUrl(Constants.BASE_URL)
-                .client(httpClient.build())
+//                .client(httpClient.build())
                 .addCallAdapterFactory(rxAdapter)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(RetrofitInterface.class);

@@ -63,7 +63,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="60dp"
                 android:layout_marginBottom="30dp"
                 android:layout_marginTop="10dp"
                 android:visibility="visible">
@@ -77,6 +77,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginEnd="67dp"
                     android:layout_marginRight="60dp"
+                    android:layout_marginTop="15dp"
                     android:background="@null"
                     android:button="@drawable/dislike_checkbox" />
 
@@ -86,21 +87,33 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="5dp"
                     android:gravity="start|center"
                     android:paddingBottom="5dp"
                     android:text="0"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="@android:color/holo_green_light"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvRating2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="start|center"
+                    android:paddingBottom="5dp"
+                    android:text="0"
+                    android:textColor="@android:color/holo_red_dark"
                     android:textSize="18sp" />
 
                 <CheckBox
                     android:id="@+id/like_cbx"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginLeft="60dp"
-                    android:layout_marginStart="74dp"
+                    android:layout_marginStart="61dp"
+                    android:layout_marginTop="15dp"
                     android:background="@null"
                     android:button="@drawable/like_checkbox" />
 

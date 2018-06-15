@@ -1,5 +1,6 @@
 package com.ariel.wizeup.base;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,6 +35,9 @@ import com.ariel.wizeup.settings.ChangeLanguage;
 import com.ariel.wizeup.settings.SettingsActivity;
 import com.ariel.wizeup.utils.Constants;
 import com.ariel.wizeup.utils.EndlessScrollListener;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.mindorks.placeholderview.PlaceHolderView;
 import com.squareup.picasso.Picasso;
 
@@ -115,6 +119,8 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
 
     }
+
+
 
     private void initNoti() {
         if(currentNoti.equalsIgnoreCase("on")){

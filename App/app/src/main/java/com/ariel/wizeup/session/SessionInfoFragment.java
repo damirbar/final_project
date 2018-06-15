@@ -18,11 +18,13 @@ import com.ariel.wizeup.model.Session;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.settings.FeedbackActivity;
+import com.ariel.wizeup.utils.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimerTask;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -33,6 +35,8 @@ public class SessionInfoFragment extends Fragment {
     private CheckBox likeCbx;
     private CheckBox dislikeCbx;
     private TextView mRatingNum;
+    private TextView mRatingNum2;
+
     private ImageView imageView;
 
     private TextView mSNameTextView;
@@ -46,10 +50,15 @@ public class SessionInfoFragment extends Fragment {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private String sid;
-    private int LIKE = 1;
-    private int DISLIKE = 0;
-    private int understand;
+    private String LIKE = "1";
+    private String DISLIKE = "0";
+    private double understand;
+    private double dontUnderstand;
+    private double numStudents;
 
+
+    private Handler handler;
+    private String email;
     private int delay = 5000;
 
 
@@ -61,40 +70,49 @@ public class SessionInfoFragment extends Fragment {
         mServerResponse = new ServerResponse(view.findViewById(R.id.scrollView));
         getData();
         initViews(view);
-        pullSession();
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                pullSession();
-                handler.postDelayed(this, delay);
-            }
-        }, delay);
+        initSharedPreferences();
+        handler = new Handler();
 
 
         likeCbx.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            int currentRating = Integer.parseInt(mRatingNum.getText().toString().trim());
+//            double result = 0;
+//            double result2 = 0;
             if (isChecked) {
                 if (dislikeCbx.isChecked()) {
                     dislikeCbx.setChecked(false);
-                    mRatingNum.setText(String.valueOf(currentRating + 2));
-                } else
-                    mRatingNum.setText(String.valueOf(currentRating + 1));
-            } else
-                mRatingNum.setText(String.valueOf(currentRating - 1));
+//                    dontUnderstand -= 1;
+//                    result2 = (dontUnderstand / numStudents) * 100;
+//                    mRatingNum2.setText(String.valueOf((int)result2) + "%");
+
+                }
+//                understand += 1;
+            } else {
+//                understand -= 1;
+            }
+//            result = (understand / numStudents) * 100;
+//            mRatingNum.setText(String.valueOf((int)result) + "%");
             tryChangeVal(LIKE);
+
         });
 
         dislikeCbx.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            int currentRating = Integer.parseInt(mRatingNum.getText().toString().trim());
+//            double result = 0;
+//            double result2 = 0;
             if (isChecked) {
                 if (likeCbx.isChecked()) {
                     likeCbx.setChecked(false);
-                    mRatingNum.setText(String.valueOf(currentRating - 2));
-                } else
-                    mRatingNum.setText(String.valueOf(currentRating - 1));
-            } else
-                mRatingNum.setText(String.valueOf(currentRating + 1));
+//                    understand -= 1;
+//                    result = (understand / numStudents) * 100;
+//                    mRatingNum.setText(String.valueOf((int)result) + "%");
+                }
+//                dontUnderstand += 1;
+
+            } else {
+//                dontUnderstand -= 1;
+
+            }
+//            result2 = (dontUnderstand / numStudents) * 100;
+//            mRatingNum2.setText(String.valueOf((int)result2) + "%");
             tryChangeVal(DISLIKE);
         });
 
@@ -102,10 +120,21 @@ public class SessionInfoFragment extends Fragment {
 
     }
 
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            pullSession();
+            handler.postDelayed(this, delay);
+        }
+    };
+
+
     private void initViews(View v) {
         likeCbx = v.findViewById(R.id.like_cbx);
         dislikeCbx = v.findViewById(R.id.dislike_cbx);
         mRatingNum = v.findViewById(R.id.tvRating);
+        mRatingNum2 = v.findViewById(R.id.tvRating2);
+
         imageView = v.findViewById(R.id.imageView);
         mSNameTextView = v.findViewById(R.id.tvName);
         mSidTextView = v.findViewById(R.id.tvSid);
@@ -118,9 +147,14 @@ public class SessionInfoFragment extends Fragment {
 
     }
 
+    private void initSharedPreferences() {
+        email = mRetrofitRequests.getSharedPreferences().getString(Constants.TYPE, "");
+    }
+
+
     private void openGraph() {
         Intent i = new Intent(getActivity(), GraphActivity.class);
-        i.putExtra("sid",sid);
+        i.putExtra("sid", sid);
         startActivity(i);
     }
 
@@ -131,7 +165,7 @@ public class SessionInfoFragment extends Fragment {
         }
     }
 
-    private void tryChangeVal(int val) {
+    private void tryChangeVal(String val) {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().changeVal(sid, val)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -162,18 +196,35 @@ public class SessionInfoFragment extends Fragment {
             mDateTextView.setText(s);
         }
 
+        dontUnderstand = 0;
         understand = 0;
-        for(int i=0 ; i<_session.getStudents().length; i++){
-            if(_session.getStudents()[i].getRating_val().equals("1"))
-                understand+=1;
+        numStudents = 1;
+        double result = 0;
+        double result2 = 0;
+        if (_session.getStudents().length != 0) {
+            numStudents = _session.getStudents().length;
+            for (int i = 0; i < numStudents; i++) {
+
+                if (_session.getStudents()[i].getRating_val().equals("1")) {
+                    understand += 1;
+                    if (_session.getStudents()[i].getEmail().equalsIgnoreCase(email)) {
+                        likeCbx.setChecked(true);
+                    }
+                } else {
+                    dontUnderstand += 1;
+                    if (_session.getStudents()[i].getEmail().equalsIgnoreCase(email)) {
+                        dislikeCbx.setChecked(true);
+                    }
+                }
+            }
         }
+        result = (understand / numStudents) * 100;
+        result2 = (dontUnderstand / numStudents) * 100;
+        mRatingNum.setText(String.valueOf((int)result) + "%");
+        mRatingNum2.setText(String.valueOf((int)result2) + "%");
 
-        int result = (understand/_session.getStudents().length)*100;
 
-        mRatingNum.setText(String.valueOf(result)+"%");
-
-
-        String teacher = _session.getTeacher_fname()+" "+_session.getTeacher_lname();
+        String teacher = _session.getTeacher_fname() + " " + _session.getTeacher_lname();
         mTeacherTextView.setText(teacher);
         mLocTextView.setText(_session.getLocation());
         String numStudents = Integer.toString(_session.getStudents().length);
@@ -187,11 +238,17 @@ public class SessionInfoFragment extends Fragment {
 //                    .into(imageView);
     }
 
+    @Override
+    public void onPause() {
+        handler.removeCallbacks(runnable);
+        super.onPause();
+    }
+
 
     @Override
     public void onResume() {
         super.onResume();
-        pullSession();
+        handler.postDelayed(runnable, 0);
     }
 
 

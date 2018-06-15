@@ -260,7 +260,7 @@ public class ResetPasswordDialog extends DialogFragment {
             }
         } else {
 
-            showMessage(getString(R.string.network_error));
+            showMessage("No Internet Connection.");
         }
     }
 
