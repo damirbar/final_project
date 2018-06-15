@@ -4,14 +4,16 @@ var Course = require("../schemas/course");
 var User = require("../schemas/user");
 var File = require("../schemas/file");
 var Session = require("../schemas/session");
+var Notification = require("../schemas/notification");
 let Course_Message = require("../schemas/course_message");
 const socketIOEmitter = require('../tools/socketIO');
-
+const notificationsSystem = require("../tools/notificationsSystem");
 
 let globalCid = "000001";
 
 router.post("/create-course", function (req, res) {
 
+    // req.body.teacher = req.body.teacher.toLowerCase();
     Course.findOne({}).sort({"cid": -1}).then(function (ans) {
         if (ans) {
             globalCid = String(parseInt(ans.cid) + 1);
@@ -291,7 +293,7 @@ router.post("/messages", function (req, res) {
                             if (err) {
                                 return console.log(err);
                             } else {
-                                socketIOEmitter.emitEventToCourse(msg.cid, 'newCourseMessage', msg);
+                                socketIOEmitter.emitEventToCourse(msg.cid,'newCourseMessage', msg);
                             }
                         });
                         res.status(200).json(msg);
@@ -374,16 +376,17 @@ router.post("/reply", function (req, res) {
                 }, function (err) {
                     if (err) return console.log(err);
                     res.status(200).json({message: "added reply"});
-                    // socketIOEmitter.emitEventToSessionRoom(reply.cid, 'newCourseMessageReply', reply);
-                    //
-                    // let notification = new Notification({
-                    //     receiver_id: notified_id,
-                    //     sender_id: replier_id, // the user who replied
-                    //     action: 4,
-                    //     subject: 'message',
-                    //     subject_id: subject_id
-                    // });
-                    // notificationsSystem.saveAndEmitNotification(notification);
+                    socketIOEmitter.emitEventToSessionRoom(reply.cid, 'newCourseMessageReply', reply);
+
+                    let notification = new Notification({
+                        receiver_id: notified_id,
+                        sender_id: replier_id, // the user who replied
+                        action: 4,
+                        subject: 'course message',
+                        subject_id: subject_id
+                    });
+                    console.log(notification);
+                    notificationsSystem.saveAndEmitNotification(notification);
                 });
             });
         }

@@ -305,6 +305,7 @@ router.get("/get-message-replies", function (req, res) {
     });
 });
 
+///DEPRECATED
 router.get("/rate-reply-message", function (req, res) {
     const rating = Number(req.query.rating);
     const mess_id = req.query.msgid;

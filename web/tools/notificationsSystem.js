@@ -2,7 +2,7 @@ const socketIOEmitter = require('../tools/socketIO');
 const Notification = require('../schemas/notification');
 const User = require('../schemas/user');
 // const Message = require('../schemas/session_message');
-// const Message = require('../schemas/session_message');
+const Course_messages = require('../schemas/course_message');
 const Message = require('../schemas/session_message');
 const Session = require('../schemas/session');
 ObjectID = require('mongodb').ObjectID;
@@ -19,6 +19,7 @@ var actionsTypes = {
 var subjectTypes = {
     'message': Message,
     'session': Session,
+    'course message': Course_messages
 };
 
 

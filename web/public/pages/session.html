@@ -136,7 +136,7 @@
                         <h4 class="card-title bs-card-text">Teacher: {{session.teacher_fname}} {{session.teacher_lname}}</h4>
                         <div class="card-text bs-card-text">Location: {{session.location}}</div>
                         <div class="card-text bs-card-text">Contact: {{session.admin}}</div>
-                        <div class="card-text bs-card-text">{{session.students.length}} students connected</div>
+                        <div class="card-text bs-card-text">{{session.connectedUsers}} students connected</div>
                         </div>
 
                         <div class="session-rating container">
@@ -245,7 +245,7 @@
                             <button type="button" class="reply btn btn-outline-dark" data-toggle="modal"
                                     data-target="#replyModal"
                                     style="cursor: pointer" ng-click="setMsgToReply(msg)">
-                                {{msg.replies.length}} Replies
+                                {{msg.num_of_replies}} Replies
                                 <div class="underlined"></div>
                             </button>
 

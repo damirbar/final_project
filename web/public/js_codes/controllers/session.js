@@ -30,22 +30,27 @@ wizerApp.controller('sessionController',
             var index = $scope.sessionMessages.length;
             $scope.sessionMessagesMap[message_id] = index;
            $scope.sessionMessages.push(message);
-
         });
 
 
         socketIO.on('newSessionMessageReply', function(message){
+            if($scope.messageToReply._id === message.parent_id) {
+                var message_id = message._id;
+                var index = $scope.currentMessageReplies.length;
+                $scope.currentMessageRepliesMap[message_id] = index;
+                $scope.currentMessageReplies.push(message);
+            }
+            console.log($scope.sessionMessagesMap);
+            console.log($scope.sessionMessages);
 
-            if($scope.messageToReply._id != message.parent_id) return;
+            $scope.sessionMessages[$scope.sessionMessagesMap[message.parent_id]].num_of_replies += 1;
+            console.log($scope.sessionMessages[$scope.sessionMessagesMap[message.parent_id]]);
 
-            var message_id = message._id;
-            var index = $scope.currentMessageReplies.length;
-            $scope.currentMessageRepliesMap[message_id] = index;
-            $scope.currentMessageReplies.push(message);
         });
 
         socketIO.on('updateSessionConnectedUsers', function(update){
-            $scope.connectedUsers += update;
+            console.log('updating');
+            $scope.session.connectedUsers = update;
         });
 
         socketIO.on('updateMessageRating', function(update){
@@ -260,7 +265,6 @@ wizerApp.controller('sessionController',
                 .then(function (data) {
                     $scope.session = data;
                     $scope.isConnectedToSession = true;
-                    // $('session-video').attr('src',$scope.session.videoUrl);
                     console.log(JSON.stringify(data));
                 })
                 .catch(function (err) {
