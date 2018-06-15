@@ -76,7 +76,7 @@ public class CourseCommentsAdapter extends ArrayAdapter<CourseMessage> {
             mDate.setText(s);
         }
 
-        String pic = currentMessage.getProfile_img();
+        String pic = currentMessage.getImage();
         if (pic != null && !(pic.isEmpty()))
             Picasso.with(mContext)
                     .load(pic)

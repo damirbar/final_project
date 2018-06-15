@@ -63,33 +63,21 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="70dp"
                 android:layout_marginBottom="30dp"
                 android:layout_marginTop="10dp"
                 android:visibility="visible">
-
-                <CheckBox
-                    android:id="@+id/dislike_cbx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginEnd="67dp"
-                    android:layout_marginRight="60dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@null"
-                    android:button="@drawable/dislike_checkbox" />
 
                 <TextView
                     android:id="@+id/tvRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginStart="100dp"
                     android:gravity="start|center"
-                    android:paddingBottom="5dp"
                     android:text="0"
                     android:textColor="@android:color/holo_green_light"
                     android:textSize="18sp" />
@@ -98,24 +86,54 @@
                     android:id="@+id/tvRating2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="100dp"
                     android:gravity="start|center"
-                    android:paddingBottom="5dp"
                     android:text="0"
                     android:textColor="@android:color/holo_red_dark"
                     android:textSize="18sp" />
 
-                <CheckBox
-                    android:id="@+id/like_cbx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginStart="61dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@null"
-                    android:button="@drawable/like_checkbox" />
+                <RadioGroup
+                    android:id="@+id/toggle"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/tvRating"
+                    android:layout_marginLeft="@dimen/top_margin30"
+                    android:layout_marginRight="@dimen/top_margin30"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/pink_out_line"
+                    android:checkedButton="@+id/radio_student"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="1dp"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/toggle_widget_background"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="I get it"
+                        android:textColor="@color/white" />
+
+                    <RadioButton
+                        android:id="@+id/radio_2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="1dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/toggle_widget_background"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="I don't get it"
+                        android:textColor="@color/white" />
+                </RadioGroup>
 
             </RelativeLayout>
 
