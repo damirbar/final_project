@@ -18,7 +18,7 @@ router.post("/create-course", function (req, res) {
         if (ans) {
             globalCid = String(parseInt(ans.cid) + 1);
         }
-        User.findOne({email: req.body.teacher}, function (err, teacher) {
+        User.findOne({email: req.body.teacher.toLowerCase()}, function (err, teacher) {
             if (teacher) {
                 const course = new Course({
                     cid: globalCid,

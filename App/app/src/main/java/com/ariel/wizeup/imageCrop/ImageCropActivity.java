@@ -18,10 +18,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -122,6 +124,8 @@ public class ImageCropActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_crop);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         mContentResolver = getContentResolver();
         mImageView = (PhotoView) findViewById(R.id.iv_photo);
         mCropOverlayView = (CropOverlayView) findViewById(R.id.crop_overlay);
@@ -245,6 +249,7 @@ public class ImageCropActivity extends AppCompatActivity {
 
     private void takePic() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         try {
             Uri mImageCaptureUri = null;
             String state = Environment.getExternalStorageState();
@@ -255,7 +260,8 @@ public class ImageCropActivity extends AppCompatActivity {
             }
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
             takePictureIntent.putExtra("return-data", true);
-            startActivityForResult(takePictureIntent, REQUEST_CODE_TAKE_PICTURE);
+            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivityForResult(takePictureIntent, REQUEST_CODE_TAKE_PICTURE);
         } catch (ActivityNotFoundException e) {
             Log.e(TAG, "Can't take picture", e);
             Toast.makeText(this, "Can't take picture", Toast.LENGTH_LONG).show();
@@ -271,6 +277,7 @@ public class ImageCropActivity extends AppCompatActivity {
     private void pickImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
         try {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivityForResult(intent, REQUEST_CODE_PICK_GALLERY);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, "No image source available", Toast.LENGTH_SHORT).show();

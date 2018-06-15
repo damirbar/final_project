@@ -74,6 +74,7 @@ wizerApp.controller('navController', function ($scope, AuthService, $location, $
             unregisterUserFromSocketIO(AuthService.user_id);
             $scope.isLogged = false;
             AuthService.logout();
+            $("#loginModal").modal('show');
             $location.path('/');
             $timeout(function () {
                 $location.path('/');

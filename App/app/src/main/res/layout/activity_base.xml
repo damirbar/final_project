@@ -96,7 +96,6 @@
                     app:queryHint="Search.." />
 
 
-
                 <android.support.v4.widget.SwipeRefreshLayout
                     android:id="@+id/activity_main_swipe_refresh_layout"
                     android:layout_width="match_parent"
@@ -110,6 +109,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
+                        android:layout_marginTop="15dp"
                         android:background="@color/def_background"
                         android:divider="@color/def_background"
                         android:listSelector="@android:color/transparent"

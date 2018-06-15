@@ -19,21 +19,31 @@ public class Session implements Parcelable {
     private Date creation_date;
     private SessionUser students[];
     private String cid;
+    private int likes;
+    private int dislikes;
+    private String likers[];
+    private String dislikers[];
+
+
+
 
     public Session(){}
 
-    public Session(Parcel in) {
+
+    protected Session(Parcel in) {
         sid = in.readString();
         name = in.readString();
         admin = in.readString();
         location = in.readString();
         videoUrl = in.readString();
-        picID = in.readString();
         teacher_fname = in.readString();
         teacher_lname = in.readString();
+        picID = in.readString();
         cid = in.readString();
-
-
+        likes = in.readInt();
+        dislikes = in.readInt();
+        likers = in.createStringArray();
+        dislikers = in.createStringArray();
     }
 
     public static final Creator<Session> CREATOR = new Creator<Session>() {
@@ -47,6 +57,39 @@ public class Session implements Parcelable {
             return new Session[size];
         }
     };
+
+    public String[] getLikers() {
+        return likers;
+    }
+
+    public void setLikers(String[] likers) {
+        this.likers = likers;
+    }
+
+    public String[] getDislikers() {
+        return dislikers;
+    }
+
+    public void setDislikers(String[] dislikers) {
+        this.dislikers = dislikers;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public int getDislikes() {
+        return dislikes;
+    }
+
+    public void setDislikes(int dislikes) {
+        this.dislikes = dislikes;
+    }
+
 
     public String getCid() {
         return cid;
@@ -150,11 +193,13 @@ public class Session implements Parcelable {
         parcel.writeString(admin);
         parcel.writeString(location);
         parcel.writeString(videoUrl);
-        parcel.writeString(picID);
         parcel.writeString(teacher_fname);
         parcel.writeString(teacher_lname);
+        parcel.writeString(picID);
         parcel.writeString(cid);
-
-
+        parcel.writeInt(likes);
+        parcel.writeInt(dislikes);
+        parcel.writeStringArray(likers);
+        parcel.writeStringArray(dislikers);
     }
 }

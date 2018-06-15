@@ -1,5 +1,7 @@
-wizerApp.controller('homeController', ['$scope', '$http', 'SessionService', 'SearchService', '$location',
-    function ($scope, $http, SessionService, SearchService, $location) {
+wizerApp.controller('homeController', ['$scope', '$http', '$rootScope', 'SessionService', 'SearchService', '$location',
+    function ($scope, $http, $rootScope, SessionService, SearchService, $location) {
+
+        $rootScope.showSearchNav = false;
 
         //Free text search
         $scope.searchTerm = {keywords: ""}; //keywords for the free text search

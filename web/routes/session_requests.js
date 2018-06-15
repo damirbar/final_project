@@ -31,7 +31,6 @@ router.post("/connect-session", function (req, res) {
                         if (name !== user.display_name) {
                             sess.students.splice(i, 1);
                             sess.students.push({
-                                rating_val: "1",
                                 email: decoded,
                                 display_name: name
                             });
@@ -51,7 +50,6 @@ router.post("/connect-session", function (req, res) {
                 });
                 if (!exists) {
                     sess.students.push({
-                        rating_val: "1",
                         email: decoded,
                         display_name: name
                     });
@@ -482,21 +480,38 @@ router.get("/get-all-user-messages", function (req, res) {
 
 router.get("/disconnect", function (req, res) {
     Session.findOne({sid: req.query.sid}, function (err, sess) {
-        if (err) return next(err);
-        let found = false;
-        for (let i = 0; i < sess.students.length; ++i) {
-            if (sess.students[i].email === req.verifiedEmail) {
-                found = true;
+        if (err) console.log(err);
+        sess.students.forEach(function (student, i) {
+            if (student.email === req.verifiedEmail) {
                 sess.students.splice(i, 1);
-                sess.save().then(function () {
-                    console.log("Disconnected " + req.verifiedEmail + " from session " + req.query.sid);
-                    res.status(200).json({message: "Disconnected " + req.verifiedEmail + " from session " + req.query.sid})
-                });
+
+                if (sess.likers.includes(req.verifiedEmail)) {
+                    sess.likers.forEach(function(like, i){
+                        if(like === req.verifiedEmail) {
+                            sess.likers.splice(i, 1);
+                            sess.likes -= 1;
+                            sess.save();
+                        }
+                    });
+                }
+                else if (sess.dislikers.includes(req.verifiedEmail)) {
+                    sess.dislikers.forEach(function(dis, i){
+                       if(dis === req.verifiedEmail) {
+                           sess.dislikers.splice(i, 1);
+                           sess.dislikes -=1;
+                           sess.save();
+                       }
+                    });
+
+                }
+                else{
+                    sess.save().then(function () {
+                        console.log("Disconnected " + req.verifiedEmail + " from session " + req.query.sid);
+                        res.status(200).json({message: "Disconnected " + req.verifiedEmail + " from session " + req.query.sid})
+                    });
+                }
             }
-        }
-        if (!found) {
-            res.status(404).json({message: "User " + req.verifiedEmail + " not found in session " + req.query.sid})
-        }
+        });
     });
 });
 

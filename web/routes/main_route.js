@@ -36,7 +36,7 @@ router.all("*", type, function (req, res, next) {
                 res.sendFile(path.join(__dirname + "/../index.html"));
                 return res.status(401).json({success: false, message: 'Failed to authenticate token.'});
             } else {
-                req.verifiedEmail = decoded;
+                req.verifiedEmail = decoded.toLowerCase();
 
                 User.findOne({email: decoded}, function (err, user) {
 

@@ -1,7 +1,8 @@
 wizerApp.controller('searchController',
-    function ($scope, $routeParams, ProfileService, SearchService) {
+    function ($scope, $routeParams, $rootScope, $window, ProfileService, SearchService) {
 
-    $scope.loading = true;
+        $rootScope.showSearchNav = true;
+        $scope.loading = true;
         $scope.results = {};
         SearchService.freeTextSearch($routeParams.keyword)
             .then(function (data) {
@@ -11,6 +12,10 @@ wizerApp.controller('searchController',
             }, function (err) {
 
             });
+
+        $scope.openFile = function(link){
+            $window.open(link, '_blank');
+        };
 
 
     });
