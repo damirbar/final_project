@@ -76,12 +76,12 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
             User user = (User) a;
 
             listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_user, parent, false);
-            TextView mName = (TextView) listItem.findViewById(R.id.user_name);
-            TextView mCountry = (TextView) listItem.findViewById(R.id.country);
-            ImageView profileImage = (ImageView) listItem.findViewById(R.id.user_image);
+            TextView mName = listItem.findViewById(R.id.user_name);
+            TextView mBio = listItem.findViewById(R.id.bio);
+            ImageView profileImage = listItem.findViewById(R.id.user_image);
 
 
-            mCountry.setText(user.getCountry());
+            mBio.setText(user.getAbout_me());
             String disName = user.getDisplay_name();
             if (disName != null && !(disName.isEmpty())) {
                 mName.setText(user.getDisplay_name());
@@ -102,8 +102,8 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
             Session session = (Session) a;
 
             listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_session, parent, false);
-            TextView mName = (TextView) listItem.findViewById(R.id.sid_name);
-            TextView mDate = (TextView) listItem.findViewById(R.id.creation_date);
+            TextView mName = listItem.findViewById(R.id.sid_name);
+            TextView mDate = listItem.findViewById(R.id.creation_date);
             mName.setText(session.getName());
 
 
@@ -125,11 +125,11 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
             PRDownloader.initialize(mContext, config);
 
             listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_file, parent, false);
-            TextView mName = (TextView) listItem.findViewById(R.id.file_name);
-            TextView mDate = (TextView) listItem.findViewById(R.id.creation_date);
-            TextView progressInfo = (TextView) listItem.findViewById(R.id.textViewProgress);
-            Button btStart = (Button) listItem.findViewById(R.id.buttonStart);
-            ProgressBar progressBar = (ProgressBar) listItem.findViewById(R.id.progressBar);
+            TextView mName = listItem.findViewById(R.id.file_name);
+            TextView mDate = listItem.findViewById(R.id.creation_date);
+            TextView progressInfo = listItem.findViewById(R.id.textViewProgress);
+            Button btStart = listItem.findViewById(R.id.buttonStart);
+            ProgressBar progressBar = listItem.findViewById(R.id.progressBar);
             ImageButton menu = listItem.findViewById(R.id.feed_item_menu);
 
             mName.setText(file.getName());
@@ -256,8 +256,8 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
             Course course = (Course) a;
 
             listItem = LayoutInflater.from(mContext).inflate(R.layout.feed_course_item, parent, false);
-            TextView mCourseName = (TextView) listItem.findViewById(R.id.course_name);
-            TextView mTecherName = (TextView) listItem.findViewById(R.id.techer_name);
+            TextView mCourseName = listItem.findViewById(R.id.course_name);
+            TextView mTecherName = listItem.findViewById(R.id.techer_name);
 
             mCourseName.setText(course.getName());
             mTecherName.setText(course.getLocation());///change to teacher name
