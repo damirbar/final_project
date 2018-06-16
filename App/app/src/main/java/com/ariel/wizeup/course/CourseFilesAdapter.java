@@ -21,6 +21,10 @@ import android.widget.Toast;
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.CourseFile;
 import com.ariel.wizeup.file.DownloadFile;
+import com.ariel.wizeup.model.CourseMessage;
+import com.ariel.wizeup.model.Response;
+import com.ariel.wizeup.network.RetrofitRequests;
+import com.ariel.wizeup.network.ServerResponse;
 import com.downloader.Error;
 import com.downloader.OnCancelListener;
 import com.downloader.OnDownloadListener;
@@ -34,8 +38,14 @@ import java.io.File;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 import static com.ariel.wizeup.file.OpenFile.dirPath;
 import static com.ariel.wizeup.file.OpenFile.openFile;
@@ -44,13 +54,21 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
     private Context mContext;
     private List<CourseFile> filesList;
     private boolean[] progressState;
+    private RetrofitRequests mRetrofitRequests;
+    private ServerResponse mServerResponse;
+    private CompositeSubscription mSubscriptions;
+    private int positionDel;
 
 
-    public CourseFilesAdapter(Activity context, ArrayList<CourseFile> list) {
+    public CourseFilesAdapter(Activity context, ArrayList<CourseFile> list, View v) {
         super(context, 0, list);
         mContext = context;
         filesList = list;
         progressState = new boolean[list.size()];
+        mSubscriptions = new CompositeSubscription();
+        mRetrofitRequests = new RetrofitRequests(context);
+        mServerResponse = new ServerResponse(v);
+
     }
 
     public List<CourseFile> getCoursesList() {
@@ -118,9 +136,14 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
                         popup.show();
                         popup.setOnMenuItemClickListener(item -> {
                             switch (item.getItemId()) {
+                                case R.id.delete:
+                                    positionDel = position;
+                                    deleteFile(filesList.get(position).getPublicid());
+                                    break;
                                 case R.id.report:
                                     AlertDialogTheme();
                                     break;
+
                                 case R.id.action_share:
                                     String smsBody = "I believe this will be of interest to you. Please let me know what you think.\n" +
                                             filesList.get(position).getUrl();
@@ -228,6 +251,26 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
         AlertDialog dialog = AlertBuilder.create();
         dialog.show();
     }
+
+    private void deleteFile(String publicid) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().removeFile(publicid)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
+    }
+
+    private void handleResponse(Response response) {
+        filesList.remove(filesList.get(positionDel));
+        notifyDataSetChanged();
+    }
+
+
+    @Override
+    public void finalize() {
+        mSubscriptions.unsubscribe();
+    }
+
+
 
 }
 

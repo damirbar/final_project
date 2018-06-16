@@ -77,10 +77,11 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
 
             listItem = LayoutInflater.from(mContext).inflate(R.layout.search_item_user, parent, false);
             TextView mName = (TextView) listItem.findViewById(R.id.user_name);
+            TextView mCountry = (TextView) listItem.findViewById(R.id.country);
             ImageView profileImage = (ImageView) listItem.findViewById(R.id.user_image);
 
 
-
+            mCountry.setText(user.getCountry());
             String disName = user.getDisplay_name();
             if (disName != null && !(disName.isEmpty())) {
                 mName.setText(user.getDisplay_name());
@@ -155,7 +156,7 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
                     switch (v.getId()) {
                         case R.id.feed_item_menu:
                             PopupMenu popup = new PopupMenu(mContext, v);
-                            popup.getMenuInflater().inflate(R.menu.file_clipboard_popup,
+                            popup.getMenuInflater().inflate(R.menu.file_clipboard_popup_search,
                                     popup.getMenu());
                             popup.show();
                             popup.setOnMenuItemClickListener(item -> {

@@ -26,12 +26,12 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="50dp"
-                    android:src="@drawable/wizeup_logo" />
+                    android:src="@drawable/question" />
 
                 <TextView
                     android:id="@+id/tvName"

@@ -32,7 +32,8 @@ public class TimelineActivity extends AppCompatActivity {
     private TextView mTvNoResults;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private EventsAdapter mAdapter;
-    private static int ADD_ITEMS = 10;
+    private static int ADD_ITEMS = 20;
+    private boolean first = true;
 
 
     @Override
@@ -42,78 +43,33 @@ public class TimelineActivity extends AppCompatActivity {
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.search_List));
+        mAdapter = new EventsAdapter(this, new ArrayList<>());
+
         initViews();
+        loadEvents();
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
-            loadEventsInit();
-//            eventsList.setOnScrollListener(new EndlessScrollListener() {
-//                @Override
-//                public boolean onLoadMore(int page, int totalItemsCount) {
-//                    // Triggered only when new data needs to be appended to the list
-//                    // Add whatever code is needed to append new items to your AdapterView
-////                mServerResponse.showSnackBarMessage("page: "+page+" totalItemsCount: "+totalItemsCount);
-//                    loadEvents();
-//                    // or loadNextDataFromApi(totalItemsCount);
-//                    return true; // ONLY if more data is actually being loaded; false otherwise.
-//                }
-//            });
-
+            first = true;
+            loadEvents();
             mSwipeRefreshLayout.setRefreshing(false);
         }, 1000));
 
 
-        loadEventsInit();
-
         eventsList.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to your AdapterView
-//                mServerResponse.showSnackBarMessage("page: "+page+" totalItemsCount: "+totalItemsCount);
                 loadEvents();
-                // or loadNextDataFromApi(totalItemsCount);
                 return true; // ONLY if more data is actually being loaded; false otherwise.
             }
         });
-
     }
-
-    private EndlessScrollListener mEndlessScrollListener = new EndlessScrollListener() {
-
-        @Override
-        public boolean onLoadMore(int page, int totalItemsCount) {
-            loadEvents();
-            return false;
-        }
-    };
 
     private void initViews() {
-        ImageButton buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
+        ImageButton buttonBack = findViewById(R.id.image_Button_back);
         mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
-        mTvNoResults = (TextView) findViewById(R.id.tv_no_results);
-        eventsList = (ListView) findViewById(R.id.events);
+        mTvNoResults = findViewById(R.id.tv_no_results);
+        eventsList = findViewById(R.id.events);
         buttonBack.setOnClickListener(view -> finish());
-    }
-
-
-    private void loadEventsInit() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getEvents(0, ADD_ITEMS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseEventsInit, i -> mServerResponse.handleErrorDown(i)));
-
-    }
-
-    private void handleResponseEventsInit(Event event[]) {
-        if (!(event.length == 0)) {
-            ArrayList<Event> saveEvents = new ArrayList<>(Arrays.asList(event));
-            mTvNoResults.setVisibility(View.GONE);
-            mAdapter = new EventsAdapter(this, new ArrayList<>(saveEvents));
-            eventsList.setAdapter(mAdapter);
-        } else {
-            mTvNoResults.setVisibility(View.VISIBLE);
-        }
-
     }
 
     private void loadEvents() {
@@ -125,7 +81,17 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     private void handleResponseEvents(Event event[]) {
-        if (!(event.length == 0)) {
+        if (first) {
+            if (event.length != 0) {
+                ArrayList<Event> saveEvents = new ArrayList<>(Arrays.asList(event));
+                mTvNoResults.setVisibility(View.GONE);
+                mAdapter = new EventsAdapter(this, new ArrayList<>(saveEvents));
+                eventsList.setAdapter(mAdapter);
+            } else {
+                mTvNoResults.setVisibility(View.VISIBLE);
+            }
+            first = false;
+        } else if (event.length != 0) {
             ArrayList<Event> saveEvents = new ArrayList<>(Arrays.asList(event));
             mAdapter.getEventsList().addAll(saveEvents);
             mAdapter.notifyDataSetChanged();
@@ -137,8 +103,6 @@ public class TimelineActivity extends AppCompatActivity {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
-
-
 
 
 }

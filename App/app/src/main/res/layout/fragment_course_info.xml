@@ -26,10 +26,12 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
+                    android:layout_marginLeft="32dp"
                     android:layout_marginStart="32dp"
                     app:srcCompat="@drawable/classmates_icon" />
 
@@ -38,8 +40,10 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginEnd="29dp"
+                    android:layout_marginRight="29dp"
                     android:layout_marginTop="@dimen/top_margin30"
                     android:gravity="left|center"
                     android:textColor="@android:color/black"
@@ -64,7 +68,7 @@
                     android:layout_below="@+id/tv_teacher"
                     android:layout_marginTop="5dp"
                     android:gravity="left|center"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="@android:color/holo_blue_dark"
                     android:textSize="14sp" />
 
             </RelativeLayout>

@@ -1,5 +1,7 @@
 package com.ariel.wizeup.course;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -60,7 +62,14 @@ public class CourseInfoFragment extends Fragment {
         mTPoints = v.findViewById(R.id.tv_points);
         mTCreationDate = v.findViewById(R.id.tv_creation_date);
         mTLoc = v.findViewById(R.id.tv_Loc);
+        mTTeacherEmail.setOnClickListener(view -> sendMail());
 
+    }
+
+    private void sendMail() {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto",mTTeacherEmail.getText().toString().trim(), null));
+        startActivity(Intent.createChooser(emailIntent, "Send email..."));
     }
 
     private void getData() {

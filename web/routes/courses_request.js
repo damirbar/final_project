@@ -202,7 +202,7 @@ router.post('/post-file', type, function (req, res) {
 
 router.delete('/remove-file', function (req, res) {
 
-    let publicid = req.body.publicid;
+    let publicid = req.query.publicid;
 
     cloudinary.v2.uploader.destroy(publicid,
         function (err, result) {

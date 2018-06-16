@@ -110,8 +110,7 @@ public class SessionInfoFragment extends Fragment {
         mLocTextView = v.findViewById(R.id.tvLocation);
         mOnlineNum = v.findViewById(R.id.tvOnlineNum);
         mRatingNum.setOnClickListener(view -> openGraph());
-
-
+        mRatingNum2.setOnClickListener(view -> openGraph());
     }
 
     private void initSharedPreferences() {

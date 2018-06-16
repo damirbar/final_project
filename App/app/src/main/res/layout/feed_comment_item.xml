@@ -31,7 +31,7 @@
         android:layout_marginStart="@dimen/padding8"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:padding="5dp"
-        android:src="@drawable/default_user_image"
+        android:src="@drawable/question2"
         app:siBorderColor="#cccccc"
         app:siBorderWidth="2dp" />
 
@@ -56,7 +56,6 @@
             android:ellipsize="end"
             android:gravity="start"
             android:maxLines="2"
-            android:text="user originalName"
             android:textAlignment="viewStart"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/subhead_size" />
@@ -65,7 +64,6 @@
             android:id="@+id/creation_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3/3/18"
             android:textColor="@color/secondary_post_text"
             android:textSize="@dimen/caption_size" />
 
@@ -89,7 +87,7 @@
                 android:id="@+id/like_cbx"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_marginLeft="25dp"
+                android:layout_marginLeft="0dp"
                 android:layout_marginStart="25dp"
                 android:background="@null"
                 android:button="@drawable/like_checkbox"
