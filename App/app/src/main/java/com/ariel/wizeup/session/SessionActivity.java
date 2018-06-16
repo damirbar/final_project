@@ -270,7 +270,7 @@ public class SessionActivity extends AppCompatActivity {
     private void tryUploadVid(byte[] bytes) {
         RequestBody requestFile = RequestBody.create(MediaType.parse("video/mp4"), bytes);
         MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", "video.mp4", requestFile);
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadVid(body, session.getSid())
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadVid(session.getSid(), body)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseUploadVid, this::handleError));

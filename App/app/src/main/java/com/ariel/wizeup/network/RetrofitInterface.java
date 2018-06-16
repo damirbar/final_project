@@ -113,7 +113,7 @@ public interface RetrofitInterface {
 
     @Multipart
     @POST("sessions/post-video")
-    Observable<Response> uploadVid(@Part MultipartBody.Part file, @Query("sid") String sid);
+    Observable<Response> uploadVid( @Query("sid") String sid, @Part MultipartBody.Part file);
 
     @GET("sessions/get-session")
     Observable<Session> getSessionById(@Query("sid") String sid);
