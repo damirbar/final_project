@@ -312,70 +312,86 @@ router.get("/rate-reply-message", function (req, res) {
     let id = new ObjectID(mess_id);
     // finds the user
     User.findOne({email: decoded}, function (err, user) {
-        if (err) throw err;
+        if (err) {
+            console.log(err);
+            next(err);
+        }
+        if(user) {
+            //finds the message and fetches its likers and dislikers arrays.
+            Session_Message.findOne({'replies._id': id}, function (err, message) {
+                if (err) {
+                    console.log(err);
+                    next(err);
+                }
+                if(message) {
+                    message.replies.forEach(function (org, i) {
+                        if (org._id == mess_id) {
+                            if (err) return err;
+                            to = org.email;
+                            let likers = org.likers;
+                            let dislikers = org.dislikers;
+                            let liked = likers.indexOf(user.id) > -1; // true if the user has liked the message
+                            let disliked = dislikers.indexOf(user.id) > -1;// true if the user has disliked the message
 
-        //finds the message and fetches its likers and dislikers arrays.
-        Session_Message.findOne({'replies._id': id}, function (err, message) {
-            message.replies.forEach(function (org, i) {
-                if (org._id == mess_id) {
-                    if (err) return err;
-                    to = org.email;
-                    let likers = org.likers;
-                    let dislikers = org.dislikers;
-                    let liked = likers.indexOf(user.id) > -1; // true if the user has liked the message
-                    let disliked = dislikers.indexOf(user.id) > -1;// true if the user has disliked the message
+                            let newMesssage = org;
+                            message.replies.splice(i, 1);
 
-                    let newMesssage = org;
-                    message.replies.splice(i, 1);
-
-                    if (rating === 1) { // user likes the message
-                        if (liked) { // user has already liked the message
-                            newMesssage.likers.forEach(function (liker, i) {
-                                if (liker === user.id) newMesssage.likers.splice(i, 1);
+                            if (rating === 1) { // user likes the message
+                                if (liked) { // user has already liked the message
+                                    newMesssage.likers.forEach(function (liker, i) {
+                                        if (liker === user.id) newMesssage.likers.splice(i, 1);
+                                    });
+                                    newMesssage.likes -= 1;
+                                } else if (disliked) {
+                                    newMesssage.likers.push(user.id);
+                                    newMesssage.dislikers.forEach(function (disliker, i) {
+                                        if (disliker === user.id) newMesssage.dislikers.splice(i, 1);
+                                    });
+                                    newMesssage.dislikes -= 1;
+                                    newMesssage.likes += 1;
+                                } else {
+                                    newMesssage.likers.push(user.id);
+                                    newMesssage.likes += 1;
+                                }
+                            } else {
+                                if (disliked) {
+                                    newMesssage.dislikers.forEach(function (disliker, i) {
+                                        if (disliker === user.id) newMesssage.dislikers.splice(i, 1);
+                                    });
+                                    newMesssage.dislikes -= 1;
+                                } else if (liked) {
+                                    newMesssage.dislikers.push(user.id);
+                                    newMesssage.likers.forEach(function (liker, i) {
+                                        if (liker === user.id) newMesssage.likers.splice(i, 1);
+                                    });
+                                    newMesssage.likes -= 1;
+                                    newMesssage.dislikes += 1;
+                                } else {
+                                    newMesssage.dislikers.push(user.id);
+                                    newMesssage.dislikes += 1;
+                                }
+                            }
+                            let newArray = message.replies;
+                            newArray.push(newMesssage);
+                            message.update({replies: newArray}, function (err) {
+                                console.log("done rating message");
+                                console.log('updating session message');
+                                if (err) {
+                                    console.log(err);
+                                    return err;
+                                }
                             });
-                            newMesssage.likes -= 1;
-                        } else if (disliked) {
-                            newMesssage.likers.push(user.id);
-                            newMesssage.dislikers.forEach(function (disliker, i) {
-                                if (disliker === user.id) newMesssage.dislikers.splice(i, 1);
-                            });
-                            newMesssage.dislikes -= 1;
-                            newMesssage.likes += 1;
-                        } else {
-                            newMesssage.likers.push(user.id);
-                            newMesssage.likes += 1;
-                        }
-                    } else {
-                        if (disliked) {
-                            newMesssage.dislikers.forEach(function (disliker, i) {
-                                if (disliker === user.id) newMesssage.dislikers.splice(i, 1);
-                            });
-                            newMesssage.dislikes -= 1;
-                        } else if (liked) {
-                            newMesssage.dislikers.push(user.id);
-                            newMesssage.likers.forEach(function (liker, i) {
-                                if (liker === user.id) newMesssage.likers.splice(i, 1);
-                            });
-                            newMesssage.likes -= 1;
-                            newMesssage.dislikes += 1;
-                        } else {
-                            newMesssage.dislikers.push(user.id);
-                            newMesssage.dislikes += 1;
-                        }
-                    }
-                    let newArray = message.replies;
-                    newArray.push(newMesssage);
-                    message.update({replies: newArray}, function (err) {
-                        console.log("done rating message");
-                        console.log('updating session message');
-                        if (err) {
-                            console.log(err);
-                            return err;
                         }
                     });
                 }
+                else{
+                    res.status(404).json({message: "no message found"});
+                }
             });
-        });
+        }
+        else{
+            res.status(404).json({message: "no user found"});
+        }
     });
 });
 
