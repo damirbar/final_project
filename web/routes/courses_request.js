@@ -29,7 +29,7 @@ router.post("/create-course", function (req, res) {
                     location: req.body.location,
                     points: req.body.points,
                     students: [teacher.id],
-                    teacher_email: req.body.teacher
+                    teacher_email: teacher.email
                 });
 
                 course.save(function (err) {

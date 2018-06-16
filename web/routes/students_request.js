@@ -140,6 +140,11 @@ router.post('/post-profile-image', type, function (req, res) {
             else {
                 console.log(path);
                 User.findOne({email: req.verifiedEmail}, function (err, user) {
+                    File.remove({url: user.profile_img},function (err) {
+                        if(err) console.log(err);
+                        else console.log("deleted file");
+                        res.status(200).json({message: "file deleted"})
+                    });
                     if (err) return next(err);
                     console.log("starting to upload " + req.file.originalname);
                     cloudinary.v2.uploader.upload(path,

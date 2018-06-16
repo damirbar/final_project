@@ -51,7 +51,7 @@ router.all("*", type, function (req, res, next) {
                                 if(req.file) {
                                     event = {
                                         type: "personal",
-                                        event: "change profile image to "+req.file.filename,
+                                        event: "change profile image to "+ req.file.originalname,
                                     };
                                 }
                                 break;
