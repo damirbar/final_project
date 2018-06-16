@@ -418,6 +418,9 @@ router.post("/messages", function (req, res) {
                 }
             });
         }
+        else{
+            res.status(404).json({message: "no session"});
+        }
     });
 });
 
@@ -481,37 +484,42 @@ router.get("/get-all-user-messages", function (req, res) {
 router.get("/disconnect", function (req, res) {
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) console.log(err);
-        sess.students.forEach(function (student, i) {
-            if (student.email === req.verifiedEmail) {
-                sess.students.splice(i, 1);
+        if(sess) {
+            sess.students.forEach(function (student, i) {
+                if (student.email === req.verifiedEmail) {
+                    sess.students.splice(i, 1);
 
-                if (sess.likers.includes(req.verifiedEmail)) {
-                    sess.likers.forEach(function(like, i){
-                        if(like === req.verifiedEmail) {
-                            sess.likers.splice(i, 1);
-                            sess.likes -= 1;
-                            sess.save();
-                        }
-                    });
-                }
-                else if (sess.dislikers.includes(req.verifiedEmail)) {
-                    sess.dislikers.forEach(function(dis, i){
-                       if(dis === req.verifiedEmail) {
-                           sess.dislikers.splice(i, 1);
-                           sess.dislikes -=1;
-                           sess.save();
-                       }
-                    });
+                    if (sess.likers.includes(req.verifiedEmail)) {
+                        sess.likers.forEach(function (like, i) {
+                            if (like === req.verifiedEmail) {
+                                sess.likers.splice(i, 1);
+                                sess.likes -= 1;
+                                sess.save();
+                            }
+                        });
+                    }
+                    else if (sess.dislikers.includes(req.verifiedEmail)) {
+                        sess.dislikers.forEach(function (dis, i) {
+                            if (dis === req.verifiedEmail) {
+                                sess.dislikers.splice(i, 1);
+                                sess.dislikes -= 1;
+                                sess.save();
+                            }
+                        });
 
+                    }
+                    else {
+                        sess.save().then(function () {
+                            console.log("Disconnected " + req.verifiedEmail + " from session " + req.query.sid);
+                            res.status(200).json({message: "Disconnected " + req.verifiedEmail + " from session " + req.query.sid})
+                        });
+                    }
                 }
-                else{
-                    sess.save().then(function () {
-                        console.log("Disconnected " + req.verifiedEmail + " from session " + req.query.sid);
-                        res.status(200).json({message: "Disconnected " + req.verifiedEmail + " from session " + req.query.sid})
-                    });
-                }
-            }
-        });
+            });
+        }
+        else{
+            res.status(404).json({message: 'no session'});
+        }
     });
 });
 
@@ -528,23 +536,22 @@ cloudinary.config({
     api_secret: config.cloudniary.api_secret
 });
 
-let first = true;
+
 router.post('/post-video', type, function (req, res) {
     if (!req.file) {
         res.status(400).json({message: 'no file'});
     }
     else {
         const path = req.file.path;
-        if (first) {
-            first = false;
-            if (!req.file.originalname.match(/\.(mp4)$/)) {
-                fs.unlinkSync(path);
-                res.status(400).json({message: 'wrong file'});
-            }
-            else {
-                console.log(path);
-                Session.findOne({sid: req.query.sid}, function (err, sess) {
-                    if (err) return next(err);
+        if (!req.file.originalname.match(/\.(mp4)$/)) {
+            fs.unlinkSync(path);
+            res.status(400).json({message: 'wrong file'});
+        }
+        else {
+            console.log(path);
+            Session.findOne({sid: req.query.sid}, function (err, sess) {
+                if (err) return next(err);
+                if (sess) {
                     console.log("starting to upload " + req.file.originalname);
                     cloudinary.v2.uploader.upload(path,
                         {
@@ -593,11 +600,12 @@ router.post('/post-video', type, function (req, res) {
                             first = true;
                             res.status(200).json({message: 'received file'});
                         });
-                });
-            }
-        }
-        else {
-            fs.unlinkSync(path);
+                }
+                else {
+                    fs.unlinkSync(path);
+                    res.status(404).json({message: 'no such session'});
+                }
+            });
         }
     }
 });
