@@ -1,7 +1,9 @@
 package com.ariel.wizeup.course;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +12,7 @@ import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.Course;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
+import com.ariel.wizeup.utils.Constants;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -39,6 +42,7 @@ public class CreateCourseActivity extends AppCompatActivity {
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.scroll_view));
         initViews();
+        initSharedPreferences();
 
     }
 
@@ -56,6 +60,13 @@ public class CreateCourseActivity extends AppCompatActivity {
         buttonBack.setOnClickListener(view -> finish());
 
     }
+
+    private void initSharedPreferences() {
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String email = mSharedPreferences.getString(Constants.EMAIL, "");
+        mTeacherName.setText(email);
+    }
+
 
     private void createCourse(Course course) {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().createCourse(course)

@@ -180,7 +180,7 @@ public class CourseFilesFragment extends Fragment {
     private void tryUploadFile(byte[] bytes, String fileName) {
         RequestBody requestFile = RequestBody.create(MediaType.parse("*/*"), bytes);
         MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", fileName, requestFile);
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(body, cid)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadFile(cid,body)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseUploadFile, this::handleError));

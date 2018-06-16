@@ -4,11 +4,9 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ariel.wizeup.R;
@@ -30,7 +27,6 @@ import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.User;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
-import com.ariel.wizeup.settings.ChangeLanguage;
 import com.ariel.wizeup.utils.Constants;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -43,7 +39,6 @@ import static com.ariel.wizeup.utils.Constants.PASS;
 import static com.ariel.wizeup.utils.Constants.TYPE;
 import static com.ariel.wizeup.utils.Constants.USER_NAME;
 import static com.ariel.wizeup.utils.Validation.validateEmail;
-import static com.ariel.wizeup.utils.Validation.validateFields;
 
 public class RegisterFragment extends Fragment {
 
@@ -61,7 +56,6 @@ public class RegisterFragment extends Fragment {
     private String mPass;
     private SharedPreferences mSharedPreferences;
     private CompositeSubscription mSubscriptions;
-    private ChangeLanguage ChangeLanguage;
     private RadioButton mRadioButtonStudent;
 
 
@@ -69,7 +63,6 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
-        ChangeLanguage = new ChangeLanguage(getActivity());
         mSubscriptions = new CompositeSubscription();
         mServerResponse = new ServerResponse(getActivity().findViewById(R.id.activity_entry));
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());

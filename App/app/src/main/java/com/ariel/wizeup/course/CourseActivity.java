@@ -2,15 +2,14 @@ package com.ariel.wizeup.course;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageButton;
 
 import com.ariel.wizeup.R;
@@ -18,13 +17,9 @@ import com.ariel.wizeup.utils.Constants;
 
 public class CourseActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
     private TabLayout tabLayout;
-    private ImageButton buttonBack;
     private String cid;
     private String userType;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +56,11 @@ public class CourseActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
+        ImageButton buttonBack = findViewById(R.id.image_Button_back);
         buttonBack.setOnClickListener(view -> finish());
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout = findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Course"));
         tabLayout.addTab(tabLayout.newTab().setText("Updates"));
         tabLayout.addTab(tabLayout.newTab().setText("Sessions"));

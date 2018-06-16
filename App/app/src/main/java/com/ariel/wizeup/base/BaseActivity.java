@@ -31,7 +31,6 @@ import com.ariel.wizeup.profile.ProfileActivity;
 import com.ariel.wizeup.search.SearchActivity;
 import com.ariel.wizeup.session.ConnectSessionActivity;
 import com.ariel.wizeup.settings.ChangeLanguage;
-import com.ariel.wizeup.settings.EventsAdapter;
 import com.ariel.wizeup.settings.SettingsActivity;
 import com.ariel.wizeup.utils.Constants;
 import com.ariel.wizeup.utils.EndlessScrollListener;
@@ -89,6 +88,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         loadNotifications();
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+            mAdapter = new NotificationsAdapter(this, new ArrayList<>());
             first = true;
             loadNotifications();
             mSwipeRefreshLayout.setRefreshing(false);
