@@ -1,47 +1,33 @@
 package com.ariel.wizeup.course;
 
-import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.provider.MediaStore;
-import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ariel.wizeup.R;
-import com.ariel.wizeup.dialogs.PostBottomDialog;
 import com.ariel.wizeup.dialogs.UploadingDialog;
-import com.ariel.wizeup.model.Course;
 import com.ariel.wizeup.model.CourseFile;
 import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -52,7 +38,6 @@ import rx.subscriptions.CompositeSubscription;
 
 import static android.app.Activity.RESULT_OK;
 import static com.ariel.wizeup.file.OpenFile.getFileDetailFromUri;
-import static com.ariel.wizeup.imageCrop.ImageCropActivity.REQUEST_CODE_PICK_GALLERY;
 import static com.ariel.wizeup.network.RetrofitRequests.getBytes;
 
 public class CourseFilesFragment extends Fragment {
@@ -68,6 +53,7 @@ public class CourseFilesFragment extends Fragment {
     private String cid;
     private static final int INTENT_REQUEST_CODE = 100;
     private UploadingDialog tab1;
+    private View aletView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,10 +62,12 @@ public class CourseFilesFragment extends Fragment {
         StrictMode.setVmPolicy(builder.build());
         getData();
         initViews(view);
+        aletView = view.findViewById(R.id.activity_files_feed);
 
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
-        mServerResponse = new ServerResponse(view.findViewById(R.id.activity_files_feed));
+        mServerResponse = new ServerResponse(aletView);
+
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
             pullFiles();
@@ -202,12 +190,11 @@ public class CourseFilesFragment extends Fragment {
 
     private void handleResponseUploadFile(Response response) {
         tab1.dismiss();
-        mServerResponse.showSnackBarMessage(response.getMessage());
         pullFiles();
 
     }
 
-    public void handleError(Throwable error) {
+    private void handleError(Throwable error) {
         mServerResponse.handleError(error);
         tab1.dismiss();
     }
@@ -225,7 +212,7 @@ public class CourseFilesFragment extends Fragment {
             ArrayList<CourseFile> saveFiles = new ArrayList<>(Arrays.asList(files));
             Collections.reverse(saveFiles);
             mTvNoResults.setVisibility(View.GONE);
-            mAdapter = new CourseFilesAdapter(this.getActivity(), new ArrayList<>(saveFiles));
+            mAdapter = new CourseFilesAdapter(this.getActivity(), new ArrayList<>(saveFiles),aletView);
             filesList.setAdapter(mAdapter);
         } else {
             mTvNoResults.setVisibility(View.VISIBLE);

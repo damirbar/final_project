@@ -169,9 +169,8 @@ public interface RetrofitInterface {
     @GET("courses/get-message-replies")
     Observable<CourseMessage[]> getCourseMessageReplies(@Query("mid") String mid);
 
-    @FormUrlEncoded
     @DELETE("courses/remove-file")
-    Observable<Response> removeFile(@Field("publicid") String publicid);
+    Observable<Response> removeFile(@Query("publicid") String publicid);
 
 
 

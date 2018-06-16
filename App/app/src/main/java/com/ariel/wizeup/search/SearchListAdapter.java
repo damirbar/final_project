@@ -155,7 +155,7 @@ public class SearchListAdapter extends ArrayAdapter<Object> {
                     switch (v.getId()) {
                         case R.id.feed_item_menu:
                             PopupMenu popup = new PopupMenu(mContext, v);
-                            popup.getMenuInflater().inflate(R.menu.file_clipboard_popup,
+                            popup.getMenuInflater().inflate(R.menu.file_clipboard_popup_search,
                                     popup.getMenu());
                             popup.show();
                             popup.setOnMenuItemClickListener(item -> {

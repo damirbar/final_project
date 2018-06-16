@@ -78,7 +78,7 @@
         android:layout_height="15dp"
         android:layout_below="@+id/videoViewRelative"
         android:background="?attr/colorPrimaryDark"
-        app:srcCompat="@drawable/intercom_expand_arrow" />
+        app:srcCompat="@drawable/down_arrow" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
