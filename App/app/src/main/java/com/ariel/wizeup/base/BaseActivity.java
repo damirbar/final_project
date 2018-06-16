@@ -1,6 +1,5 @@
 package com.ariel.wizeup.base;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -32,13 +31,11 @@ import com.ariel.wizeup.profile.ProfileActivity;
 import com.ariel.wizeup.search.SearchActivity;
 import com.ariel.wizeup.session.ConnectSessionActivity;
 import com.ariel.wizeup.settings.ChangeLanguage;
+import com.ariel.wizeup.settings.EventsAdapter;
 import com.ariel.wizeup.settings.SettingsActivity;
 import com.ariel.wizeup.utils.Constants;
 import com.ariel.wizeup.utils.EndlessScrollListener;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.Target;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.mindorks.placeholderview.PlaceHolderView;
 import com.squareup.picasso.Picasso;
 
@@ -69,7 +66,8 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     private NotificationsAdapter mAdapter;
     private ChangeLanguage changeLanguage;
     private String currentNoti;
-    private static int ADD_ITEMS = 10;
+    private static int ADD_ITEMS = 20;
+    private boolean first = true;
     private ShimmerFrameLayout mShimmerViewContainer;
 
 
@@ -77,80 +75,52 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        changeLanguage =new ChangeLanguage(this);
+        changeLanguage = new ChangeLanguage(this);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.search_List));
+        mAdapter = new NotificationsAdapter(this, new ArrayList<>());
+
         initSharedPreferences();
         initViews();
+        initSearchView();
         setupDrawer();
         initNoti();
-
-
-
+        loadNotifications();
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
-            loadNotificationsInit();
-//            notificationsList.setOnScrollListener(new EndlessScrollListener() {
-//                @Override
-//                public boolean onLoadMore(int page, int totalItemsCount) {
-//                    // Triggered only when new data needs to be appended to the list
-//                    // Add whatever code is needed to append new items to your AdapterView
-////                mServerResponse.showSnackBarMessage("page: "+page+" totalItemsCount: "+totalItemsCount);
-//                    loadNotifications();
-//                    // or loadNextDataFromApi(totalItemsCount);
-//                    return true; // ONLY if more data is actually being loaded; false otherwise.
-//                }
-//            });
-
+            first = true;
+            loadNotifications();
             mSwipeRefreshLayout.setRefreshing(false);
         }, 1000));
 
 
-        loadNotificationsInit();
 
         notificationsList.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to your AdapterView
-//                mServerResponse.showSnackBarMessage("page: "+page+" totalItemsCount: "+totalItemsCount);
                 loadNotifications();
-                // or loadNextDataFromApi(totalItemsCount);
                 return true; // ONLY if more data is actually being loaded; false otherwise.
             }
         });
-
-
     }
-
 
 
     private void initNoti() {
-        if(currentNoti.equalsIgnoreCase("on")){
+        if (currentNoti.equalsIgnoreCase("on")) {
             startService(new Intent(getBaseContext(), NotificationService.class));
         }
     }
-
-    private EndlessScrollListener mEndlessScrollListener = new EndlessScrollListener() {
-
-        @Override
-        public boolean onLoadMore(int page, int totalItemsCount) {
-            loadNotifications();
-            return false;
-        }
-    };
 
     private void initViews() {
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         mShimmerViewContainer.startShimmerAnimation();
         mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
-        mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
-        mDrawerView = (PlaceHolderView) findViewById(R.id.drawerView);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mTvNoResults = (TextView) findViewById(R.id.tv_no_results);
-        notificationsList = (ListView) findViewById(R.id.search_List);
-        initSearchView();
+        mDrawer = findViewById(R.id.drawerLayout);
+        mDrawerView = findViewById(R.id.drawerView);
+        mToolbar = findViewById(R.id.toolbar);
+        mTvNoResults = findViewById(R.id.tv_no_results);
+        notificationsList = findViewById(R.id.search_List);
 
     }
 
@@ -170,7 +140,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mEmail = mSharedPreferences.getString(EMAIL, "");
         mId = mSharedPreferences.getString(Constants.ID, "");
         currentNoti = mSharedPreferences.getString(NOTIFICATION‬‏, "");
-        String lang = mSharedPreferences.getString(Constants.LANG,"");
+        String lang = mSharedPreferences.getString(Constants.LANG, "");
         changeLanguage.setLocale(lang);
 
     }
@@ -296,29 +266,6 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         loadProfile();
     }
 
-    private void loadNotificationsInit() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getNotifications(0, ADD_ITEMS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseNotificationsInit, i -> mServerResponse.handleErrorDown(i)));
-
-    }
-
-    private void handleResponseNotificationsInit(NotificationMsg notificationMsg[]) {
-        if (!(notificationMsg.length == 0)) {
-            ArrayList<NotificationMsg> saveNotificationMsgs = new ArrayList<>(Arrays.asList(notificationMsg));
-            mTvNoResults.setVisibility(View.GONE);
-            mAdapter = new NotificationsAdapter(this, new ArrayList<>(saveNotificationMsgs));
-            notificationsList.setAdapter(mAdapter);
-        } else {
-            mTvNoResults.setVisibility(View.VISIBLE);
-        }
-
-        mShimmerViewContainer.stopShimmerAnimation();
-        mShimmerViewContainer.setVisibility(View.GONE);
-
-    }
-
     private void loadNotifications() {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getNotifications(mAdapter.getNotificationList().size(), ADD_ITEMS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -328,7 +275,19 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     }
 
     private void handleResponseNotifications(NotificationMsg notificationMsg[]) {
-        if (!(notificationMsg.length == 0)) {
+        if (first) {
+            if (notificationMsg.length != 0) {
+                ArrayList<NotificationMsg> saveNotificationMsg = new ArrayList<>(Arrays.asList(notificationMsg));
+                mTvNoResults.setVisibility(View.GONE);
+                mAdapter = new NotificationsAdapter(this, new ArrayList<>(saveNotificationMsg));
+                notificationsList.setAdapter(mAdapter);
+            } else {
+                mTvNoResults.setVisibility(View.VISIBLE);
+            }
+            mShimmerViewContainer.stopShimmerAnimation();
+            mShimmerViewContainer.setVisibility(View.GONE);
+
+        } else if (notificationMsg.length != 0) {
             ArrayList<NotificationMsg> saveNotificationMsgs = new ArrayList<>(Arrays.asList(notificationMsg));
             mAdapter.getNotificationList().addAll(saveNotificationMsgs);
             mAdapter.notifyDataSetChanged();

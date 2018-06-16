@@ -53,7 +53,7 @@ public class CourseFilesFragment extends Fragment {
     private String cid;
     private static final int INTENT_REQUEST_CODE = 100;
     private UploadingDialog tab1;
-    private View aletView;
+    private View alert;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,11 +62,11 @@ public class CourseFilesFragment extends Fragment {
         StrictMode.setVmPolicy(builder.build());
         getData();
         initViews(view);
-        aletView = view.findViewById(R.id.activity_files_feed);
+        alert = view.findViewById(R.id.activity_files_feed);
 
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
-        mServerResponse = new ServerResponse(aletView);
+        mServerResponse = new ServerResponse(alert);
 
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
@@ -95,7 +95,6 @@ public class CourseFilesFragment extends Fragment {
 
             }
         });
-        pullFiles();
         return view;
     }
 
@@ -212,7 +211,7 @@ public class CourseFilesFragment extends Fragment {
             ArrayList<CourseFile> saveFiles = new ArrayList<>(Arrays.asList(files));
             Collections.reverse(saveFiles);
             mTvNoResults.setVisibility(View.GONE);
-            mAdapter = new CourseFilesAdapter(this.getActivity(), new ArrayList<>(saveFiles),aletView);
+            mAdapter = new CourseFilesAdapter(this.getActivity(), new ArrayList<>(saveFiles), alert);
             filesList.setAdapter(mAdapter);
         } else {
             mTvNoResults.setVisibility(View.VISIBLE);
@@ -225,5 +224,12 @@ public class CourseFilesFragment extends Fragment {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        pullFiles();
+    }
+
 
 }
