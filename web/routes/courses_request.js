@@ -140,78 +140,75 @@ cloudinary.config({
     api_secret: config.cloudniary.api_secret
 });
 
-let first = true;
 router.post('/post-file', type, function (req, res) {
     if (!req.file) {
         res.status(400).json({message: 'no file'});
     }
     else {
         const path = req.file.path;
-        if (first) {
-            first = false;
-            if (!req.file.originalname.match(/\.(pdf|doc|docx|ppt|pptx)$/)) {
-                fs.unlinkSync(path);
-                res.status(400).json({message: 'wrong file'});
-            }
-            else {
-                Course.findOne({cid: req.query.cid}, function (err, course) {
-                    if (err) return next(err);
-                    if (course) {
-                        console.log("starting to upload " + req.file.originalname);
-                        cloudinary.v2.uploader.upload(path,
-                            {
-                                resource_type: 'raw',
-                                public_id: "courses/" + course.cid + "/" + req.file.filename
-                            },
-                            function (err, result) {
-                                fs.unlinkSync(path);
-                                if (err) console.log(err);
-                                console.log(result);//test this
-                                User.findOne({email: req.verifiedEmail}, function (err, user) {
-                                    if (err) return err;
-                                    if (user) {
-                                        const ans = new File({
-                                            publicid: result.public_id,
-                                            originalName: req.file.originalname,
-                                            uploaderid: user.id,
-                                            url: result.url,
-                                            type: result.format,
-                                            size: result.bytes,
-                                            hidden: false
-                                        });
-                                        ans.save(function (err, updated_file) {
-                                            if (err) return (err);
-                                            course.files.push(updated_file.id);
-                                            course.save().then(function () {
-                                                res.status(200).json({message: 'received file'});
-                                            });
-                                        });
-                                    }
-                                });
-                            });
-                    }
-                    else {
-                        console.log("no such course");
-                        fs.unlinkSync(path);
-                    }
-                });
-            }
+        let type = "raw";
+        if (!req.file.originalname.toLowerCase().match(/\.(pdf|doc|docx|ppt|pptx|jpeg|jpg|png)$/)) {
+            fs.unlinkSync(path);
+            res.status(400).json({message: 'wrong file'});
         }
         else {
-            fs.unlinkSync(path);
+            if (req.file.originalname.toLowerCase().match(/\.(jpeg|jpg|png)$/)) {
+                type = "image";
+            }
+            Course.findOne({cid: req.query.cid}, function (err, course) {
+                if (err) return next(err);
+                if (course) {
+                    console.log("starting to upload " + req.file.originalname);
+                    cloudinary.v2.uploader.upload(path,
+                        {
+                            resource_type: type,
+                            public_id: "courses/" + course.cid + "/" + req.file.filename
+                        },
+                        function (err, result) {
+                            fs.unlinkSync(path);
+                            if (err) console.log(err);
+                            console.log(result);//test this
+                            User.findOne({email: req.verifiedEmail}, function (err, user) {
+                                if (err) return err;
+                                if (user) {
+                                    const ans = new File({
+                                        publicid: result.public_id,
+                                        originalName: req.file.originalname,
+                                        uploaderid: user.id,
+                                        url: result.url,
+                                        type: result.format,
+                                        size: result.bytes,
+                                        hidden: false
+                                    });
+                                    ans.save(function (err, updated_file) {
+                                        if (err) return (err);
+                                        course.files.push(updated_file.id);
+                                        course.save().then(function () {
+                                            res.status(200).json({message: 'received file'});
+                                        });
+                                    });
+                                }
+                            });
+                        });
+                }
+                else {
+                    console.log("no such course");
+                    fs.unlinkSync(path);
+                }
+            });
         }
     }
 });
 
-router.delete('/remove-file',function (req, res) {
+router.delete('/remove-file', function (req, res) {
 
     let publicid = req.query.publicid;
 
     cloudinary.v2.uploader.destroy(publicid,
-        function(err, result) {
+        function (err, result) {
             console.log(result);
-            File.remove({publicid: publicid},function (err) {
-                if(err) console.log(err);
+            File.remove({publicid: publicid}, function (err) {
+                if (err) console.log(err);
                 else console.log("deleted file");
                 res.status(200).json({message: "file deleted"})
             })
@@ -293,14 +290,14 @@ router.post("/messages", function (req, res) {
                             if (err) {
                                 return console.log(err);
                             } else {
-                                socketIOEmitter.emitEventToCourse(msg.cid,'newCourseMessage', msg);
+                                socketIOEmitter.emitEventToCourse(msg.cid, 'newCourseMessage', msg);
                             }
                         });
                         res.status(200).json(msg);
                         console.log("successfully added message " + msg.body + " to db");
                     });
                 }
-                else{
+                else {
                     return res.status(404).json({message: "no such course"});
                 }
             });
@@ -471,24 +468,24 @@ router.get("/get-message", function (req, res) {
 
     Course_Message.findOne({_id: msg_id}, function (err, msg) {
         if (err) return console.log(err);
-        if(msg) {
+        if (msg) {
             res.status(200).json(msg);
         }
-        else{
+        else {
             res.status(404).json({message: 'no such message'});
         }
     });
 });
 
 
-router.get("/get-message-replies", function(req,res){
+router.get("/get-message-replies", function (req, res) {
 
     let message_id = req.query.mid;
 
     console.log(message_id);
 
-    Course_Message.find({parent_id: message_id}, function(err, messages){
-        if(err) return console.log(err);
+    Course_Message.find({parent_id: message_id}, function (err, messages) {
+        if (err) return console.log(err);
         console.log(messages);
         return res.status(200).json(messages);
     });

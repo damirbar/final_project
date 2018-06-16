@@ -7,7 +7,7 @@ var SessionSchema = new mongoose.Schema({
     teacher_lname: {type: String, required: true},
     location: {type: String, required: true},
     creation_date: {type: Date, default: Date.now()},
-    students: Array,
+    students: {type: Array, default: []},
     likes: {type : Number, default: 0},
     dislikes: {type : Number, default: 0},
     likers: [String],

@@ -260,13 +260,9 @@ router.post("/reset-pass-finish", function (req, res) {
     });
 });
 
-
-////
-
 let passport = require('passport');
 
 router.get('/google',
-    //remove comment for birthday access
     passport.authenticate('google', {scope: ['profile email']}));
 
 router.get('/google/callback',
@@ -277,5 +273,4 @@ router.get('/google/callback',
     }
 );
 
-///
 module.exports = router;
