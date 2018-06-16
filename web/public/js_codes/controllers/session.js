@@ -50,7 +50,7 @@ wizerApp.controller('sessionController',
 
         socketIO.on('updateSessionConnectedUsers', function(update){
             console.log('updating');
-            $scope.session.connectedUsers = update;
+            $scope.connectedUsers = update;
         });
 
         socketIO.on('updateMessageRating', function(update){
