@@ -97,8 +97,8 @@ wizerApp.controller('profileController',
 
 
 
-        $scope.calculateAge = function calculateAge(birthday) { // birthday is a date
-            birthday = new Date(birthday);
+        $scope.calculateAge = function calculateAge() { // birthday is a date
+            var birthday = new Date($scope.profile.birthday);
             var ageDifMs = Date.now() - birthday.getTime();
             var ageDate = new Date(ageDifMs); // miliseconds from epoch
             return Math.abs(ageDate.getUTCFullYear() - 1970);
