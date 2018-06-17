@@ -17,7 +17,7 @@ public class Session implements Parcelable {
     private String teacher_lname;
     private String picID;
     private Date creation_date;
-    private SessionUser students[];
+    private String students[];
     private String cid;
     private int likes;
     private int dislikes;
@@ -29,7 +29,6 @@ public class Session implements Parcelable {
 
     public Session(){}
 
-
     protected Session(Parcel in) {
         sid = in.readString();
         name = in.readString();
@@ -39,6 +38,7 @@ public class Session implements Parcelable {
         teacher_fname = in.readString();
         teacher_lname = in.readString();
         picID = in.readString();
+        students = in.createStringArray();
         cid = in.readString();
         likes = in.readInt();
         dislikes = in.readInt();
@@ -57,6 +57,14 @@ public class Session implements Parcelable {
             return new Session[size];
         }
     };
+
+    public String[] getStudents() {
+        return students;
+    }
+
+    public void setStudents(String[] students) {
+        this.students = students;
+    }
 
     public String[] getLikers() {
         return likers;
@@ -97,14 +105,6 @@ public class Session implements Parcelable {
 
     public void setCid(String cid) {
         this.cid = cid;
-    }
-
-    public SessionUser[] getStudents() {
-        return students;
-    }
-
-    public void setStudents(SessionUser[] students) {
-        this.students = students;
     }
 
     public Date getCreation_date() {
@@ -196,6 +196,7 @@ public class Session implements Parcelable {
         parcel.writeString(teacher_fname);
         parcel.writeString(teacher_lname);
         parcel.writeString(picID);
+        parcel.writeStringArray(students);
         parcel.writeString(cid);
         parcel.writeInt(likes);
         parcel.writeInt(dislikes);

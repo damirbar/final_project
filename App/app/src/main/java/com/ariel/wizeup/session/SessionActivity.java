@@ -78,8 +78,8 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
         new ShowcaseView.Builder(this)
                 .setTarget(viewTarget)
                 .setContentTitle("Session tutorial")
-                .setContentText("Press the arrow to open the video.")
-                .singleShot(40)
+                .setContentText("Press the arrow to open the video when video is available.")
+                .singleShot(41)
                 .build();
 
 
