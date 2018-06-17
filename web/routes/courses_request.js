@@ -17,56 +17,56 @@ let globalCid = 1;
 router.post("/create-course", function (req, res) {
 
     Course.findOne({}).sort({"cid": -1}).then(function (ans) {
-            if (ans) {
-                globalCid = (ans.cid + 1);
+        if (ans) {
+            globalCid = (ans.cid + 1);
+        }
+        User.findOne({email: req.body.teacher.toLowerCase()}, function (err, teacher) {
+            if (err) {
+                console.log("Error while finding courses");
+                res.status(500).json({message: err});
             }
-            User.findOne({email: req.body.teacher.toLowerCase()}, function (err, teacher) {
-                if (err) {
-                    console.log("Error while finding courses");
-                    res.status(500).json({message: err});
-                }
-                else {
-                    if (teacher) {
-                        const course = new Course({
-                            name: req.body.name,
-                            department: req.body.department,
-                            teacher_fname: teacher.first_name,
-                            teacher_lname: teacher.last_name,
-                            location: req.body.location,
-                            points: req.body.points,
-                            students: [teacher.id],
-                            teacher_email: teacher.email
-                        });
-                        course.cid = course.id;
-                        course.save(function (err) {
-                            if (err) {
-                                if (err.name === 'MongoError' && err.code === 11000) {
-                                    console.log('Course ' + course.name + " cannot be added id " + course.cid + ' already exists!');
-                                    return res.status(500).json({message: 'Course ' + course.name + " cannot be added id " + course.cid + ' already exists!'});
+            else {
+                if (teacher) {
+                    const course = new Course({
+                        name: req.body.name,
+                        department: req.body.department,
+                        teacher_fname: teacher.first_name,
+                        teacher_lname: teacher.last_name,
+                        location: req.body.location,
+                        points: req.body.points,
+                        students: [teacher.id],
+                        teacher_email: teacher.email
+                    });
+                    course.cid = course.id;
+                    course.save(function (err) {
+                        if (err) {
+                            if (err.name === 'MongoError' && err.code === 11000) {
+                                console.log('Course ' + course.name + " cannot be added id " + course.cid + ' already exists!');
+                                return res.status(500).json({message: 'Course ' + course.name + " cannot be added id " + course.cid + ' already exists!'});
+                            }
+                            else if (err.name === 'ValidationError') {
+                                let str = "";
+                                for (field in err.errors) {
+                                    console.log("you must provide: " + field + " field");
+                                    str += "you must provide: " + field + " field  ";
                                 }
-                                else if (err.name === 'ValidationError') {
-                                    let str = "";
-                                    for (field in err.errors) {
-                                        console.log("you must provide: " + field + " field");
-                                        str += "you must provide: " + field + " field  ";
-                                    }
-                                    return res.status(500).json({message: str});
-                                }
-                                else {
-                                    console.log(err);
-                                    return res.status(500).json({message: err});
-                                }
+                                return res.status(500).json({message: str});
                             }
                             else {
-                                socketIOEmitter.addCourseToCoursesRooms(course.cid);
-                                res.status(200).json(course);
-                                console.log("successfully added course " + course.name + " to db");
+                                console.log(err);
+                                return res.status(500).json({message: err});
                             }
-                        });
-                    }
-                    else return res.status(404).json({message: "no teacher: " + req.body.teacher});
+                        }
+                        else {
+                            socketIOEmitter.addCourseToCoursesRooms(course.cid);
+                            res.status(200).json(course);
+                            console.log("successfully added course " + course.name + " to db");
+                        }
+                    });
                 }
-            });
+                else return res.status(404).json({message: "no teacher: " + req.body.teacher});
+            }
+        });
     });
 });
 
@@ -247,7 +247,7 @@ router.delete('/remove-file', function (req, res) {
     let id = req.query.id;
     cloudinary.v2.uploader.destroy(publicid,
         function (err, result) {
-            if(err){
+            if (err) {
                 console.log(err);
             }
             console.log(result);
@@ -285,19 +285,19 @@ router.get("/add-student-to-course", function (req, res) {
                         res.status(500).json({message: err});
                     }
                     else {
-                        if (course.students.includes(user.id)) {
-                            res.status(200).json({message: "user " + user.email + " already in course"});
-                        }
-                        else {
-                            if (user && user.role === "teacher") {
-                                User.findOne({email: req.query.student}, function (err, student) {
-                                    if (err) {
-                                        console.log(err);
-                                        res.status(500).json({message: err});
-                                    }
-                                    else {
-                                        if (student) {
-                                            course.update({$push: {students: student.id}},function (err) {
+                        if (user && user.role === "teacher") {
+                            User.findOne({email: req.query.student}, function (err, student) {
+                                if (err) {
+                                    console.log(err);
+                                    res.status(500).json({message: err});
+                                }
+                                else {
+                                    if (student) {
+                                        if(course.students.includes(student.id)){
+                                            res.status(200).json({message: student.email + " already in course"});
+                                        }
+                                        else {
+                                            course.update({$push: {students: student.id}}, function (err) {
                                                 if (err) {
                                                     console.log(err);
                                                     res.status(500).json({message: err});
@@ -307,13 +307,12 @@ router.get("/add-student-to-course", function (req, res) {
                                                 }
                                             });
                                         }
-                                        else res.status(404).json({message: "no student " + req.query.student});
                                     }
-
-                                });
-                            }
-                            else res.status(404).json({message: "no such user " + req.verifiedEmail + " or not teacher"});
+                                    else res.status(404).json({message: "no student " + req.query.student});
+                                }
+                            });
                         }
+                        else res.status(404).json({message: "no such user " + req.verifiedEmail + " or not teacher"});
                     }
                 });
             }
@@ -330,7 +329,7 @@ router.get("/get-course", function (req, res) {
         }
         else {
             if (course) res.status(200).json(course);
-            else res.status(404).json({message: "no such course "+ req.query.cid});
+            else res.status(404).json({message: "no such course " + req.query.cid});
         }
     })
 });
@@ -353,7 +352,7 @@ router.get("/get-course-files", function (req, res) {
                     }
                 });
             }
-            else res.status(404).json({message: "no such course "+req.query.cid});
+            else res.status(404).json({message: "no such course " + req.query.cid});
         }
     })
 });
@@ -410,7 +409,7 @@ router.post("/messages", function (req, res) {
                     }
                 });
             }
-            else{
+            else {
                 return res.status(404).json({message: "no such user " + decoded});
             }
         }
@@ -463,7 +462,7 @@ router.post("/reply", function (req, res) {
     let subject_id = req.body.mid;
     const decoded = req.verifiedEmail;
     User.findOne({email: decoded}, function (err, user) {
-        if (err){
+        if (err) {
             console.log(err);
             return res.status(500).json({message: err});
         }
@@ -482,7 +481,7 @@ router.post("/reply", function (req, res) {
                     }
                 );
                 newReply.save(function (err, reply) {
-                    if (err){
+                    if (err) {
                         console.log(err);
                         return res.status(500).json({message: err});
                     }
@@ -491,7 +490,7 @@ router.post("/reply", function (req, res) {
                             $push: {replies: reply._id},
                             $inc: {num_of_replies: 1}
                         }, function (err) {
-                            if (err){
+                            if (err) {
                                 console.log(err);
                                 return res.status(500).json({message: err});
                             }
@@ -513,7 +512,7 @@ router.post("/reply", function (req, res) {
                     }
                 });
             }
-            else{
+            else {
                 res.status(404).json({message: "no such user " + decoded});
             }
         }
@@ -523,14 +522,14 @@ router.post("/reply", function (req, res) {
 router.post("/create-session", function (req, res) {
 
     Course.findOne({cid: req.body.cid}, function (err, course) {
-        if (err){
+        if (err) {
             console.log(err);
             return res.status(500).json({message: err});
         }
         else {
             if (course) {
                 User.findOne({email: req.verifiedEmail}, function (err, user) {
-                    if (err){
+                    if (err) {
                         console.log(err);
                         return res.status(500).json({message: err});
                     }
@@ -567,7 +566,7 @@ router.post("/create-session", function (req, res) {
                                 }
                                 else {
                                     course.update({$push: {sessions: sess._id}}, function (err) {
-                                        if (err){
+                                        if (err) {
                                             console.log(err);
                                             return res.status(500).json({message: err});
                                         }
@@ -597,14 +596,14 @@ router.post("/create-session", function (req, res) {
 router.get("/get-all-sessions", function (req, res) {
     let course_id = req.query.cid;
     Course.findOne({cid: course_id}, function (err, course) {
-        if (err){
+        if (err) {
             console.log(err);
             return res.status(500).json({message: err});
         }
         else {
             if (course) {
                 Session.find({_id: {$in: course.sessions}}, function (err, sessions) {
-                    if (err){
+                    if (err) {
                         console.log(err);
                         return res.status(500).json({message: err});
                     }
@@ -623,7 +622,7 @@ router.get("/get-all-sessions", function (req, res) {
 router.get("/get-message", function (req, res) {
     let msg_id = req.query.mid;
     Course_Message.findOne({_id: msg_id}, function (err, msg) {
-        if (err){
+        if (err) {
             console.log(err);
             return res.status(500).json({message: err});
         }
@@ -642,7 +641,7 @@ router.get("/get-message", function (req, res) {
 router.get("/get-message-replies", function (req, res) {
     let message_id = req.query.mid;
     Course_Message.find({parent_id: message_id}, function (err, messages) {
-        if (err){
+        if (err) {
             console.log(err);
             return res.status(500).json({message: err});
         }

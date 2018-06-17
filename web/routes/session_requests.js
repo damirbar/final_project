@@ -565,7 +565,7 @@ router.get("/disconnect", function (req, res) {
                             });
                         }
                         else if (sess.dislikers.includes(decoded)) {
-                            sess.update({$pull: {dislikers: decoded}, $inc: {disliks: -1}}, function (err) {
+                            sess.update({$pull: {dislikers: decoded}, $inc: {dislikes: -1}}, function (err) {
                                 if (err) {
                                     console.log(err);
                                     res.status(500).json({message: err});
