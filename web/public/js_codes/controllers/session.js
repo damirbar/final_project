@@ -127,10 +127,9 @@ wizerApp.controller('sessionController',
         };
 
         $scope.sendMessage = function () {
-            SessionService.sendMessage($rootScope.loggedUser._id, $scope.sessionID, $scope.message.type, $scope.message.body)
+            SessionService.sendMessage($rootScope.loggedUser._id, $scope.sessionUserName, $scope.sessionID, $scope.message.type, $scope.message.body)
                 .then(function (data) {
                     console.log("Sent message");
-                    // $scope.getMessages();
                     $scope.message = {body: ""};
                 })
                 .catch(function (err) {
@@ -374,7 +373,7 @@ wizerApp.controller('sessionController',
 
 
         $scope.sendReply = function () {
-            SessionService.sendReply($rootScope.loggedUser._id,$scope.messageToReply.poster_id,
+            SessionService.sendReply($rootScope.loggedUser._id, $scope.sessionUserName, $scope.messageToReply.poster_id,
                 $scope.sessionID, $scope.reply.type, $scope.reply.body, $scope.messageToReply._id)
                 .then(function (data) {
                     console.log("Sent message");

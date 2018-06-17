@@ -41,8 +41,8 @@ wizerApp.service('SessionService', function ($http, socketIO) {
             });
     };
 
-    this.sendMessage = function(posterID, sessionId, type, message) {
-        return $http.post('/sessions/messages', {poster_id: posterID, sid: sessionId, type: type, body: message})
+    this.sendMessage = function(posterID, posterNickname, sessionId, type, message) {
+        return $http.post('/sessions/messages', {poster_id: posterID, nickname: posterNickname, sid: sessionId, type: type, body: message})
             .then(function (data) {
                 socketIO.emit('postSessionMessage', );
                 return data.data;
@@ -51,8 +51,8 @@ wizerApp.service('SessionService', function ($http, socketIO) {
             });
     };
 
-    this.sendReply = function(replierID, posterID,sessionId, type, message, message_id) {
-        return $http.post('/sessions/reply', {poster_id: posterID, replier_id: replierID, sid: sessionId, type: type, body: message, mid: message_id})
+    this.sendReply = function(replierID, posterNickname,posterID,sessionId, type, message, message_id) {
+        return $http.post('/sessions/reply', {poster_id: posterID,nickname: posterNickname, replier_id: replierID, sid: sessionId, type: type, body: message, mid: message_id})
             .then(function (data) {
                 return data.data;
             }, function () {
