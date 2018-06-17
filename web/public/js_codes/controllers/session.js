@@ -73,6 +73,10 @@ wizerApp.controller('sessionController',
             console.log(mess);
         });
 
+        socketIO.on('updateSessionRating', function(update){
+           $scope.session.likes = update.likes;
+        });
+
 
         var ensureLogged = function () {
             if (!AuthService.isLoggedIn()) {
@@ -106,15 +110,11 @@ wizerApp.controller('sessionController',
                     }
                     else {
                         $scope.session = data;
-                        // $('session-video').attr('src',$scope.session.videoUrl);
                         console.log("Connected to session as " + $scope.sessionUserName !== "" ? $scope.sessionUserName : $scope.sessionUserName);// + JSON.stringify(data.session));
                         console.log("SESSION DATA = " + JSON.stringify(data));
-                        io.connect();
                         if (data._id) {
-                            // console.log("YES");
                             $scope.isConnectedToSession = true;
                             $scope.session = data;
-                            // $('session-video').attr('src',$scope.session.videoUrl);
                             getting();
                         }
                         $scope.firstConnectionTry = false;
@@ -183,12 +183,12 @@ wizerApp.controller('sessionController',
                         // $('session-video').attr('src',$scope.session.videoUrl);
                         console.log("Created session with ID = " + $scope.createSessionID);// + JSON.stringify(data.session));
                         console.log("SESSION DATA = " + JSON.stringify(data));
-                        io.connect();
+                        // io.connect();
+                        socketIO.emit('joinSession', data.sid);
                         if (data) {
                             $scope.isConnectedToSession = true;
                             JSON.stringify(data);
                             $scope.session = data;
-                            // $('session-video').attr('src',$scope.session.videoUrl);
                             getting();
                         }
                         $scope.firstCreationTry = false;
@@ -395,7 +395,6 @@ wizerApp.controller('sessionController',
                 .catch(function (err) {
                     console.log(err);
                 });
-
         };
 
     });
