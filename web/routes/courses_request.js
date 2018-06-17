@@ -8,18 +8,9 @@ let Notification = require("../schemas/notification");
 let Course_Message = require("../schemas/course_message");
 const socketIOEmitter = require('../tools/socketIO');
 const notificationsSystem = require("../tools/notificationsSystem");
-let randomstring = require("randomstring");
-
-let random = randomstring.generate(7);
-
-let globalCid = 1;
 
 router.post("/create-course", function (req, res) {
 
-    Course.findOne({}).sort({"cid": -1}).then(function (ans) {
-        if (ans) {
-            globalCid = (ans.cid + 1);
-        }
         User.findOne({email: req.body.teacher.toLowerCase()}, function (err, teacher) {
             if (err) {
                 console.log("Error while finding courses");
@@ -67,7 +58,6 @@ router.post("/create-course", function (req, res) {
                 else return res.status(404).json({message: "no teacher: " + req.body.teacher});
             }
         });
-    });
 });
 
 
