@@ -45,13 +45,15 @@ exports.socketInit = function (socket) {
     socket.on('joinSession', function (session_id) {
         console.log('joined session ' + session_id);
         if (sessionsRooms.has(session_id)) {
-            socket.join(session_id, function () {
-                // socketsToSessionsRooms.set(socket.id, session_id);
-                socket.current_room = session_id;
-                let connectedUsers = sessionsRooms.get(session_id).connected_users++;
-                exports.emitEventToSessionRoom(session_id, 'updateSessionConnectedUsers', connectedUsers + 1);
-                console.log(sessionsRooms.get(session_id));
-            });
+            if (socket.current_room !== session_id) {
+                socket.join(session_id, function () {
+                    // socketsToSessionsRooms.set(socket.id, session_id);
+                    socket.current_room = session_id;
+                    let connectedUsers = sessionsRooms.get(session_id).connected_users++;
+                    exports.emitEventToSessionRoom(session_id, 'updateSessionConnectedUsers', connectedUsers + 1);
+                    console.log(sessionsRooms.get(session_id));
+                });
+            }
         }
     });
 
@@ -65,11 +67,14 @@ exports.socketInit = function (socket) {
     });
 
     socket.on('joinCourseMessages', function (cid) {
-        console.log('joined course ' + cid);
-        socket.join(cid, function () {
-            coursesRooms.get(cid).connected_users++;
-            console.log(coursesRooms.get(cid).connected_users);
-        });
+        if (socket.current_room !== cid) {
+            console.log('joined course ' + cid);
+            socket.join(cid, function () {
+                socket.current_room = cid;
+                coursesRooms.get(cid).connected_users++;
+                console.log(coursesRooms.get(cid).connected_users);
+            });
+        }
     });
 
     // socket.on('leaveCourseMessages', function(cid){
@@ -83,9 +88,9 @@ exports.socketInit = function (socket) {
 
     socket.on('rateSession', function (sessionRating) {
         let session = sessionsRooms.get(sessionRating.sess_id);
-        if(rating == 1){
+        if (rating == 1) {
             session.rate_positive++;
-        }else{
+        } else {
             session.rate_negative++;
         }
         let connectedUsers = session.connected_users;
@@ -120,10 +125,10 @@ function onDisconnect(socket) {
         pendingSockets.remove(socketID);
         console.log("unregistered socket " + socket.id + " disconnected");
     } else {
-        if(socket.current_room){
+        if (socket.current_room) {
             console.log(socket.current_room);
             let connectedUsers = sessionsRooms.get(socket.current_room).connected_users--;
-            exports.emitEventToSessionRoom(socket.current_room,'updateSessionConnectedUsers', connectedUsers - 1);
+            exports.emitEventToSessionRoom(socket.current_room, 'updateSessionConnectedUsers', connectedUsers - 1);
         }
 
         var userID = sockets.get(socketID);
@@ -185,12 +190,12 @@ exports.emitEvent = function (user_id, eventName, args) {
     return false;
 };
 
-exports.addCourseToCoursesRooms = function(course_id){
+exports.addCourseToCoursesRooms = function (course_id) {
     console.log("socket.io added course" + course_id);
     coursesRooms.set(course_id, {connected_users: 0});
 }
 
-exports.addSessionToSessionRooms = function(session_id){
+exports.addSessionToSessionRooms = function (session_id) {
     sessionsRooms.set(session_id, {connected_users: 0});
 }
 
