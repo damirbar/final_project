@@ -19,26 +19,23 @@ router.post("/auth-login-user-pass", function (req, res) {
     console.log(credentials);
 
     if (credentials.name === "undefined" || credentials.pass === "undefined") {
-        return res.status(401).send({message: 'Invalid Credentials!'})
+        return res.status(401).json({message: 'Invalid Credentials!'});
     }
 
     User.findOne({email: credentials.name.toLowerCase()}, function (err, user) {
         if (err) return err;
         if (!user) {
-            return res.status(400).send({message: 'no such user!'})
+            return res.status(400).json({message: 'no such user!'})
         }
         console.log(user);
-        console.log("Found the user " + credentials.name);
         if (bcrypt.compareSync(credentials.pass, user.password)) {
-            console.log("Found the user " + credentials.name);
             const token = jwt.sign(credentials.name.toLowerCase(), config.email.secret);
-
             User.update({email: credentials.name.toLowerCase()}, {accessToken: token}, function (err) {
                 if (err) {
                     console.log(err);
                 } else {
                     console.log("access token was successfully updated");
-                    res.status(200).send({
+                    res.status(200).json({
                         message: 'welcome to Wizer!',
                         email: user.email,
                         first_name: user.first_name,
@@ -53,7 +50,7 @@ router.post("/auth-login-user-pass", function (req, res) {
             });
         } else {
             console.log("Your pass: " + credentials.pass + ",\nThe expected encrypted pass: " + user.password);
-            res.status(401).send({message: 'Invalid Credentials!'})
+            res.status(401).json({message: 'Invalid Credentials!'})
         }
     });
 });
@@ -75,7 +72,7 @@ router.get("/get-user-by-token", function (req, res) {
         if (err) return next(err);
         if (user) {
             user.message = "welcome to Wizer";
-            res.status(200).send(user)
+            res.status(200).json(user)
         }
         else {
             console.log("no such student");
@@ -122,7 +119,7 @@ router.post("/new-user", function (req, res) {
 
     if (errors) {
         console.log(errors);
-        res.status(400).send(errors[0].msg);
+        res.status(400).json({message: errors[0].msg});
     }
     else {
         const newUser = new User({
@@ -144,32 +141,33 @@ router.post("/new-user", function (req, res) {
                 newUser.password = hash;
                 newUser.save(function (err, user) {
                     if (err) {
-                        console.log(err);
                         if (err.name === 'MongoError' && err.code === 11000) {
                             // Duplicate username
                             console.log(email + ' already exists!');
-                            return res.status(500).send(email + ' already exists!');
+                            return res.status(500).json({message: email + ' already exists!'});
                         }
-                        if (err.name === 'ValidationError') {
-                            //ValidationError
+                        else if (err.name === 'ValidationError') {
                             let str = "";
                             for (field in err.errors) {
                                 console.log("you must provide: " + field + " field");
                                 str += "you must provide: " + field + " field  ";
                             }
-                            return res.status(500).send(str);
+                            return res.status(500).json({message: str});
                         }
-                        // Some other error
-                        console.log(err);
-                        return res.status(500).send(err);
+                        else {// Some other error
+                            console.log(err);
+                            return res.status(500).json({message: err});
+                        }
                     }
-                    console.log(user);
-                    emailService.sendMail(user.email, 'Registration to wizeUp', emailMessages.registration(user));
-                    const newStudent = new Student({
-                        user_id: user._id
-                    });
-                    newStudent.save();
-                    res.status(200).send(user);
+                    else {
+                        console.log(user);
+                        emailService.sendMail(user.email, 'Registration to wizeUp', emailMessages.registration(user));
+                        const newStudent = new Student({
+                            user_id: user._id
+                        });
+                        newStudent.save();
+                        res.status(200).json(user);
+                    }
                 });
             });
         });
@@ -202,7 +200,7 @@ router.put("/change-password", function (req, res) {
                 });
             } else {
                 console.log("An error occurred!");
-                res.status(401).send({message: "Wrong password"});
+                res.status(401).json({message: "Wrong password"});
             }
         }
     });

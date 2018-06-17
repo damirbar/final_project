@@ -44,14 +44,18 @@ router.post("/create-course", function (req, res) {
                                     console.log('Course ' + course.name + " cannot be added id " + course.cid + ' already exists!');
                                     return res.status(500).json({message: 'Course ' + course.name + " cannot be added id " + course.cid + ' already exists!'});
                                 }
-                                if (err.name === 'ValidationError') {
+                                else if (err.name === 'ValidationError') {
+                                    let str = "";
                                     for (field in err.errors) {
                                         console.log("you must provide: " + field + " field");
-                                        return res.status(500).json({message: "you must provide: " + field + " field"});
+                                        str += "you must provide: " + field + " field  ";
                                     }
+                                    return res.status(500).json({message: str});
                                 }
-                                console.log(err);
-                                return res.status(500).send(err);
+                                else {
+                                    console.log(err);
+                                    return res.status(500).json({message: err});
+                                }
                             }
                             else {
                                 socketIOEmitter.addCourseToCoursesRooms(course.cid);
@@ -550,15 +554,16 @@ router.post("/create-session", function (req, res) {
                                         return res.status(500).json({message: 'Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!'});
                                     }
                                     if (err.name === 'ValidationError') {
-                                        //ValidationError
+                                        let str = "";
                                         for (field in err.errors) {
                                             console.log("you must provide: " + field + " field");
-                                            return res.status(500).json({message: "you must provide: " + field + " field"});
+                                            str += "you must provide: " + field + " field  ";
                                         }
+                                        return res.status(500).json({message: str});
                                     }
                                     // Some other error
                                     console.log(err);
-                                    return res.status(500).send(err);
+                                    return res.status(500).json({message: err});
                                 }
                                 else {
                                     course.update({$push: {sessions: sess._id}}, function (err) {
