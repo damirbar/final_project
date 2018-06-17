@@ -14,6 +14,7 @@ import com.ariel.wizeup.session.QuizActivity;
 
 public class PostBottomDialog extends BottomSheetDialogFragment {
     private String sid;
+    private String nickname;
     private Button btn1;
     private Button btn2;
 
@@ -29,6 +30,7 @@ public class PostBottomDialog extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), SessionPostActivity.class);
                 intent.putExtra("sid", sid);
+                intent.putExtra("nickname", nickname);
                 startActivity(intent);
                 dismiss();
             }
@@ -58,6 +60,8 @@ public class PostBottomDialog extends BottomSheetDialogFragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             sid = bundle.getString("sid");
+            nickname = bundle.getString("nickname");
+
 
         }
 

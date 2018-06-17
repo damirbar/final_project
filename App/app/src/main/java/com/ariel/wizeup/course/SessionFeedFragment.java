@@ -22,6 +22,7 @@ import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.session.ConnectSessionActivity;
 import com.ariel.wizeup.utils.Constants;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +44,8 @@ public class SessionFeedFragment extends Fragment {
     private SessionsAdapter mAdapter;
     private String cid;
     private String userType;
+    private ShimmerFrameLayout mShimmerViewContainer;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,11 +99,12 @@ public class SessionFeedFragment extends Fragment {
 
 
     private void initViews(View v) {
+        mShimmerViewContainer = v.findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmerAnimation();
         mTvNoResults = v.findViewById(R.id.tv_no_results);
         sessionsList = v.findViewById(R.id.sessions_list);
         mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
         mFBAddSession = v.findViewById(R.id.fb_add_session);
-        mSwipeRefreshLayout.setVisibility(View.GONE);
         mFBAddSession.setOnClickListener(view -> addSession());
     }
 
@@ -135,8 +139,9 @@ public class SessionFeedFragment extends Fragment {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getCourseSessions(cid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponsePull, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponsePull,i -> mServerResponse.handleError(i)));
     }
+
 
     private void handleResponsePull(Session sessions[]) {
         if (!(sessions.length == 0)) {
@@ -148,7 +153,8 @@ public class SessionFeedFragment extends Fragment {
         } else {
             mTvNoResults.setVisibility(View.VISIBLE);
         }
-        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        mShimmerViewContainer.stopShimmerAnimation();
+        mShimmerViewContainer.setVisibility(View.GONE);
     }
 
     @Override

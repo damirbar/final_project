@@ -19,6 +19,7 @@ import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.utils.Constants;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +41,8 @@ public class CourseCommentActivity extends AppCompatActivity {
     private String userId;
     private CourseCommentsAdapter mAdapter;
     private TextView buttonSend;
+    private ShimmerFrameLayout mShimmerViewContainer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +90,13 @@ public class CourseCommentActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmerAnimation();
         commentsList = findViewById(R.id.comments);
         mCommentText = findViewById(R.id.com_text);
         ImageButton buttonBack = findViewById(R.id.image_Button_back);
         buttonSend = findViewById(R.id.send_btn);
         mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
-        mSwipeRefreshLayout.setVisibility(View.GONE);
         buttonSend.setOnClickListener(view -> attemptSendCom());
         buttonBack.setOnClickListener(view -> finish());
     }
@@ -122,7 +126,8 @@ public class CourseCommentActivity extends AppCompatActivity {
         Collections.reverse(saveComments);
         mAdapter = new CourseCommentsAdapter(this, new ArrayList<>(saveComments));
         commentsList.setAdapter(mAdapter);
-        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        mShimmerViewContainer.stopShimmerAnimation();
+        mShimmerViewContainer.setVisibility(View.GONE);
 
     }
 

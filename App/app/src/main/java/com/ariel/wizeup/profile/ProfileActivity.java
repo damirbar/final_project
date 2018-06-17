@@ -32,7 +32,6 @@ public class ProfileActivity extends AppCompatActivity {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private String mId;
-//    private ScrollView layout;
 
 
     @Override
@@ -57,8 +56,6 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-//        layout = findViewById(R.id.scroll);
-//        layout.setVisibility(View.GONE);
         image = findViewById(R.id.user_profile_photo);
         mDisplayName = findViewById(R.id.tvdName);
         mCountry = findViewById(R.id.tvCountry);
@@ -111,7 +108,6 @@ public class ProfileActivity extends AppCompatActivity {
                     .load(pic)
                     .error(R.drawable.default_user_image)
                     .into(image);
-//        layout.setVisibility(View.VISIBLE);
     }
 
 

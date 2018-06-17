@@ -96,10 +96,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mTvNoResults = (TextView) findViewById(R.id.tv_no_results);
-        searchList = (ListView) findViewById(R.id.search_List);
-        editSearch = (SearchView) findViewById(R.id.searchView);
-        mTvCancel = (TextView) findViewById(R.id.cancel_button);
+        mTvNoResults = findViewById(R.id.tv_no_results);
+        searchList = findViewById(R.id.search_List);
+        editSearch = findViewById(R.id.searchView);
+        mTvCancel = findViewById(R.id.cancel_button);
         mTvCancel.setOnClickListener(view -> finish());
     }
 

@@ -19,6 +19,7 @@ import com.ariel.wizeup.model.SessionMessage;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.utils.Constants;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +42,10 @@ public class SessionMessagesFragment extends android.support.v4.app.Fragment {
     private SessionPostsAdapter mAdapter;
     private String mId;
     private View view;
+    private String nickname;
+    private ShimmerFrameLayout mShimmerViewContainer;
+
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,6 +68,8 @@ public class SessionMessagesFragment extends android.support.v4.app.Fragment {
             if (viewId == R.id.comment_btn) {
                 Intent intent = new Intent(getActivity(), SessionCommentActivity.class);
                 intent.putExtra("sessionMessage", mAdapter.getMessagesList().get(position));
+                intent.putExtra("nickname", nickname);
+
                 startActivity(intent);
             }
         });
@@ -96,10 +103,11 @@ public class SessionMessagesFragment extends android.support.v4.app.Fragment {
 
 
     private void initViews(View v) {
+        mShimmerViewContainer = v.findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmerAnimation();
         mTvNoResults = v.findViewById(R.id.tv_no_results);
         messagesList = v.findViewById(R.id.sessionMessagesList);
         mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
-        mSwipeRefreshLayout.setVisibility(View.GONE);
         mFBPost = v.findViewById(R.id.fb_post);
         mFBPost.setOnClickListener(view -> askUser());
     }
@@ -107,6 +115,7 @@ public class SessionMessagesFragment extends android.support.v4.app.Fragment {
     private void askUser(){
         Bundle bundle = new Bundle();
         bundle.putString("sid", sid);
+        bundle.putString("nickname", nickname);
         PostBottomDialog tab1 = new PostBottomDialog();
         tab1.setArguments(bundle);
         tab1.show(getActivity().getSupportFragmentManager(), "Dialog");
@@ -116,7 +125,7 @@ public class SessionMessagesFragment extends android.support.v4.app.Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             sid = bundle.getString("sid");
-
+            nickname  = bundle.getString("nickname");
         }
     }
 
@@ -151,8 +160,10 @@ public class SessionMessagesFragment extends android.support.v4.app.Fragment {
         } else {
             mTvNoResults.setVisibility(View.VISIBLE);
         }
+        mShimmerViewContainer.stopShimmerAnimation();
+        mShimmerViewContainer.setVisibility(View.GONE);
 
-        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+
     }
 
     @Override

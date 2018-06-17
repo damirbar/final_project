@@ -19,6 +19,7 @@ import com.ariel.wizeup.model.SessionMessage;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.utils.Constants;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +41,10 @@ public class SessionCommentActivity extends AppCompatActivity {
     private String userId;
     private SessionCommentsAdapter mAdapter;
     private SessionMessage mainMessage;
+    private String nickname;
+    private ShimmerFrameLayout mShimmerViewContainer;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +91,13 @@ public class SessionCommentActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmerAnimation();
         commentsList = (ListView) findViewById(R.id.comments);
         mCommentText = (EditText) findViewById(R.id.com_text);
         ImageButton buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         buttonSend = (TextView) findViewById(R.id.send_btn);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
-        mSwipeRefreshLayout.setVisibility(View.GONE);
         buttonSend.setOnClickListener(view -> attemptSendCom());
         buttonBack.setOnClickListener(view -> finish());
     }
@@ -99,8 +105,10 @@ public class SessionCommentActivity extends AppCompatActivity {
     private boolean getData() {
         if (getIntent().getExtras() != null) {
             SessionMessage _SessionMessage = (SessionMessage) getIntent().getExtras().getParcelable("sessionMessage");
-            if (_SessionMessage != null ) {
+            String _nickname =  getIntent().getExtras().getString("nickname");
+            if (_SessionMessage != null && _nickname != null) {
                 mainMessage = _SessionMessage;
+                nickname = _nickname;
                 return true;
             } else
                 return false;
@@ -133,8 +141,8 @@ public class SessionCommentActivity extends AppCompatActivity {
             }
         }
         commentsList.setAdapter(mAdapter);
-        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
-
+        mShimmerViewContainer.stopShimmerAnimation();
+        mShimmerViewContainer.setVisibility(View.GONE);
     }
 
     private void attemptSendCom() {
@@ -149,6 +157,7 @@ public class SessionCommentActivity extends AppCompatActivity {
         message.setReplier_id(userId);
         message.setType("answer");
         message.setBody(strMessage);
+        message.setNickname(nickname);
         sendCom(message);
     }
 

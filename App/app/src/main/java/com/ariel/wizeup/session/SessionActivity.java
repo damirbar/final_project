@@ -54,6 +54,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
     private Session session;
     private FullscreenVideoLayout vid;
     private RelativeLayout mVideoViewRelative;
+    private String nickname;
     private static final int INTENT_REQUEST_CODE = 100;
     public static final String TAG = SessionActivity.class.getSimpleName();
 
@@ -104,7 +105,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
 
         final ViewPager viewPager = findViewById(R.id.pager);
         final SessionPagerAdapter adapter = new SessionPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),
-                session.getSid(),session.getAdmin());
+                session.getSid(),session.getAdmin(),nickname);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -229,9 +230,11 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            Session _session = (Session) getIntent().getExtras().getParcelable("session");
-            if (_session != null) {
+            Session _session = getIntent().getExtras().getParcelable("session");
+            String _nickname = getIntent().getExtras().getString("nickname");
+            if (_session != null && _nickname != null) {
                 session = _session;
+                nickname = _nickname;
                 return true;
             } else
                 return false;
