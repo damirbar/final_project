@@ -211,8 +211,13 @@ router.delete('/remove-file', function (req, res) {
             console.log(result);
             File.remove({publicid: publicid}, function (err) {
                 if (err) console.log(err);
-                else console.log("deleted file");
-                res.status(200).json({message: "file deleted"})
+                Course.update({cid: req.query.cid}, {$pull: {files: publicid}},function(err){
+                    if(err){
+                        console.log(err);
+                        res.status(500).json({message: err});
+                    }
+                    res.status(200).json({message: "file deleted"})
+                });
             })
         });
 });
