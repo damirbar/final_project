@@ -19,56 +19,30 @@ router.post("/connect-session", function (req, res) {
     Session.findOne({sid: sid}, function (err, sess) {
         if (err) {
             console.log('session ' + sid + 'dose not exist sorry');
-            res.status(404).json({message: 'session ' + sid + 'dose not exist sorry'});
+            res.status(404).json({message: 'session ' + sid + ' dose not exist sorry'});
         }
         else {
             if (sess) {
-                if(sess.admin === decoded){
+                if (sess.admin === decoded || sess.students.includes(decoded)) {
                     console.log('Welcome back to Class ' + decoded + '!');
                     res.status(200).json(sess);
                 }
                 else {
-                    let exists = false;
-                    sess.students.forEach(function (user, i) {
-                        if (user.email === decoded) {
-                            exists = true;
-                            if (name !== user.display_name) {
-                                sess.students.splice(i, 1);
-                                sess.students.push({
-                                    email: decoded,
-                                    display_name: name
-                                });
-                                const newArray = sess.students;
-                                sess.update({students: newArray}).then(function () {
-                                    console.log(decoded + " logged in as " + name + " to session " + sess.name);
-                                    res.status(200).json(sess);
-                                }).catch(function () {
-                                    console.log("Unable to save the session with the new student " + name);
-                                });
-                            }
-                            else {
-                                console.log('Welcome back to Class ' + decoded + '!');
-                                res.status(200).json(sess);
-                            }
+                    sess.update({$push: {students: decoded}}, function (err) {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).json({message: err});
                         }
-                    });
-                    if (!exists) {
-                        sess.students.push({
-                            email: decoded,
-                            display_name: name
-                        });
-                        const newArray = sess.students;
-                        sess.update({students: newArray}).then(function (item) {
+                        else {
                             console.log("Saved " + decoded + " as " + name + " to session: " + sid);
                             res.status(200).json(sess);
-                        }).catch(function (err) {
-                            console.log("Unable to save the session with the new student " + name);
-                        });
-                    }
+                        }
+                    });
                 }
             }
             else {
-                res.status(404).json({message: 'session' + sid + 'dose not exist sorry'});
+                console.log('session ' + sid + 'dose not exist sorry');
+                res.status(404).json({message: 'session ' + sid + ' dose not exist sorry'});
             }
         }
     });
@@ -321,14 +295,14 @@ router.get("/rate-reply-message", function (req, res) {
             console.log(err);
             next(err);
         }
-        if(user) {
+        if (user) {
             //finds the message and fetches its likers and dislikers arrays.
             Session_Message.findOne({'replies._id': id}, function (err, message) {
                 if (err) {
                     console.log(err);
                     next(err);
                 }
-                if(message) {
+                if (message) {
                     message.replies.forEach(function (org, i) {
                         if (org._id == mess_id) {
                             if (err) return err;
@@ -389,12 +363,12 @@ router.get("/rate-reply-message", function (req, res) {
                         }
                     });
                 }
-                else{
+                else {
                     res.status(404).json({message: "no message found"});
                 }
             });
         }
-        else{
+        else {
             res.status(404).json({message: "no user found"});
         }
     });
@@ -407,67 +381,33 @@ router.post("/messages", function (req, res) {
     Session.findOne({sid: req.body.sid}, function (err, sess) {
         if (err) console.log(err);
         if (sess) {
-            if (sess.admin === decoded) {
-                const msg = new Session_Message({
-                        poster_id: req.body.poster_id,
-                        sid: req.body.sid,
-                        type: req.body.type,
-                        body: req.body.body,
-                        email: decoded,
-                        nickname: sess.teacher_fname + sess.teacher_lname,
-                        date: Date.now()
-                    });
-                msg.save(function (err) {
+            const msg = new Session_Message({
+                poster_id: req.body.poster_id,
+                sid: req.body.sid,
+                type: req.body.type,
+                body: req.body.body,
+                email: decoded,
+                nickname: sess.admin === decoded ? sess.teacher_fname + " " + sess.teacher_lname : req.body.nickname,
+                date: Date.now()
+            });
+            msg.save(function (err) {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send(err);
+                }
+                Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function (err) {
+                    console.log('pushing message to messages');
                     if (err) {
-                        console.log(err);
-                        return res.status(500).send(err);
-                    }
-                    Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function (err) {
-                        console.log('pushing message to messages');
-                        if (err) {
-                            return console.log(err);
-                        } else {
-                            socketIOEmitter.emitEventToSessionRoom(msg.sid, 'newSessionMessage', msg);
-                        }
-                    });
-                    res.status(200).json({message: "successfully added message " + msg.body + " to db"});
-                    console.log("successfully added message " + msg.body + " to db");
-                });
-            }
-            else{
-                sess.students.forEach(function (stud) {
-                    if (stud.email === decoded) {
-                        const msg = new Session_Message({
-                            poster_id: req.body.poster_id,
-                            sid: req.body.sid,
-                            type: req.body.type,
-                            body: req.body.body,
-                            email: decoded,
-                            nickname: stud.display_name,
-                            date: Date.now()
-                        });
-
-                        msg.save(function (err) {
-                            if (err) {
-                                console.log(err);
-                                return res.status(500).send(err);
-                            }
-                            Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function (err) {
-                                console.log('pushing message to messages');
-                                if (err) {
-                                    return console.log(err);
-                                } else {
-                                    socketIOEmitter.emitEventToSessionRoom(msg.sid, 'newSessionMessage', msg);
-                                }
-                            });
-                            res.status(200).json({message: "successfully added message " + msg.body + " to db"});
-                            console.log("successfully added message " + msg.body + " to db");
-                        });
+                        return console.log(err);
+                    } else {
+                        res.status(200).json({message: "successfully added message " + msg.body + " to db"});
+                        console.log("successfully added message " + msg.body + " to db");
+                        socketIOEmitter.emitEventToSessionRoom(msg.sid, 'newSessionMessage', msg);
                     }
                 });
-            }
+            });
         }
-        else{
+        else {
             res.status(404).json({message: "no session"});
         }
     });
@@ -531,43 +471,37 @@ router.get("/get-all-user-messages", function (req, res) {
 
 
 router.get("/disconnect", function (req, res) {
+    let decoded = req.verifiedEmail;
     Session.findOne({sid: req.query.sid}, function (err, sess) {
-        if (err) console.log(err);
-        if(sess) {
-            sess.students.forEach(function (student, i) {
-                if (student.email === req.verifiedEmail) {
-                    sess.students.splice(i, 1);
-
-                    if (sess.likers.includes(req.verifiedEmail)) {
-                        sess.likers.forEach(function (like, i) {
-                            if (like === req.verifiedEmail) {
-                                sess.likers.splice(i, 1);
-                                sess.likes -= 1;
-                                sess.save();
-                            }
-                        });
-                    }
-                    else if (sess.dislikers.includes(req.verifiedEmail)) {
-                        sess.dislikers.forEach(function (dis, i) {
-                            if (dis === req.verifiedEmail) {
-                                sess.dislikers.splice(i, 1);
-                                sess.dislikes -= 1;
-                                sess.save();
-                            }
-                        });
-
+        if (err) {
+            console.log(err);
+            res.status(500).json({message: err});
+        }
+        else {
+            if (sess) {
+                sess.update({$pull: {students: decoded}}, function (err) {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).json({message: err});
                     }
                     else {
-                        sess.save().then(function () {
-                            console.log("Disconnected " + req.verifiedEmail + " from session " + req.query.sid);
-                            res.status(200).json({message: "Disconnected " + req.verifiedEmail + " from session " + req.query.sid})
-                        });
+                        if (sess.likers.includes(decoded)) {
+                            sess.update({$pull: {likers: decoded}, $inc: {likes: -1}}, function (err) {
+                                console.log("er");
+                            });
+                        }
+                        else if (sess.dislikers.includes(decoded)) {
+                            sess.update({$pull: {dislikers: decoded}, $inc: {disliks: -1}}, function (err) {
+                                console.log("er");
+                            });
+                        }
+                        res.status(200).json({message: 'disconnected'});
                     }
-                }
-            });
-        }
-        else{
-            res.status(404).json({message: 'no session'});
+                });
+            }
+            else {
+                res.status(404).json({message: 'no session'});
+            }
         }
     });
 });
@@ -597,7 +531,6 @@ router.post('/post-video', type, function (req, res) {
             res.status(400).json({message: 'wrong file'});
         }
         else {
-            console.log(path);
             Session.findOne({sid: req.query.sid}, function (err, sess) {
                 if (err) return next(err);
                 if (sess) {
@@ -669,44 +602,39 @@ router.post("/reply", function (req, res) {
     Session.findOne({sid: req.body.sid}, function (err, sess) {
         if (err) console.log(err);
         if (sess) {
-            sess.students.forEach(function (stud) {
-                if (stud.email === decoded) {
-                    let newReply = new Session_Message({
-                        poster_id: req.body.poster_id,
-                        parent_id: req.body.mid,
-                        sid: req.body.sid,
-                        type: req.body.type,
-                        reply: true,
-                        email: decoded,
-                        nickname: stud.display_name,
-                        body: req.body.body,
-                        date: Date.now()
-                    });
-                    newReply.save(function (err, reply) {
-
-                        if (err) return console.log(err);
-
-                        Session_Message.update({_id: reply.parent_id}, {
-                            $push: {replies: reply._id},
-                            $inc: {num_of_replies: 1}
-                        }, function (err) {
-                            if (err) return console.log(err);
-                            res.status(200).json({message: "added reply"});
-                            socketIOEmitter.emitEventToSessionRoom(reply.sid, 'newSessionMessageReply', reply);
-
-                            let notification = new Notification({
-                                receiver_id: notified_id,
-                                sender_id: replier_id, // the user who replied
-                                action: 4,
-                                subject: 'message',
-                                subject_id: subject_id
-                            });
-                            notificationsSystem.saveAndEmitNotification(notification);
-                        });
-                    });
-
-                }
+            let newReply = new Session_Message({
+                poster_id: req.body.poster_id,
+                parent_id: req.body.mid,
+                sid: req.body.sid,
+                type: req.body.type,
+                reply: true,
+                email: decoded,
+                nickname: sess.admin === decoded ? sess.teacher_fname + " " + sess.teacher_lname : req.body.nickname,
+                body: req.body.body,
+                date: Date.now()
             });
+            newReply.save(function (err, reply) {
+                if (err) return console.log(err);
+                Session_Message.update({_id: reply.parent_id}, {
+                    $push: {replies: reply._id},
+                    $inc: {num_of_replies: 1}
+                }, function (err) {
+                    if (err) return console.log(err);
+                    res.status(200).json({message: "added reply"});
+                    socketIOEmitter.emitEventToSessionRoom(reply.sid, 'newSessionMessageReply', reply);
+
+                    let notification = new Notification({
+                        receiver_id: notified_id,
+                        sender_id: replier_id, // the user who replied
+                        action: 4,
+                        subject: 'message',
+                        subject_id: subject_id
+                    });
+                    notificationsSystem.saveAndEmitNotification(notification);
+                });
+            });
+
+
         }
     });
 });

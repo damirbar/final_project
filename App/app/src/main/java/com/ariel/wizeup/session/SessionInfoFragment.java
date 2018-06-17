@@ -64,16 +64,16 @@ public class SessionInfoFragment extends Fragment {
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
         mServerResponse = new ServerResponse(view.findViewById(R.id.scrollView));
         handler = new Handler();
-        getData();
-        initSharedPreferences();
         initViews(view);
+        initSharedPreferences();
+        getData();
 
         toggle.setOnCheckedChangeListener((group, checkedId) -> {
-            if(mRadioUnderstand.isChecked()) {
+            if (mRadioUnderstand.isChecked()) {
                 tryChangeVal(LIKE);
                 pullSession();
 
-            } else if(mRadioDontUnderstand.isChecked()) {
+            } else if (mRadioDontUnderstand.isChecked()) {
                 tryChangeVal(DISLIKE);
                 pullSession();
             }
@@ -82,7 +82,6 @@ public class SessionInfoFragment extends Fragment {
         return view;
 
     }
-
 
 
     private Runnable runnable = new Runnable() {
@@ -127,7 +126,11 @@ public class SessionInfoFragment extends Fragment {
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
+            String admin = bundle.getString("admin");
             sid = bundle.getString("sid");
+            if (admin!=null && admin.equalsIgnoreCase(email)) {
+                toggle.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -135,7 +138,7 @@ public class SessionInfoFragment extends Fragment {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().changeVal(sid, val)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseChangeVal, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseChangeVal, ServerResponse::handleErrorQuiet));
     }
 
 
@@ -147,15 +150,12 @@ public class SessionInfoFragment extends Fragment {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getSessionById(sid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponsePullSession, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponsePullSession, i -> mServerResponse.handleErrorQuiet(i)));
     }
 
     private void handleResponsePullSession(Session _session) {
 
-        if (_session.getAdmin().equalsIgnoreCase(email)) {
-            toggle.setVisibility(View.GONE);
-        }
-        else{
+//        else{
 //            for (int i = 0; i < _session.getLikers().length; i++) {
 //                if (_session.getLikers()[i].equalsIgnoreCase(email)) {
 //                    mRadioUnderstand.setChecked(true);
@@ -168,10 +168,10 @@ public class SessionInfoFragment extends Fragment {
 //                    mRadioDontUnderstand.setChecked(true);
 //                }
 //            }
-        }
+//        }
 
         int all = _session.getLikers().length + _session.getDislikers().length;
-        if(all == 0){
+        if (all == 0) {
             all = 1;
         }
         double Likers = _session.getLikers().length;

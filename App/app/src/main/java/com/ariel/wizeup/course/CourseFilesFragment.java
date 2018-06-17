@@ -178,6 +178,7 @@ public class CourseFilesFragment extends Fragment {
 //                    uploadFiles.add(0,f);
 //                    mAdapterUpload = new UploadCourseFilesAdapter(this.getActivity(), new ArrayList<>(uploadFiles));
 //                    filesList.setAdapter(mAdapterUpload);
+                    mServerResponse.showSnackBarMessage("Uploading..");
 
 
                     InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
@@ -225,7 +226,7 @@ public class CourseFilesFragment extends Fragment {
             ArrayList<CourseFile> saveFiles = new ArrayList<>(Arrays.asList(files));
             Collections.reverse(saveFiles);
             mTvNoResults.setVisibility(View.GONE);
-            mAdapter = new CourseFilesAdapter(this.getActivity(), new ArrayList<>(saveFiles), alert);
+            mAdapter = new CourseFilesAdapter(this.getActivity(), new ArrayList<>(saveFiles), alert,cid);
             filesList.setAdapter(mAdapter);
         } else {
             mTvNoResults.setVisibility(View.VISIBLE);
