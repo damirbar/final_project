@@ -184,14 +184,16 @@ router.post("/create-session", function (req, res) {
                             return res.status(500).json({message: 'Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!'});
                         }
                         else if (err.name === 'ValidationError') {
+                            let str = "";
                             for (field in err.errors) {
                                 console.log("you must provide: " + field + " field");
-                                return res.status(500).json({message: "you must provide: " + field + " field"});
+                                str += "you must provide: " + field + " field  ";
                             }
+                            return res.status(500).json({message: str});
                         }
                         else {
                             console.log(err);
-                            return res.status(500).send(err);
+                            return res.status(500).json({message: err});
                         }
                     }
                     else {
