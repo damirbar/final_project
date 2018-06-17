@@ -155,6 +155,8 @@ router.post('/post-file', type, function (req, res) {
             if (req.file.originalname.toLowerCase().match(/\.(jpeg|jpg|png)$/)) {
                 type = "image";
             }
+            let extension = req.file.originalname.split('.').pop();
+
             Course.findOne({cid: req.query.cid}, function (err, course) {
                 if (err) return next(err);
                 if (course) {
@@ -162,7 +164,7 @@ router.post('/post-file', type, function (req, res) {
                     cloudinary.v2.uploader.upload(path,
                         {
                             resource_type: type,
-                            public_id: "courses/" + course.cid + "/" + req.file.filename
+                            public_id: "courses/" + course.cid + "/" + req.file.filename +"."+extension
                         },
                         function (err, result) {
                             fs.unlinkSync(path);
@@ -176,7 +178,7 @@ router.post('/post-file', type, function (req, res) {
                                         originalName: req.file.originalname,
                                         uploaderid: user.id,
                                         url: result.url,
-                                        type: result.format,
+                                        type: extension,
                                         size: result.bytes,
                                         hidden: false
                                     });
