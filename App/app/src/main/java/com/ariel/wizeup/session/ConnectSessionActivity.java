@@ -28,6 +28,7 @@ public class ConnectSessionActivity extends AppCompatActivity {
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
+    private String nickname;
 
 
     @Override
@@ -79,7 +80,7 @@ public class ConnectSessionActivity extends AppCompatActivity {
     private void login() {
 
         sid = mEditTextSid.getText().toString().trim();
-        String name = mEditTextName.getText().toString().trim();
+        nickname = mEditTextName.getText().toString().trim();
 
 
         if (!validateFields(sid)) {
@@ -88,11 +89,11 @@ public class ConnectSessionActivity extends AppCompatActivity {
 
         }
 
-        if (!validateFields(name)) {
-            name = "Anon";
+        if (!validateFields(nickname)) {
+            nickname = "Anon";
         }
 
-        loginProcess(sid, name);
+        loginProcess(sid, nickname);
     }
 
     private void loginProcess(String sid, String name) {
@@ -105,6 +106,8 @@ public class ConnectSessionActivity extends AppCompatActivity {
     private void handleResponse(Session session) {
         Intent intent = new Intent(getBaseContext(), SessionActivity.class);
         intent.putExtra("session", session);
+        intent.putExtra("nickname", nickname);
+
         startActivity(intent);
         finish();
     }

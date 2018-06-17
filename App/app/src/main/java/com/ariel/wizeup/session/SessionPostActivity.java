@@ -34,6 +34,8 @@ public class SessionPostActivity extends AppCompatActivity {
     private TextView mTextCount;
     private final int MAX_COUNT = 400;
     private String mId;
+    private String nickname;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +70,10 @@ public class SessionPostActivity extends AppCompatActivity {
     private boolean getData() {
         if (getIntent().getExtras() != null) {
             String _sid = getIntent().getExtras().getString("sid");
-            if(_sid != null) {
+            String _nickname = getIntent().getExtras().getString("nickname");
+            if(_sid != null && _nickname != null) {
                 sid = _sid;
+                nickname = _nickname;
                 return true;
             } else
                 return false;
@@ -88,6 +92,7 @@ public class SessionPostActivity extends AppCompatActivity {
         message.setType(question);
         message.setBody(strMessage);
         message.setPoster_id(mId);
+        message.setNickname(nickname);
         sendPost(message);
     }
 

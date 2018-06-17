@@ -25,6 +25,7 @@ import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.session.SessionCommentActivity;
 import com.ariel.wizeup.session.UploadCourseFilesAdapter;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -56,7 +57,9 @@ public class CourseFilesFragment extends Fragment {
     private static final int INTENT_REQUEST_CODE = 100;
     private View alert;
     private ArrayList<CourseFile> uploadFiles;
-    private UploadCourseFilesAdapter mAdapterUpload;
+//    private UploadCourseFilesAdapter mAdapterUpload;
+    private ShimmerFrameLayout mShimmerViewContainer;
+
 
 
     @Override
@@ -112,11 +115,12 @@ public class CourseFilesFragment extends Fragment {
     }
 
     private void initViews(View v) {
+        mShimmerViewContainer = v.findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmerAnimation();
         mTvNoResults = v.findViewById(R.id.tv_no_results);
         filesList = v.findViewById(R.id.files_list);
         mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
         mFBAddFile = v.findViewById(R.id.fb_add_file);
-        mSwipeRefreshLayout.setVisibility(View.GONE);
         mFBAddFile.setOnClickListener(view -> addFile());
     }
 
@@ -218,8 +222,9 @@ public class CourseFilesFragment extends Fragment {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getCourseFiles(cid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponsePull, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponsePull,i -> mServerResponse.handleError(i)));
     }
+
 
     private void handleResponsePull(CourseFile files[]) {
         if (!(files.length == 0)) {
@@ -231,7 +236,8 @@ public class CourseFilesFragment extends Fragment {
         } else {
             mTvNoResults.setVisibility(View.VISIBLE);
         }
-        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        mShimmerViewContainer.stopShimmerAnimation();
+        mShimmerViewContainer.setVisibility(View.GONE);
     }
 
     @Override

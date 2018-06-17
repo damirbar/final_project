@@ -18,6 +18,7 @@ import com.ariel.wizeup.model.Course;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.utils.Constants;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +39,8 @@ public class MyCourseActivity extends AppCompatActivity {
     private CoursesAdapter mAdapter;
     private FloatingActionButton mFB;
     private String userType;
-//    private RelativeLayout layout;
+    private ShimmerFrameLayout mShimmerViewContainer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +92,8 @@ public class MyCourseActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-//        layout =  findViewById(R.id.relative);
-//        layout.setVisibility(View.GONE);
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmerAnimation();
         ImageButton buttonBack = findViewById(R.id.image_Button_back);
         mTvNoResults = findViewById(R.id.tv_no_results);
         coursesList = findViewById(R.id.myClassesList);
@@ -122,8 +124,10 @@ public class MyCourseActivity extends AppCompatActivity {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getMyCourses()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponsePull, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponsePull,i -> mServerResponse.handleError(i)));
     }
+
+
 
     private void handleResponsePull(Course courses[]) {
         if (!(courses.length == 0)) {
@@ -133,11 +137,9 @@ public class MyCourseActivity extends AppCompatActivity {
             coursesList.setAdapter(mAdapter);
         } else {
             mTvNoResults.setVisibility(View.VISIBLE);
-
         }
-
-//        layout.setVisibility(View.VISIBLE);
-
+        mShimmerViewContainer.stopShimmerAnimation();
+        mShimmerViewContainer.setVisibility(View.GONE);
     }
 
     @Override

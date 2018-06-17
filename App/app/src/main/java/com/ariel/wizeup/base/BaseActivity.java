@@ -125,9 +125,9 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     }
 
     private void initSearchView() {
-        SearchView editSearch = (SearchView) findViewById(R.id.searchView);
+        SearchView editSearch = findViewById(R.id.searchView);
         editSearch.setOnClickListener(view -> openSearch());
-        ImageView clearButton = (ImageView) editSearch.findViewById(android.support.v7.appcompat.R.id.search_button);
+        ImageView clearButton = editSearch.findViewById(android.support.v7.appcompat.R.id.search_button);
         clearButton.setOnClickListener(view -> openSearch());
     }
 
@@ -273,14 +273,8 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getNotifications(mAdapter.getNotificationList().size(), ADD_ITEMS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseNotifications, this::handleError));
+                .subscribe(this::handleResponseNotifications,i -> mServerResponse.handleErrorDown(i)));
 
-    }
-
-    public void handleError(Throwable error) {
-        mShimmerViewContainer.stopShimmerAnimation();
-        mShimmerViewContainer.setVisibility(View.GONE);
-        mServerResponse.handleErrorDown(error);
     }
 
 
