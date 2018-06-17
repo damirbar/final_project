@@ -80,15 +80,9 @@
                         </div>
 
                         <div class="profile-age col-6">
-                            <span class="profile-city" ng-show="profile.birthday">Age: {{calculateAge(profile.birthday)}}</span>
+                            <span class="profile-city" ng-show="hasBirthday">Age: {{calculateAge()}}</span>
                         </div>
                     </div>
-
-                    <!--<div class="message-me row">-->
-                        <!--<button class="btn btn-info" data-placement="right" data-toggle="tooltip"-->
-                                <!--title="Temporarily unavailable">Message-->
-                        <!--</button>-->
-                    <!--</div>-->
 
                     <br><br><br>
                     <div class="about-me" ng-show="profile.about_me != ''">

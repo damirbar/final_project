@@ -75,7 +75,7 @@
 
 
 
-            <div class="col-9 right-hand-side">
+            <div class="col-9 right-hand-side container">
 
 
 
@@ -189,14 +189,20 @@
                             <table class="table table-hover" ng-if="courseMessages.length > 0">
                                 <thead>
                                 <tr>
-                                    <th>Message</th>
-                                    <th></th>
+                                    <!--<th>Message</th>-->
+                                    <!--<th></th>-->
                                 </tr>
                                 </thead>
                                 <tbody class="messages-table-body">
 
                                 <tr ng-repeat="msg in courseMessages | reverse" ng-if="courseMessages.length > 0">
+                                    <td style="width: 100px;">
+                                        <!--<div class="col-1 message-profile-picture rounded-circle" style="background-image: url('{{msg.image}}'); background-size: contain; height: 80px;">-->
+                                            <img class="rounded-circle" style="width: 76px;" ng-src="{{msg.image}}">
+                                        <!--</div>-->
+                                    </td>
                                     <td>
+
                                         <div class="message-text col-8">{{msg.body}}</div>
                                         <div class="col-4 message-fix-place"></div>
                                     </td>
@@ -236,7 +242,9 @@
                                     <input style="display: none" id="file-course-image" type="file" name='recfile' file-model="myFile"/>
                                 </label>
 
-                                <button class="rad-button wwt" ng-click="uploadFile()">Upload</button>
+                                <label class="upload-file-label rad-button wwt">
+                                <div class="" ng-click="uploadFile()"><span class="upload-text">Upload</span></div>
+                                </label>
                             </div>
 
 
@@ -302,7 +310,7 @@
 
                     <div class="container message-replying-to">
                         <h4>Replying to:</h4>
-                        <p class="message-text">{{messageToReply.body}}</p>
+                        <p class="message-text" style="word-break: break-all;">{{messageToReply.body}}</p>
                     </div>
 
                     <form>
@@ -310,7 +318,7 @@
 
                             <label for="inputReply" class="col-sm-3 col-form-label"><h4>Enter reply</h4></label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control" ng-model="reply.body" id="inputReply"
+                                <input style="word-break: break-all;" type="text" class="form-control" ng-model="reply.body" id="inputReply"
                                        placeholder="">
                             </div>
 
@@ -329,10 +337,10 @@
 
                         <table class="table table-hover">
                             <thead>
-                            <tr>
+                            <!--<tr>-->
 
-                                <th>Message</th>
-                            </tr>
+                                <!--<th>Message</th>-->
+                            <!--</tr>-->
                             </thead>
                             <tbody class="messages-table-body">
 

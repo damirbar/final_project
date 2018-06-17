@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/cancel"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="57dp"
+        android:background="@color/transparent"
+        android:scaleType="fitCenter"
+        android:visibility="visible"
+        card_view:srcCompat="@drawable/x_button" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_image"
+        android:layout_width="42.0dip"
+        android:layout_height="42.0dip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="@dimen/padding8"
+        android:layout_marginStart="@dimen/padding8"
+        android:layout_marginTop="10dp"
+        android:focusable="false"
+        android:src="@drawable/file"
+        app:siBorderColor="#cccccc"
+        app:siBorderWidth="2dp" />
+
+    <LinearLayout
+        android:id="@+id/author_details"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10.0dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/user_image"
+        android:layout_toRightOf="@id/user_image"
+        android:descendantFocusability="blocksDescendants"
+        android:gravity="start"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/file_name"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:focusable="false"
+            android:gravity="start"
+            android:maxLines="1"
+            android:textAlignment="viewStart"
+            android:textColor="@color/primary_text"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/creation_date"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:textColor="@color/secondary_post_text"
+            android:textSize="10sp" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:progressTint="@color/default_circle_indicator_page_color" />
+
+                <TextView
+                    android:id="@+id/textViewProgress"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/divider_img"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/author_details"
+        android:layout_marginLeft="50dp"
+        android:background="?attr/colorButtonNormal" />
+
+
+</RelativeLayout>

@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.ariel.wizeup.R;
+import com.ariel.wizeup.dialogs.MyDateDialog;
 import com.ariel.wizeup.dialogs.UploadingDialog;
 import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.Session;
@@ -43,7 +44,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.ariel.wizeup.network.RetrofitRequests.getBytes;
 
-public class SessionActivity extends AppCompatActivity {
+public class SessionActivity extends AppCompatActivity implements UploadingDialog.OnCallbackCancel {
     private TabLayout tabLayout;
     private ImageButton buttonVid;
     private CompositeSubscription mSubscriptions;
@@ -270,7 +271,7 @@ public class SessionActivity extends AppCompatActivity {
     private void tryUploadVid(byte[] bytes) {
         RequestBody requestFile = RequestBody.create(MediaType.parse("video/mp4"), bytes);
         MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", "video.mp4", requestFile);
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadVid(body, session.getSid())
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadVid(session.getSid(), body)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseUploadVid, this::handleError));
@@ -357,6 +358,12 @@ public class SessionActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         vid.pause();
+    }
+
+    @Override
+    public void cancelUpload() {
+        mSubscriptions.unsubscribe();
+        mSubscriptions = new CompositeSubscription();
     }
 
 }

@@ -18,7 +18,6 @@ import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
 import com.ariel.wizeup.profile.ProfileActivity;
 import com.ariel.wizeup.session.ConnectSessionActivity;
-import com.ariel.wizeup.session.SessionActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;

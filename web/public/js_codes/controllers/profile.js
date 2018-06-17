@@ -13,6 +13,7 @@ wizerApp.controller('profileController',
         $scope.courses = [];
         $scope.editUser = {};
         $scope.editUser.gender = 'unspecified';
+        $scope.hasBirthday = false;
 
 
         // NEEDS TO CHANGE
@@ -20,7 +21,7 @@ wizerApp.controller('profileController',
         // $scope.profile = new Date("00-00-0000");
 
 
-        var initPage = function() {
+        var initPage = function () {
             CourseService.getCoursesById($routeParams.id)
                 .then(function (data) {
                     console.log("got courses");
@@ -30,7 +31,7 @@ wizerApp.controller('profileController',
         };
 
 
-        $scope.getProfile = function() {
+        $scope.getProfile = function () {
             ProfileService.getProfileByID($routeParams.id)
                 .then(function (data) {
                     console.log("Looking for " + $routeParams.id);
@@ -45,12 +46,12 @@ wizerApp.controller('profileController',
         };
         $scope.getProfile();
 
-        $scope.getPhoto = function() {
+        $scope.getPhoto = function () {
             console.log("PROFILE IMAGE = " + $scope.profile.profile_img);
             return $scope.profile.profile_img == '' ? defaultProfilePicture : $scope.profile.profile_img;
         };
 
-        $scope.readMoreButton = function() {
+        $scope.readMoreButton = function () {
             $scope.readMore = !$scope.readMore;
         };
 
@@ -58,13 +59,13 @@ wizerApp.controller('profileController',
         if ($rootScope.loggedUser._id === $routeParams.id) {
             ProfileService.getProfileEvents(0, 10)
                 .then(function (data) {
-                console.log("Events: " + JSON.stringify(data));
-                $scope.events = data;
-            });
+                    console.log("Events: " + JSON.stringify(data));
+                    $scope.events = data;
+                });
         }
 
 
-        $scope.editProfile = function() {
+        $scope.editProfile = function () {
 
             console.log("SENDING TO EDIT PROFILE: " + JSON.stringify($scope.editUser));
             ProfileService.editProfile($scope.editUser)
@@ -76,67 +77,75 @@ wizerApp.controller('profileController',
                 });
         };
 
-        $scope.uploadPhoto = function(){
+        $scope.uploadPhoto = function () {
 
             var file = $scope.myFile;
             var uploadUrl = "/students/post-profile-image";
             var fd = new FormData();
             fd.append('recfile', file);
 
-            $http.post(uploadUrl,fd, {
+            $http.post(uploadUrl, fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             })
-                .then(function(data){
+                .then(function (data) {
                         console.log("upload success!!!");
                     },
-                    function(){
+                    function () {
                         console.log("error!!");
                     });
         };
 
 
+        $scope.calculateAge = function calculateAge() { // birthday is a date
 
-        $scope.calculateAge = function calculateAge(birthday) { // birthday is a date
-            birthday = new Date(birthday);
-            var ageDifMs = Date.now() - birthday.getTime();
-            var ageDate = new Date(ageDifMs); // miliseconds from epoch
-            return Math.abs(ageDate.getUTCFullYear() - 1970);
+            var d = new Date($scope.profile.birthday);
+
+            if (Object.prototype.toString.call(d) === "[object Date]") {
+                // it is a date
+                if (!isNaN(d.getTime())) {  // d.valueOf() could also work
+                    // date is not valid
+                
+                    $scope.hasBirthday = true;
+
+                    var birthday = new Date($scope.profile.birthday);
+                    var ageDifMs = Date.now() - birthday.getTime();
+                    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+                    return Math.abs(ageDate.getUTCFullYear() - 1970);
+
+                }
+            }
         };
 
 
+        $scope.myImage = '';
+        $scope.myCroppedImage = '';
 
-        $scope.myImage='';
-        $scope.myCroppedImage='';
-
-        var handleFileSelect=function(evt) {
-            var file=evt.currentTarget.files[0];
+        var handleFileSelect = function (evt) {
+            var file = evt.currentTarget.files[0];
             var reader = new FileReader();
             reader.onload = function (evt) {
-                $scope.$apply(function($scope){
-                    $scope.myImage=evt.target.result;
+                $scope.$apply(function ($scope) {
+                    $scope.myImage = evt.target.result;
                     $scope.profile.profile_img = $scope.myCroppedImage;
                     $scope.uploadPhoto();
                 });
             };
             reader.readAsDataURL(file);
             $scope.pictureLoading = true;
-            $timeout(function() {
+            $timeout(function () {
                 $scope.getProfile();
 
             }, 6000);
         };
-        angular.element(document.querySelector('#file-profile-image')).on('change',handleFileSelect);
+        angular.element(document.querySelector('#file-profile-image')).on('change', handleFileSelect);
 
 
-
-        $scope.genderChoose = function(gender) {
+        $scope.genderChoose = function (gender) {
             console.log("Called role choose");
             $('.dropdown-header').text(gender.charAt(0).toUpperCase() + gender.slice(1));
             $scope.editUser.gender = gender;
         };
-
-
 
 
     });

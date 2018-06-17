@@ -15,7 +15,6 @@ router.post("/connect-session", function (req, res) {
     const decoded = req.verifiedEmail;
     const sid = req.body.sid;
     const name = req.body.name;
-    let index = 0;
 
     Session.findOne({sid: sid}, function (err, sess) {
         if (err) {
@@ -24,42 +23,48 @@ router.post("/connect-session", function (req, res) {
         }
         else {
             if (sess) {
-                let exists = false;
-                sess.students.forEach(function (user, i) {
-                    if (user.email === decoded) {
-                        exists = true;
-                        if (name !== user.display_name) {
-                            sess.students.splice(i, 1);
-                            sess.students.push({
-                                email: decoded,
-                                display_name: name
-                            });
-                            const newArray = sess.students;
-                            sess.update({students: newArray}).then(function () {
-                                console.log(decoded + " logged in as " + name + " to session " + sess.name);
+                if(sess.admin === decoded){
+                    console.log('Welcome back to Class ' + decoded + '!');
+                    res.status(200).json(sess);
+                }
+                else {
+                    let exists = false;
+                    sess.students.forEach(function (user, i) {
+                        if (user.email === decoded) {
+                            exists = true;
+                            if (name !== user.display_name) {
+                                sess.students.splice(i, 1);
+                                sess.students.push({
+                                    email: decoded,
+                                    display_name: name
+                                });
+                                const newArray = sess.students;
+                                sess.update({students: newArray}).then(function () {
+                                    console.log(decoded + " logged in as " + name + " to session " + sess.name);
+                                    res.status(200).json(sess);
+                                }).catch(function () {
+                                    console.log("Unable to save the session with the new student " + name);
+                                });
+                            }
+                            else {
+                                console.log('Welcome back to Class ' + decoded + '!');
                                 res.status(200).json(sess);
-                            }).catch(function () {
-                                console.log("Unable to save the session with the new student " + name);
-                            });
+                            }
                         }
-                        else {
-                            console.log('Welcome back to Class ' + decoded + '!');
+                    });
+                    if (!exists) {
+                        sess.students.push({
+                            email: decoded,
+                            display_name: name
+                        });
+                        const newArray = sess.students;
+                        sess.update({students: newArray}).then(function (item) {
+                            console.log("Saved " + decoded + " as " + name + " to session: " + sid);
                             res.status(200).json(sess);
-                        }
+                        }).catch(function (err) {
+                            console.log("Unable to save the session with the new student " + name);
+                        });
                     }
-                });
-                if (!exists) {
-                    sess.students.push({
-                        email: decoded,
-                        display_name: name
-                    });
-                    const newArray = sess.students;
-                    sess.update({students: newArray}).then(function (item) {
-                        console.log("Saved " + decoded + " as " + name + " to session: " + sid);
-                        res.status(200).json(sess);
-                    }).catch(function (err) {
-                        console.log("Unable to save the session with the new student " + name);
-                    });
                 }
             }
             else {
@@ -312,70 +317,86 @@ router.get("/rate-reply-message", function (req, res) {
     let id = new ObjectID(mess_id);
     // finds the user
     User.findOne({email: decoded}, function (err, user) {
-        if (err) throw err;
+        if (err) {
+            console.log(err);
+            next(err);
+        }
+        if(user) {
+            //finds the message and fetches its likers and dislikers arrays.
+            Session_Message.findOne({'replies._id': id}, function (err, message) {
+                if (err) {
+                    console.log(err);
+                    next(err);
+                }
+                if(message) {
+                    message.replies.forEach(function (org, i) {
+                        if (org._id == mess_id) {
+                            if (err) return err;
+                            to = org.email;
+                            let likers = org.likers;
+                            let dislikers = org.dislikers;
+                            let liked = likers.indexOf(user.id) > -1; // true if the user has liked the message
+                            let disliked = dislikers.indexOf(user.id) > -1;// true if the user has disliked the message
 
-        //finds the message and fetches its likers and dislikers arrays.
-        Session_Message.findOne({'replies._id': id}, function (err, message) {
-            message.replies.forEach(function (org, i) {
-                if (org._id == mess_id) {
-                    if (err) return err;
-                    to = org.email;
-                    let likers = org.likers;
-                    let dislikers = org.dislikers;
-                    let liked = likers.indexOf(user.id) > -1; // true if the user has liked the message
-                    let disliked = dislikers.indexOf(user.id) > -1;// true if the user has disliked the message
+                            let newMesssage = org;
+                            message.replies.splice(i, 1);
 
-                    let newMesssage = org;
-                    message.replies.splice(i, 1);
-
-                    if (rating === 1) { // user likes the message
-                        if (liked) { // user has already liked the message
-                            newMesssage.likers.forEach(function (liker, i) {
-                                if (liker === user.id) newMesssage.likers.splice(i, 1);
+                            if (rating === 1) { // user likes the message
+                                if (liked) { // user has already liked the message
+                                    newMesssage.likers.forEach(function (liker, i) {
+                                        if (liker === user.id) newMesssage.likers.splice(i, 1);
+                                    });
+                                    newMesssage.likes -= 1;
+                                } else if (disliked) {
+                                    newMesssage.likers.push(user.id);
+                                    newMesssage.dislikers.forEach(function (disliker, i) {
+                                        if (disliker === user.id) newMesssage.dislikers.splice(i, 1);
+                                    });
+                                    newMesssage.dislikes -= 1;
+                                    newMesssage.likes += 1;
+                                } else {
+                                    newMesssage.likers.push(user.id);
+                                    newMesssage.likes += 1;
+                                }
+                            } else {
+                                if (disliked) {
+                                    newMesssage.dislikers.forEach(function (disliker, i) {
+                                        if (disliker === user.id) newMesssage.dislikers.splice(i, 1);
+                                    });
+                                    newMesssage.dislikes -= 1;
+                                } else if (liked) {
+                                    newMesssage.dislikers.push(user.id);
+                                    newMesssage.likers.forEach(function (liker, i) {
+                                        if (liker === user.id) newMesssage.likers.splice(i, 1);
+                                    });
+                                    newMesssage.likes -= 1;
+                                    newMesssage.dislikes += 1;
+                                } else {
+                                    newMesssage.dislikers.push(user.id);
+                                    newMesssage.dislikes += 1;
+                                }
+                            }
+                            let newArray = message.replies;
+                            newArray.push(newMesssage);
+                            message.update({replies: newArray}, function (err) {
+                                console.log("done rating message");
+                                console.log('updating session message');
+                                if (err) {
+                                    console.log(err);
+                                    return err;
+                                }
                             });
-                            newMesssage.likes -= 1;
-                        } else if (disliked) {
-                            newMesssage.likers.push(user.id);
-                            newMesssage.dislikers.forEach(function (disliker, i) {
-                                if (disliker === user.id) newMesssage.dislikers.splice(i, 1);
-                            });
-                            newMesssage.dislikes -= 1;
-                            newMesssage.likes += 1;
-                        } else {
-                            newMesssage.likers.push(user.id);
-                            newMesssage.likes += 1;
-                        }
-                    } else {
-                        if (disliked) {
-                            newMesssage.dislikers.forEach(function (disliker, i) {
-                                if (disliker === user.id) newMesssage.dislikers.splice(i, 1);
-                            });
-                            newMesssage.dislikes -= 1;
-                        } else if (liked) {
-                            newMesssage.dislikers.push(user.id);
-                            newMesssage.likers.forEach(function (liker, i) {
-                                if (liker === user.id) newMesssage.likers.splice(i, 1);
-                            });
-                            newMesssage.likes -= 1;
-                            newMesssage.dislikes += 1;
-                        } else {
-                            newMesssage.dislikers.push(user.id);
-                            newMesssage.dislikes += 1;
-                        }
-                    }
-                    let newArray = message.replies;
-                    newArray.push(newMesssage);
-                    message.update({replies: newArray}, function (err) {
-                        console.log("done rating message");
-                        console.log('updating session message');
-                        if (err) {
-                            console.log(err);
-                            return err;
                         }
                     });
                 }
+                else{
+                    res.status(404).json({message: "no message found"});
+                }
             });
-        });
+        }
+        else{
+            res.status(404).json({message: "no user found"});
+        }
     });
 });
 
@@ -386,9 +407,37 @@ router.post("/messages", function (req, res) {
     Session.findOne({sid: req.body.sid}, function (err, sess) {
         if (err) console.log(err);
         if (sess) {
-            sess.students.forEach(function (stud) {
-                if (stud.email === decoded) {
-                    const msg = new Session_Message({
+            if (sess.admin === decoded) {
+                const msg = new Session_Message({
+                        poster_id: req.body.poster_id,
+                        sid: req.body.sid,
+                        type: req.body.type,
+                        body: req.body.body,
+                        email: decoded,
+                        nickname: sess.teacher_fname + sess.teacher_lname,
+                        date: Date.now()
+                    });
+                msg.save(function (err) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).send(err);
+                    }
+                    Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function (err) {
+                        console.log('pushing message to messages');
+                        if (err) {
+                            return console.log(err);
+                        } else {
+                            socketIOEmitter.emitEventToSessionRoom(msg.sid, 'newSessionMessage', msg);
+                        }
+                    });
+                    res.status(200).json({message: "successfully added message " + msg.body + " to db"});
+                    console.log("successfully added message " + msg.body + " to db");
+                });
+            }
+            else{
+                sess.students.forEach(function (stud) {
+                    if (stud.email === decoded) {
+                        const msg = new Session_Message({
                             poster_id: req.body.poster_id,
                             sid: req.body.sid,
                             type: req.body.type,
@@ -396,27 +445,27 @@ router.post("/messages", function (req, res) {
                             email: decoded,
                             nickname: stud.display_name,
                             date: Date.now()
-                        }
-                    );
-
-                    msg.save(function (err) {
-                        if (err) {
-                            console.log(err);
-                            return res.status(500).send(err);
-                        }
-                        Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function (err) {
-                            console.log('pushing message to messages');
-                            if (err) {
-                                return console.log(err);
-                            } else {
-                                socketIOEmitter.emitEventToSessionRoom(msg.sid, 'newSessionMessage', msg);
-                            }
                         });
-                        res.status(200).json({message: "successfully added message " + msg.body + " to db"});
-                        console.log("successfully added message " + msg.body + " to db");
-                    });
-                }
-            });
+
+                        msg.save(function (err) {
+                            if (err) {
+                                console.log(err);
+                                return res.status(500).send(err);
+                            }
+                            Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function (err) {
+                                console.log('pushing message to messages');
+                                if (err) {
+                                    return console.log(err);
+                                } else {
+                                    socketIOEmitter.emitEventToSessionRoom(msg.sid, 'newSessionMessage', msg);
+                                }
+                            });
+                            res.status(200).json({message: "successfully added message " + msg.body + " to db"});
+                            console.log("successfully added message " + msg.body + " to db");
+                        });
+                    }
+                });
+            }
         }
         else{
             res.status(404).json({message: "no session"});
@@ -552,6 +601,7 @@ router.post('/post-video', type, function (req, res) {
             Session.findOne({sid: req.query.sid}, function (err, sess) {
                 if (err) return next(err);
                 if (sess) {
+                    res.status(200).json({message: 'received file'});
                     console.log("starting to upload " + req.file.originalname);
                     cloudinary.v2.uploader.upload(path,
                         {
@@ -597,8 +647,6 @@ router.post('/post-video', type, function (req, res) {
                             sess.update({videoUrl: result.url}).then(function (err, updated_file) {
                                 console.log("updated session video");
                             });
-                            first = true;
-                            res.status(200).json({message: 'received file'});
                         });
                 }
                 else {

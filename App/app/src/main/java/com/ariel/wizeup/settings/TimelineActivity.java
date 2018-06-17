@@ -50,6 +50,7 @@ public class TimelineActivity extends AppCompatActivity {
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
             first = true;
+            mAdapter = new EventsAdapter(this, new ArrayList<>());
             loadEvents();
             mSwipeRefreshLayout.setRefreshing(false);
         }, 1000));
