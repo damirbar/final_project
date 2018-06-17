@@ -381,65 +381,31 @@ router.post("/messages", function (req, res) {
     Session.findOne({sid: req.body.sid}, function (err, sess) {
         if (err) console.log(err);
         if (sess) {
-            if (sess.admin === decoded) {
-                const msg = new Session_Message({
-                    poster_id: req.body.poster_id,
-                    sid: req.body.sid,
-                    type: req.body.type,
-                    body: req.body.body,
-                    email: decoded,
-                    nickname: sess.teacher_fname + " " + sess.teacher_lname,
-                    date: Date.now()
-                });
-                msg.save(function (err) {
+            const msg = new Session_Message({
+                poster_id: req.body.poster_id,
+                sid: req.body.sid,
+                type: req.body.type,
+                body: req.body.body,
+                email: decoded,
+                nickname: sess.admin === decoded ? sess.teacher_fname + " " + sess.teacher_lname : req.body.nickname,
+                date: Date.now()
+            });
+            msg.save(function (err) {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send(err);
+                }
+                Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function (err) {
+                    console.log('pushing message to messages');
                     if (err) {
-                        console.log(err);
-                        return res.status(500).send(err);
-                    }
-                    Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function (err) {
-                        console.log('pushing message to messages');
-                        if (err) {
-                            return console.log(err);
-                        } else {
-                            socketIOEmitter.emitEventToSessionRoom(msg.sid, 'newSessionMessage', msg);
-                        }
-                    });
-                    res.status(200).json({message: "successfully added message " + msg.body + " to db"});
-                    console.log("successfully added message " + msg.body + " to db");
-                });
-            }
-            else {
-                sess.students.forEach(function (stud) {
-                    if (stud.email === decoded) {
-                        const msg = new Session_Message({
-                            poster_id: req.body.poster_id,
-                            sid: req.body.sid,
-                            type: req.body.type,
-                            body: req.body.body,
-                            email: decoded,
-                            nickname: stud.display_name,
-                            date: Date.now()
-                        });
-
-                        msg.save(function (err) {
-                            if (err) {
-                                console.log(err);
-                                return res.status(500).send(err);
-                            }
-                            Session.update({sid: msg.sid}, {$push: {messages: msg._id}}, function (err) {
-                                console.log('pushing message to messages');
-                                if (err) {
-                                    return console.log(err);
-                                } else {
-                                    socketIOEmitter.emitEventToSessionRoom(msg.sid, 'newSessionMessage', msg);
-                                }
-                            });
-                            res.status(200).json({message: "successfully added message " + msg.body + " to db"});
-                            console.log("successfully added message " + msg.body + " to db");
-                        });
+                        return console.log(err);
+                    } else {
+                        res.status(200).json({message: "successfully added message " + msg.body + " to db"});
+                        console.log("successfully added message " + msg.body + " to db");
+                        socketIOEmitter.emitEventToSessionRoom(msg.sid, 'newSessionMessage', msg);
                     }
                 });
-            }
+            });
         }
         else {
             res.status(404).json({message: "no session"});
@@ -636,44 +602,39 @@ router.post("/reply", function (req, res) {
     Session.findOne({sid: req.body.sid}, function (err, sess) {
         if (err) console.log(err);
         if (sess) {
-            sess.students.forEach(function (stud) {
-                if (stud.email === decoded) {
-                    let newReply = new Session_Message({
-                        poster_id: req.body.poster_id,
-                        parent_id: req.body.mid,
-                        sid: req.body.sid,
-                        type: req.body.type,
-                        reply: true,
-                        email: decoded,
-                        nickname: stud.display_name,
-                        body: req.body.body,
-                        date: Date.now()
-                    });
-                    newReply.save(function (err, reply) {
-
-                        if (err) return console.log(err);
-
-                        Session_Message.update({_id: reply.parent_id}, {
-                            $push: {replies: reply._id},
-                            $inc: {num_of_replies: 1}
-                        }, function (err) {
-                            if (err) return console.log(err);
-                            res.status(200).json({message: "added reply"});
-                            socketIOEmitter.emitEventToSessionRoom(reply.sid, 'newSessionMessageReply', reply);
-
-                            let notification = new Notification({
-                                receiver_id: notified_id,
-                                sender_id: replier_id, // the user who replied
-                                action: 4,
-                                subject: 'message',
-                                subject_id: subject_id
-                            });
-                            notificationsSystem.saveAndEmitNotification(notification);
-                        });
-                    });
-
-                }
+            let newReply = new Session_Message({
+                poster_id: req.body.poster_id,
+                parent_id: req.body.mid,
+                sid: req.body.sid,
+                type: req.body.type,
+                reply: true,
+                email: decoded,
+                nickname: sess.admin === decoded ? sess.teacher_fname + " " + sess.teacher_lname : req.body.nickname,
+                body: req.body.body,
+                date: Date.now()
             });
+            newReply.save(function (err, reply) {
+                if (err) return console.log(err);
+                Session_Message.update({_id: reply.parent_id}, {
+                    $push: {replies: reply._id},
+                    $inc: {num_of_replies: 1}
+                }, function (err) {
+                    if (err) return console.log(err);
+                    res.status(200).json({message: "added reply"});
+                    socketIOEmitter.emitEventToSessionRoom(reply.sid, 'newSessionMessageReply', reply);
+
+                    let notification = new Notification({
+                        receiver_id: notified_id,
+                        sender_id: replier_id, // the user who replied
+                        action: 4,
+                        subject: 'message',
+                        subject_id: subject_id
+                    });
+                    notificationsSystem.saveAndEmitNotification(notification);
+                });
+            });
+
+
         }
     });
 });
