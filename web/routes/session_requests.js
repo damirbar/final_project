@@ -15,7 +15,6 @@ router.post("/connect-session", function (req, res) {
     const decoded = req.verifiedEmail;
     const sid = req.body.sid;
     const name = req.body.name;
-    let index = 0;
 
     Session.findOne({sid: sid}, function (err, sess) {
         if (err) {
@@ -602,6 +601,7 @@ router.post('/post-video', type, function (req, res) {
             Session.findOne({sid: req.query.sid}, function (err, sess) {
                 if (err) return next(err);
                 if (sess) {
+                    res.status(200).json({message: 'received file'});
                     console.log("starting to upload " + req.file.originalname);
                     cloudinary.v2.uploader.upload(path,
                         {
@@ -647,8 +647,6 @@ router.post('/post-video', type, function (req, res) {
                             sess.update({videoUrl: result.url}).then(function (err, updated_file) {
                                 console.log("updated session video");
                             });
-                            first = true;
-                            res.status(200).json({message: 'received file'});
                         });
                 }
                 else {
