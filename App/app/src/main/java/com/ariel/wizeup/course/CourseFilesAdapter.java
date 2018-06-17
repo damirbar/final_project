@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
     private Context mContext;
     private List<CourseFile> filesList;
     private boolean[] progressState;
+
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
@@ -71,6 +73,11 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
 
     }
 
+    public boolean[] getProgressState() {
+        return progressState;
+    }
+
+
     public List<CourseFile> getCoursesList() {
         return filesList;
     }
@@ -83,6 +90,7 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
         ProgressBar progressBar;
         ImageButton menu;
 
+
         public MyHolder(View v) {
             mFileName = v.findViewById(R.id.file_name);
             mFileDate = v.findViewById(R.id.creation_date);
@@ -92,6 +100,8 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
             menu = v.findViewById(R.id.feed_item_menu);
         }
     }
+
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -106,8 +116,9 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
 
         } else {
             holder = (MyHolder) view.getTag();
-
         }
+
+
 
         if (progressState[position]) {
             holder.progressBar.setVisibility(View.VISIBLE);
@@ -125,6 +136,7 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
             String s = formatter.format(date);
             holder.mFileDate.setText(s);
         }
+
 
         try {
             holder.menu.setOnClickListener(v -> {
@@ -163,9 +175,9 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
                                     }
 
                                     holder.progressBar.setVisibility(View.VISIBLE);
-                                    holder.progressBar.setIndeterminate(true);
                                     holder.progressBar.getIndeterminateDrawable().setColorFilter(
                                             Color.BLUE, PorterDuff.Mode.SRC_IN);
+                                    holder.progressBar.setIndeterminate(true);
 
                                     PRDownloader.download(url, dirPath(mContext), fileName)
                                             .build()

@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.ariel.wizeup.R;
+import com.ariel.wizeup.dialogs.MyDateDialog;
 import com.ariel.wizeup.dialogs.UploadingDialog;
 import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.model.Session;
@@ -43,7 +44,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.ariel.wizeup.network.RetrofitRequests.getBytes;
 
-public class SessionActivity extends AppCompatActivity {
+public class SessionActivity extends AppCompatActivity implements UploadingDialog.OnCallbackCancel {
     private TabLayout tabLayout;
     private ImageButton buttonVid;
     private CompositeSubscription mSubscriptions;
@@ -357,6 +358,12 @@ public class SessionActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         vid.pause();
+    }
+
+    @Override
+    public void cancelUpload() {
+        mSubscriptions.unsubscribe();
+        mSubscriptions = new CompositeSubscription();
     }
 
 }
