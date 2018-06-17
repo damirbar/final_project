@@ -68,55 +68,67 @@ router.get("/get-students-rating", function (req, res, next) {
 
 router.get("/change-val", function (req, res, next) { // Expect 0 or 1
 
+    let decoded =  req.verifiedEmail;
+
     const val = req.query.val;
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) next(err);
         if (sess) {
-            sess.students.forEach(function (student) {
-                if (student.email === req.verifiedEmail) {
-                    if (val === '1') {
-                        if (!sess.likers.includes(student.email)) {
-                            sess.likers.push(student.email);
-                            sess.likes += 1;
-                        }
-                        if (sess.dislikers.includes(student.email)) {
-                            sess.dislikers.forEach(function (stud, i) {
-                                if (stud === student.email) sess.dislikers.splice(i, 1);
-                            });
-                            sess.dislikes -= 1;
-                        }
-                    }
-                    else {
-                        if (!sess.dislikers.includes(student.email)) {
-                            sess.dislikers.push(student.email);
-                            sess.dislikes += 1;
-                        }
-                        if (sess.likers.includes(student.email)) {
-                            sess.likers.forEach(function (stud, i) {
-                                if (stud === student.email) sess.likers.splice(i, 1);
-                            });
-                            sess.likes -= 1;
-                        }
-                    }
-                    sess.save().then(function () {
-                        console.log("Updates rating value successfully ");
-                        res.json(sess);
-                    });
-                    // if (student.rating_val != val) {
-                    //     student.rating_val = val;
-                    //     let newarray = sess.students;
-                    //     let rating = (val === "1" ? (sess.curr_rating + 1) : (sess.curr_rating - 1));
-                    //     sess.update({students: newarray, curr_rating: rating}).then(function () {
-                    //         if (err) return next(err);
-                    //         console.log("Updates rating value successfully ");
-                    //         res.json(sess);
-                    //     });
-                    // }
-                    // else {
-                    //     res.json(sess);
-                    // }
+
+            let likers = sess.likers;
+            let dislikers = sess.dislikers;
+            let liked = likers.indexOf(decoded) > -1; // true if the user has liked the message
+            let disliked = dislikers.indexOf(decoded) > -1;// true if the user has disliked the message
+            let ratingUpdate = {};
+            let updateEvent = {};
+
+            if (val === 1) { // user likes the message
+                if (liked) { // user has already liked the message
+                    ratingUpdate.$pull = {likers: decoded};//removes the user id from the likers array
+                    ratingUpdate.$inc = {likes: -1};
+                    updateEvent.likes = -1;
+                    // console.log('user has already liked this message. mess id:' + mess_id);
+                } else if (disliked) { // user has already disliked the message.
+
+                    ratingUpdate.$push = {likers: decoded};
+                    ratingUpdate.$pull = {dislikers: decoded}; //removes the user id from the dislikers array
+                    ratingUpdate.$inc = {likes: 1, dislikes: -1};
+
+                    updateEvent.likes = 1;
+                    updateEvent.dislikes = -1;
+
+                } else { // user is liking the message fo the first time
+                    ratingUpdate.$push = {likers: decoded};
+                    ratingUpdate.$inc = {likes: 1};
+                    updateEvent.likes = 1;
                 }
-            });
+
+            } else {// user likes the message
+                if (disliked) {// user has already disliked the message
+                    ratingUpdate.$pull = {dislikers: decoded}; //removes the user id from the dislikers array
+                    ratingUpdate.$inc = {dislikes: -1};
+                    updateEvent.dislikes = -1;
+                } else if (liked) { // user has already liked the message.
+                    ratingUpdate.$push = {dislikers: decoded};
+                    ratingUpdate.$pull = {likers: decoded};//removes the user id from the likers array
+                    ratingUpdate.$inc = {likes: -1, dislikes: 1};
+                    updateEvent.likes = -1;
+                    updateEvent.dislikes = 1;
+                } else {// user is disliking the message fo the first time
+                    ratingUpdate.$push = {dislikers: decoded};
+                    ratingUpdate.$inc = {dislikes: 1};
+                    updateEvent.dislikes = 1;
+                }
+            }
+                    sess.update(ratingUpdate, function(err){
+                        if(err){
+                            console.log(err);
+                            res.status(500).json({message: err});
+                        }else{
+                            res.status(200).json(sess);
+                        }
+
+                    })
         }
         else {
             res.status(404).json({message: "no such session"});
