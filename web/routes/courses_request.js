@@ -9,7 +9,7 @@ let Course_Message = require("../schemas/course_message");
 const socketIOEmitter = require('../tools/socketIO');
 const notificationsSystem = require("../tools/notificationsSystem");
 
-let globalCid = "000001";
+let globalCid = "1";
 
 router.post("/create-course", function (req, res) {
 
