@@ -119,7 +119,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
     private void initViews() {
         mTvNoResults = findViewById(R.id.tv_no_results);
-        imageNoResults = findViewById(R.id.image);
+        imageNoResults = findViewById(R.id.imageBase);
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         mShimmerViewContainer.startShimmerAnimation();
         mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
@@ -300,8 +300,10 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
             if (notificationMsg.length != 0) {
                 ArrayList<NotificationMsg> saveNotificationMsg = new ArrayList<>(Arrays.asList(notificationMsg));
                 mTvNoResults.setVisibility(View.GONE);
+                imageNoResults.setVisibility(View.GONE);
                 mAdapter = new NotificationsAdapter(this, new ArrayList<>(saveNotificationMsg));
                 notificationsList.setAdapter(mAdapter);
+                first = false;
             } else {
                 mTvNoResults.setVisibility(View.VISIBLE);
                 imageNoResults.setVisibility(View.VISIBLE);

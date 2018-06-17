@@ -155,22 +155,7 @@ public class SessionInfoFragment extends Fragment {
 
     private void handleResponsePullSession(Session _session) {
 
-//        else{
-//            for (int i = 0; i < _session.getLikers().length; i++) {
-//                if (_session.getLikers()[i].equalsIgnoreCase(email)) {
-//                    mRadioUnderstand.setChecked(true);
-//                }
-//            }
-//            ////temp
-//
-//            for (int i = 0; i < _session.getDislikers().length; i++) {
-//                if (_session.getDislikers()[i].equalsIgnoreCase(email)) {
-//                    mRadioDontUnderstand.setChecked(true);
-//                }
-//            }
-//        }
-
-        int all = _session.getLikers().length + _session.getDislikers().length;
+        int all = _session.getStudents().length;
         if (all == 0) {
             all = 1;
         }
@@ -197,7 +182,7 @@ public class SessionInfoFragment extends Fragment {
         String teacher = _session.getTeacher_fname() + " " + _session.getTeacher_lname();
         mTeacherTextView.setText(teacher);
         mLocTextView.setText(_session.getLocation());
-        String numStudentsStr = Integer.toString(_session.getStudents().length);
+        String numStudentsStr = Integer.toString(all);
         mOnlineNum.setText(numStudentsStr);
 
     }
