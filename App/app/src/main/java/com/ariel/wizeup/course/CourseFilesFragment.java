@@ -23,6 +23,8 @@ import com.ariel.wizeup.model.CourseFile;
 import com.ariel.wizeup.model.Response;
 import com.ariel.wizeup.network.RetrofitRequests;
 import com.ariel.wizeup.network.ServerResponse;
+import com.ariel.wizeup.session.SessionCommentActivity;
+import com.ariel.wizeup.session.UploadCourseFilesAdapter;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -52,8 +54,10 @@ public class CourseFilesFragment extends Fragment {
     private CourseFilesAdapter mAdapter;
     private String cid;
     private static final int INTENT_REQUEST_CODE = 100;
-    private UploadingDialog tab1;
     private View alert;
+    private ArrayList<CourseFile> uploadFiles;
+    private UploadCourseFilesAdapter mAdapterUpload;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,10 +67,17 @@ public class CourseFilesFragment extends Fragment {
         getData();
         initViews(view);
         alert = view.findViewById(R.id.activity_files_feed);
-
+        uploadFiles = new ArrayList<>();
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this.getActivity());
         mServerResponse = new ServerResponse(alert);
+
+        filesList.setOnItemClickListener((parent, view1, position, id) -> {
+            long viewId = view1.getId();
+            if (viewId == R.id.cancel) {
+                cancelUpload();
+            }
+        });
 
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
@@ -95,6 +106,8 @@ public class CourseFilesFragment extends Fragment {
 
             }
         });
+        pullFiles();
+
         return view;
     }
 
@@ -155,13 +168,17 @@ public class CourseFilesFragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 try {
 
-                    tab1 = new UploadingDialog();
-                    tab1.setCancelable(false);
-                    tab1.show(getActivity().getSupportFragmentManager(), "Dialog");
-
-
                     Uri uri = data.getData();
                     String fileName = getFileDetailFromUri(getContext(), uri);
+
+
+//                    mTvNoResults.setVisibility(View.GONE);
+//                    CourseFile f = new CourseFile();
+//                    f.setName(fileName);
+//                    uploadFiles.add(0,f);
+//                    mAdapterUpload = new UploadCourseFilesAdapter(this.getActivity(), new ArrayList<>(uploadFiles));
+//                    filesList.setAdapter(mAdapterUpload);
+
 
                     InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
                     tryUploadFile(getBytes(is), fileName);
@@ -169,7 +186,6 @@ public class CourseFilesFragment extends Fragment {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    tab1.dismiss();
                     mServerResponse.showSnackBarMessage("File didn't upload.");
                 }
             }
@@ -188,14 +204,12 @@ public class CourseFilesFragment extends Fragment {
 
 
     private void handleResponseUploadFile(Response response) {
-        tab1.dismiss();
         pullFiles();
-
     }
 
     private void handleError(Throwable error) {
         mServerResponse.handleError(error);
-        tab1.dismiss();
+        pullFiles();
     }
 
 
@@ -225,10 +239,9 @@ public class CourseFilesFragment extends Fragment {
         mSubscriptions.unsubscribe();
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        pullFiles();
+    public void cancelUpload() {
+        mSubscriptions.unsubscribe();
+        mSubscriptions = new CompositeSubscription();
     }
 
 
