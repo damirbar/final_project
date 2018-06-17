@@ -101,7 +101,7 @@ router.get("/change-val", function (req, res) { // Expect 0 or 1
                 let liked = likers.indexOf(decoded) > -1; // true if the user has liked the message
                 let disliked = dislikers.indexOf(decoded) > -1;// true if the user has disliked the message
                 let ratingUpdate = {};
-                let updateEvent = {};
+                let updateEvent = {likes: 0, dislikes: 0};
 
                 if (val == 1) { // user likes the message
                     if (liked) { // user has already liked the message
@@ -146,6 +146,7 @@ router.get("/change-val", function (req, res) { // Expect 0 or 1
                         console.log(err);
                         res.status(500).json({message: err});
                     }else{
+                        socketIOEmitter.emitEventToSessionRoom(sess.sid, 'updateSessionRating', updateEvent);
                         res.status(200).json(sess);
                     }
                 });
@@ -174,7 +175,7 @@ router.post("/create-session", function (req, res) {
                     teacher_lname: user.last_name,
                     location: req.body.location,
                     endTime: req.body.finish,
-                    students:[user.id]
+                    students:[user.email]
                 });
 
                 sess.save(function (err) {
@@ -184,14 +185,18 @@ router.post("/create-session", function (req, res) {
                             return res.status(500).json({message: 'Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!'});
                         }
                         else if (err.name === 'ValidationError') {
+                            let str = "";
                             for (field in err.errors) {
                                 console.log("you must provide: " + field + " field");
-                                return res.status(500).json({message: "you must provide: " + field + " field"});
+                                str += "you must provide: " + field + " field  ";
                             }
                         }
-                        else {
+                        return res.status(500).json({message: str});
+
+                    else {
                             console.log(err);
-                            return res.status(500).send(err);
+                            return res.status(500).json({message: err});
+
                         }
                     }
                     else {
@@ -538,6 +543,7 @@ router.get("/get-all-messages", function (req, res) {
 
 router.get("/disconnect", function (req, res) {
     let decoded = req.verifiedEmail;
+    let sid = req.query.sid;
     Session.findOne({sid: req.query.sid}, function (err, sess) {
         if (err) {
             console.log(err);
@@ -563,7 +569,7 @@ router.get("/disconnect", function (req, res) {
                             });
                         }
                         else if (sess.dislikers.includes(decoded)) {
-                            sess.update({$pull: {dislikers: decoded}, $inc: {disliks: -1}}, function (err) {
+                            sess.update({$pull: {dislikers: decoded}, $inc: {dislikes: -1}}, function (err) {
                                 if (err) {
                                     console.log(err);
                                     res.status(500).json({message: err});

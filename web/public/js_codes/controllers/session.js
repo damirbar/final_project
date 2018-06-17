@@ -11,6 +11,8 @@ wizerApp.controller('sessionController',
         $scope.message = {type: "question", body: ""};
 
         $scope.connectedUsers = 0;
+        $scope.rate_positive = 0;
+        $scope.rate_negative = 0;
 
         $scope.sessionMessages = [];
         $scope.sessionMessagesMap = {};
@@ -74,7 +76,15 @@ wizerApp.controller('sessionController',
         });
 
         socketIO.on('updateSessionRating', function(update){
-           $scope.session.likes = update.likes;
+            console.log($scope.connected_users);
+            console.log(update);
+           $scope.rate_negative += update.dislikes;
+           $scope.rate_positive += update.likes;
+
+           console.log("neg");
+           console.log($scope.rate_negative);
+           console.log("pos");
+           console.log($scope.rate_positive);
         });
 
 
@@ -116,6 +126,14 @@ wizerApp.controller('sessionController',
                             $scope.isConnectedToSession = true;
                             $scope.session = data;
                             getting();
+                            $scope.isConnectedToSession = true;
+                            $scope.rate_positive = data.likes;
+                            $scope.rate_negative = data.dislikes;
+                            console.log(JSON.stringify(data));
+                            console.log("neg");
+                            console.log($scope.rate_negative);
+                            console.log("pos");
+                            console.log($scope.rate_positive);
                         }
                         $scope.firstConnectionTry = false;
                     }
@@ -174,16 +192,13 @@ wizerApp.controller('sessionController',
             SessionService.createSession($scope.sessionID, $scope.createSessionName, $scope.createSessionLocation)
                 .then(function (data) {
                     if (data.error) {
-
                         $scope.errorCreationMessage = data.error;
                         $scope.firstCreationTry = false;
 
                     } else {
                         $scope.session = data;
-                        // $('session-video').attr('src',$scope.session.videoUrl);
                         console.log("Created session with ID = " + $scope.createSessionID);// + JSON.stringify(data.session));
                         console.log("SESSION DATA = " + JSON.stringify(data));
-                        // io.connect();
                         socketIO.emit('joinSession', data.sid);
                         if (data) {
                             $scope.isConnectedToSession = true;
@@ -235,14 +250,15 @@ wizerApp.controller('sessionController',
 
 
         $scope.disconnect = function () {
-            SessionService.disconnect($scope.sessionID)
-                .then(function (data) {
-                    $scope.isConnectedToSession = false;
-                    console.log(JSON.stringify(data));
-                })
-                .catch(function (err) {
-                    console.log("Error with disconnecting from session");
-                });
+            // SessionService.disconnect($scope.sessionID)
+                // .then(function (data) {
+                    // $scope.isConnectedToSession = false;
+                    // console.log(JSON.stringify(data));
+                    socketIO.emit('leaveSession', $scope.session.sid);
+                // })
+                // .catch(function (err) {
+                    // console.log("Error with disconnecting from session");
+                // });
         };
 
         $scope.$on('$locationChangeStart', function (event) {
@@ -264,8 +280,6 @@ wizerApp.controller('sessionController',
             SessionService.getSession($scope.sessionID)
                 .then(function (data) {
                     $scope.session = data;
-                    $scope.isConnectedToSession = true;
-                    console.log(JSON.stringify(data));
                 })
                 .catch(function (err) {
                     console.log("Error with disconnecting from session");

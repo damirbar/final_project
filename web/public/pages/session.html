@@ -143,8 +143,8 @@
                             <!--Session rating: {{((session.curr_rating / session.students.length) * 100).toFixed(2)}}%-->
                             <div class="row">
                                 <span class="session-rating-header col-4 retroshadow">Session rating:</span>
-                                <div class="col-4 text-success session-dis-like">{{((session.likes / session.students.length) * 100).toFixed(2)}}% Understand</div>
-                                <div class="col-4 text-danger session-dis-like">{{((session.dislikes / session.students.length) * 100).toFixed(2)}}% Don't understand</div>
+                                <div class="col-4 text-success session-dis-like">{{connectedUsers == 0 ? 0 : ((rate_positive / connectedUsers) * 100).toFixed(2)}}% Understand</div>
+                                <div class="col-4 text-danger session-dis-like">{{connectedUsers == 0 ? 0 : ((rate_negative / connectedUsers) * 100).toFixed(2)}}% Don't understand</div>
                             </div>
                         </div>
                         <div class="like-unlike-session btn-group btn-group-toggle" data-toggle="buttons">

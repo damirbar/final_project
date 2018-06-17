@@ -1,14 +1,13 @@
 const HashMap = require('hashmap');
 const Session = require('../schemas/session');
 const Course = require('../schemas/course');
+const User = require('../schemas/user');
 
 var clients = new HashMap();
 var sockets = new HashMap();
 var pendingSockets = new HashMap();
 var sessionsRooms = new HashMap();
 var coursesRooms = new HashMap();
-
-var socketsToSessionsRooms = new HashMap();
 
 var IO = null;
 
@@ -24,6 +23,7 @@ exports.socketInit = function (socket) {
     });
 
     socket.on('registerClientToClients', function (user_id) {
+        socket.user_id = user_id;
         pendingSockets.remove(socket.id);
         clients.set(user_id, socket);
         sockets.set(socket.id, user_id);
@@ -45,23 +45,20 @@ exports.socketInit = function (socket) {
     socket.on('joinSession', function (session_id) {
         console.log('joined session ' + session_id);
         if (sessionsRooms.has(session_id)) {
-            if (socket.current_room !== session_id) {
                 socket.join(session_id, function () {
-                    // socketsToSessionsRooms.set(socket.id, session_id);
                     socket.current_room = session_id;
                     let connectedUsers = sessionsRooms.get(session_id).connected_users++;
                     exports.emitEventToSessionRoom(session_id, 'updateSessionConnectedUsers', connectedUsers + 1);
                     console.log(sessionsRooms.get(session_id));
                 });
-            }
         }
     });
 
     socket.on('leaveSession', function (session_id) {
         socket.leave(session_id, function () {
-            socketsToSessionsRooms.remove(socket.id);
-            let connectedUsers = sessionsRooms.get(session_id).connected_users--;
-            exports.emitEventToSessionRoom(session_id, 'updateSessionConnectedUsers', connectedUsers - 1);
+            // let connectedUsers = sessionsRooms.get(session_id).connected_users--;
+            // exports.emitEventToSessionRoom(session_id, 'updateSessionConnectedUsers', connectedUsers - 1);
+            emitAndUpdateDisconnection(socket);
             console.log(sessionsRooms.get(session_id));
         });
     });
@@ -77,27 +74,18 @@ exports.socketInit = function (socket) {
         }
     });
 
-    // socket.on('leaveCourseMessages', function(cid){
-    //     socket.leave(session_id, function(){
-    //         console.log('somebody left session ' + session_id);
-    //         sessionsRooms.get(session_id).connected_users--;
-    //         console.log(sessionsRooms.get(session_id));
-    //     });
+    // socket.on('rateSession', function (sessionRating) {
+    //     let session = sessionsRooms.get(sessionRating.sess_id);
+    //     if (rating == 1) {
+    //         session.rate_positive++;
+    //     } else {
+    //         session.rate_negative++;
+    //     }
+    //     let connectedUsers = session.connected_users;
+    //
+    //     // exports.emitEventToSessionRoom(sessionRating.sess_id, 'updateSessionRating', {positive:});
     // });
 
-
-    socket.on('rateSession', function (sessionRating) {
-        let session = sessionsRooms.get(sessionRating.sess_id);
-        if (rating == 1) {
-            session.rate_positive++;
-        } else {
-            session.rate_negative++;
-        }
-        let connectedUsers = session.connected_users;
-
-        // exports.emitEventToSessionRoom(sessionRating.sess_id, 'updateSessionRating', {positive:});
-    });
-
     socket.on('', function () {
 
     });
@@ -113,11 +101,13 @@ exports.socketInit = function (socket) {
     socket.on('', function () {
 
     });
-
 };
 
 
 function onDisconnect(socket) {
+
+    console.log("unexpected disconnection");
+    console.log(socket.user_id);
 
     var socketID = socket.id;
 
@@ -125,15 +115,12 @@ function onDisconnect(socket) {
         pendingSockets.remove(socketID);
         console.log("unregistered socket " + socket.id + " disconnected");
     } else {
-        if (socket.current_room) {
-            console.log(socket.current_room);
-            let connectedUsers = sessionsRooms.get(socket.current_room).connected_users--;
-            exports.emitEventToSessionRoom(socket.current_room, 'updateSessionConnectedUsers', connectedUsers - 1);
-        }
-
         var userID = sockets.get(socketID);
         sockets.remove(socketID);
         clients.remove(userID);
+        if(socket.current_room){
+            emitAndUpdateDisconnection(socket);
+        }
         console.log(userID + " disconnected");
     }
 }
@@ -189,6 +176,59 @@ exports.emitEvent = function (user_id, eventName, args) {
     }
     return false;
 };
+
+function emitAndUpdateDisconnection(socket){
+    console.log("disconnecting at emitAndUpdateDisconnection: ");
+    console.log(socket.user_id);
+
+    User.findOne({_id: socket.user_id}, {email: 1, _id: 0}, function(err,user){
+        if(err) return console.log(err);
+        if(user.email) {
+
+            console.log(user.email);
+
+            Session.findOne({sid: socket.current_room}, {likers: 1, dislikers: 1}, function(err, session){
+                if(err) return console.log(err);
+                console.log("The session");
+                console.log(session);
+                if(session){
+                    let likers = session.likers;
+                    let dislikers = session.dislikers;
+                    console.log("user liked? ");
+                    console.log(likers.includes(user.email));
+                    console.log("user disliked? ");
+                    console.log(dislikers.includes(user.email));
+
+                    if(likers.includes(user.email)){
+                        session.update({$pull: {likers: user.email},$pull: {students: user.email}, $inc: {likes: -1}}, function(err){
+                            if(err) return console.log(err);
+                            let connectedUsers = sessionsRooms.get(socket.current_room).connected_users--;
+                            exports.emitEventToSessionRoom(socket.current_room, 'updateSessionConnectedUsers', connectedUsers - 1);
+                            exports.emitEventToSessionRoom(socket.current_room, 'updateSessionRating', {likes: -1, dislikes: 0});
+                            console.log("updated liked");
+                        })
+                    }
+                    else if(dislikers.includes(user.email)){
+                        session.update({$pull: {dislikers: user.email},$pull: {students: user.email}, $inc: {dislikes: -1}}, function(err){
+                            if(err) return console.log(err);
+                            if (socket.current_room) {
+                                let connectedUsers = sessionsRooms.get(socket.current_room).connected_users--;
+                                exports.emitEventToSessionRoom(socket.current_room, 'updateSessionConnectedUsers', connectedUsers - 1);
+                                exports.emitEventToSessionRoom(socket.current_room, 'updateSessionRating', {likes: 0, dislikes: -1});
+                                console.log("updated disliked");
+                            }
+                        });
+                    }
+                }
+            })
+        }
+    });
+}
+
+exports.decreaseSessionConnectedUsers = function (session_id){
+    let connectedUsers = sessionsRooms.get(session_id).connected_users--;
+    exports.emitEventToSessionRoom(socket.current_room, 'updateSessionConnectedUsers', connectedUsers - 1);
+}
 
 exports.addCourseToCoursesRooms = function (course_id) {
     console.log("socket.io added course" + course_id);
