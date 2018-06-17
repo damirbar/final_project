@@ -103,7 +103,8 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
         });
 
         final ViewPager viewPager = findViewById(R.id.pager);
-        final SessionPagerAdapter adapter = new SessionPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), session.getSid());
+        final SessionPagerAdapter adapter = new SessionPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),
+                session.getSid(),session.getAdmin());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
