@@ -597,7 +597,6 @@ router.post('/post-video', type, function (req, res) {
             res.status(400).json({message: 'wrong file'});
         }
         else {
-            console.log(path);
             Session.findOne({sid: req.query.sid}, function (err, sess) {
                 if (err) return next(err);
                 if (sess) {
