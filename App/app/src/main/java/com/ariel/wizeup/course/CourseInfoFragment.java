@@ -97,7 +97,7 @@ public class CourseInfoFragment extends Fragment {
         mTPoints.setText(points);
         mTLoc.setText(course.getLocation());
         mTTeacherEmail.setText(course.getTeacher_email());
-        mTStudentsCount.setText(String.valueOf(course.getStudents().length));
+        mTStudentsCount.setText(String.valueOf(course.getStudents().length -1));
 
         //Date
         Date date = course.getCreation_date();

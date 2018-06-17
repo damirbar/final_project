@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+        <string name="base">wizeUp</string>
+
+
 
     <string name="info1">Improve yourself. Be Wizer.</string>
     <string name="info2">wizeUp is a tool to help students better

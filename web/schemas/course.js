@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var CourseSchema = new mongoose.Schema({
-    cid: {type: String, unique: true, required: true},
+    cid: {type: String, default: ""},
     name:{type: String, required: true},
     department: {type: String, required: true},
     teacher_fname:{type: String, required: true},
