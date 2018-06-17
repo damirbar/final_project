@@ -127,7 +127,6 @@ router.get("/change-val", function (req, res, next) { // Expect 0 or 1
                         }else{
                             res.status(200).json(sess);
                         }
-
                     })
         }
         else {
@@ -171,6 +170,7 @@ router.post("/create-session", function (req, res) {
                     console.log(err);
                     return res.status(500).send(err);
                 }
+                socketIOEmitter.addSessionToSessionRooms(sess.sid);
                 res.status(200).json(sess);
                 console.log("successfully added session " + sess.name + " to db");
             });
