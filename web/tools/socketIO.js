@@ -1,6 +1,7 @@
 const HashMap = require('hashmap');
 const Session = require('../schemas/session');
 const Course = require('../schemas/course');
+const User = require('../schemas/user');
 
 var clients = new HashMap();
 var sockets = new HashMap();
@@ -24,6 +25,9 @@ exports.socketInit = function (socket) {
     });
 
     socket.on('registerClientToClients', function (user_id) {
+        socket.user_id = user_id;
+        console.log("socket user id: ");
+        console.log(socket.user_id);
         pendingSockets.remove(socket.id);
         clients.set(user_id, socket);
         sockets.set(socket.id, user_id);
@@ -121,10 +125,17 @@ function onDisconnect(socket) {
         console.log("unregistered socket " + socket.id + " disconnected");
     } else {
         if(socket.current_room){
-            console.log(socket.current_room);
             let connectedUsers = sessionsRooms.get(socket.current_room).connected_users--;
             exports.emitEventToSessionRoom(socket.current_room,'updateSessionConnectedUsers', connectedUsers - 1);
         }
+
+        User.findOne({_id: socket.user_id}, {email: 1}, function (err,email) {
+           if(err) return console.log(err);
+
+           Session.update({$in: {students: email}},{})
+
+        });
+
 
         var userID = sockets.get(socketID);
         sockets.remove(socketID);
@@ -174,7 +185,7 @@ function getAllCourses() {
     });
 }
 
-exports.emitEvent = function (user_id, eventName, args) {
+exports.emitEvent = function (user_id, eventName, args){
 
     console.log('emitting event ' + eventName);
 
