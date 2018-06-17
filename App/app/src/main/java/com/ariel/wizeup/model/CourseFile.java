@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class CourseFile {
 
+    private String _id;
     private String url;
     private Date creation_date;
     private String originalName;
@@ -11,6 +12,13 @@ public class CourseFile {
     private String publicid;
     private String uploaderid;
 
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public String getPublicid() {
         return publicid;

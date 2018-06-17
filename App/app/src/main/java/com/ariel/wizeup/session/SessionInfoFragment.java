@@ -126,9 +126,9 @@ public class SessionInfoFragment extends Fragment {
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            sid = bundle.getString("sid");
             String admin = bundle.getString("admin");
-            if (admin.equalsIgnoreCase(email)) {
+            sid = bundle.getString("sid");
+            if (admin!=null && admin.equalsIgnoreCase(email)) {
                 toggle.setVisibility(View.GONE);
             }
         }
@@ -138,7 +138,7 @@ public class SessionInfoFragment extends Fragment {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().changeVal(sid, val)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseChangeVal, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseChangeVal, ServerResponse::handleErrorQuiet));
     }
 
 
@@ -150,7 +150,7 @@ public class SessionInfoFragment extends Fragment {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getSessionById(sid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponsePullSession, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponsePullSession, i -> mServerResponse.handleErrorQuiet(i)));
     }
 
     private void handleResponsePullSession(Session _session) {

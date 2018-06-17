@@ -170,7 +170,7 @@ public interface RetrofitInterface {
     Observable<CourseMessage[]> getCourseMessageReplies(@Query("mid") String mid);
 
     @DELETE("courses/remove-file")
-    Observable<Response> removeFile(@Query("publicid") String publicid);
+    Observable<Response> removeFile(@Query("publicid") String publicid, @Query("id") String id, @Query("cid") String cid);
 
 
 

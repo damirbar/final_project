@@ -117,6 +117,20 @@
 
                 </android.support.v4.widget.SwipeRefreshLayout>
 
+                <TextView
+                    android:id="@+id/tv_no_results"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="150dp"
+                    android:foregroundGravity="center"
+                    android:gravity="center"
+                    android:text="@string/no_results_found"
+                    android:textColor="@color/user_selected"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/shimmer_view_container"
                     android:layout_width="wrap_content"
@@ -153,18 +167,6 @@
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_no_results"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="150dp"
-                android:foregroundGravity="center"
-                android:gravity="center"
-                android:text="@string/no_results_found"
-                android:textColor="@color/user_selected"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
 
 
         </LinearLayout>

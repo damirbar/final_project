@@ -15,7 +15,7 @@ public class SessionPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
         this.sid = _sid;
-        this.admin = admin;
+        this.admin = _admin;
     }
 
     @Override
