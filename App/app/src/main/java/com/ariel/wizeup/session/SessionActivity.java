@@ -79,7 +79,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
                 .setTarget(viewTarget)
                 .setContentTitle("Session tutorial")
                 .setContentText("Press the arrow to open the video.")
-                .singleShot(43)
+                .singleShot(40)
                 .build();
 
 
@@ -132,10 +132,10 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
     private void initViews() {
         Button buttonBack =  findViewById(R.id.image_Button_back);
         buttonBack.setOnClickListener(view -> goBack());
-        buttonVid = (ImageButton) findViewById(R.id.vid_button_close);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        buttonVid = findViewById(R.id.vid_button_close);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout = findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Session"));
         tabLayout.addTab(tabLayout.newTab().setText("Updates"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);

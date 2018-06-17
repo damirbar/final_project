@@ -255,10 +255,16 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
 
         boolean newUser = false;
-        if (!(startUser.equals(user))) {
+        try {
+            if (!(startUser.equals(user))) {
             actions++;
             newUser = true;
         }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
 
         if (imagePath != null && !(imagePath.isEmpty())) {

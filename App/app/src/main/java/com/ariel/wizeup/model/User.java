@@ -17,12 +17,12 @@ public class User {
     private String address;
     private Date birthday;
     private String gender;
-    private String photos[];
+//    private String photos[];
     private String profile_img;
 //    private int cred;
 //    private int fame;
 //    private String register_date;
-    private String last_modified;
+//    private String last_modified;
     private String temp_password;
     private String temp_password_time;
 //    private String courses[];
@@ -80,28 +80,12 @@ public class User {
         this.address = address;
     }
 
-    public String[] getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(String[] photos) {
-        this.photos = photos;
-    }
-
     public String getProfile_img() {
         return profile_img;
     }
 
     public void setProfile_img(String profile_img) {
         this.profile_img = profile_img;
-    }
-
-    public String getLast_modified() {
-        return last_modified;
-    }
-
-    public void setLast_modified(String last_modified) {
-        this.last_modified = last_modified;
     }
 
     public String getTemp_password() {
