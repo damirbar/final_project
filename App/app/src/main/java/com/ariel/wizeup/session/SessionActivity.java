@@ -78,7 +78,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
                 .setTarget(viewTarget)
                 .setContentTitle("Session tutorial")
                 .setContentText("Press the arrow to open the video.")
-                .singleShot(2)
+                .singleShot(43)
                 .build();
 
 

@@ -182,7 +182,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getProfile(mId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseProfile, i -> mServerResponse.handleErrorDown(i)));
+                .subscribe(this::handleResponseProfile, ServerResponse::handleErrorQuiet));
     }
 
     private void handleResponseProfile(User user) {
@@ -253,12 +253,15 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         editor.putString(Constants.PROFILE_IMG, "");
 //        editor.putString(Constants.LANG, "en");
 //        editor.putString(Constants.NOTIFICATION‬‏, "on");
-
         editor.apply();
         Intent intent = new Intent(this, EntryActivity.class);
         this.startActivity(intent);
-        this.finish();
-    }
+
+        Intent EntryActivity = new Intent(BaseActivity.this, EntryActivity.class);
+        EntryActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(EntryActivity);
+
+        }
 
     @Override
     protected void onResume() {
@@ -270,9 +273,16 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getNotifications(mAdapter.getNotificationList().size(), ADD_ITEMS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseNotifications, i -> mServerResponse.handleErrorDown(i)));
+                .subscribe(this::handleResponseNotifications, this::handleError));
 
     }
+
+    public void handleError(Throwable error) {
+        mShimmerViewContainer.stopShimmerAnimation();
+        mShimmerViewContainer.setVisibility(View.GONE);
+        mServerResponse.handleErrorDown(error);
+    }
+
 
     private void handleResponseNotifications(NotificationMsg notificationMsg[]) {
         if (first) {
