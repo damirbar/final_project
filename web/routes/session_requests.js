@@ -22,7 +22,7 @@ router.post("/connect-session", function (req, res) {
         }
         else {
             if (sess) {
-                if (sess.admin === decoded || sess.students.includes(decoded)) {
+                if (sess.students.includes(decoded)) {
                     console.log('Welcome back to Class ' + decoded + '!');
                     res.status(200).json(sess);
                 }
@@ -103,7 +103,7 @@ router.get("/change-val", function (req, res) { // Expect 0 or 1
                 let ratingUpdate = {};
                 let updateEvent = {};
 
-                if (val === 1) { // user likes the message
+                if (val == 1) { // user likes the message
                     if (liked) { // user has already liked the message
                         ratingUpdate.$pull = {likers: decoded};//removes the user id from the likers array
                         ratingUpdate.$inc = {likes: -1};
@@ -173,7 +173,8 @@ router.post("/create-session", function (req, res) {
                     teacher_fname: user.first_name,
                     teacher_lname: user.last_name,
                     location: req.body.location,
-                    endTime: req.body.finish
+                    endTime: req.body.finish,
+                    students:[user.id]
                 });
 
                 sess.save(function (err) {
@@ -330,7 +331,7 @@ router.get("/get-message-replies", function (req, res) {
             res.status(500).json({message: err});
         }
         else {
-            if(message) {
+            if(messages) {
                 return res.status(200).json(messages);
             }
             else{

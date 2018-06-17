@@ -111,7 +111,7 @@ wizerApp.controller('courseController',
             CourseService.sendMessage($rootScope.loggedUser._id, $scope.course.cid, $scope.message.type, $scope.message.body)
                 .then(function (data) {
                     console.log("Sent message");
-                    $scope.getMessages();
+                    // $scope.getMessages();
                     // $scope.getMessages();
                     $scope.message = {body: ""};
                 })
@@ -182,6 +182,7 @@ wizerApp.controller('courseController',
                     $scope.getCourseSessions();
                     $scope.sessionCreate = {};
                     $scope.sessionCreate.cid = $scope.course.cid;
+                    socketIO.emit("joinSession",data.sid);
                     console.log("data = " + data);
                 }, function(err) {
                     console.log("error = " + err);

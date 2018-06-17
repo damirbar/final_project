@@ -8,14 +8,17 @@ let Notification = require("../schemas/notification");
 let Course_Message = require("../schemas/course_message");
 const socketIOEmitter = require('../tools/socketIO');
 const notificationsSystem = require("../tools/notificationsSystem");
+let randomstring = require("randomstring");
 
-let globalCid = "1";
+let random = randomstring.generate(7);
+
+let globalCid = 1;
 
 router.post("/create-course", function (req, res) {
 
     Course.findOne({}).sort({"cid": -1}).then(function (ans) {
             if (ans) {
-                globalCid = String(parseInt(ans.cid) + 1);
+                globalCid = (ans.cid + 1);
             }
             User.findOne({email: req.body.teacher.toLowerCase()}, function (err, teacher) {
                 if (err) {
@@ -25,7 +28,6 @@ router.post("/create-course", function (req, res) {
                 else {
                     if (teacher) {
                         const course = new Course({
-                            cid: globalCid,
                             name: req.body.name,
                             department: req.body.department,
                             teacher_fname: teacher.first_name,
@@ -35,7 +37,7 @@ router.post("/create-course", function (req, res) {
                             students: [teacher.id],
                             teacher_email: teacher.email
                         });
-
+                        course.cid = course.id;
                         course.save(function (err) {
                             if (err) {
                                 if (err.name === 'MongoError' && err.code === 11000) {
@@ -52,6 +54,7 @@ router.post("/create-course", function (req, res) {
                                 return res.status(500).send(err);
                             }
                             else {
+                                socketIOEmitter.addCourseToCoursesRooms(course.cid);
                                 res.status(200).json(course);
                                 console.log("successfully added course " + course.name + " to db");
                             }
@@ -565,6 +568,7 @@ router.post("/create-session", function (req, res) {
                                         }
                                         else {
                                             res.status(200).json(sess);
+                                            socketIOEmitter.addSessionToSessionRooms(sess.sid);
                                             console.log("successfully added session " + sess.name + " to course:" + course.cid);
                                         }
                                     });
