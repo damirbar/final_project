@@ -414,7 +414,7 @@ router.post("/messages", function (req, res) {
                         type: req.body.type,
                         body: req.body.body,
                         email: decoded,
-                        nickname: sess.teacher_fname + sess.teacher_lname,
+                        nickname: sess.teacher_fname +" "+ sess.teacher_lname,
                         date: Date.now()
                     });
                 msg.save(function (err) {

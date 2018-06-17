@@ -60,9 +60,10 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
     private int positionDel;
+    private String cid;
 
 
-    public CourseFilesAdapter(Activity context, ArrayList<CourseFile> list, View v) {
+    public CourseFilesAdapter(Activity context, ArrayList<CourseFile> list, View v, String _cid) {
         super(context, 0, list);
         mContext = context;
         filesList = list;
@@ -70,6 +71,7 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(context);
         mServerResponse = new ServerResponse(v);
+        cid = _cid;
 
     }
 
@@ -150,7 +152,7 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
                             switch (item.getItemId()) {
                                 case R.id.delete:
                                     positionDel = position;
-                                    deleteFile(filesList.get(position).getPublicid());
+                                    deleteFile(filesList.get(position).getPublicid(),filesList.get(position).get_id());
                                     break;
                                 case R.id.report:
                                     AlertDialogTheme();
@@ -264,8 +266,8 @@ public class CourseFilesAdapter extends ArrayAdapter<CourseFile> {
         dialog.show();
     }
 
-    private void deleteFile(String publicid) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().removeFile(publicid)
+    private void deleteFile(String publicid,String id) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().removeFile(publicid, id, cid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));

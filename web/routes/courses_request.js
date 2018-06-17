@@ -205,18 +205,20 @@ router.post('/post-file', type, function (req, res) {
 router.delete('/remove-file', function (req, res) {
 
     let publicid = req.query.publicid;
-
+    let id = req.query.id;
     cloudinary.v2.uploader.destroy(publicid,
         function (err, result) {
             console.log(result);
             File.remove({publicid: publicid}, function (err) {
                 if (err) console.log(err);
-                Course.update({cid: req.query.cid}, {$pull: {files: publicid}},function(err){
+                Course.update({cid: req.query.cid}, {$pull: {files: id}},function(err){
                     if(err){
                         console.log(err);
                         res.status(500).json({message: err});
                     }
-                    res.status(200).json({message: "file deleted"})
+                    else {
+                        res.status(200).json({message: "file deleted"})
+                    }
                 });
             })
         });
