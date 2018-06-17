@@ -124,7 +124,6 @@ public class NotificationService extends Service {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
     };
 

@@ -64,10 +64,7 @@ public class RetrofitRequests {
 
         String credentials = email + ":" + password;
         String basic = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.NO_WRAP);
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
         httpClient.addInterceptor(chain -> {
 
@@ -91,11 +88,7 @@ public class RetrofitRequests {
 
     public  RetrofitInterface getTokenRetrofit() {
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS);
-
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
         httpClient.addInterceptor(chain -> {
 

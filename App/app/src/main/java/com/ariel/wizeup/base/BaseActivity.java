@@ -47,6 +47,8 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.ariel.wizeup.utils.Constants.EMAIL;
 import static com.ariel.wizeup.utils.Constants.NOTIFICATION‬‏;
+import static com.ariel.wizeup.utils.Constants.PROFILE_IMG;
+import static com.ariel.wizeup.utils.Constants.USER_NAME;
 
 public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.DrawerCallBack {
 
@@ -55,12 +57,15 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     private CompositeSubscription mSubscriptions;
     private ListView notificationsList;
     private TextView mTvNoResults;
+    private ImageView imageNoResults;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
     private String mEmail;
     private String mId;
+    private String mName;
+    private String mPic;
     private DrawerHeader mDrawerHeader;
     private NotificationsAdapter mAdapter;
     private ChangeLanguage changeLanguage;
@@ -113,13 +118,14 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     }
 
     private void initViews() {
+        mTvNoResults = findViewById(R.id.tv_no_results);
+        imageNoResults = findViewById(R.id.image);
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         mShimmerViewContainer.startShimmerAnimation();
         mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
         mDrawer = findViewById(R.id.drawerLayout);
         mDrawerView = findViewById(R.id.drawerView);
         mToolbar = findViewById(R.id.toolbar);
-        mTvNoResults = findViewById(R.id.tv_no_results);
         notificationsList = findViewById(R.id.search_List);
 
     }
@@ -137,6 +143,8 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
     private void initSharedPreferences() {
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mName = mSharedPreferences.getString(USER_NAME, "");
+        mPic = mSharedPreferences.getString(PROFILE_IMG, "");
         mEmail = mSharedPreferences.getString(EMAIL, "");
         mId = mSharedPreferences.getString(Constants.ID, "");
         currentNoti = mSharedPreferences.getString(NOTIFICATION‬‏, "");
@@ -182,7 +190,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getProfile(mId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseProfile, ServerResponse::handleErrorQuiet));
+                .subscribe(this::handleResponseProfile, this::handleErrorProfile));
     }
 
     private void handleResponseProfile(User user) {
@@ -191,6 +199,15 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         if (pic != null && !(pic.isEmpty()))
             Picasso.with(this).load(pic).into(mDrawerHeader.getProfileImage());
     }
+
+    private void handleErrorProfile(Throwable error) {
+        ServerResponse.handleErrorQuiet(error);
+        mDrawerHeader.getNameTxt().setText(mName);
+        String pic = mPic;
+        if (pic != null && !(pic.isEmpty()))
+            Picasso.with(this).load(pic).into(mDrawerHeader.getProfileImage());
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -249,8 +266,8 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         editor.putString(Constants.PASS, "");
         editor.putString(Constants.TOKEN, "");
         editor.putString(Constants.ID, "");
-        editor.putString(Constants.USER_NAME, "");
-        editor.putString(Constants.PROFILE_IMG, "");
+        editor.putString(USER_NAME, "");
+        editor.putString(PROFILE_IMG, "");
 //        editor.putString(Constants.LANG, "en");
 //        editor.putString(Constants.NOTIFICATION‬‏, "on");
         editor.apply();
@@ -287,6 +304,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
                 notificationsList.setAdapter(mAdapter);
             } else {
                 mTvNoResults.setVisibility(View.VISIBLE);
+                imageNoResults.setVisibility(View.VISIBLE);
             }
             mShimmerViewContainer.stopShimmerAnimation();
             mShimmerViewContainer.setVisibility(View.GONE);

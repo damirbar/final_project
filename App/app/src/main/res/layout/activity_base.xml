@@ -150,21 +150,27 @@
                 </com.facebook.shimmer.ShimmerFrameLayout>
 
 
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_below="@+id/toolbar"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="visible"
+                    shimmer:srcCompat="@drawable/no_noti" />
+
                 <TextView
                     android:id="@+id/tv_no_results"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="150dp"
+                    android:layout_below="@+id/image"
                     android:foregroundGravity="center"
                     android:gravity="center"
                     android:text="@string/no_results_found"
                     android:textColor="@color/user_selected"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:visibility="gone" />
-
-
-
+                    android:visibility="visible" />
 
 
             </RelativeLayout>

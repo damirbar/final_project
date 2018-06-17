@@ -1,7 +1,5 @@
 package com.ariel.wizeup.entry;
 
-import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -23,7 +21,6 @@ import android.widget.TextView;
 import com.ariel.wizeup.R;
 import com.ariel.wizeup.base.BaseActivity;
 import com.ariel.wizeup.dialogs.LanguageDialog;
-import com.ariel.wizeup.dialogs.MyDateDialog;
 import com.ariel.wizeup.dialogs.ResetPasswordDialog;
 import com.ariel.wizeup.model.User;
 import com.ariel.wizeup.network.RetrofitRequests;

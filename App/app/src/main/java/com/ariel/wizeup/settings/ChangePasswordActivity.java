@@ -60,39 +60,48 @@ public class ChangePasswordActivity extends AppCompatActivity {
         String newPassword = mEtNewPassword.getText().toString();
         String newPassword2 = mEtNewPassword2.getText().toString();
 
-        int err = 0;
 
         if (!validateFields(newPassword)) {
 
-            err++;
             mServerResponse.showSnackBarMessage(getString(R.string.password_should_not_be_empty));
+            return;
         }
 
-        if (!validateFields(newPassword2)) {
+        else if (!validateFields(newPassword2)) {
 
-            err++;
             mServerResponse.showSnackBarMessage(getString(R.string.password_should_not_be_empty));
-            }
+            return;
 
-        if (!newPassword.equals(newPassword2) && err == 0) {
+        }
 
-            err++;
+        else if (!newPassword.equals(newPassword2)) {
+
             mServerResponse.showSnackBarMessage(getString(R.string.passwords_dont_match));
-            }
+            return;
 
-        if (!validateFields(oldPassword)) {
+        }
 
-            err++;
+        else if (!validateFields(oldPassword)) {
+
             mServerResponse.showSnackBarMessage(getString(R.string.password_should_not_be_empty));
-            }
+            return;
 
-        if (err == 0) {
-            mPass = newPassword;
+        }
+
+        else if (newPassword2.length() < 6 || newPassword.length() < 6) {
+
+            mServerResponse.showSnackBarMessage(getString(R.string.password_must_be_at_least_6_characters));
+            return;
+
+        }
+
+
+        mPass = newPassword;
             User user = new User();
             user.setPassword(oldPassword);
             user.setNewPassword(newPassword);
             changePasswordProgress(user);
-        }
+
     }
 
     private void changePasswordProgress(User user) {

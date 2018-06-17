@@ -84,6 +84,7 @@ public class CourseSessionActivity extends AppCompatActivity {
     private void handleResponseCreateSession(Response response) {
         Intent intent = new Intent(getBaseContext(),SessionActivity.class);
         intent.putExtra("session",session);
+        intent.putExtra("nickname", "");
         startActivity(intent);
         finish();
     }

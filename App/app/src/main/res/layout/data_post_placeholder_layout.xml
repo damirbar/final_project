@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginStart="10dp"
-    android:layout_marginTop="20dp"
-    android:background="@color/post_shimmer">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:background="@android:color/white"
+    card_view:cardElevation="@dimen/box_space"
+    card_view:cardUseCompatPadding="true"
+    android:descendantFocusability="blocksDescendants">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:background="@color/post_shimmer"
+        android:layout_height="120dp"
+        android:background="@android:color/white"
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
+        <View
+            android:id="@+id/thumbnail"
+            android:layout_width="@dimen/placeholderImage"
+            android:layout_height="@dimen/placeholderImage"
+            android:layout_marginEnd="@dimen/activityPadding"
+            android:layout_marginLeft="@dimen/padding_10"
+            android:layout_marginRight="@dimen/activityPadding"
+            android:layout_marginTop="@dimen/padding_10"
+            android:background="@color/background" />
+
 
         <ImageButton
-            android:id="@+id/feed_item_menu2"
+            android:id="@+id/feed_item_menu"
             android:layout_width="48.0dip"
             android:layout_height="36.0dip"
             android:layout_alignParentEnd="true"
@@ -29,24 +43,20 @@
             android:scaleType="centerInside"
             android:src="@drawable/ic_more_vert_black_24dp" />
 
-        <View
-            android:id="@+id/thumbnail"
-            android:layout_width="@dimen/placeholderImage"
-            android:layout_height="@dimen/placeholderImage"
-            android:layout_marginEnd="@dimen/activityPadding"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="@dimen/activityPadding"
-            android:layout_marginTop="@dimen/padding_10"
-            android:background="@color/background" />
 
         <LinearLayout
-            android:id="@+id/body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_10"
             android:layout_toEndOf="@id/thumbnail"
             android:layout_toRightOf="@id/thumbnail"
             android:orientation="vertical">
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/placeholderTextHeight"
+                android:background="@color/background" />
 
             <View
                 android:layout_width="150dp"
@@ -61,6 +71,6 @@
                 android:background="@color/background" />
         </LinearLayout>
 
-    </RelativeLayout>
 
+    </RelativeLayout>
 </android.support.v7.widget.CardView>
