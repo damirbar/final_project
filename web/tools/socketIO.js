@@ -81,18 +81,17 @@ exports.socketInit = function (socket) {
     // });
 
 
-    // socket.on('rateSession', function (sessionRating) {
-    //     let session = sessionsRooms.get(sessionRating.sess_id);
-    //     if(rating == 1){
-    //         session.rate_positive++;
-    //     }else{
-    //         session.rate_negative++;
-    //     }
-    //     let connectedUsers = session.connected_users;
-    //     let positive
-    //
-    //     exports.emitEventToSessionRoom(sessionRating.sess_id, 'updateSessionRating', {positive:});
-    // });
+    socket.on('rateSession', function (sessionRating) {
+        let session = sessionsRooms.get(sessionRating.sess_id);
+        if(rating == 1){
+            session.rate_positive++;
+        }else{
+            session.rate_negative++;
+        }
+        let connectedUsers = session.connected_users;
+
+        // exports.emitEventToSessionRoom(sessionRating.sess_id, 'updateSessionRating', {positive:});
+    });
 
     socket.on('', function () {
 
@@ -185,6 +184,15 @@ exports.emitEvent = function (user_id, eventName, args) {
     }
     return false;
 };
+
+exports.addCourseToCoursesRooms = function(course_id){
+    console.log("socket.io added course" + course_id);
+    coursesRooms.set(course_id, {connected_users: 0});
+}
+
+exports.addSessionToSessionRooms = function(session_id){
+    sessionsRooms.set(session_id, {connected_users: 0});
+}
 
 exports.emitEventToSessionRoom = function (room_id, eventName, args) {
     console.log('emitting "' + eventName + '" to session room ' + room_id);
