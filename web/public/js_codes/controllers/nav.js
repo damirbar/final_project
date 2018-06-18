@@ -1,6 +1,10 @@
-wizerApp.controller('navController', function ($scope, AuthService, $location, $timeout, ProfileService, socketIO, SearchService, $rootScope, $interval, $http) {
+wizerApp.controller('navController', function ($scope, AuthService, $location, $timeout, $window, ProfileService, socketIO, SearchService, $rootScope, $interval, $http) {
 
         $scope.loadingNotifications = true;
+        $scope.hasLoginError = false;
+        $scope.loginErrorMessage = "";
+        $scope.hasSignupError = false;
+        $scope.signupErrorMessage = "";
         $scope.notifications = [];
 
         $scope.homeClick = function() {
@@ -36,9 +40,12 @@ wizerApp.controller('navController', function ($scope, AuthService, $location, $
                         if ($rootScope.loggedUser) $('.profile-link').attr("href", "/profile/" + $rootScope.loggedUser._id);
                         else console.log("$rootScope.loggedUser is null");
                         return true;
-                    }, function () {
+                    }, function (err) {
                         console.log("Encountered an error!");
                         $scope.isLogged = false;
+                        console.log("Error: " + JSON.stringify(err));
+                        $scope.hasLoginError = true;
+                        $scope.loginErrorMessage = err.message;
                         return false;
                     });
             }
@@ -54,6 +61,16 @@ wizerApp.controller('navController', function ($scope, AuthService, $location, $
                     // data = data.data;
                     // $rootScope.loggedUser = data;
                     // $scope.loggedUser = data;
+
+                    // if (data.status !== 200) {
+                    //     console.log("ffffffffffffffffffffffffffffffffffff!");
+                    //     $scope.isLogged = false;
+                    //     console.log("Error: " + JSON.stringify(data));
+                    //     $scope.hasLoginError = true;
+                    //     $scope.loginErrorMessage = data.data.message;
+                    //     return false;
+                    // }
+
                     $scope.checkLogin();
                     // $scope.$apply();
                     $timeout(function () {
@@ -74,12 +91,14 @@ wizerApp.controller('navController', function ($scope, AuthService, $location, $
             unregisterUserFromSocketIO(AuthService.user_id);
             $scope.isLogged = false;
             AuthService.logout();
-            $("#loginModal").modal('show');
+            // $("#loginModal").modal('show');
             $location.path('/');
             $timeout(function () {
-                $location.path('/');
+                // $location.url('/');
+                var url = "http://" + $window.location.host + "/Account/Login";
+                $window.location.href = url;
                 $scope.isLogged = false;
-            }, 2000);
+            }, 1000);
         };
 
         $scope.signup = function () {
@@ -98,6 +117,12 @@ wizerApp.controller('navController', function ($scope, AuthService, $location, $
                         $("#loginModal").modal('hide');
                     } else {
                         console.log("An error occurred during sign up!");
+                        console.log("kkkkkkkkkkkkkkkkkkkkkkkk!");
+                        $scope.isLogged = false;
+                        console.log("Error: " + JSON.stringify(data));
+                        $scope.hasSignupError = true;
+                        $scope.signupErrorMessage = data.data.message;
+                        return false;
                     }
                 });
 

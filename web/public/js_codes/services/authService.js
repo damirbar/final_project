@@ -22,8 +22,10 @@ wizerApp.service('AuthService', function($http, AuthToken, $rootScope) {
                 AuthToken.setToken(data.data.accessToken);
                 return data.data;
 
-            }, function(){
+            }, function(err){
                 console.log("Error Authenticating " + email);
+                console.log("authService Error = " + JSON.stringify(err));
+                return err;
             });
 
 

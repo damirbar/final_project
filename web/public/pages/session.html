@@ -224,9 +224,10 @@
                     <td class="message-likes text-success" scope="row">{{msg.likes}}</td>
                     <td class="message-likes text-danger" scope="row">{{msg.dislikes}}</td>
                     <!--<td>{{msg.type.charAt(0).toUpperCase() + msg.type.slice(1)}}</td>-->
-                    <td>
+                    <td class="reply-dis-likes message-text" scope="row">{{msg.nickname}}</td>
+                    <td scope="row">
 
-                        <div class="message-text col-8">{{msg.body}}</div>
+                        <div class="message-text col-8" style="word-break: break-all;">{{msg.body}}</div>
                         <div class="col-4 message-fix-place"></div>
                     </td>
                     <td class="float-right">
@@ -317,7 +318,7 @@
                         <tr>
                             <th>Likes</th>
                             <th>Dislikes</th>
-
+                            <th>Nickname</th>
                             <th>Message</th>
                             <th></th>
                         </tr>
@@ -326,14 +327,15 @@
 
                         <tr ng-repeat="rpl in currentMessageReplies | reverse">
 
-                            <td class="reply-dis-likes text-success" scope="row text-success">{{rpl.likes}}</td>
+                            <td class="reply-dis-likes text-success" scope="row">{{rpl.likes}}</td>
                             <td class="reply-dis-likes text-danger" scope="row">{{rpl.dislikes}}</td>
-                            <td>
+                            <td class="reply-dis-likes message-text" scope="row">{{rpl.nickname}}</td>
+                            <td scope="row">
 
-                                <div class="reply-text col-8">{{rpl.body}}</div>
+                                <div class="reply-text col-8" style="word-break: break-all;">{{rpl.body}}</div>
                                 <div class="col-4 message-fix-place"></div>
                             </td>
-                            <td class="">
+                            <td class="" scope="row">
                                 <div class="message-content">
 
                                     <button type="button"

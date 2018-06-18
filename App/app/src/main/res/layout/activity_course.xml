@@ -47,6 +47,9 @@
         android:layout_below="@+id/toolbar"
         android:background="?attr/colorPrimaryDark"
         android:elevation="6dp"
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+        app:tabTextColor="@color/text_dis"
+        app:tabSelectedTextColor="@color/white"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
