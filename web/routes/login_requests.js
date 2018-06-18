@@ -18,41 +18,49 @@ router.post("/auth-login-user-pass", function (req, res) {
     const credentials = auth(req);
     console.log(credentials);
 
-    if (credentials.name === "undefined" || credentials.pass === "undefined") {
+    if (!credentials || credentials.name === "undefined" || credentials.pass === "undefined") {
         return res.status(401).json({message: 'Invalid Credentials!'});
     }
-
-    User.findOne({email: credentials.name.toLowerCase()}, function (err, user) {
-        if (err) return err;
-        if (!user) {
-            return res.status(400).json({message: 'no such user!'})
-        }
-        console.log(user);
-        if (bcrypt.compareSync(credentials.pass, user.password)) {
-            const token = jwt.sign(credentials.name.toLowerCase(), config.email.secret);
-            User.update({email: credentials.name.toLowerCase()}, {accessToken: token}, function (err) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log("access token was successfully updated");
-                    res.status(200).json({
-                        message: 'welcome to Wizer!',
-                        email: user.email,
-                        first_name: user.first_name,
-                        last_name: user.last_name,
-                        accessToken: token,
-                        role: user.role,
-                        photos: user.photos,
-                        _id: user._id,
-                        display_name: user.display_name
-                    })
+    else {
+        User.findOne({email: credentials.name.toLowerCase()}, function (err, user) {
+            if (err) {
+                console.log("Error while finding courses");
+                res.status(500).json({message: err});
+            }
+            else {
+                if (user) {
+                    if (bcrypt.compareSync(credentials.pass, user.password)) {
+                        const token = jwt.sign(credentials.name.toLowerCase(), config.email.secret);
+                        User.update({email: credentials.name.toLowerCase()}, {accessToken: token}, function (err) {
+                            if (err) {
+                                console.log("Error while finding user");
+                                res.status(500).json({message: err});
+                            }
+                            else {
+                                res.status(200).json({
+                                    message: 'welcome to wizeUp!',
+                                    email: user.email,
+                                    first_name: user.first_name,
+                                    last_name: user.last_name,
+                                    accessToken: token,
+                                    role: user.role,
+                                    _id: user._id,
+                                    display_name: user.display_name
+                                })
+                            }
+                        });
+                    }
+                    else {
+                        console.log("Your pass: " + credentials.pass + ",\nThe expected encrypted pass: " + user.password);
+                        res.status(401).json({message: 'Invalid Credentials!'})
+                    }
                 }
-            });
-        } else {
-            console.log("Your pass: " + credentials.pass + ",\nThe expected encrypted pass: " + user.password);
-            res.status(401).json({message: 'Invalid Credentials!'})
-        }
-    });
+                else {
+                    res.status(400).json({message: 'no such user! ' + credentials.name.toLowerCase()})
+                }
+            }
+        });
+    }
 });
 
 router.get("/get-user-by-token", function (req, res) {
@@ -63,63 +71,90 @@ router.get("/get-user-by-token", function (req, res) {
         last_name: 1,
         accessToken: 1,
         role: 1,
-        photos: 1,
         _id: 1,
         display_name: 1
     };
 
     User.findOne({email: req.verifiedEmail}, projection, function (err, user) {
-        if (err) return next(err);
-        if (user) {
-            user.message = "welcome to Wizer";
-            res.status(200).json(user)
+        if (err) {
+            console.log("Error while finding user");
+            res.status(500).json({message: err});
         }
         else {
-            console.log("no such student");
-            res.status(404).json({message: "no such student"});
+            if (user) {
+                user.message = 'welcome to wizeUp!';
+                res.status(200).json(user);
+            }
+            else {
+                console.log("no such student");
+                res.status(404).json({message: "no such user " + req.verifiedEmail});
+            }
         }
     });
 });
 
 
-router.get("/get-user-from-google", function (req, res) {
-    User.findOne({accessToken: req.query.token}, function (err, user) {
-        if (err) return next(err);
-        if (user) {
-            req.verifiedEmail = user.email;
-
-        }
-        else {
-            console.log("no such student");
-            res.status(404).json({message: "no such student"});
-        }
-    });
-});
+// router.get("/get-user-from-google", function (req, res) {
+//     User.findOne({accessToken: req.query.token}, function (err, user) {
+//         if (err) return next(err);
+//         if (user) {
+//             req.verifiedEmail = user.email;
+//
+//         }
+//         else {
+//             console.log("no such student");
+//             res.status(404).json({message: "no such student"});
+//         }
+//     });
+// });
 
 router.post("/new-user", function (req, res) {
 
+    if (!req.body.email) {
+        req.body.email = 'undefined';
+    }
     const fname = req.body.first_name,
         lname = req.body.last_name,
         email = req.body.email.toLowerCase(),
-        password = req.body.password,
+        password1 = req.body.password,
+        password2 = req.body.password_cnfrm,
         role = req.body.role;
 
 
     req.checkBody("first_name", "First Name is required").notEmpty();
     req.checkBody("last_name", "Last Name is required").notEmpty();
     req.checkBody("email", "Email is required").notEmpty();
-    if (!validator.validate(email)) {
-        console.log("Email is not valid");
-        res.status(400).json({message: "Email is not valid"});
-    }
-    req.checkBody("password", "Password is required").notEmpty();
+    req.checkBody("password1", "Password is required").notEmpty();
+    req.checkBody("password2", "Confirm assword is required").notEmpty();
     req.checkBody("role", "role is required").notEmpty();
 
     const errors = req.validationErrors();
 
+    if (!validator.validate(email)) {
+        let err = {
+            location: "body",
+            msg: "Invalid Email",
+            param: 'email',
+            value: undefined
+        };
+        errors.push(err);
+    }
+    if(password1 !== password2){
+        let err = {
+            location: "body",
+            msg: "Passwords dont match",
+            param: 'password',
+            value: undefined
+        };
+        errors.push(err);
+    }
     if (errors) {
-        console.log(errors);
-        res.status(400).json({message: errors[0].msg});
+        let str = "";
+        for (let i = 0;i<errors.length; ++i ) {
+            console.log(errors[i].msg);
+            str += errors[i].msg +"  ";
+        }
+        res.status(409).json({message: str});
     }
     else {
         const newUser = new User({
@@ -210,23 +245,23 @@ router.post("/reset-pass-init", function (req, res) {
 
     User.findOne({email: req.body.email.toLowerCase()}, function (err, user) {
         if (err) return next(err);
-        if(user){
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync("random", salt);
+        if (user) {
+            const salt = bcrypt.genSaltSync(10);
+            const hash = bcrypt.hashSync("random", salt);
 
-        let random = randomstring.generate(7);
+            let random = randomstring.generate(7);
 
-        user.temp_password = random;
-        user.temp_password_time = new Date();
-        user.save(function () {
-            emailService.init();
-            emailService.sendMail(user.email, 'Reset Password', emailMessages.reset_password(user, random));
-            res.status(200).json({message: 'see mail for more information'});
-        });
+            user.temp_password = random;
+            user.temp_password_time = new Date();
+            user.save(function () {
+                emailService.init();
+                emailService.sendMail(user.email, 'Reset Password', emailMessages.reset_password(user, random));
+                res.status(200).json({message: 'see mail for more information'});
+            });
         }
-        else{
+        else {
             res.status(404).json({message: 'no such user'});
-            }
+        }
     });
 });
 
@@ -237,7 +272,7 @@ router.post("/reset-pass-finish", function (req, res) {
         const seconds = Math.floor(diff / 1000);
         console.log("Seconds :" + seconds);
         if (seconds < 6000) {
-            if (token === user.temp_password){
+            if (token === user.temp_password) {
 
                 const salt = bcrypt.genSaltSync(10);
                 const hash = bcrypt.hashSync(req.body.password, salt);
