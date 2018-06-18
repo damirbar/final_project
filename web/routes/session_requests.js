@@ -178,31 +178,31 @@ router.post("/create-session", function (req, res) {
                     students:[user.email]
                 });
 
-                sess.save(function (err) {
-                    if (err) {
-                        if (err.name === 'MongoError' && err.code === 11000) {
-                            console.log('Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!');
-                            return res.status(500).json({message: 'Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!'});
-                        }
-                        else if (err.name === 'ValidationError') {
-                            let str = "";
-                            for (field in err.errors) {
-                                console.log("you must provide: " + field + " field");
-                                str += "you must provide: " + field + " field  ";
-                            }
+                if (err) {
+                    if (err.name === 'MongoError' && err.code === 11000) {
+                        console.log('Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!');
+                        return res.status(500).json({message: 'Session ' + sess.name + " cannot be added id " + sess.sid + ' already exists!'});
+                    }
+                    else if (err.name === 'ValidationError') {
+                        let str = "";
+                        for (field in err.errors) {
+                            console.log("you must provide: " + field + " field");
+                            str += "you must provide: " + field + " field  ";
                         }
                         return res.status(500).json({message: str});
-
-                    else {
-                            console.log(err);
-                            return res.status(500).json({message: err});
-
-                        }
                     }
-                    else {
-                        res.status(200).json(sess);
-                        console.log("successfully added session " + sess.name + " to db");
+
+                else {
+                        console.log(err);
+                        return res.status(500).json({message: err});
+
                     }
+                }
+                else {
+                    res.status(200).json(sess);
+                    console.log("successfully added session " + sess.name + " to db");
+                }
+                sess.save(function (err) {
                 });
             }
             else {
