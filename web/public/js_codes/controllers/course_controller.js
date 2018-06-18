@@ -85,14 +85,16 @@ wizerApp.controller('courseController',
         $scope.getMessages = function(){
             CourseService.getMessages($routeParams.id)
                 .then(function (data) {
-                    console.log("got messages from getMessages");
-                    let index = 0;
-                    $scope.courseMessages = data;
-                    console.log($scope.courseMessages);
-                    $scope.courseMessages.forEach(function(message){
-                        $scope.courseMessagesMap[message._id] = index;
-                        ++index;
-                    });
+                    if (data) {
+                        console.log("got messages from getMessages");
+                        let index = 0;
+                        $scope.courseMessages = data;
+                        console.log($scope.courseMessages);
+                        $scope.courseMessages.forEach(function(message){
+                            $scope.courseMessagesMap[message._id] = index;
+                            ++index;
+                        });
+                    }
                 });
         };
 

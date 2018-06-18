@@ -41,8 +41,8 @@
 
         <div role="tabpanel" class="tab-pane active show fade" id="courses-res" aria-labelledby="edit-profile-tab">
 
-            <div class="res-container">
-                <div class="res-item single-course col-4" ng-repeat="course in results.courses">
+            <div class="res-container row">
+                <div class="res-item single-course col-4 container" ng-repeat="course in results.courses">
 
                     <a class="course-anchor" ng-href="/courses/{{course.cid}}">
                         <div class="course-header">{{course.name}}</div>
