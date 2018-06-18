@@ -229,12 +229,6 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
             return;
         }
 
-        if (gender.equalsIgnoreCase("Not Specified")) {
-
-            mServerResponse.showSnackBarMessage("Gender should not be empty.");
-            return;
-        }
-
         User user = new User();
         user.setFname(first_name);
         user.setLname(last_name);
