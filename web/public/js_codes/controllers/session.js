@@ -42,12 +42,8 @@ wizerApp.controller('sessionController',
                 $scope.currentMessageRepliesMap[message_id] = index;
                 $scope.currentMessageReplies.push(message);
             }
-            console.log($scope.sessionMessagesMap);
-            console.log($scope.sessionMessages);
 
             $scope.sessionMessages[$scope.sessionMessagesMap[message.parent_id]].num_of_replies += 1;
-            console.log($scope.sessionMessages[$scope.sessionMessagesMap[message.parent_id]]);
-
         });
 
         socketIO.on('updateSessionConnectedUsers', function(update){
@@ -56,26 +52,20 @@ wizerApp.controller('sessionController',
         });
 
         socketIO.on('updateMessageRating', function(update){
-
             var mess = $scope.sessionMessages[$scope.sessionMessagesMap[update.message_id]];
             mess.likes += update.likes;
             mess.dislikes += update.dislikes;
-
-            console.log(mess);
-        });
+            });
 
         socketIO.on('updateMessageReplyRating', function(update){
-
             if($scope.currentMessageReplies.length === 0) return;
-
             var mess = $scope.currentMessageReplies[$scope.currentMessageRepliesMap[update.message_id]];
             mess.likes += update.likes;
             mess.dislikes += update.dislikes;
-
-            console.log(mess);
         });
 
         socketIO.on('updateSessionRating', function(update){
+            console.log("updateSessionRating");
             console.log($scope.connected_users);
             console.log(update);
            $scope.rate_negative += update.dislikes;
@@ -169,12 +159,9 @@ wizerApp.controller('sessionController',
                         }else if(message.dislikers.includes($rootScope.loggedUser._id)){
                             message.disliked = true;
                         }
-
                         $scope.currentMessageRepliesMap[message._id] = index;
                         ++index;
-
                     });
-
                 });
         };
 
@@ -357,7 +344,6 @@ wizerApp.controller('sessionController',
             });
         };
 
-
         $scope.uploadFile = function () {
 
             var file = $scope.myFile;
@@ -385,7 +371,6 @@ wizerApp.controller('sessionController',
             $scope.getMessageReplies(msg._id);
         };
 
-
         $scope.sendReply = function () {
             SessionService.sendReply($rootScope.loggedUser._id, $scope.sessionUserName, $scope.messageToReply.poster_id,
                 $scope.sessionID, $scope.reply.type, $scope.reply.body, $scope.messageToReply._id)
@@ -398,7 +383,6 @@ wizerApp.controller('sessionController',
                 });
         };
 
-
         $scope.rateSession = function(val) {
             console.log("RATING SESSION");
             SessionService.rateSession(val, $scope.sessionID )
@@ -410,6 +394,5 @@ wizerApp.controller('sessionController',
                     console.log(err);
                 });
         };
-
     });
 
