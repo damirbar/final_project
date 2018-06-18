@@ -414,7 +414,7 @@ router.post("/messages", function (req, res) {
 });
 
 router.get("/get-all-messages", function (req, res) {
-    let course_id = req.query.cid;
+    let course_id = Number(req.query.cid);
     Course.aggregate([
             {
                 $lookup: {
