@@ -49,6 +49,9 @@
         android:background="?attr/colorPrimaryDark"
         android:elevation="6dp"
         android:minHeight="?attr/actionBarSize"
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+        app:tabTextColor="@color/text_dis"
+        app:tabSelectedTextColor="@color/white"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <RelativeLayout
