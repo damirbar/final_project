@@ -71,8 +71,7 @@ wizerApp.service('ProfileService', function($http) {
             })
             .catch(function(err) {
                 console.log("An error occurred in singup function :" + JSON.stringify(err));
-
-                return {error: "Error"};
+                return err;
             });
 
     };
