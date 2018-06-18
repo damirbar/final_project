@@ -116,16 +116,16 @@ router.post("/new-user", function (req, res) {
     const fname = req.body.first_name,
         lname = req.body.last_name,
         email = req.body.email.toLowerCase(),
-        password1 = req.body.password,
-        password2 = req.body.password_cnfrm,
+        password = req.body.password,
+        password_cnfrm = req.body.password_cnfrm,
         role = req.body.role;
 
 
     req.checkBody("first_name", "First Name is required").notEmpty();
     req.checkBody("last_name", "Last Name is required").notEmpty();
     req.checkBody("email", "Email is required").notEmpty();
-    req.checkBody("password1", "Password is required").notEmpty();
-    req.checkBody("password2", "Confirm assword is required").notEmpty();
+    req.checkBody("password", "Password is required").notEmpty();
+    req.checkBody("password_cnfrm", "Confirm password is required").notEmpty();
     req.checkBody("role", "role is required").notEmpty();
 
     const errors = req.validationErrors();
@@ -139,10 +139,10 @@ router.post("/new-user", function (req, res) {
         };
         errors.push(err);
     }
-    if(password1 !== password2){
+    if(password !== password_cnfrm){
         let err = {
             location: "body",
-            msg: "Passwords dont match",
+            msg: "Passwords don't match",
             param: 'password',
             value: undefined
         };
