@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -58,8 +59,6 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
     private static final int INTENT_REQUEST_CODE = 100;
     public static final String TAG = SessionActivity.class.getSimpleName();
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +76,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
         Target viewTarget = new ViewTarget(R.id.vid_button_close, this);
         new ShowcaseView.Builder(this)
                 .setTarget(viewTarget)
-                .setContentTitle("Session tutorial")
-                .setContentText("Press the arrow to open the video when video is available.")
+                .setContentTitle("Press the arrow to open the\n\nvideo when video is available.")
                 .singleShot(41)
                 .build();
 
@@ -152,12 +150,15 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
 
 
     private void playVideo() {
+        String url = session.getVideoUrl().trim();
+
 
         vid.setActivity(this);
-        Uri videoUri = Uri.parse(session.getVideoUrl());
+        Uri videoUri = Uri.parse(url);
+
         try {
             vid.setVideoURI(videoUri);
-
+            vid.showControls();
         } catch (IOException e) {
             e.printStackTrace();
         }
