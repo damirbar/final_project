@@ -184,10 +184,13 @@
                     <br>
 
                     <!--<button ng-disabled="!user.role" ng-click="signup()">SIGN UP</button>-->
-                    <button class="btn btn-success" ng-click="signup()">SIGN UP</button>
+                    <button class="btn btn-success" ng-disabled="signupform.$invalid" ng-click="signup()">SIGN UP</button>
 
                     <!--</div>-->
                 </form>
+                <div class="err-msg">
+                    <div class="login-err text-danger" ng-if="hasSignupError">{{signupErrorMessage}}</div>
+                </div>
 
 
                 <form name="loginform" ng-show="!isLoggedIn()">
@@ -221,10 +224,14 @@
 
 
                     <!--</div>-->
-                    <button class="btn btn-primary" ng-click="login()">LOG IN</button>
+                    <button class="btn btn-primary" ng-disabled="loginform.$invalid" ng-click="login()">LOG IN</button>
                     <br><br>
 
                 </form>
+
+                <div class="err-msg">
+                    <div class="login-err text-danger" ng-if="hasLoginError">{{loginErrorMessage}}</div>
+                </div>
 
                 <!--<div class="logout-btn-div">-->
                     <!--<button ng-if="isLogged" class="btn btn-default" ng-click="logout()">Log Out</button>-->
