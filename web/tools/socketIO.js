@@ -68,8 +68,8 @@ exports.socketInit = function (socket) {
             console.log('joined course ' + cid);
             socket.join(cid, function () {
                 socket.current_room = cid;
-                coursesRooms.get(String(cid)).connected_users++;
-                console.log(coursesRooms.get(cid).connected_users);
+                coursesRooms.get(Number(cid)).connected_users++;
+                // console.log(coursesRooms.get(Number(cid)).connected_users);
             });
         }
     });
@@ -160,6 +160,7 @@ function getAllCourses() {
             console.log(err);
         } else {
             courses.forEach(function (course) {
+                // console.log(course);
                 coursesRooms.set(course.cid, {connected_users: 0});
             });
         }
