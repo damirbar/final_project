@@ -5,17 +5,38 @@
 \usepackage{amsmath}
 \usepackage[nottoc,numbib]{tocbibind}
 \begin{document}
-    \textbf{\underline{WizeUp}}
 
-    Damir Bar,
+{\centering
+\includegraphics[scale=0.5]{a.png}
 
-    Eran Sterman,
+\
 
-    Shay Cohen,
+\
 
-    Sefi Shalom \\
+{\huge \textbf{wizeUp}}
 
-    {\underline{Supervisor}}: Dr. Amit Dvir
+
+\
+
+\textbf{Damir Bar}
+
+\textbf{Eran Sterman}
+
+\textbf{Shay Cohen}
+
+\textbf{Sefi Shalom}\\
+
+\
+
+{\underline{Supervisor}}: Dr. Amit Dvir
+
+\
+
+August 2018
+
+}
+
+
     \newpage
 
     \tableofcontents
@@ -122,7 +143,7 @@
     This is where we truly innovate. Using the product of our project, you
     will be able to be at the lecture, even if you are absent from the
     class. You can send/receive messages from other students from the same
-    lecture group during the lecture. You can ask the group questions and
+    lecture group during the lecture  \cite{onlinecourses}. You can ask the group questions and
     answer questions yourself.
 
 
@@ -135,7 +156,7 @@
     Everyone benefits from the Live Feedback. Students which haven't quite
     gotten the last topic learned in class, will no longer desperately raise
     their hands, but post it right into our Live Feedback system in real
-    time. If most of the students felt the same way, the teacher might want
+    time \cite{childrencomputer}. If most of the students felt the same way, the teacher might want
     to consider it. If a student did understand, he can tell the application
     that he did understand and by so to balance the "\,wizeScale".
 
@@ -147,7 +168,7 @@
         \setcounter{numberedCntBD}{\theenumi}
     \end{enumerate}
     The product of this project will independently gather statistical
-    information regarding students' satisfaction and students' progress.
+    information regarding students' satisfaction and students' progress  \subsection{Functionalities}.
     This way the educational institution will be able to monitor its
     employees and improve.
 
@@ -221,6 +242,8 @@
 
         \textbf{AngularJS} - JavaScript front-end web application framework.
 
+        \textbf{JWT} - JSON Web Token. A tool for creating access tokens that assert some number of claims.
+
     \end{flushleft}
 
 
@@ -266,8 +289,6 @@
         \caption{high level architecture}
         \label{fig: figure}
     \end{figure}
-
-
 
     \newpage
 
@@ -513,31 +534,15 @@
 
 
 
-    \section{Specific Requirements}
-
-
-    \subsection{Use-Case Reports}
-
-    \subsection{Class Diagram}
-
-    \subsection{Supplementary Requirements}
-
-
-
-
-
-    \newpage
-
-
-    \subsection{Functional Requirements}
+    \section{Functional Requirements}
 
     \begin{flushleft}
 
-        \textbf{3.4.1}\ \ \textbf{User Class 1 - The Student}
+        \textbf{3.1}\ \ \textbf{User Class 1 - The Student}
 
         \
 
-        \textbf{3.4.1.1 Functional requirement 1.1}
+        \textbf{3.1.1 Functional requirement 1.1}
 
         \textbf{ID: FR1}
 
@@ -552,7 +557,7 @@
         \
 
 
-        \textbf{3.4.1.2 Functional requirement 1.2}
+        \textbf{3.1.2 Functional requirement 1.2}
 
         \textbf{ID: FR2}
 
@@ -569,7 +574,7 @@
 
         \
 
-        \textbf{3.4.1.3 Functional requirement 1.3}
+        \textbf{3.1.3 Functional requirement 1.3}
 
         \textbf{ID: FR3}
 
@@ -589,7 +594,7 @@
 \newpage
 
 
-        \textbf{3.4.1.4 Functional requirement 1.4}
+        \textbf{3.1.4 Functional requirement 1.4}
 
         \textbf{ID: FR4}
 
@@ -607,7 +612,7 @@
 
         \
 
-        \textbf{3.4.1.5 Functional requirement 1.5}
+        \textbf{3.1.5 Functional requirement 1.5}
 
         \textbf{ID: FR5}
 
@@ -622,7 +627,7 @@
 
         \
 
-        \textbf{3.4.1.6 Functional requirement 1.6}
+        \textbf{3.1.6 Functional requirement 1.6}
 
         \textbf{ID: FR6}
 
@@ -638,7 +643,7 @@
 
         \
 
-        \textbf{3.4.1.7 Functional requirement 1.7}
+        \textbf{3.1.7 Functional requirement 1.7}
 
         \textbf{ID: FR7}
 
@@ -656,7 +661,7 @@
 \newpage
 
 
-        \textbf{3.4.1.8 Functional requirement 1.8}
+        \textbf{3.1.8 Functional requirement 1.8}
 
         \textbf{ID: FR8}
 
@@ -671,9 +676,37 @@
 
         \
 
-        \textbf{3.4.1.9 Functional requirement 1.9}
+        \textbf{3.1.9 Functional requirement 1.9}
 
         \textbf{ID: FR9}
+
+        TITLE: Create Session
+
+        DESC: Given that a student is logged in, the student should be able to create a session for other students to connect to.
+
+        RAT: For a student to create sessions.
+
+        DEP: FR4
+
+        \
+
+        \textbf{3.1.10 Functional requirement 1.10}
+
+        \textbf{ID: FR10}
+
+        TITLE: Connect to Session
+
+        DESC: Given that a student is logged in, the student should be able to connect to a session.
+
+        RAT: For a student to connect to sessions.
+
+        DEP: FR4, FR9
+
+        \
+
+        \textbf{3.1.11 Functional requirement 1.11}
+
+        \textbf{ID: FR11}
 
         TITLE: Free-text search
 
@@ -688,9 +721,9 @@
 
         \
 
-        \textbf{3.4.1.10 Functional requirement 1.10}
+        \textbf{3.1.12 Functional requirement 1.12}
 
-        \textbf{ID: FR10}
+        \textbf{ID: FR12}
 
         TITLE: Sorting results
 
@@ -700,13 +733,13 @@
 
         RAT: For a student to sort his/her search.
 
-        DEP: FR9
+        DEP: FR11
 
         \
 
-        \textbf{3.4.1.11 Functional requirement 1.11}
+        \textbf{3.1.13 Functional requirement 1.13}
 
-        \textbf{ID: FR11}
+        \textbf{ID: FR13}
 
         TITLE: Filtering results
 
@@ -716,16 +749,13 @@
 
         RAT: For a student to filter his/her search.
 
-        DEP: FR9
-
+        DEP: FR11
 
         \
-\newpage
 
+        \textbf{3.1.14 Functional requirement 1.14}
 
-        \textbf{3.4.1.12 Functional requirement 1.12}
-
-        \textbf{ID: FR12}
+        \textbf{ID: FR14}
 
         TITLE: Personal teachers list page
 
@@ -737,17 +767,85 @@
 
         DEP: FR4
 
+        \
 
+        \textbf{3.1.15 Functional requirement 1.15}
+
+        \textbf{ID: FR15}
+
+        TITLE: File Management
+
+        DESC: Given that a student is logged in, the student should be able to upload, view and download all files related to courses there are registered to.
+
+        RAT: for a student to manage files efficiently.
+
+        DEP: FR4
+
+        \
+
+        \textbf{3.1.16 Functional requirement 1.16}
+
+        \textbf{ID: FR16}
+
+        TITLE: Course/session Message system
+
+        DESC: Given that a student is logged in, the student should be able to post/read questions and answers in courses/sessions he/she is registered to.
+
+        RAT: for a student to post/read messages in course/session.
+
+        DEP: FR4, FR8, FR10
+
+        \
+
+        \textbf{3.1.17 Functional requirement 1.17}
+
+        \textbf{ID: FR17}
+
+        TITLE: Course/session Rating system
+
+        DESC: Given that a student is logged in, the student should be able to rate messages in courses/sessions he/she is registered to.
+
+        RAT: for a student to rate messages in course/session.
+
+        DEP: FR4, FR8, FR10, FR16
+
+        \
+
+        \textbf{3.1.18 Functional requirement 1.18}
+
+        \textbf{ID: FR18}
+
+        TITLE: Upload session video
+
+        DESC: Given that a student is logged in, the student should be able to upload a video in sessions he/she is registered to.
+
+        RAT: for a student to upload session videos.
+
+        DEP: FR4, FR10
+
+        \
+
+        \textbf{3.1.19 Functional requirement 1.19}
+
+        \textbf{ID: FR19}
+
+        TITLE: Rate session
+
+        DESC: Given that a student is logged in, the student should be able to rate a sessions he/she is registered to.
+
+        RAT: for a student to rate session.
+
+        DEP: FR4, FR10
 
 
         \newpage
 
 
-        \textbf{3.4.2}\ \ \textbf{User Class 2 - The Teacher}
+        \textbf{3.2}\ \ \textbf{User Class 2 - The Teacher}
 
         \
 
-        \textbf{3.4.2.1 Functional requirement 2.1}
+        \textbf{3.2.1 Functional requirement 2.1}
 
         \textbf{ID: FR1}
 
@@ -763,7 +861,7 @@
 
         \
 
-        \textbf{3.4.2.2 Functional requirement 2.2}
+        \textbf{3.2.2 Functional requirement 2.2}
 
         \textbf{ID: FR2}
 
@@ -780,7 +878,7 @@
 
         \
 
-        \textbf{3.4.2.3 Functional requirement 2.3}
+        \textbf{3.2.3 Functional requirement 2.3}
 
         \textbf{ID: FR3}
 
@@ -796,12 +894,9 @@
 
         DEP: FR1
 
-
         \
-\newpage
 
-
-        \textbf{3.4.2.4 Functional requirement 2.4}
+        \textbf{3.2.4 Functional requirement 2.4}
 
         \textbf{ID: FR4}
 
@@ -819,7 +914,7 @@
         \
 
         \
-\textbf{3.4.2.5 Functional requirement 2.5}
+\textbf{3.2.5 Functional requirement 2.5}
 
         \textbf{ID: FR5}
 
@@ -834,7 +929,7 @@
 
         \
 
-        \textbf{3.4.2.6 Functional requirement 2.6}
+        \textbf{3.2.6 Functional requirement 2.6}
 
         \textbf{ID: FR6}
 
@@ -851,7 +946,7 @@
 
         \
 
-        \textbf{3.4.2.7 Functional requirement 2.7}
+        \textbf{3.2.7 Functional requirement 2.7}
 
         \textbf{ID: FR7}
 
@@ -866,13 +961,37 @@
 
         \
 
-        \
-\newpage
-
-
-        \textbf{3.4.2.8 Functional requirement 2.8}
+        \textbf{3.2.8 Functional requirement 2.8}
 
         \textbf{ID: FR8}
+
+        TITLE: Create Session
+
+        DESC: Given that a teacher is logged in, the student should be able to create a session for other students to connect to.
+
+        RAT: For a student to create sessions.
+
+        DEP: FR4
+
+        \
+
+        \textbf{3.2.9 Functional requirement 2.9}
+
+        \textbf{ID: FR9}
+
+        TITLE: Connect to Session
+
+        DESC: Given that a teacher is logged in, the student should be able to connect to a session.
+
+        RAT: For a student to connect to sessions.
+
+        DEP: FR4, FR9
+
+        \
+
+        \textbf{3.2.10 Functional requirement 2.10}
+
+        \textbf{ID: FR10}
 
         TITLE: Personal course page
 
@@ -886,9 +1005,9 @@
 
         \
 
-        \textbf{3.4.2.9 Functional requirement 2.9}
+        \textbf{3.2.11 Functional requirement 2.11}
 
-        \textbf{ID: FR9}
+        \textbf{ID: FR11}
 
         TITLE: Free-text search
 
@@ -903,46 +1022,39 @@
 
         \
 
-        \textbf{3.4.2.10 Functional requirement 2.10}
+        \textbf{3.2.12 Functional requirement 2.12}
 
-        \textbf{ID: FR10}
+        \textbf{ID: FR12}
 
         TITLE: Sorting results
 
         DESC: Given that a teacher has conducted a search, the teacher should be
-        able to sort the results according to the result type: teacher, student,
-        course or university.
+        able to sort the results according to the result type: teacher, student, course or university.
 
         RAT: For a teacher to sort his/her search.
 
-        DEP: FR9
+        DEP: FR11
 
         \
 
-        \textbf{3.4.2.11 Functional requirement 2.11}
+        \textbf{3.2.13 Functional requirement 2.13}
 
-        \textbf{ID: FR11}
+        \textbf{ID: FR13}
 
         TITLE: Filtering results
 
         DESC: Given that a teacher has conducted a search, the teacher should be
-        able to filter the results according to the result type: teacher,
-        student, course or university.
+        able to filter the results according to the result type: teacher, student, course or university.
 
-        RAT: For a teacher
+        RAT: For a teacher to filter his/her search.
 
-        to filter his/her search.
-
-        DEP: FR9
-
+        DEP: FR11
 
         \
-\newpage
 
+        \textbf{3.2.14 Functional requirement 2.14}
 
-        \textbf{3.4.2.12 Functional requirement 2.12}
-
-        \textbf{ID: FR12}
+        \textbf{ID: FR14}
 
         TITLE: Personal students list page
 
@@ -955,21 +1067,130 @@
 
         \
 
-        \textbf{3.4.2.13 Functional requirement 2.13}
+        \textbf{3.2.15 Functional requirement 2.15}
 
-        \textbf{ID: FR13}
+        \textbf{ID: FR15}
 
         TITLE: Message all students in course
 
         DESC: Given that a teacher is logged in, then the teacher should be able
         to broadcast a message to all of his/her students in a selected course.
 
-        RAT: For a teacher to broadcast a message to his/her students in a
-        certain course.
+        RAT: For a teacher to broadcast a message to his/her students in a certain course.
 
         DEP: FR4
 
-    \end{flushleft}
+        \
+
+        \textbf{3.2.16 Functional requirement 2.16}
+
+        \textbf{ID: FR16}
+
+        TITLE: Course/session Message system
+
+        DESC: Given that a teacher is logged in, the teacher should be able to post/read questions and answers in courses/sessions he/she is registered to.
+
+        RAT: for a teacher to post/read messages in course/session.
+
+        DEP: FR4, FR8, FR10
+
+        \
+
+        \textbf{3.2.17 Functional requirement 2.17}
+
+        \textbf{ID: FR17}
+
+        TITLE: Course/session Rating system
+
+        DESC: Given that a teacher is logged in, the teacher should be able to rate messages in courses/sessions he/she is registered to.
+
+        RAT: for a teacher to rate messages in course/session.
+
+        DEP: FR4, FR8, FR10, FR16
+
+        \
+\end{flushleft}
+
+    \newpage
+    \section{Failed approaches}
+    \subsection{Real-Time Communication}
+    wizeUp, serving as a messaging and live stream platform must be a real time application, all users need to be synchronized on all events. To satisfy this requirement, Initially the application would fetch the data from the server every 5 seconds. Although this approach worked it was inefficient in terms of overloading the server as well as the application itself. Not every 5 seconds something changes, and sometimes 5 seconded is to long. in addition fetching all the data every time is not necessary and time-consuming. Therefor we changed the approach and decided to work with a more efficient framework. we found the socket.io framework which made the Real-Time Communication much more efficient and easer to implement. Also, integrating the framework with the existing technologies we used in our project, was very convenient.
+
+    \subsection{Authentication}
+    When we first started implementing the project the only form of Authentication was upon login. After several courses in Cyber security we learned that this approach was incorrect as it made users' privacy vulnerable and allowed many other forms of attacks. In light of this we decided to verify users on every request to the server using jwt.
+
+
+    \newpage
+    \section{Future Work}
+
+    \subsection{Vision}
+
+    wizeUp will create a global academic community where teachers and students can enhance their teaching and studying skills through a social academic network.
+
+    \subsection{Functionalities}
+    \begin{itemize}
+        \item Quiz:
+
+        Quiz feature \cite{benefitsonlinelearning} in session containing two options a multiple choice (4 answers) or a true or false question (2 answers), the questions should be time bounded. at the end of the time each student will see if  his result was correct, and the teacher an analysis of the class's answers.
+
+
+        \item Credit system:
+
+        Many operations performed in wizeUp should reward the user with credit points. these points should be used in school related stores to purchase or discount items.
+
+        \item Friends System:
+
+        wizeUp is meant to be social as well, therefore, each user should not only be able to use wizeUp for educational purposes but also for social purposes \cite{socialnetwork}.
+
+        \item Live Stream:
+
+        Live Stream sessions to all users of that session. If possible save the stream as well for future viewing.
+
+        \item Inbox Messages:
+
+        wizeUp should allow users to send messages, share files, videos and links with each other.
+
+        \item Submission Box + course grading:
+
+        Each course holds the assignments' grading of each student and  the average for that course.
+        courses should hold a Submission Box as well for exams and assignments \cite{flippedlearning, classroomofone}.
+
+    \end{itemize}
+
+
+    \newpage
+    \section{Evaluation and results}
+    \subsection{Evaluation:}
+    \begin{itemize}
+        \item QA: Each component that was built by a team member was tested by {\textbf{ALL}} other team members. The tests consisted of code review, efficiency enhancement and integration.
+
+        \item Feedback: The platform was delivered to several individuals for review and feedback about the user experience.
+
+        \item Simulation: A demo class was dedicated to use the platform in several scenarios using various devices and environments.
+    \end{itemize}
+
+
+    \subsection{Results:}
+    The evaluation resulted in many conclusions about the functionality, code efficiency, unresolved bugs and user experience. We tended to all the problems and improved.
+
+
+
+    \newpage
+    \section{Conclusion}
+
+    Although wizeUp is far from perfect, we brought it from an idea to a working cross platform application. The project consists of many different frame works and technologist which we had to learn on our own. We divided the work among ourselves and each team member was responsible for a different component. The working process was logged and tracked using git. We enjoined working together and learned allot thanks to our supervisor {\underline{Dr. Amit Dvir}}.
+
+    \
+
+    \
+
+    \
+
+    {\centering
+    {\huge \textbf{Start learning wizer.}}
+
+    }
+
 
     \newpage
     \bibliographystyle{unsrt}
