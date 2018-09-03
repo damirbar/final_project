@@ -117,9 +117,9 @@ public class NotificationService extends Service {
             try {
                 String content = data.getString("content");
 
-                if(isInBackground()){
+//                if(isInBackground()){
                     createNotification("wizeUp", content);
-                }
+//                }
 
             } catch (Exception e) {
                 e.printStackTrace();
