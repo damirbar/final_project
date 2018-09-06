@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%= title %></title>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="javascripts/adapter.js"></script>
+	<script type="text/javascript" src="javascripts/RTCclient.js"></script>
+
+	<script type="text/javascript" src="javascripts/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="javascripts/knockout-3.0.0beta.js"></script>
+	<script type="text/javascript" src="javascripts/RTCViewModel.js"></script>
+</head>
+<body>
+
+<div class="localCam">
+
+    <h2>Local Camera</h2>
+
+    <video id="localVideo" muted="muted"></video>
+    <li data-bind="click: toggleLocalVideo">
+        <a href="#" data-bind="text: localCamButtonText"></a>
+    </li>
+
+    <div data-bind="visible: isStreaming">
+
+        <p>Share this link :</p>
+        <a data-bind="text: link"></a>
+
+    </div>
+</div>
+
+
+	<script>
+		client = new PeerManager();
+		vm = new RTCViewModel(client, "/streams/");
+		vm.refresh();
+		ko.applyBindings(vm);
+
+	</script>
+
+</body>
+</html>

@@ -22,6 +22,7 @@ router.all("*", type, function (req, res, next) {
         || req.url.includes('/auth/google/callback')
         || req.url.includes('/auth/get-user-from-google')
         //remove! this is only for testing
+        || req.url.includes('/stream')
         || req.url.includes('/get-all-sessions')) {
 
         return next();
