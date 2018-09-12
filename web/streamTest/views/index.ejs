@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title><%= title %></title>
+	<title><%= 'Stream' %></title>
 	<link rel='stylesheet' href='/stylesheets/style.css' />
 
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
@@ -34,8 +34,8 @@
 
 	<script>
 		client = new PeerManager();
-		vm = new RTCViewModel(client, "/streams/");
-		vm.refresh();
+		vm = new RTCViewModel(client, "/eran/");
+		vm.refresh;
 		ko.applyBindings(vm);
 
 	</script>

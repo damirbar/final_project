@@ -9,7 +9,6 @@ var RTCViewModel = function(client, path) {
           optional: []
         }
       },
-      // availableStreams = ko.observable([]),
 
       availableStreams = {},
       isStreaming = ko.observable(false),

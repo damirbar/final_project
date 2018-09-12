@@ -21,6 +21,7 @@ const passport = {
     FACEBOOK_APP_ID : '360516777741015',
     FACEBOOK_APP_SECRET : 'd20dcda059d99e713c314b57cca79621',
 };
+
 const ret = {cloudniary:cloudniary, email:email, passport:passport};
 module.exports=ret;
 

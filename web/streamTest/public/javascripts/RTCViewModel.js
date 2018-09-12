@@ -9,21 +9,10 @@ var RTCViewModel = function(client, path) {
           optional: []
         }
       },
-      // availableStreams = ko.observable([]),
-
       availableStreams = {},
       isStreaming = ko.observable(false),
       link = ko.observable(),
       localVideoEl = document.getElementById('localVideo');
-
-  // push changes to server
-  ko.computed(function() {
-    if(isStreaming()) {
-      client.send('update', {
-                              name: name()
-                            });
-    }
-  }).extend({throttle: 500});
 
   function getReadyToStream(stream) {
     attachMediaStream(localVideoEl, stream);
@@ -33,10 +22,7 @@ var RTCViewModel = function(client, path) {
     isStreaming(true);
   }
   function loadStreamsFromServer() {
-    // Load JSON data from server
-    $.getJSON(path, function() {
       availableStreams ={}
-    });
   }
 
   return {

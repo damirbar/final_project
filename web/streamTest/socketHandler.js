@@ -1,9 +1,7 @@
 module.exports = function(io, streams) {
 
   io.sockets.on('connection', function(client) {
-    console.log(client.id);
     client.id = 'stream_' + client.id;
-    console.log(client.id);
     console.log('eran ' + client.id + ' Connected');
     client.emit('id', client.id);
 
