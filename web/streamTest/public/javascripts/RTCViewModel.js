@@ -38,7 +38,7 @@ var RTCViewModel = function(client, path) {
     refresh: loadStreamsFromServer,
     toggleLocalVideo: function() {
       if(isStreaming()){
-        client.send('leave');
+        client.send('stopStreaming');
         localVideoEl.src = '';
         client.setLocalStream(null);
         isStreaming(false);

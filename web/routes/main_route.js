@@ -20,10 +20,12 @@ router.all("*", type, function (req, res, next) {
         || req.url.includes('/auth/reset-pass-init')
         || req.url.includes('/auth/google')
         || req.url.includes('/auth/google/callback')
-        || req.url.includes('/auth/get-user-from-google')
+        || req.url.includes('/auth/facebook')
+        || req.url.includes('/auth/facebook/callback')
         //remove! this is only for testing
         || req.url.includes('/stream')
-        || req.url.includes('/get-all-sessions')) {
+        || req.url.includes('/get-all-sessions')
+        || req.url.includes('/auth/signup')) {
 
         return next();
     }

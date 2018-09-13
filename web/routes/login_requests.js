@@ -301,8 +301,22 @@ router.get('/google',
 router.get('/google/callback',
     passport.authenticate('google', {failureRedirect: '/'}), function (req, res) {
         // Successful authentication, redirect home.
-        res.status(200).redirect('http://localhost:3000/');
-        // res.send('/', {userId: req.session.passport.user});
+        res.json({userId: req.session.passport.user});
+    }
+);
+
+router.get('/facebook',
+    passport.authenticate('facebook', {scope: ['user_birthday', 'email']}));
+
+router.get('/facebook/callback',
+    passport.authenticate('facebook', {failureRedirect: '/'}), function (req, res) {
+        res.json({userId: req.session.passport.user});
+    });
+
+router.post('/signup',
+    passport.authenticate('local-signup', {failureRedirect: '/'}), function (req, res) {
+        // Successful authentication, redirect home.
+        res.json({userId: req.session.passport.user});
     }
 );
 

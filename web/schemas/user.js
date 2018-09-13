@@ -6,6 +6,10 @@ var UserSchema = new mongoose.Schema({
     first_name: {type: String, default: ""},
     last_name: {type: String, default: ""},
     display_name: {type: String, default: ""},
+
+    googleId: {type: String, default: ""},
+    facebookId: {type: String, default: ""},
+
     email: {type: String, unique: true, require: true},
     password: {type: String, default: ""},
     about_me: {type: String, default: ""},

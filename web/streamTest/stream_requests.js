@@ -5,17 +5,11 @@ module.exports = function (app, streams) {
         if (req.originalUrl === '/favicon.ico' ||
             req.originalUrl === '/stream') {
             res.render('/Users/user/final_project/web/streamTest/views/index', {
-                // title: 'STREAM',
-                // header: 'ERAN live streaming',
-                // footer: 'wtf??',
                 id: req.params.id
             });
         }
         else {
             res.render('/Users/user/final_project/web/streamTest/views/index2', {
-                // title: 'STREAM',
-                // header: 'ERAN live streaming',
-                // footer: 'wtf??',
                 id: req.params.id
             });
         }

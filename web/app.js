@@ -7,19 +7,31 @@ let path = require("path");
 let bodyParser = require("body-parser");
 let logger = require('morgan');
 app.use(logger('dev'));
+let emailService = require('./tools/email');
+emailService.init();
 
 
-//passport login
+//passport eran
+let cookieParser = require('cookie-parser');
+let session = require('express-session');
 let passport = require("passport");
 let passportService = require('./tools/passport');
+app.use(session({
+    secret: '1234567890',
+    cookie: { maxAge: 3600000*24*365 },
+    resave: true,
+    saveUninitialized: false}));
 app.use(passport.initialize());
 app.use(passport.session());
 passportService.init();
-
-//email service
-let emailService = require('./tools/email');
-emailService.init();
+app.use(cookieParser());
 //
+
+
+
+
+
+
 
 let teacherRequests = require('./routes/teacher_requests');
 let studentRequests = require('./routes/students_request');
@@ -28,7 +40,6 @@ let mainRequests = require('./routes/main_route');
 let sessionRequests = require('./routes/session_requests');
 let searchRequests = require('./routes/search_routes');
 let authRouts = require("./routes/login_requests");
-// let streamer = require("./streamTest/stream_requests");
 
 
 app.use(bodyParser.json());
@@ -57,21 +68,7 @@ app.use('/courses', coursesRequests);
 app.use('/sessions', sessionRequests);
 app.use('/search', searchRequests);
 app.use('/auth', authRouts);
-// app.use('/s', streamer);
 
-
-//////////SOCKET.IO
-
-const io = require('socket.io')(http);
-// const socketIO = require('./tools/socketIO');
-//
-// socketIO.setIO(io);
-//
-// io.on('connection', function (socket){
-//
-//     console.log('sefi ' + socket.id + ' Connected');
-//     socketIO.socketInit(socket);
-// });
 
 
 http.listen(3000, function () {
@@ -80,11 +77,22 @@ http.listen(3000, function () {
 
 
 //eran
+const io = require('socket.io')(http);
 app.set('views', __dirname + '/streamTest/views');
 app.set('view engine', 'ejs');
 let streams = require('./streamTest/streams.js')();
 require('./streamTest/stream_requests.js')(app, streams);
-require('./streamTest/socketHandler.js')(io, streams);
+const socketIO = require('./streamTest/socketHandler.js');
+// require('./streamTest/socketHandler.js')(io, streams);
+io.on('connection', function (socket){
+    socket.id = 'stream_' + socket.id;
+    console.log(socket.id + ' Connected');
+    socket.emit('id', socket.id);
+    socketIO.socketInit(socket);
+});
+
+socketIO.setStreams(streams);
+socketIO.setIO(io);
 //eran
 
 

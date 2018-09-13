@@ -10,13 +10,12 @@ module.exports = function() {
    *
    * Stored in JSON using socket.id as key
    */
-  var Stream = function(name) {
-    this.name = name;
+  var Stream = function() {
   }
 
   return {
-    addStream : function(id, name) {
-      var stream = new Stream(name);
+    addStream : function(id) {
+      var stream = new Stream();
       streamList[id] = stream;
     },
 
