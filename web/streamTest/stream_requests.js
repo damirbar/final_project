@@ -4,7 +4,7 @@ module.exports = function (app, streams) {
     var index = function (req, res) {
         if (req.originalUrl === '/favicon.ico' ||
             req.originalUrl === '/stream') {
-            res.render('/Users/user/final_project/web/streamTest/views/index', {
+            res.render(__dirname + '/views/index', {
                 id: req.params.id
             });
         }
