@@ -11,7 +11,7 @@ var app = express()
   , io = require('socket.io').listen(server);
 
 // all environments
-app.set('port', 3001);
+app.set('port', 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 let logger = require('morgan');
@@ -27,8 +27,10 @@ require('./stream_requests.js')(app, streams);
 /**
  * Socket.io event handling
  */
-require('./socketHandler.js')(io, streams);
+const socketIO = require('./socketHandler.js');
 
+socketIO.setStreams(streams);
+socketIO.setIO(io);
 server.listen(app.get('port'), function(){
   console.log('listening...');
 });
