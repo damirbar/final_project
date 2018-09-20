@@ -3,7 +3,7 @@ module.exports = function(app, streams) {
     // GET home
     var index = function(req, res) {
         console.log("dirname: " + __dirname);
-        res.render('/Users/user/final_project/web/streamTest/views/index', {
+        res.render(__dirname + '/views/index', {
             title: 'STREAM',
             header: 'ERAN live streaming',
             footer: 'wtf??',
