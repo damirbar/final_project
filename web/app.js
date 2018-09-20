@@ -70,7 +70,6 @@ app.use('/search', searchRequests);
 app.use('/auth', authRouts);
 
 
-
 http.listen(3000, function () {
     console.log("listening...");
 });
