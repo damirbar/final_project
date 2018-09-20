@@ -2,16 +2,16 @@
  * Module dependencies.
  */
 var express = require('express')
-  , http = require('http')
-  , path = require('path')
-  , streams = require('./streams.js')();
+    , http = require('http')
+    , path = require('path')
+    , streams = require('./app/streams.js')();
 
 var app = express()
-  , server = http.createServer(app)
-  , io = require('socket.io').listen(server);
+    , server = http.createServer(app)
+    , io = require('socket.io').listen(server);
 
 // all environments
-app.set('port', 3001);
+app.set('port', 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 let logger = require('morgan');
@@ -22,13 +22,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routing
-require('./stream_requests.js')(app, streams);
+require('./app/routes.js')(app, streams);
 
 /**
  * Socket.io event handling
  */
-require('./socketHandler.js')(io, streams);
+require('./app/socketHandler.js')(io, streams);
 
 server.listen(app.get('port'), function(){
-  console.log('listening...');
+    console.log('listening...');
 });

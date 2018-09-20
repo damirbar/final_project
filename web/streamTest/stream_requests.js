@@ -5,11 +5,13 @@ module.exports = function (app, streams) {
         if (req.originalUrl === '/favicon.ico' ||
             req.originalUrl === '/stream') {
             res.render(__dirname + '/views/index', {
+                header: "eran",
                 id: req.params.id
             });
         }
         else {
-            res.render('/Users/user/final_project/web/streamTest/views/index2', {
+            res.render('/Users/user/final_project/web/streamTest/views/index', {
+                header: "eran",
                 id: req.params.id
             });
         }
