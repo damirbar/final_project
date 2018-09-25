@@ -136,17 +136,21 @@ cloudinary.config({
 });
 
 router.post('/post-profile-image', type, function (req, res) {
+    console.log("---------------------------------\n\nname= "+req.file.originalname);
     if (!req.file) {
+        console.log("no file");
         res.status(400).json({message: 'no file'});
     }
     else {
         const path = req.file.path;
+        console.log("path= "+ path);
             if (!req.file.originalname.toLowerCase().match(/\.(jpg|jpeg|png)$/)) {
                 fs.unlinkSync(path);
                 res.status(400).json({message: 'wrong file'});
+                console.log("wrong file type");
             }
             else {
-                console.log(path);
+                console.log("path= " +path);
                 User.findOne({email: req.verifiedEmail}, function (err, user) {
                     if (err) {
                         console.log(err);
@@ -154,6 +158,7 @@ router.post('/post-profile-image', type, function (req, res) {
                     }
                     else {
                         if(user) {
+                            console.log("found user "+ user.first_name);
                             File.remove({url: user.profile_img}, function (err) {
                                 if (err) {
                                     console.log(err);

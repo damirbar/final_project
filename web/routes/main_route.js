@@ -29,6 +29,9 @@ router.all("*", type, function (req, res, next) {
 
         return next();
     }
+    if(req.url === '/students/post-profile-image'){
+        console.log("\n\n\t\tHERE!!!!!\n\n");
+    }
     let token = req.headers["x-access-token"] || req.query.token;
     if (!token) {
         res.redirect('/')
