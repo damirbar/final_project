@@ -18,7 +18,7 @@ public class Constants {
     public static final String PASS = "pass";
     public static final String LANG = "en";
     public static final String TYPE = "type";
-    public static final String NOTIFICATION‬‏ = "on";
+    public static final String NOTIFICATION = "not";
 
 }
 
