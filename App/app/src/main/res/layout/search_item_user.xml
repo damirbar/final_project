@@ -59,8 +59,8 @@
             android:focusable="false"
             android:textColor="@color/black"
             android:ellipsize="end"
-            android:singleLine="true"
             android:maxLines="1"
+            android:singleLine="true"
             android:textSize="10sp" />
 
 
