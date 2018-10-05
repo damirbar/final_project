@@ -89,15 +89,19 @@
                         <h3 class="about-me-header">About me:</h3>
                         <!--<div class="about-me-text read-more-activation"></div>-->
 
-                        <div class="read-more-cut" ng-show="!readMore">
-                            {{profile.about_me.substring(0, 40) + "..."}}
-                        </div>
-                        <div id="about-me-text" class="collapse read-more-uncut" ng-show="readMore">
+
+                        <div id="about-me-text" class="read-more-uncut">
                             {{profile.about_me}}
                         </div>
-                        <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#about-me-text"
-                                ng-click="readMoreButton()">Read {{readMore ? "less" : "more"}}
-                        </button>
+                        <!--<div class="read-more-cut" ng-show="!readMore">-->
+                            <!--{{profile.about_me.substring(0, 40) + "..."}}-->
+                        <!--</div>-->
+                        <!--<div id="about-me-text" class="collapse read-more-uncut" ng-show="readMore">-->
+                            <!--{{profile.about_me}}-->
+                        <!--</div>-->
+                        <!--<button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#about-me-text"-->
+                                <!--ng-click="readMoreButton()">Read {{readMore ? "less" : "more"}}-->
+                        <!--</button>-->
 
                     </div>
 
@@ -273,9 +277,9 @@
                                 </div>
                             </div>                            <div class="col-4"></div>
 
-                            <div class="text col-3">About me:</div>
+                            <div class="text col-3">About me: ({{about_me.input ? about_me.input.length : 0}}/120)</div>
 
-                            <textarea rows="4" cols="50" class="col-5 form-control" type="text" name="about_me"
+                            <textarea maxlength="120" rows="4" cols="50" class="col-5 form-control" type="text" name="about_me"
                                       ng-model="editUser.about_me"></textarea>
                             <div class="col-4"></div>
 
