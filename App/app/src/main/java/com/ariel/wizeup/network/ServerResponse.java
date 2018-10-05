@@ -7,19 +7,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.androidadvance.topsnackbar.TSnackbar;
-import com.ariel.wizeup.R;
 import com.ariel.wizeup.model.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-
-import java.io.IOException;
 
 import retrofit2.adapter.rxjava.HttpException;
 
 
 public class ServerResponse {
-z
+
     private View layout;
 
     public ServerResponse(View _layout) {
