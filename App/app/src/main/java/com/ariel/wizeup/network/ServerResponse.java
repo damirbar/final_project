@@ -19,7 +19,7 @@ import retrofit2.adapter.rxjava.HttpException;
 
 
 public class ServerResponse {
-
+z
     private View layout;
 
     public ServerResponse(View _layout) {
