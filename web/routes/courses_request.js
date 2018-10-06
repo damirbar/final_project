@@ -160,7 +160,6 @@ router.post('/post-file', type, function (req, res) {
         res.status(400).json({message: 'no file'});
     }
     else {
-        console.log("\n\n\t\tHERE!!!!!\n\n");
         const path = req.file.path;
         let type = "raw";
         if (!req.file.originalname.toLowerCase().match(/\.(pdf|doc|docx|ppt|pptx|jpeg|jpg|png)$/)) {
