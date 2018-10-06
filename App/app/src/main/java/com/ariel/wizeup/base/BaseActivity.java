@@ -46,7 +46,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.ariel.wizeup.utils.Constants.EMAIL;
-import static com.ariel.wizeup.utils.Constants.NOTIFICATION‬‏;
+import static com.ariel.wizeup.utils.Constants.NOTIFICATION;
 import static com.ariel.wizeup.utils.Constants.PROFILE_IMG;
 import static com.ariel.wizeup.utils.Constants.USER_NAME;
 
@@ -147,7 +147,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mPic = mSharedPreferences.getString(PROFILE_IMG, "");
         mEmail = mSharedPreferences.getString(EMAIL, "");
         mId = mSharedPreferences.getString(Constants.ID, "");
-        currentNoti = mSharedPreferences.getString(NOTIFICATION‬‏, "");
+        currentNoti = mSharedPreferences.getString(NOTIFICATION, "");
         String lang = mSharedPreferences.getString(Constants.LANG, "");
         changeLanguage.setLocale(lang);
 

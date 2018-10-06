@@ -607,6 +607,8 @@ cloudinary.config({
 
 
 router.post('/post-video', type, function (req, res) {
+    console.log("HERE");
+    console.log(req.file.originalName);
     if (!req.file) {
         res.status(400).json({message: 'no file'});
     }
