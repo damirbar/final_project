@@ -95,4 +95,7 @@
     <string name="allow_notifications">Allow Notifications</string>
     <string name="timeline">Timeline</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

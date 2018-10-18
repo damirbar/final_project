@@ -8,9 +8,9 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:background="?attr/colorPrimaryDark"
         app:contentInsetLeft="0dp"
@@ -20,69 +20,73 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/cancel_button"
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/cancel"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
 
-            <android.support.v7.widget.SearchView
-                android:id="@+id/searchView"
-                android:layout_width="253dp"
-                android:layout_height="35dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="7dp"
-                android:layout_weight="1"
-                android:maxLength="@integer/def_max"
-                android:background="@drawable/edittext_search"
-                android:baselineAligned="false"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:iconifiedByDefault="false"
-                app:iconifiedByDefault="false"
-                app:queryHint="Search.." />
+                <ImageButton
+                    android:id="@+id/image_Button_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center"
+                    app:srcCompat="@drawable/intercom_back" />
+
+                <android.support.v7.widget.SearchView
+                    android:id="@+id/searchView"
+                    android:layout_width="253dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edittext_search"
+                    android:baselineAligned="false"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:iconifiedByDefault="false"
+                    android:maxLength="@integer/def_max"
+                    app:iconifiedByDefault="false"
+                    app:queryHint="Search.." />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/searchView"
+                android:orientation="horizontal">
+
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/searchView"
+                    android:background="?attr/colorPrimaryDark"
+                    android:elevation="6dp"
+                    android:minHeight="?attr/actionBarSize"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    app:tabSelectedTextColor="@color/white"
+                    app:tabTextColor="@color/text_dis" />
+
+            </LinearLayout>
+
         </LinearLayout>
+
 
     </android.support.v7.widget.Toolbar>
 
-
-    <ListView
-        android:id="@+id/search_List"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/def_background"
-        android:divider="@color/def_background"
-        android:listSelector="@android:color/transparent"
-        android:scrollbarSize="2dp" />
-
-    <TextView
-        android:id="@+id/tv_no_results"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="170dp"
-        android:foregroundGravity="center"
-        android:gravity="center"
-        android:text="@string/no_results_found"
-        android:textColor="@color/user_selected"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:visibility="gone" />
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/toolbar" />
 
 </RelativeLayout>

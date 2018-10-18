@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.ariel.wizeup">
+    package="com.wizeup.android">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl">
         <activity
-            android:name=".SplashActivity"
+            android:name="com.wizeup.android.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -46,115 +46,115 @@
         </activity>
 
         <service
-            android:name=".notification.NotificationService"
+            android:name="com.wizeup.android.notification.NotificationService"
             android:enabled="true"
             android:exported="true" />
 
         <activity
-            android:name=".entry.EntryActivity"
+            android:name="com.wizeup.android.entry.EntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".profile.EditProfileActivity"
+            android:name="com.wizeup.android.profile.EditProfileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".imageCrop.ImageCropActivity"
+            android:name="com.wizeup.android.imageCrop.ImageCropActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".session.SessionPostActivity"
+            android:name="com.wizeup.android.session.SessionPostActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".session.SessionCommentActivity"
+            android:name="com.wizeup.android.session.SessionCommentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".session.SessionActivity"
+            android:name="com.wizeup.android.session.SessionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".base.BaseActivity"
+            android:name="com.wizeup.android.base.BaseActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".session.ConnectSessionActivity"
+            android:name="com.wizeup.android.session.ConnectSessionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TermsActivity"
+            android:name="com.wizeup.android.TermsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".profile.ProfileActivity"
+            android:name="com.wizeup.android.profile.ProfileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".course.CourseActivity"
+            android:name="com.wizeup.android.course.CourseActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".course.MyCourseActivity"
+            android:name="com.wizeup.android.course.MyCourseActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".session.CreateSessionActivity"
+            android:name="com.wizeup.android.session.CreateSessionActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".profile.BioActivity"
+            android:name="com.wizeup.android.profile.BioActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".search.SearchActivity"
+            android:name="com.wizeup.android.search.SearchActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".course.CreateCourseActivity"
+            android:name="com.wizeup.android.course.CreateCourseActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name="com.wizeup.android.settings.SettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".settings.ChangePasswordActivity"
+            android:name="com.wizeup.android.settings.ChangePasswordActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".settings.FeedbackActivity"
+            android:name="com.wizeup.android.settings.FeedbackActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".course.AddUserActivity"
+            android:name="com.wizeup.android.course.AddUserActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".liveStream.RtcActivity"
+            android:name="com.wizeup.android.liveStream.RtcActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
-            android:name=".settings.TimelineActivity"
+            android:name="com.wizeup.android.settings.TimelineActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".session.GraphActivity"
+            android:name="com.wizeup.android.session.GraphActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".session.QuizActivity"
+            android:name="com.wizeup.android.session.QuizActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".course.CourseSessionActivity"
+            android:name="com.wizeup.android.course.CourseSessionActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".course.CoursePostActivity"
+            android:name="com.wizeup.android.course.CoursePostActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".course.CourseCommentActivity"
+            android:name="com.wizeup.android.course.CourseCommentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
 
