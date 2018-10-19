@@ -13,6 +13,7 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.wizeup.android.R;
 import com.wizeup.android.model.CourseMessage;
 import com.wizeup.android.network.RetrofitRequests;
@@ -36,7 +37,7 @@ public class CourseMessagesFragment extends android.support.v4.app.Fragment {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private TextView mTvNoResults;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private PullRefreshLayout mSwipeRefreshLayout;
     private FloatingActionButton mFBPost;
     private String cid;
     private CoursePostsAdapter mAdapter;

@@ -95,13 +95,12 @@
                     app:iconifiedByDefault="true"
                     app:queryHint="Search.." />
 
-
-                <android.support.v4.widget.SwipeRefreshLayout
+                <com.baoyz.widget.PullRefreshLayout
                     android:id="@+id/activity_main_swipe_refresh_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/toolbar">
-
+                    android:layout_below="@+id/toolbar"
+                    app:refreshType="smartisan">
 
                     <ListView
                         android:id="@+id/search_List"
@@ -115,7 +114,7 @@
                         android:scrollbarSize="2dp"
                         android:visibility="visible" />
 
-                </android.support.v4.widget.SwipeRefreshLayout>
+                </com.baoyz.widget.PullRefreshLayout>
 
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/shimmer_view_container"

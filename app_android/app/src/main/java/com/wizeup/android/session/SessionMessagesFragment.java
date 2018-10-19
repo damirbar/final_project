@@ -13,6 +13,7 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.wizeup.android.R;
 import com.wizeup.android.dialogs.PostBottomDialog;
 import com.wizeup.android.model.SessionMessage;
@@ -36,7 +37,7 @@ public class SessionMessagesFragment extends android.support.v4.app.Fragment {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private TextView mTvNoResults;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private PullRefreshLayout mSwipeRefreshLayout;
     private FloatingActionButton mFBPost;
     private String sid;
     private SessionPostsAdapter mAdapter;

@@ -3,6 +3,7 @@ package com.wizeup.android.course;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.wizeup.android.R;
 import com.wizeup.android.model.Course;
 import com.wizeup.android.network.RetrofitRequests;
@@ -28,6 +30,7 @@ public class CourseInfoFragment extends Fragment {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
+    private PullRefreshLayout mSwipeRefreshLayout;
     private TextView mTCid;
     private TextView mTName;
     private TextView mTDepartment;
@@ -49,10 +52,19 @@ public class CourseInfoFragment extends Fragment {
         mServerResponse = new ServerResponse(view.findViewById(R.id.scroll));
         getData();
         initViews(view);
+
+        mSwipeRefreshLayout.setColor(0);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+            getCourse();
+            mSwipeRefreshLayout.setRefreshing(false);
+        }, 0));
+
+
         return view;
     }
 
     private void initViews(View v) {
+        mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
         mTTeacherEmail = v.findViewById(R.id.tv_teacher_email);
         mTStudentsCount = v.findViewById(R.id.tv_students);
         mTCid = v.findViewById(R.id.tv_cid);

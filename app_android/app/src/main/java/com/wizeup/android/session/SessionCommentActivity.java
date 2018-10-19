@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.wizeup.android.R;
 import com.wizeup.android.model.Response;
 import com.wizeup.android.model.SessionMessage;
@@ -35,7 +36,7 @@ public class SessionCommentActivity extends AppCompatActivity {
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
     private ListView commentsList;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private PullRefreshLayout mSwipeRefreshLayout;
     private EditText mCommentText;
     private TextView buttonSend;
     private String userId;
@@ -97,7 +98,7 @@ public class SessionCommentActivity extends AppCompatActivity {
         mCommentText = (EditText) findViewById(R.id.com_text);
         ImageButton buttonBack = (ImageButton) findViewById(R.id.image_Button_back);
         buttonSend = (TextView) findViewById(R.id.send_btn);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
+        mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
         buttonSend.setOnClickListener(view -> attemptSendCom());
         buttonBack.setOnClickListener(view -> finish());
     }

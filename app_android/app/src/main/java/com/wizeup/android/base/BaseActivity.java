@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.wizeup.android.R;
 import com.wizeup.android.TermsActivity;
 import com.wizeup.android.course.MyCourseActivity;
@@ -58,7 +59,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     private ListView notificationsList;
     private TextView mTvNoResults;
     private ImageView imageNoResults;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private PullRefreshLayout mSwipeRefreshLayout;
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;

@@ -13,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.wizeup.android.R;
 import com.wizeup.android.model.Response;
 import com.wizeup.android.model.Session;
@@ -42,6 +43,7 @@ public class SessionInfoFragment extends Fragment {
     private TextView mTeacherTextView;
     private TextView mLocTextView;
     private TextView mOnlineNum;
+    private PullRefreshLayout mSwipeRefreshLayout;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
@@ -74,6 +76,12 @@ public class SessionInfoFragment extends Fragment {
             }
         });
 
+        mSwipeRefreshLayout.setColor(0);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+            pullSession();
+            mSwipeRefreshLayout.setRefreshing(false);
+        }, 0));
+
         return view;
 
     }
@@ -95,7 +103,7 @@ public class SessionInfoFragment extends Fragment {
         mRadioDontUnderstand = v.findViewById(R.id.radio_2);
         mRatingNum = v.findViewById(R.id.tvRating);
         mRatingNum2 = v.findViewById(R.id.tvRating2);
-
+        mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
         imageView = v.findViewById(R.id.imageView);
         mSNameTextView = v.findViewById(R.id.tvName);
         mSidTextView = v.findViewById(R.id.tvSid);

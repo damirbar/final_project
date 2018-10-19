@@ -64,5 +64,6 @@ dependencies {
     //loading view
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
 
-//    implementation 'com.github.wseemann:FFmpegMediaPlayer:1.0.4'
+    //PullRefresLayout
+    implementation 'com.baoyz.pullrefreshlayout:library:1.2.0'
 }

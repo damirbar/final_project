@@ -7,267 +7,275 @@
     android:background="@color/def_background"
     android:fitsSystemWindows="true">
 
-    <ScrollView
-        android:id="@+id/scroll"
+    <com.baoyz.widget.PullRefreshLayout
+        android:id="@+id/activity_main_swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="20dp">
+        android:layout_height="wrap_content"
+        app:refreshType="smartisan">
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/scroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/top_margin30">
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginStart="32dp"
-                    app:srcCompat="@drawable/classmates_icon" />
-
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginEnd="29dp"
-                    android:layout_marginRight="29dp"
-                    android:layout_marginTop="@dimen/top_margin30"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:gravity="left|center"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/tv_teacher"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/tv_name"
-                    android:layout_below="@+id/tv_name"
-                    android:layout_marginTop="5dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:gravity="left|center"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp"
-                    android:layout_alignLeft="@+id/tv_name" />
-
-                <TextView
-                    android:id="@+id/tv_teacher_email"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_teacher"
-                    android:layout_alignStart="@+id/tv_name"
-                    android:layout_alignLeft="@+id/tv_name"
-                    android:layout_marginTop="5dp"
-                    android:ellipsize="end"
-                    android:gravity="left|center"
-                    android:maxLines="1"
-                    android:textColor="@android:color/holo_blue_dark"
-                    android:textSize="14sp" />
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/divider_img"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/author_details"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginStart="61dp"
-                android:background="?attr/colorButtonNormal" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/top_margin30"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="@dimen/top_margin30"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="25dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="160dp"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center"
-                    android:text="Course number"
-                    android:textAllCaps="false"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/tv_cid"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:ellipsize="end"
-                    android:gravity="end"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
+                    android:layout_marginBottom="@dimen/top_margin30">
 
-            </TableRow>
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginLeft="32dp"
+                        app:srcCompat="@drawable/classmates_icon" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="@dimen/top_margin30"
-                android:layout_marginRight="@dimen/top_margin30"
-                android:layout_marginTop="10dp">
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="@dimen/top_margin30"
+                        android:layout_marginEnd="29dp"
+                        android:layout_marginRight="29dp"
+                        android:ellipsize="end"
+                        android:gravity="left|center"
+                        android:maxLines="1"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
 
-                <TextView
-                    android:layout_width="160dp"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center"
-                    android:text="Department"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/tv_teacher"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_name"
+                        android:layout_alignStart="@+id/tv_name"
+                        android:layout_alignLeft="@+id/tv_name"
+                        android:layout_marginTop="5dp"
+                        android:ellipsize="end"
+                        android:gravity="left|center"
+                        android:maxLines="1"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/tv_department"
+                    <TextView
+                        android:id="@+id/tv_teacher_email"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_teacher"
+                        android:layout_alignStart="@+id/tv_name"
+                        android:layout_alignLeft="@+id/tv_name"
+                        android:layout_marginTop="5dp"
+                        android:ellipsize="end"
+                        android:gravity="left|center"
+                        android:maxLines="1"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/divider_img"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:ellipsize="end"
-                    android:layout_gravity="center"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/author_details"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="61dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="?attr/colorButtonNormal" />
 
-            </TableRow>
-
-
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="@dimen/top_margin30"
-                android:layout_marginRight="@dimen/top_margin30"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="160dp"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center"
-                    android:text="Location"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/tv_Loc"
+                <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:ellipsize="end"
-                    android:layout_gravity="center"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="@dimen/top_margin30"
-                android:layout_marginRight="@dimen/top_margin30"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="160dp"
                     android:layout_height="match_parent"
-                    android:gravity="left|center"
-                    android:text="Points"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:layout_marginLeft="@dimen/top_margin30"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="@dimen/top_margin30"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_points"
+                    <TextView
+                        android:layout_width="160dp"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center"
+                        android:text="Course number"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_cid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </TableRow>
+
+                <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:ellipsize="end"
-                    android:layout_gravity="center"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="@dimen/top_margin30"
-                android:layout_marginRight="@dimen/top_margin30"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    android:gravity="left|center"
-                    android:text="Number of students"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:layout_marginLeft="@dimen/top_margin30"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="@dimen/top_margin30"
+                    android:layout_marginBottom="10dp">
 
-                <TextView
-                    android:id="@+id/tv_students"
+                    <TextView
+                        android:layout_width="160dp"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center"
+                        android:text="Department"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_department"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </TableRow>
+
+
+                <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:ellipsize="end"
-                    android:layout_gravity="center"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="@dimen/top_margin30"
-                android:layout_marginRight="@dimen/top_margin30"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="160dp"
                     android:layout_height="match_parent"
-                    android:gravity="left|center"
-                    android:text="Creation Date"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:layout_marginLeft="@dimen/top_margin30"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="@dimen/top_margin30"
+                    android:layout_marginBottom="10dp">
 
-                <TextView
-                    android:id="@+id/tv_creation_date"
+                    <TextView
+                        android:layout_width="160dp"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center"
+                        android:text="Location"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_Loc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </TableRow>
+
+                <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:ellipsize="end"
-                    android:gravity="end"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/top_margin30"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="@dimen/top_margin30"
+                    android:layout_marginBottom="10dp">
 
-            </TableRow>
+                    <TextView
+                        android:layout_width="160dp"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center"
+                        android:text="Points"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_points"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/top_margin30"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="@dimen/top_margin30"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center"
+                        android:text="Number of students"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_students"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/top_margin30"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="@dimen/top_margin30"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="160dp"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center"
+                        android:text="Creation Date"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_creation_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+
+                </TableRow>
 
 
-        </LinearLayout>
-    </ScrollView>
+            </LinearLayout>
+        </ScrollView>
+
+    </com.baoyz.widget.PullRefreshLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
 

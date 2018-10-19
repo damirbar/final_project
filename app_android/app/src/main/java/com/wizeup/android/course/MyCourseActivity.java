@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.wizeup.android.R;
 import com.wizeup.android.model.Course;
 import com.wizeup.android.network.RetrofitRequests;
@@ -31,10 +32,9 @@ public class MyCourseActivity extends AppCompatActivity {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
-
     private ListView coursesList;
     private TextView mTvNoResults;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private PullRefreshLayout mSwipeRefreshLayout;
     private CoursesAdapter mAdapter;
     private FloatingActionButton mFB;
     private String userType;

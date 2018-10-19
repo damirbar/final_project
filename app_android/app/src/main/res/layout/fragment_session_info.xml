@@ -7,6 +7,13 @@
     android:background="@color/def_background"
     android:fitsSystemWindows="true">
 
+    <com.baoyz.widget.PullRefreshLayout
+        android:id="@+id/activity_main_swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:refreshType="smartisan">
+
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="wrap_content"
@@ -270,6 +277,9 @@
 
         </LinearLayout>
     </ScrollView>
+
+    </com.baoyz.widget.PullRefreshLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
 
