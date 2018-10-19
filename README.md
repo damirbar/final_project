@@ -21,7 +21,7 @@ as well as any department chosen.
 ## Links
 
 * Demo site:
-  * https://52.14.199.47
+  * http://52.14.199.47
 
 ## Discuss
 

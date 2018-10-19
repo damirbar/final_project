@@ -2,22 +2,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_session_info"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@color/def_background"
     android:fitsSystemWindows="true">
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="20dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:orientation="vertical">
+            android:layout_marginBottom="25dp"
+            android:orientation="vertical"
+            android:paddingBottom="25dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -28,8 +29,8 @@
                     android:id="@+id/imageView"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
                     android:layout_marginStart="50dp"
                     android:src="@drawable/question" />
 
@@ -42,8 +43,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="21dp"
                     android:layout_marginRight="21dp"
-                    android:gravity="left|center"
                     android:ellipsize="end"
+                    android:gravity="left|center"
                     android:maxLines="1"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
@@ -52,12 +53,12 @@
                     android:id="@+id/tvTeacher"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/tvName"
                     android:layout_alignLeft="@+id/tvName"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignStart="@+id/tvName"
                     android:layout_marginBottom="5dp"
-                    android:gravity="left|center"
                     android:ellipsize="end"
+                    android:gravity="left|center"
                     android:maxLines="1"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp" />
@@ -68,19 +69,19 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:layout_marginBottom="30dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
                 android:visibility="visible">
 
                 <TextView
                     android:id="@+id/tvRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginLeft="100dp"
                     android:layout_marginStart="100dp"
+                    android:layout_marginLeft="100dp"
                     android:gravity="start|center"
                     android:text="0"
                     android:textColor="@android:color/holo_green_light"
@@ -90,8 +91,8 @@
                     android:id="@+id/tvRating2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginEnd="100dp"
                     android:gravity="start|center"
                     android:text="0"
@@ -104,8 +105,8 @@
                     android:layout_height="40dp"
                     android:layout_below="@+id/tvRating"
                     android:layout_marginLeft="@dimen/top_margin30"
-                    android:layout_marginRight="@dimen/top_margin30"
                     android:layout_marginTop="5dp"
+                    android:layout_marginRight="@dimen/top_margin30"
                     android:background="@drawable/pink_out_line"
                     android:checkedButton="@+id/radio_student"
                     android:orientation="horizontal">
@@ -114,9 +115,9 @@
                         android:id="@+id/radio_1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="1dp"
                         android:layout_marginLeft="1dp"
                         android:layout_marginTop="1dp"
+                        android:layout_marginBottom="1dp"
                         android:layout_weight="1"
                         android:background="@drawable/toggle_widget_background"
                         android:button="@null"
@@ -128,9 +129,9 @@
                         android:id="@+id/radio_2"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginRight="1dp"
                         android:layout_marginTop="1dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_marginBottom="1dp"
                         android:layout_weight="1"
                         android:background="@drawable/toggle_widget_background"
                         android:button="@null"
@@ -145,21 +146,21 @@
                 android:id="@+id/divider_img"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_below="@+id/author_details"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="0dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_marginStart="61dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginBottom="5dp"
                 android:background="?attr/colorButtonNormal" />
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="@dimen/top_margin30"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="@dimen/top_margin30"
-                android:layout_marginTop="10dp">
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:layout_width="160dp"
@@ -174,9 +175,9 @@
                     android:id="@+id/tvSid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:ellipsize="end"
                     android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:gravity="end"
                     android:maxLines="1"
                     android:textSize="15sp" />
 
@@ -186,10 +187,10 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="@dimen/top_margin30"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="@dimen/top_margin30"
-                android:layout_marginTop="10dp">
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:layout_width="160dp"
@@ -203,9 +204,9 @@
                     android:id="@+id/tvLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:ellipsize="end"
                     android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:gravity="end"
                     android:maxLines="1"
                     android:textSize="15sp" />
 
@@ -214,10 +215,10 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="@dimen/top_margin30"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="@dimen/top_margin30"
-                android:layout_marginTop="10dp">
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:layout_width="200dp"
@@ -231,9 +232,9 @@
                     android:id="@+id/tvOnlineNum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
                     android:layout_gravity="center"
                     android:ellipsize="end"
+                    android:gravity="end"
                     android:maxLines="1"
                     android:textSize="15sp" />
 
@@ -242,10 +243,10 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="@dimen/top_margin30"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="@dimen/top_margin30"
-                android:layout_marginTop="10dp">
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:layout_width="160dp"
@@ -259,9 +260,9 @@
                     android:id="@+id/tvDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:ellipsize="end"
                     android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:gravity="end"
                     android:maxLines="1"
                     android:textSize="15sp" />
 

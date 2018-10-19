@@ -123,12 +123,12 @@ public class NotificationService extends Service {
         }
     };
 
-    public  boolean isInBackground() {
-        boolean isInBackground;
-        ActivityManager.RunningAppProcessInfo myProcess = new ActivityManager.RunningAppProcessInfo();
-        ActivityManager.getMyMemoryState(myProcess);
-        return isInBackground = myProcess.importance != ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
-    }
+//    public  boolean isInBackground() {
+//        boolean isInBackground;
+//        ActivityManager.RunningAppProcessInfo myProcess = new ActivityManager.RunningAppProcessInfo();
+//        ActivityManager.getMyMemoryState(myProcess);
+//        return isInBackground = myProcess.importance != ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
+//    }
 
 
 
