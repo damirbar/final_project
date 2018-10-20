@@ -13,8 +13,10 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baoyz.widget.PullRefreshLayout;
@@ -74,6 +76,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     private static int ADD_ITEMS = 20;
     private boolean first = true;
     private ShimmerFrameLayout mShimmerViewContainer;
+    private View messageDialog;
 
 
     @Override
@@ -119,6 +122,9 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     }
 
     private void initViews() {
+        messageDialog = findViewById(R.id.msg_public);
+        ImageButton userExitMsg = findViewById(R.id.close_msg);
+        userExitMsg.setOnClickListener(view -> exitMsg());
         mTvNoResults = findViewById(R.id.tv_no_results);
         imageNoResults = findViewById(R.id.imageBase);
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
@@ -129,6 +135,10 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mToolbar = findViewById(R.id.toolbar);
         notificationsList = findViewById(R.id.search_List);
 
+    }
+
+    private void exitMsg() {
+        messageDialog.setVisibility(View.GONE);
     }
 
     private void initSearchView() {

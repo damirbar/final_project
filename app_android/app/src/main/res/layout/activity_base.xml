@@ -21,15 +21,22 @@
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#fdfdfe"
+            android:background="@color/bac2_def"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/def_background"
+                android:background="@color/bac2_def"
                 android:focusable="true"
                 android:focusableInTouchMode="true">
+
+                <include
+                    android:id="@+id/msg_public"
+                    layout="@layout/message_dialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/toolbar" />
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -52,28 +59,28 @@
                             android:id="@+id/img_logo"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
+                            android:layout_marginStart="55dp"
                             android:layout_marginLeft="55dp"
                             android:layout_marginTop="10dp"
                             android:src="@drawable/wizeup_logo"
-                            android:visibility="visible"
-                            android:layout_marginStart="55dp" />
+                            android:visibility="visible" />
 
                         <TextView
                             android:id="@+id/name_app"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_marginBottom="15dp"
-                            android:layout_marginEnd="15dp"
+                            android:layout_marginStart="5dp"
                             android:layout_marginLeft="5dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginBottom="15dp"
                             android:fontFamily="sans-serif"
                             android:gravity="center"
                             android:text="@string/app_name"
                             android:textColor="@color/white"
                             android:textSize="35sp"
-                            android:textStyle="bold"
-                            android:layout_marginRight="15dp"
-                            android:layout_marginStart="5dp" />
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -84,10 +91,10 @@
                     android:id="@+id/searchView"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="70dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/edittext_search"
                     android:focusable="false"
                     android:inputType="none"
@@ -99,19 +106,26 @@
                     android:id="@+id/activity_main_swipe_refresh_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/toolbar"
+                    android:layout_below="@+id/msg_public"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="6dp"
                     app:refreshType="smartisan">
+
 
                     <ListView
                         android:id="@+id/search_List"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginRight="5dp"
                         android:background="@color/bac2_def"
-                        android:divider="@color/def_background"
+                        android:divider="@color/bac2_def"
+                        android:dividerHeight="6dp"
                         android:listSelector="@android:color/transparent"
-                        android:scrollbarSize="2dp"
+                        android:scrollbarSize="1dp"
                         android:visibility="visible" />
 
                 </com.baoyz.widget.PullRefreshLayout>
@@ -120,7 +134,7 @@
                     android:id="@+id/shimmer_view_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/toolbar"
+                    android:layout_below="@+id/msg_public"
                     android:layout_gravity="center"
                     android:orientation="vertical"
                     shimmer:duration="800">
@@ -174,7 +188,6 @@
 
 
             </RelativeLayout>
-
 
 
         </LinearLayout>
