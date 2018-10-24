@@ -13,9 +13,9 @@ router.post("/create-course", function (req, res) {
 
     let Gcid = 1;
 
-    Course.findOne({}).sort({cid: -1}).then(function (ans) {
+    Course.findOne({}).sort({creation_date: -1}).then(function (ans) {
             if(ans){
-                Gcid = ans.cid + 1;
+                Gcid = String(Number(ans.cid) + 1);
             }
             User.findOne({email: req.body.teacher.toLowerCase()}, function (err, teacher) {
                 if (err) {
@@ -414,7 +414,7 @@ router.post("/messages", function (req, res) {
 });
 
 router.get("/get-all-messages", function (req, res) {
-    let course_id = Number(req.query.cid);
+    let course_id = req.query.cid;
     Course.aggregate([
             {
                 $lookup: {
@@ -610,7 +610,7 @@ router.get("/get-all-sessions", function (req, res) {
                 });
             }
             else {
-                return res.status(404).json({message: 'no such course: ' + course.cid});
+                return res.status(404).json({message: 'no such course: ' + course_id});
             }
         }
     });

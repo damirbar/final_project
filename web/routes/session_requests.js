@@ -9,7 +9,7 @@ ObjectID = require('mongodb').ObjectID;
 
 const notificationsSystem = require('../tools/notificationsSystem');
 
-const socketIOEmitter = require('../streamTest/socketHandler');
+const socketIOEmitter = require('../tools/socketIO');
 
 router.post("/connect-session", function (req, res) {
     const decoded = req.verifiedEmail;
