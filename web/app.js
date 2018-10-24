@@ -71,7 +71,7 @@ app.use('/auth', authRouts);
 
 
 http.listen(3000, function () {
-    console.log("listening...");
+    console.log("listening... test!!!");
 });
 
 
@@ -142,6 +142,7 @@ socketIO.setIO(io);
 //         })
 // };
 // addMessage();
+
 
 
 //The 404 Route (ALWAYS Keep this as the last route)
