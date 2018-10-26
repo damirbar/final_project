@@ -139,8 +139,9 @@ public class RegisterFragment extends Fragment {
             user.setRole("teacher");
         }
 
-
+        mBtRegister.setVisibility(View.GONE);
         mProgressbar.setVisibility(View.VISIBLE);
+
         registerProcess(user);
 
     }
@@ -155,12 +156,14 @@ public class RegisterFragment extends Fragment {
 
     private void handleResponse(Response response) {
         mProgressbar.setVisibility(View.GONE);
+        mBtRegister.setVisibility(View.VISIBLE);
         loginProcess(mEmail, mPass);
     }
 
     private void handleError(Throwable error) {
         mServerResponse.handleError(error);
         mProgressbar.setVisibility(View.GONE);
+        mBtRegister.setVisibility(View.VISIBLE);
     }
 
     private void showMessage(String message) {

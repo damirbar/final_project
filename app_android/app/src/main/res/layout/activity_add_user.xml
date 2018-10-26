@@ -71,7 +71,7 @@
                 <EditText
                     android:id="@+id/edit_text_email"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="45dp"
                     android:layout_weight="1"
                     android:background="@drawable/dark_edit_text"
                     android:gravity="center"
@@ -80,10 +80,23 @@
                     android:textSize="14sp" />
             </android.support.design.widget.TextInputLayout>
 
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="50dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginRight="70dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/buttonshape"
+                android:visibility="gone"
+                android:theme="@style/AppTheme.WhiteAccent"
+                android:indeterminate="true" />
+
             <Button
                 android:id="@+id/addUserButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_marginBottom="50dp"
                 android:layout_marginLeft="70dp"
                 android:layout_marginRight="70dp"

@@ -106,10 +106,22 @@
                     android:textSize="14sp" />
             </android.support.design.widget.TextInputLayout>
 
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginRight="70dp"
+                android:background="@drawable/buttonshape"
+                android:visibility="gone"
+                android:theme="@style/AppTheme.WhiteAccent"
+                android:indeterminate="true" />
+
             <Button
                 android:id="@+id/classloginButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_marginLeft="70dp"
                 android:layout_marginRight="70dp"
                 android:layout_marginTop="40dp"
@@ -132,7 +144,7 @@
             <Button
                 android:id="@+id/create_session_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="70dp"
                 android:layout_marginRight="70dp"
