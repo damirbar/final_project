@@ -73,6 +73,7 @@ public class RegisterFragment extends Fragment {
 
     private void initViews(View v) {
         mRadioButtonStudent = v.findViewById(R.id.radio_student);
+        mRadioButtonStudent.toggle();
         mEtFName = v.findViewById(R.id.et_first_name);
         mEtLName = v.findViewById(R.id.et_last_name);
         mEtEmail = v.findViewById(R.id.et_email);
@@ -96,8 +97,6 @@ public class RegisterFragment extends Fragment {
 
 
     private void register() {
-
-
         String first_name = mEtFName.getText().toString().trim();
         String last_name = mEtLName.getText().toString().trim();
         String email = mEtEmail.getText().toString().trim();

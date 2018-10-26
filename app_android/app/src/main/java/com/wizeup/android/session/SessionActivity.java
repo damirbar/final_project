@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
@@ -17,9 +18,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.Target;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.wizeup.android.R;
 import com.wizeup.android.dialogs.UploadingDialog;
 import com.wizeup.android.model.Response;
@@ -40,8 +38,10 @@ import okhttp3.RequestBody;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+import smartdevelop.ir.eram.showcaseviewlib.GuideView;
 
 import static com.wizeup.android.network.RetrofitRequests.getBytes;
+import static smartdevelop.ir.eram.showcaseviewlib.GuideView.DismissType.targetView;
 
 public class SessionActivity extends AppCompatActivity implements UploadingDialog.OnCallbackCancel {
     private TabLayout tabLayout;
@@ -68,15 +68,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
             finish();
         }
         initViews();
-
-
-        Target viewTarget = new ViewTarget(R.id.vid_button_close, this);
-        new ShowcaseView.Builder(this)
-                .setTarget(viewTarget)
-                .setContentTitle("Press the arrow to open the\n\nvideo when video is available.")
-                .singleShot(41)
-                .build();
-
+        showCase();
 
         buttonVid.setOnClickListener(v -> {
             if (session.getVideoUrl() == null || (session.getVideoUrl().isEmpty())) {
@@ -128,6 +120,29 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
         if (session.getVideoUrl() !=null && !(session.getVideoUrl().isEmpty())) {
             playVideo();
         }
+    }
+
+    private void showCase() {
+        SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isFirstRun = wmbPreference.getBoolean("FIRSTRUN", true);
+        if (isFirstRun)
+        {
+            new GuideView.Builder(this)
+                    .setTitle("Video Button")
+                    .setContentText("Press the arrow to OPEN the video\n\nand again to CLOSE the video.")
+                    .setDismissType(targetView)
+                    .setTargetView(buttonVid)
+                    .setContentTextSize(14)
+                    .setTitleTextSize(17)
+                    .setTitleTypeFace(Typeface.defaultFromStyle(Typeface.BOLD))
+                    .build()
+                    .show();
+
+            SharedPreferences.Editor editor = wmbPreference.edit();
+            editor.putBoolean("FIRSTRUN", false);
+            editor.commit();
+        }
+
     }
 
     private void initViews() {
