@@ -45,7 +45,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.androidadvance:topsnackbar:1.1.1'
-    implementation 'com.github.rtoshiro.fullscreenvideoview:fullscreenvideoview:1.1.2'
     implementation 'com.mindorks.android:prdownloader:0.4.0'
     implementation 'com.albinmathew:photo-crop-library:1.0.3'
     implementation 'com.github.siyamed:android-shape-imageview:0.9.3@aar'
@@ -61,9 +60,13 @@ dependencies {
     //Tutorial
     implementation 'com.github.amlcurran.showcaseview:library:5.4.3'
 
-    //loading view
+    //loading view shimmer
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
 
-    //PullRefresLayout
+    //Pull Refresh Layout
     implementation 'com.baoyz.pullrefreshlayout:library:1.2.0'
+
+    //Video Player
+    implementation 'com.henryblue.mxvideoplayer:xvideoplayer:1.2.0'
+
 }
