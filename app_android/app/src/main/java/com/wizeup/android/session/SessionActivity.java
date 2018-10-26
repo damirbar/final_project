@@ -1,6 +1,7 @@
 package com.wizeup.android.session;
 
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -148,7 +150,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
     private void initViews() {
         vid = findViewById(R.id.videoView);
         Button buttonBack =  findViewById(R.id.image_Button_back);
-        buttonBack.setOnClickListener(view -> goBack());
+        buttonBack.setOnClickListener(view -> exitAlert());
         buttonVid = findViewById(R.id.vid_button_close);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -221,11 +223,6 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void goBack() {
-        disconnectFromSession();
-        finish();
     }
 
     private void sendSidSms() {
@@ -358,10 +355,26 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
         if (MxVideoPlayer.backPress()) {
             return;
         }
+        exitAlert();
+    }
 
-        disconnectFromSession();
-        super.onBackPressed();
-        finish();
+    public void exitAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to exit this session?");
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                disconnectFromSession();
+                finish();
+            }
+        });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 
     @Override

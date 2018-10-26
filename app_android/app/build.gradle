@@ -67,4 +67,5 @@ dependencies {
 
     //Video Player
     implementation 'com.henryblue.mxvideoplayer:xvideoplayer:1.2.0'
+
 }
