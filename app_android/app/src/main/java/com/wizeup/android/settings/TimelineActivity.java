@@ -2,13 +2,13 @@ package com.wizeup.android.settings;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.wizeup.android.R;
 import com.wizeup.android.model.Event;
 import com.wizeup.android.network.RetrofitRequests;
@@ -30,7 +30,7 @@ public class TimelineActivity extends AppCompatActivity {
     private CompositeSubscription mSubscriptions;
     private ListView eventsList;
     private TextView mTvNoResults;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private PullRefreshLayout mSwipeRefreshLayout;
     private EventsAdapter mAdapter;
     private static int ADD_ITEMS = 20;
     private boolean first = true;

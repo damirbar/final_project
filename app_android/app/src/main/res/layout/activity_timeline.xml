@@ -58,13 +58,12 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/activity_main_swipe_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button_panel"
-        android:layout_below="@+id/tool_bar"
-        android:visibility="visible">
+        <com.baoyz.widget.PullRefreshLayout
+            android:id="@+id/activity_main_swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tool_bar"
+            app:refreshType="smartisan">
 
         <ListView
             android:id="@+id/events"
@@ -83,7 +82,7 @@
             android:fastScrollEnabled="true"
             android:focusableInTouchMode="false"
             android:listSelector="@android:color/transparent" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </com.baoyz.widget.PullRefreshLayout>
 
     <TextView
         android:id="@+id/tv_no_results"

@@ -10,7 +10,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +31,7 @@ import com.wizeup.android.utils.Constants;
 
 import java.io.InputStream;
 
+import hb.xvideoplayer.MxMediaManager;
 import hb.xvideoplayer.MxVideoPlayer;
 import hb.xvideoplayer.MxVideoPlayerWidget;
 import okhttp3.MediaType;
@@ -42,7 +42,6 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.wizeup.android.network.RetrofitRequests.getBytes;
-import static hb.xvideoplayer.MxVideoPlayer.CURRENT_STATE_PAUSE;
 
 public class SessionActivity extends AppCompatActivity implements UploadingDialog.OnCallbackCancel {
     private TabLayout tabLayout;
@@ -50,7 +49,6 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
-    private int stopPosition;
     private Session session;
     private MxVideoPlayerWidget vid;
     private RelativeLayout mVideoViewRelative;
@@ -89,14 +87,17 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
                 }
             }
             if (mVideoViewRelative.getVisibility() == View.VISIBLE) {
-//                stopPosition = vid.getState();
-//                Log.d("stop time:",""+stopPosition);
+
+                if (MxMediaManager.getInstance().getPlayer().isPlaying()) {
+                    MxMediaManager.getInstance().getPlayer().pause();
+                    vid.setUiPlayState(5);
+                    vid.setUiPlayState(5);
+                }
                 mVideoViewRelative.setVisibility(View.GONE);
 
             } else {
 
                 mVideoViewRelative.setVisibility(View.VISIBLE);
-//                vid.setUiPlayState(CURRENT_STATE_PAUSE);
 
 
             }
@@ -129,7 +130,6 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
         }
     }
 
-
     private void initViews() {
         vid = findViewById(R.id.videoView);
         Button buttonBack =  findViewById(R.id.image_Button_back);
@@ -155,8 +155,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
     private void playVideo() {
         String url = session.getVideoUrl().trim();
 
-        vid.startPlay(url,
-                MxVideoPlayer.SCREEN_LAYOUT_NORMAL, session.getName());
+        vid.startPlay(url, MxVideoPlayer.SCREEN_LAYOUT_NORMAL, session.getName());
 
         /////////////Token to vid////////////
 //        String url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";//rm
@@ -255,9 +254,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
         if (requestCode == INTENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 try {
-
                     showLoadingDialog();
-
                     InputStream is = getContentResolver().openInputStream(data.getData());
                     tryUploadVid(getBytes(is));
                     is.close();
@@ -362,9 +359,11 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
     @Override
     public void onPause() {
         super.onPause();
-        MxVideoPlayer.releaseAllVideos();
-
-//        vid.pause();
+        if (MxMediaManager.getInstance().getPlayer().isPlaying()) {
+            MxMediaManager.getInstance().getPlayer().pause();
+            vid.setUiPlayState(5);
+            vid.setUiPlayState(5);
+        }
     }
 
     @Override

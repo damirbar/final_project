@@ -1,11 +1,10 @@
 package com.wizeup.android.course;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageButton;
@@ -13,12 +12,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.baoyz.widget.PullRefreshLayout;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.wizeup.android.R;
 import com.wizeup.android.model.Course;
 import com.wizeup.android.network.RetrofitRequests;
 import com.wizeup.android.network.ServerResponse;
 import com.wizeup.android.utils.Constants;
-import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +39,6 @@ public class MyCourseActivity extends AppCompatActivity {
     private String userType;
     private ShimmerFrameLayout mShimmerViewContainer;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +49,6 @@ public class MyCourseActivity extends AppCompatActivity {
         initViews();
         initSharedPreferences();
         userAdmin();
-
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
             pullCourses();
@@ -64,7 +61,6 @@ public class MyCourseActivity extends AppCompatActivity {
             intent.putExtra("cid", String.valueOf(C.getCid()));
             startActivity(intent);
         });
-
 
         coursesList.setOnScrollListener(new AbsListView.OnScrollListener(){
             private int mLastFirstVisibleItem;
@@ -87,7 +83,6 @@ public class MyCourseActivity extends AppCompatActivity {
                 mLastFirstVisibleItem=firstVisibleItem;
             }
         });
-
     }
 
     private void initViews() {
@@ -113,7 +108,6 @@ public class MyCourseActivity extends AppCompatActivity {
         }
     }
 
-
     private void addCourse() {
         Intent intent = new Intent(this,CreateCourseActivity.class);
         startActivity(intent);
@@ -125,8 +119,6 @@ public class MyCourseActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponsePull,i -> mServerResponse.handleError(i)));
     }
-
-
 
     private void handleResponsePull(Course courses[]) {
         if (!(courses.length == 0)) {
@@ -152,7 +144,4 @@ public class MyCourseActivity extends AppCompatActivity {
         super.onResume();
         pullCourses();
     }
-
-
-
 }
