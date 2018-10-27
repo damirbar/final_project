@@ -9,7 +9,6 @@ import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +17,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.baoyz.widget.PullRefreshLayout;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.wizeup.android.R;
 import com.wizeup.android.model.CourseFile;
 import com.wizeup.android.model.Response;
 import com.wizeup.android.network.RetrofitRequests;
 import com.wizeup.android.network.ServerResponse;
-import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.io.InputStream;
 import java.util.ArrayList;

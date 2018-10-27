@@ -33,7 +33,7 @@
                 android:fontFamily="sans-serif"
                 android:gravity="top|start"
                 android:text="Quit"
-                android:textAllCaps="false"
+                android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="17sp" />
 

@@ -42,7 +42,7 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
-        mServerResponse = new ServerResponse(findViewById(R.id.search_List));
+        mServerResponse = new ServerResponse(findViewById(R.id.events));
         mAdapter = new EventsAdapter(this, new ArrayList<>());
 
         initViews();
