@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import com.github.nkzawa.emitter.Emitter;
 import com.wizeup.android.R;
 import com.wizeup.android.dialogs.UploadingDialog;
 import com.wizeup.android.model.Response;
@@ -28,6 +29,8 @@ import com.wizeup.android.network.RetrofitRequests;
 import com.wizeup.android.network.ServerResponse;
 import com.wizeup.android.settings.ChangeLanguage;
 import com.wizeup.android.utils.Constants;
+
+import org.json.JSONObject;
 
 import java.io.InputStream;
 

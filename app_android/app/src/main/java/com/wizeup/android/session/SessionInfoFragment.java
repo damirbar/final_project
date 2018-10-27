@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -36,7 +35,6 @@ public class SessionInfoFragment extends Fragment {
     private RadioGroup toggle;
     private TextView mRatingNum;
     private TextView mRatingNum2;
-    private ImageView imageView;
     private TextView mSNameTextView;
     private TextView mSidTextView;
     private TextView mDateTextView;
@@ -104,7 +102,6 @@ public class SessionInfoFragment extends Fragment {
         mRatingNum = v.findViewById(R.id.tvRating);
         mRatingNum2 = v.findViewById(R.id.tvRating2);
         mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
-        imageView = v.findViewById(R.id.imageView);
         mSNameTextView = v.findViewById(R.id.tvName);
         mSidTextView = v.findViewById(R.id.tvSid);
         mDateTextView = v.findViewById(R.id.tvDate);
