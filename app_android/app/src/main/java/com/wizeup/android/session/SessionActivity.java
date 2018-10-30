@@ -78,10 +78,8 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
         buttonVid.setOnClickListener(v -> {
             if (session.getVideoUrl() == null || (session.getVideoUrl().isEmpty())) {
                 pullSession();
-                if (session.getVideoUrl() == null || (session.getVideoUrl().isEmpty())){
-                    mServerResponse.downSnackBarMessage("No video.");
-                    return;
-                }
+                mServerResponse.downSnackBarMessage("No video.");
+                return;
             }
             if (mVideoViewRelative.getVisibility() == View.VISIBLE) {
 
@@ -104,7 +102,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
 
         final ViewPager viewPager = findViewById(R.id.pager);
         final SessionPagerAdapter adapter = new SessionPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),
-                session.getSid(),session.getAdmin(),nickname);
+                session.getSid(), session.getAdmin(), nickname);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -122,7 +120,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
             }
         });
 
-        if (session.getVideoUrl() !=null && !(session.getVideoUrl().isEmpty())) {
+        if (session.getVideoUrl() != null && !(session.getVideoUrl().isEmpty())) {
             playVideo();
         }
     }
@@ -130,8 +128,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
     private void showCase() {
         SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isFirstRun = wmbPreference.getBoolean("FIRSTRUN", true);
-        if (isFirstRun)
-        {
+        if (isFirstRun) {
             new GuideView.Builder(this)
                     .setTitle("Video Button")
                     .setContentText("Press the arrow to OPEN the video\n\nand again to CLOSE the video.")
@@ -152,7 +149,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
 
     private void initViews() {
         vid = findViewById(R.id.videoView);
-        Button buttonBack =  findViewById(R.id.image_Button_back);
+        Button buttonBack = findViewById(R.id.image_Button_back);
         buttonBack.setOnClickListener(view -> exitAlert());
         buttonVid = findViewById(R.id.vid_button_close);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -231,9 +228,9 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
     private void sendSidSms() {
         String smsBody = "I would like to invite you to join our session in wizeUp.\nSession: " + session.getSid();
 
-        Intent sharingIntent = new Intent ( android.content.Intent.ACTION_SEND );
-        sharingIntent.setType ( "text/plain" );
-        sharingIntent.putExtra ( android.content.Intent.EXTRA_TEXT, smsBody );
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, smsBody);
         startActivity(Intent.createChooser(sharingIntent, "Share using?"));
 
     }
@@ -309,7 +306,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
             getSupportFragmentManager().beginTransaction()
                     .add(fragment, UploadingDialog.TAG)
                     .commitAllowingStateLoss();
-            }
+        }
     }
 
     public void hideLoadingDialog() {
@@ -318,7 +315,6 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
             getSupportFragmentManager().beginTransaction().remove(fragment).commitAllowingStateLoss();
         }
     }
-
 
 
     private void pullSession() {
