@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var UserSchema = new mongoose.Schema({
-    id_num: {type: String, default: ""},
+    // id_num: {type: String, default: ""},
     role: {type: String, default: ""},
     first_name: {type: String, default: ""},
     last_name: {type: String, default: ""},
