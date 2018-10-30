@@ -89,7 +89,6 @@ public class SessionPostsAdapter extends ArrayAdapter<SessionMessage> {
         TextView mDate = (TextView) listItem.findViewById(R.id.creation_date);
         ImageButton menu = listItem.findViewById(R.id.feed_item_menu);
 
-
         //Date
         Date date = currentMessage.getDate();
         if(date!=null){
