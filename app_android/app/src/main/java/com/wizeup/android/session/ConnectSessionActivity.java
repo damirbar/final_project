@@ -76,7 +76,7 @@ public class ConnectSessionActivity extends AppCompatActivity {
 
     private void createSession() {
         this.startActivity(new Intent(this, CreateSessionActivity.class));
-
+        finish();
     }
 
 
