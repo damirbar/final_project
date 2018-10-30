@@ -1,6 +1,7 @@
 package com.wizeup.android.notification;
 
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -34,11 +35,9 @@ public class NotificationService extends Service {
 
     private String mId;
     private static Socket mSocket;
-//    private  Context ctx;
 
     @Override
     public void onCreate() {
-//        ctx = getApplicationContext();
         createSocket();
         initSharedPreferences();
         mSocket.on(Socket.EVENT_CONNECT, onConnect);
@@ -121,9 +120,9 @@ public class NotificationService extends Service {
             try {
                 String content = data.getString("content");
 
-//                if(isInBackground()){
+                if(isInBackground()){
                     createNotification("wizeUp", content);
-//                }
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -131,14 +130,12 @@ public class NotificationService extends Service {
         }
     };
 
-//    public  boolean isInBackground() {
-//        boolean isInBackground;
-//        ActivityManager.RunningAppProcessInfo myProcess = new ActivityManager.RunningAppProcessInfo();
-//        ActivityManager.getMyMemoryState(myProcess);
-//        return isInBackground = myProcess.importance != ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
-//    }
-
-
+    public  boolean isInBackground() {
+        boolean isInBackground;
+        ActivityManager.RunningAppProcessInfo myProcess = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(myProcess);
+        return isInBackground = myProcess.importance != ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
+    }
 
     @Override
     public void onDestroy() {

@@ -11,6 +11,7 @@ import com.wizeup.android.model.Response;
 import com.wizeup.android.model.Session;
 import com.wizeup.android.network.RetrofitRequests;
 import com.wizeup.android.network.ServerResponse;
+import com.wizeup.android.utils.Constants;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -32,6 +33,7 @@ public class CreateSessionActivity extends AppCompatActivity {
     private ServerResponse mServerResponse;
     private Button buttonBack;
     private Session session;
+    private String email;
 
 
 
@@ -42,6 +44,7 @@ public class CreateSessionActivity extends AppCompatActivity {
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.scroll_view));
+        initSharedPreferences();
         initViews();
 
     }
@@ -56,6 +59,11 @@ public class CreateSessionActivity extends AppCompatActivity {
         buttonBack.setOnClickListener(view -> finish());
 
     }
+
+    private void initSharedPreferences() {
+        email = mRetrofitRequests.getSharedPreferences().getString(Constants.EMAIL, "");
+    }
+
 
     private void createSession(Session session) {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().createSession(session)
@@ -98,11 +106,11 @@ public class CreateSessionActivity extends AppCompatActivity {
 
         }
 
-
             session = new Session();
             session.setSid(sid);
             session.setLocation(loc);
             session.setName(name);
+            session.setAdmin(email);
 
             createSession(session);
     }
