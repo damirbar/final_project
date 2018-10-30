@@ -14,7 +14,7 @@ router.get('/free-text-search', function (req, res) {
 
     let keywords = req.query.keyword;
 
-    let numOfCollections = 7;
+    let numOfCollections = 5;
     let doneCounter = 0;
 
     let searchResults = {};
@@ -76,18 +76,18 @@ router.get('/free-text-search', function (req, res) {
         }
     });
 
-    Faculty.find({$text: {$search: keywords}}, function (err, results) {
-        if (err) {
-            console.log("Error in search Faculties");
-            console.log(err);
-        }else if(results != []){
-            searchResults.faculties = results;
-        }
-        doneCounter++;
-        if (doneCounter == numOfCollections) {
-            sendSearchResults();
-        }
-    });
+    // Faculty.find({$text: {$search: keywords}}, function (err, results) {
+    //     if (err) {
+    //         console.log("Error in search Faculties");
+    //         console.log(err);
+    //     }else if(results != []){
+    //         searchResults.faculties = results;
+    //     }
+    //     doneCounter++;
+    //     if (doneCounter == numOfCollections) {
+    //         sendSearchResults();
+    //     }
+    // });
 
     Course.find({$text: {$search: keywords}}, function (err, results) {
         if (err) {
@@ -102,18 +102,18 @@ router.get('/free-text-search', function (req, res) {
         }
     });
 
-    Department.find({$text: {$search: keywords}}, function (err, results) {
-        if (err) {
-            console.log("Error in search Departments");
-            console.log(err);
-        }else if(results != []){
-            searchResults.departments = results;
-        }
-        doneCounter++;
-        if (doneCounter == numOfCollections) {
-            sendSearchResults();
-        }
-    });
+    // Department.find({$text: {$search: keywords}}, function (err, results) {
+    //     if (err) {
+    //         console.log("Error in search Departments");
+    //         console.log(err);
+    //     }else if(results != []){
+    //         searchResults.departments = results;
+    //     }
+    //     doneCounter++;
+    //     if (doneCounter == numOfCollections) {
+    //         sendSearchResults();
+    //     }
+    // });
 });
 
 

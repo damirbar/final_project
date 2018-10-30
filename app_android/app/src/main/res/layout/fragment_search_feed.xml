@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_search"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/search_List"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/def_background"
+        android:divider="@color/def_background"
+        android:listSelector="@android:color/transparent"
+        android:scrollbarSize="2dp"
+        android:visibility="visible" />
+
+    <include
+        layout="@layout/results_item"
+        android:visibility="gone" />
+
+
+</RelativeLayout>
