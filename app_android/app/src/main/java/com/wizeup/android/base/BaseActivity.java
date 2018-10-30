@@ -205,17 +205,22 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mDrawerHeader.getNameTxt().setText(user.getFname() + " " + user.getLname());
         String pic = user.getProfile_img();
         if (pic != null && !(pic.isEmpty()))
-            Picasso.with(this).load(pic).into(mDrawerHeader.getProfileImage());
-    }
+            Picasso.with(this)
+                    .load(pic)
+                    .error(R.drawable.default_user_image)
+                    .into(mDrawerHeader.getProfileImage());
+        }
 
     private void handleErrorProfile(Throwable error) {
         ServerResponse.handleErrorQuiet(error);
         mDrawerHeader.getNameTxt().setText(mName);
         String pic = mPic;
         if (pic != null && !(pic.isEmpty()))
-            Picasso.with(this).load(pic).into(mDrawerHeader.getProfileImage());
+            Picasso.with(this)
+                    .load(pic)
+                    .error(R.drawable.default_user_image)
+                    .into(mDrawerHeader.getProfileImage());
     }
-
 
     @Override
     protected void onDestroy() {
