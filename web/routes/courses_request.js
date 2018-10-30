@@ -12,29 +12,28 @@ const notificationsSystem = require("../tools/notificationsSystem");
 router.post("/create-course", function (req, res) {
 
     let Gcid = 1;
-
-    Course.findOne({}).sort({creation_date: -1}).then(function (ans) {
-            if(ans){
-                Gcid = String(Number(ans.cid) + 1);
-            }
-            User.findOne({email: req.body.teacher.toLowerCase()}, function (err, teacher) {
-                if (err) {
-                    console.log("Error while finding courses");
-                    res.status(500).json({message: err});
-                }
-                else {
-                    if (teacher) {
-                        const course = new Course({
-                            cid: Gcid,
-                            name: req.body.name,
-                            department: req.body.department,
-                            teacher_fname: teacher.first_name,
-                            teacher_lname: teacher.last_name,
-                            location: req.body.location,
-                            points: req.body.points,
-                            students: [teacher.id],
-                            teacher_email: teacher.email
-                        });
+    User.findOne({email: req.body.teacher.toLowerCase()}, function (err, teacher) {
+        if (err) {
+            console.log("Error while finding user");
+            res.status(500).json({message: err});
+        }
+        else {
+            if (teacher) {
+                Course.findOne({}).sort({creation_date: -1}).then(function (ans) {
+                    if (ans) {
+                        Gcid = String(Number(ans.cid) + 1);
+                    }
+                    const course = new Course({
+                        cid: Gcid,
+                        name: req.body.name,
+                        department: req.body.department,
+                        teacher_fname: teacher.first_name,
+                        teacher_lname: teacher.last_name,
+                        location: req.body.location,
+                        points: req.body.points,
+                        students: [teacher.id],
+                        teacher_email: teacher.email
+                    });
                         course.save(function (err) {
                             if (err) {
                                 if (err.name === 'MongoError' && err.code === 11000) {
@@ -60,10 +59,11 @@ router.post("/create-course", function (req, res) {
                                 console.log("successfully added course " + course.name + " to db");
                             }
                         });
-                    }
-                    else return res.status(404).json({message: "no teacher: " + req.body.teacher});
-                }
-            });
+                });
+            }
+            else
+                return res.status(404).json({message: "no teacher: " + req.body.teacher});
+        }
     });
 });
 
@@ -180,7 +180,7 @@ router.post('/post-file', type, function (req, res) {
                             else {
                                 if (user) {
                                     res.status(200).json({message: 'received file'});
-                                    uploader.uploadDoc(req.file,path,extension,user.id, course, type);
+                                    uploader.uploadDoc(req.file, path, extension, user.id, course, type);
                                 }
                                 else {
                                     fs.unlinkSync(path);
@@ -225,7 +225,7 @@ router.get("/add-student-to-course", function (req, res) {
                                 }
                                 else {
                                     if (student) {
-                                        if(course.students.includes(student.id)){
+                                        if (course.students.includes(student.id)) {
                                             res.status(200).json({message: student.email + " already in course"});
                                         }
                                         else {

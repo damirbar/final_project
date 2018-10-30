@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var CourseSchema = new mongoose.Schema({
-    cid: {type: String},
+    cid: {type: String, unique: true, required: true},
     name:{type: String, required: true},
     department: {type: String, required: true},
     teacher_fname:{type: String, required: true},
@@ -14,7 +14,6 @@ var CourseSchema = new mongoose.Schema({
     files:[String],
     messages: Array,
     sessions: Array
-
 
 }, { usePushEach: true });
 module.exports = mongoose.model('Course', CourseSchema);
