@@ -5,7 +5,6 @@ let File = require("../schemas/file");
 const Notification = require("../schemas/notification");
 
 
-
 router.get("/get-profile", function (req, res) {
     const id = req.query.id;
 
@@ -62,7 +61,7 @@ router.post("/edit-profile", function (req, res) {
                 user.save();
                 return res.status(200).json(user);
             }
-            else{
+            else {
                 return res.status(404).json({message: 'user' + verified + 'dose not exist sorry'});
             }
         }
@@ -126,14 +125,7 @@ router.post("/edit-profile", function (req, res) {
 const multer = require('multer');
 const upload = multer({dest: 'upload/'});
 const type = upload.single('recfile');
-const cloudinary = require('cloudinary');
-const fs = require('fs');
-const config = require('../config/config');
-cloudinary.config({
-    cloud_name: config.cloudniary.cloud_name,
-    api_key: config.cloudniary.api_key,
-    api_secret: config.cloudniary.api_secret
-});
+let uploader = require('../tools/uploader');
 
 router.post('/post-profile-image', type, function (req, res) {
     if (!req.file) {
@@ -142,80 +134,38 @@ router.post('/post-profile-image', type, function (req, res) {
     }
     else {
         const path = req.file.path;
-            if (!req.file.originalname.toLowerCase().match(/\.(jpg|jpeg|png)$/)) {
-                fs.unlinkSync(path);
-                res.status(400).json({message: 'wrong file'});
-                console.log("wrong file type");
-            }
-            else {
-                User.findOne({email: req.verifiedEmail}, function (err, user) {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).json({message: err});
+        if (!req.file.originalname.toLowerCase().match(/\.(jpg|jpeg|png)$/)) {
+            fs.unlinkSync(path);
+            res.status(400).json({message: 'wrong file'});
+            console.log("wrong file type");
+        }
+        else {
+            User.findOne({email: req.verifiedEmail}, function (err, user) {
+                if (err) {
+                    console.log(err);
+                    fs.unlinkSync(path);
+                    res.status(500).json({message: err});
+                }
+                else {
+                    if (user) {
+                        File.remove({url: user.profile_img}, function (err) {
+                            if (err) {
+                                console.log(err);
+                                fs.unlinkSync(path);
+                                res.status(500).json({message: err});
+                            }
+                            else {
+                                uploader.uploadProfileImage(req.file, path, user, res)
+                            }
+                        });
                     }
                     else {
-                        if(user) {
-                            File.remove({url: user.profile_img}, function (err) {
-                                if (err) {
-                                    console.log(err);
-                                    res.status(500).json({message: err});
-                                }
-                                else {
-                                    console.log("starting to upload " + req.file.originalname);
-                                    cloudinary.v2.uploader.upload(path,
-                                        {
-                                            public_id: "profiles/" + user.id + "profile",
-                                            width: 1000,
-                                            height: 1000,
-                                            crop: 'thumb',
-                                            gravity: 'face',
-                                            radius: 20
-                                        },
-
-                                        function (err, result) {
-                                            fs.unlinkSync(path);
-                                            if (err) {
-                                                console.log(err);
-                                                res.status(500).json({message: err});
-                                            }
-                                            else {
-                                                console.log("uploaded " + req.file.originalname);
-                                                const ans = new File({
-                                                    originalName: req.file.originalname,
-                                                    uploaderid: user.id,
-                                                    url: result.url,
-                                                    type: result.format,
-                                                    size: result.bytes,
-                                                    hidden: false
-                                                });
-                                                ans.save(function (err, updated_file) {
-                                                    if (err) {
-                                                        console.log(err);
-                                                        res.status(500).json({message: err});
-                                                    }
-                                                    else {
-                                                        user.update({profile_file_id: updated_file.id, profile_img: result.url},function (err) {
-                                                            if (err) {
-                                                                console.log(err);
-                                                                res.status(500).json({message: err});
-                                                            }
-                                                            else {
-                                                                res.status(200).json({message: 'changed user profile image'});
-                                                            }
-                                                        });
-                                                    }
-                                                });
-                                            }
-                                        });
-                                }
-                            });
-                        }
-                        else{
-                            res.status(404).json({message: 'no such user '+ req.verifiedEmail})
-                        }
+                        fs.unlinkSync(path);
+                        res.status(404).json({message: 'no such user ' + req.verifiedEmail})
                     }
-                });
-            }
+                }
+            });
+        }
     }
 });
 
@@ -247,7 +197,7 @@ router.get("/get-notifications", function (req, res) {
         }
         else {
             if (user) {
-                Notification.find({receiver_id: user.id},function (err, notifications) {
+                Notification.find({receiver_id: user.id}, function (err, notifications) {
                     if (err) {
                         console.log(err);
                         res.status(500).json({message: err});

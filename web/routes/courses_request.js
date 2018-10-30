@@ -145,15 +145,7 @@ router.get('/get-my-courses', function (req, res) {
 const multer = require('multer');
 const upload = multer({dest: 'upload/'});
 const type = upload.single('recfile');
-const cloudinary = require('cloudinary');
-const fs = require('fs');
-const config = require('../config/config');
-
-cloudinary.config({
-    cloud_name: config.cloudniary.cloud_name,
-    api_key: config.cloudniary.api_key,
-    api_secret: config.cloudniary.api_secret
-});
+let uploader = require('../tools/uploader');
 
 router.post('/post-file', type, function (req, res) {
     if (!req.file) {
@@ -188,38 +180,7 @@ router.post('/post-file', type, function (req, res) {
                             else {
                                 if (user) {
                                     res.status(200).json({message: 'received file'});
-                                    console.log("starting to upload " + req.file.originalname);
-                                    cloudinary.v2.uploader.upload(path,
-                                        {
-                                            resource_type: type,
-                                            public_id: "courses/" + course.cid + "/" + req.file.filename + "." + extension
-                                        },
-                                        function (err, result) {
-                                            fs.unlinkSync(path);
-                                            if (err) console.log(err);
-                                            else {
-                                                const ans = new File({
-                                                    publicid: result.public_id,
-                                                    originalName: req.file.originalname,
-                                                    uploaderid: user.id,
-                                                    url: result.url,
-                                                    type: extension,
-                                                    size: result.bytes,
-                                                    hidden: false
-                                                });
-                                                ans.save(function (err, updated_file) {
-                                                    if (err) console.log(err);
-                                                    else {
-                                                        course.update({$push: {files: updated_file.id}}, function (err) {
-                                                            if (err) console.log(err);
-                                                            else {
-                                                                console.log("finished uploading " + req.file.originalname);
-                                                            }
-                                                        });
-                                                    }
-                                                });
-                                            }
-                                        });
+                                    uploader.uploadDoc(req.file,path,extension,user.id, course, type);
                                 }
                                 else {
                                     fs.unlinkSync(path);
@@ -239,33 +200,7 @@ router.post('/post-file', type, function (req, res) {
 });
 
 router.delete('/remove-file', function (req, res) {
-
-    let publicid = req.query.publicid;
-    let id = req.query.id;
-    cloudinary.v2.uploader.destroy(publicid,
-        function (err, result) {
-            if (err) {
-                console.log(err);
-            }
-            console.log(result);
-            File.remove({publicid: publicid}, function (err) {
-                if (err) {
-                    console.log(err);
-                    res.status(500).json({message: err});
-                }
-                else {
-                    Course.update({cid: req.query.cid}, {$pull: {files: id}}, function (err) {
-                        if (err) {
-                            console.log(err);
-                            res.status(500).json({message: err});
-                        }
-                        else {
-                            res.status(200).json({message: "file deleted"})
-                        }
-                    });
-                }
-            })
-        });
+    uploader.deleteDoc(req.query.publicid, req.query.cid, req.query.id, res);
 });
 
 router.get("/add-student-to-course", function (req, res) {

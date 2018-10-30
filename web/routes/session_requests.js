@@ -4,7 +4,6 @@ let Session = require("../schemas/session");
 let Session_Message = require("../schemas/session_message");
 let Notification = require('../schemas/notification');
 let User = require("../schemas/user");
-let File = require("../schemas/file");
 ObjectID = require('mongodb').ObjectID;
 
 const notificationsSystem = require('../tools/notificationsSystem');
@@ -596,19 +595,11 @@ router.get("/disconnect", function (req, res) {
 const multer = require('multer');
 const upload = multer({dest: 'upload/'});
 const type = upload.single('recfile');
-const cloudinary = require('cloudinary');
-const fs = require('fs');
-const config = require('../config/config');
-cloudinary.config({
-    cloud_name: config.cloudniary.cloud_name,
-    api_key: config.cloudniary.api_key,
-    api_secret: config.cloudniary.api_secret
-});
+let uploader = require('../tools/uploader');
+
 
 
 router.post('/post-video', type, function (req, res) {
-    console.log("HERE");
-    console.log(req.file.originalName);
     if (!req.file) {
         res.status(400).json({message: 'no file'});
     }
@@ -622,6 +613,7 @@ router.post('/post-video', type, function (req, res) {
             Session.findOne({sid: req.query.sid}, function (err, sess) {
                 if (err) {
                     console.log(err);
+                    fs.unlinkSync(path);
                     res.status(500).json({message: err});
                 }
                 else {
@@ -629,54 +621,13 @@ router.post('/post-video', type, function (req, res) {
                         User.findOne({email: req.verifiedEmail}, function (err, user) {
                             if (err) {
                                 console.log(err);
+                                fs.unlinkSync(path);
                                 res.status(500).json({message: err});
                             }
                             else {
                                 if (user) {
                                     res.status(200).json({message: 'received file'});
-                                    console.log("starting to upload " + req.file.originalname);
-                                    cloudinary.v2.uploader.upload(path,
-                                        {
-                                            resource_type: "video",
-                                            public_id: "sessionVideos/" + sess.sid + 'video',
-                                            eager: [
-                                                {
-                                                    width: 300, height: 300,
-                                                    crop: "pad", audio_codec: "none"
-                                                },
-                                                {
-                                                    width: 160, height: 100,
-                                                    crop: "crop", gravity: "south",
-                                                    audio_codec: "none"
-                                                }],
-                                            eager_async: true,
-                                            eager_notification_url: "http://mysite/notify_endpoint"
-                                        },
-                                        function (err, result) {
-                                            fs.unlinkSync(path);
-                                            if (err) console.log(err);
-                                            else {
-                                                const ans = new File({
-                                                    originalName: req.file.originalname,
-                                                    uploaderid: user.id,
-                                                    url: result.url,
-                                                    type: result.format,
-                                                    size: result.bytes,
-                                                    hidden: false
-                                                });
-                                                ans.save(function (err, updated_file) {
-                                                    if (err) console.log(err);
-                                                    else {
-                                                        sess.update({video_file_id: updated_file.id, videoUrl: result.url},function (err) {
-                                                            if (err) console.log(err);
-                                                            else {
-                                                                console.log("finished uploading " + req.file.originalname);
-                                                            }
-                                                        });
-                                                    }
-                                                });
-                                            }
-                                        });
+                                    uploader.uploadVideo(req.file, path, sess, user._id);
                                 }
                                 else{
                                     fs.unlinkSync(path);
