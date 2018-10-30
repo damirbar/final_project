@@ -3,9 +3,11 @@ package com.wizeup.android.session;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import com.wizeup.android.R;
 import com.wizeup.android.model.Session;
@@ -28,7 +30,8 @@ public class ConnectSessionActivity extends AppCompatActivity {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private String nickname;
-
+    private ProgressBar mProgressBar;
+    private Button mBtLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,8 @@ public class ConnectSessionActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        Button mBtLogin = findViewById(R.id.classloginButton);
+        mProgressBar = findViewById(R.id.progress);
+        mBtLogin = findViewById(R.id.classloginButton);
         mCreateSessionButton = findViewById(R.id.create_session_button);
         mEditTextSid = findViewById(R.id.edit_text_sid);
         mEditTextName = findViewById(R.id.edit_text_name);
@@ -93,16 +97,22 @@ public class ConnectSessionActivity extends AppCompatActivity {
         }
 
         loginProcess(sid, nickname);
+        mBtLogin.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+
     }
 
     private void loginProcess(String sid, String name) {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().connectSession(sid, name)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponse, this::handleError));
     }
 
     private void handleResponse(Session session) {
+        mProgressBar.setVisibility(View.GONE);
+        mBtLogin.setVisibility(View.VISIBLE);
+
         Intent intent = new Intent(getBaseContext(), SessionActivity.class);
         intent.putExtra("session", session);
         intent.putExtra("nickname", nickname);
@@ -110,6 +120,13 @@ public class ConnectSessionActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    public void handleError(Throwable error) {
+        mServerResponse.handleError(error);
+        mProgressBar.setVisibility(View.GONE);
+        mBtLogin.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     public void onDestroy() {

@@ -1,7 +1,6 @@
 package com.wizeup.android.notification;
 
 
-import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,12 +16,12 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
-import com.wizeup.android.R;
-import com.wizeup.android.entry.EntryActivity;
-import com.wizeup.android.utils.Constants;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.wizeup.android.R;
+import com.wizeup.android.entry.EntryActivity;
+import com.wizeup.android.utils.Constants;
 
 import org.json.JSONObject;
 
@@ -30,30 +29,39 @@ import java.net.URISyntaxException;
 
 import static com.wizeup.android.utils.Constants.BASE_URL;
 
-
 public class NotificationService extends Service {
 
 
     private String mId;
-    private Socket mSocket;
-    private  Context ctx;
-
-    {
-        try {
-            mSocket = IO.socket(BASE_URL);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
+    private static Socket mSocket;
+//    private  Context ctx;
 
     @Override
     public void onCreate() {
-        ctx = getApplicationContext();
+//        ctx = getApplicationContext();
+        createSocket();
         initSharedPreferences();
         mSocket.on(Socket.EVENT_CONNECT, onConnect);
         mSocket.on("newNotification", onNewNotification);
         mSocket.connect();
     }
+
+
+    public Socket getSocket() {
+        return mSocket;
+    }
+
+    public Socket createSocket() {
+
+        try {
+            mSocket = IO.socket(BASE_URL);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        return mSocket;
+    }
+
 
     private void initSharedPreferences() {
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -123,12 +131,12 @@ public class NotificationService extends Service {
         }
     };
 
-    public  boolean isInBackground() {
-        boolean isInBackground;
-        ActivityManager.RunningAppProcessInfo myProcess = new ActivityManager.RunningAppProcessInfo();
-        ActivityManager.getMyMemoryState(myProcess);
-        return isInBackground = myProcess.importance != ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
-    }
+//    public  boolean isInBackground() {
+//        boolean isInBackground;
+//        ActivityManager.RunningAppProcessInfo myProcess = new ActivityManager.RunningAppProcessInfo();
+//        ActivityManager.getMyMemoryState(myProcess);
+//        return isInBackground = myProcess.importance != ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
+//    }
 
 
 

@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.wizeup.android.R;
 import com.wizeup.android.model.CourseMessage;
 import com.wizeup.android.model.Response;
@@ -35,7 +36,7 @@ public class CourseCommentActivity extends AppCompatActivity {
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
     private ListView commentsList;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private PullRefreshLayout mSwipeRefreshLayout;
     private EditText mCommentText;
     private CourseMessage mainMessage;
     private String userId;

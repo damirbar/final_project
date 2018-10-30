@@ -1,13 +1,16 @@
 package com.wizeup.android.profile;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.wizeup.android.R;
 import com.wizeup.android.model.User;
 import com.wizeup.android.network.RetrofitRequests;
@@ -29,6 +32,7 @@ public class ProfileActivity extends AppCompatActivity {
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
+    private PullRefreshLayout mSwipeRefreshLayout;
     private String mId;
 
 
@@ -47,6 +51,13 @@ public class ProfileActivity extends AppCompatActivity {
         else{
             mBtEditProfile.setVisibility(View.GONE);
         }
+
+        mSwipeRefreshLayout.setColor(0);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+            loadProfile();
+            mSwipeRefreshLayout.setRefreshing(false);
+        }, 0));
+
     }
 
     private void initSharedPreferences() {
@@ -55,6 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void initViews() {
         image = findViewById(R.id.user_profile_photo);
+        mSwipeRefreshLayout = findViewById(R.id.activity_main_swipe_refresh_layout);
         mDisplayName = findViewById(R.id.tvdName);
         mCountry = findViewById(R.id.tvCountry);
         mAboutMe = findViewById(R.id.tvAboutMe);

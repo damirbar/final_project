@@ -167,7 +167,6 @@ public class LoginFragment extends Fragment{
 
     private void login() {
 
-
         mEmail = mEtEmail.getText().toString().trim();
         mPass = mEtPassword.getText().toString().trim();
 
@@ -179,8 +178,9 @@ public class LoginFragment extends Fragment{
 
         }
 
-            loginProcess(mEmail,mPass);
-            mProgressBar.setVisibility(View.VISIBLE);
+        loginProcess(mEmail,mPass);
+        mBtLogin.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
 
     }
 
@@ -189,11 +189,12 @@ public class LoginFragment extends Fragment{
         mSubscriptions.add(RetrofitRequests.getRetrofit(email, password).login()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse,this::handleError));
+                .subscribe(this::handleResponse, this::handleError));
     }
 
     private void handleResponse(User user) {
         mProgressBar.setVisibility(View.GONE);
+        mBtLogin.setVisibility(View.VISIBLE);
 
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(TOKEN,user.getToken());
@@ -214,6 +215,7 @@ public class LoginFragment extends Fragment{
     public void handleError(Throwable error) {
       mServerResponse.handleError(error);
       mProgressBar.setVisibility(View.GONE);
+      mBtLogin.setVisibility(View.VISIBLE);
     }
 
     private void showMessage(String message) {

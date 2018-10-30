@@ -68,7 +68,7 @@ exports.socketInit = function (socket) {
             console.log('joined course ' + cid);
             socket.join(cid, function () {
                 socket.current_room = cid;
-                coursesRooms.get(Number(cid)).connected_users++;
+                coursesRooms.get(cid).connected_users++;
                 // console.log(coursesRooms.get(Number(cid)).connected_users);
             });
         }

@@ -14,8 +14,8 @@ wizerApp.controller('profileController',
         $scope.editUser = {};
         $scope.editUser.gender = 'unspecified';
         $scope.hasBirthday = false;
-
-
+        $scope.isMyProfile = $routeParams.id === $rootScope.loggedUser._id;
+        
         // NEEDS TO CHANGE
         // $scope.editUser.birthday = new Date("00-00-0000");
         // $scope.profile = new Date("00-00-0000");

@@ -23,14 +23,12 @@ router.all("*", type, function (req, res, next) {
         || req.url.includes('/auth/facebook')
         || req.url.includes('/auth/facebook/callback')
         //remove! this is only for testing
-        || req.url.includes('/stream')
+        || req.url.includes('/create-course')
+        // || req.url.includes('/stream')
         || req.url.includes('/get-all-sessions')
         || req.url.includes('/auth/signup')) {
 
         return next();
-    }
-    if(req.url === '/students/post-profile-image'){
-        console.log("\n\n\t\tHERE!!!!!\n\n");
     }
     let token = req.headers["x-access-token"] || req.query.token;
     if (!token) {

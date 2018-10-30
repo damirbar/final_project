@@ -16,6 +16,7 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.wizeup.android.R;
 import com.wizeup.android.model.Session;
 import com.wizeup.android.network.RetrofitRequests;
@@ -39,7 +40,7 @@ public class SessionFeedFragment extends Fragment {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private TextView mTvNoResults;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private PullRefreshLayout mSwipeRefreshLayout;
     private FloatingActionButton mFBAddSession;
     private SessionsAdapter mAdapter;
     private String cid;

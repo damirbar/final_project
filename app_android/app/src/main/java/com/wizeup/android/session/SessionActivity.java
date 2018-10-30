@@ -1,14 +1,16 @@
 package com.wizeup.android.session;
 
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import com.github.nkzawa.emitter.Emitter;
 import com.wizeup.android.R;
 import com.wizeup.android.dialogs.UploadingDialog;
 import com.wizeup.android.model.Response;
@@ -26,22 +29,24 @@ import com.wizeup.android.network.RetrofitRequests;
 import com.wizeup.android.network.ServerResponse;
 import com.wizeup.android.settings.ChangeLanguage;
 import com.wizeup.android.utils.Constants;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.Target;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
-import com.github.rtoshiro.view.video.FullscreenVideoLayout;
 
-import java.io.IOException;
+import org.json.JSONObject;
+
 import java.io.InputStream;
 
+import hb.xvideoplayer.MxMediaManager;
+import hb.xvideoplayer.MxVideoPlayer;
+import hb.xvideoplayer.MxVideoPlayerWidget;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+import smartdevelop.ir.eram.showcaseviewlib.GuideView;
 
 import static com.wizeup.android.network.RetrofitRequests.getBytes;
+import static smartdevelop.ir.eram.showcaseviewlib.GuideView.DismissType.targetView;
 
 public class SessionActivity extends AppCompatActivity implements UploadingDialog.OnCallbackCancel {
     private TabLayout tabLayout;
@@ -49,9 +54,8 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
-    private int stopPosition;
     private Session session;
-    private FullscreenVideoLayout vid;
+    private MxVideoPlayerWidget vid;
     private RelativeLayout mVideoViewRelative;
     private String nickname;
     private static final int INTENT_REQUEST_CODE = 100;
@@ -69,15 +73,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
             finish();
         }
         initViews();
-
-
-        Target viewTarget = new ViewTarget(R.id.vid_button_close, this);
-        new ShowcaseView.Builder(this)
-                .setTarget(viewTarget)
-                .setContentTitle("Press the arrow to open the\n\nvideo when video is available.")
-                .singleShot(41)
-                .build();
-
+        showCase();
 
         buttonVid.setOnClickListener(v -> {
             if (session.getVideoUrl() == null || (session.getVideoUrl().isEmpty())) {
@@ -88,12 +84,19 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
                 }
             }
             if (mVideoViewRelative.getVisibility() == View.VISIBLE) {
-                stopPosition = vid.getCurrentPosition();
-                vid.pause();
+
+                if (MxMediaManager.getInstance().getPlayer().isPlaying()) {
+                    MxMediaManager.getInstance().getPlayer().pause();
+                    vid.setUiPlayState(5);
+                    vid.setUiPlayState(5);
+                }
                 mVideoViewRelative.setVisibility(View.GONE);
+
             } else {
+
                 mVideoViewRelative.setVisibility(View.VISIBLE);
-                vid.seekTo(stopPosition);
+
+
             }
             buttonVid.setRotation(buttonVid.getRotation() + 180);
 
@@ -124,10 +127,33 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
         }
     }
 
+    private void showCase() {
+        SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isFirstRun = wmbPreference.getBoolean("FIRSTRUN", true);
+        if (isFirstRun)
+        {
+            new GuideView.Builder(this)
+                    .setTitle("Video Button")
+                    .setContentText("Press the arrow to OPEN the video\n\nand again to CLOSE the video.")
+                    .setDismissType(targetView)
+                    .setTargetView(buttonVid)
+                    .setContentTextSize(14)
+                    .setTitleTextSize(17)
+                    .setTitleTypeFace(Typeface.defaultFromStyle(Typeface.BOLD))
+                    .build()
+                    .show();
+
+            SharedPreferences.Editor editor = wmbPreference.edit();
+            editor.putBoolean("FIRSTRUN", false);
+            editor.commit();
+        }
+
+    }
 
     private void initViews() {
+        vid = findViewById(R.id.videoView);
         Button buttonBack =  findViewById(R.id.image_Button_back);
-        buttonBack.setOnClickListener(view -> goBack());
+        buttonBack.setOnClickListener(view -> exitAlert());
         buttonVid = findViewById(R.id.vid_button_close);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -135,7 +161,6 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
         tabLayout.addTab(tabLayout.newTab().setText("Session"));
         tabLayout.addTab(tabLayout.newTab().setText("Updates"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        vid = findViewById(R.id.videoView);
         mVideoViewRelative = findViewById(R.id.videoViewRelative);
     }
 
@@ -150,16 +175,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
     private void playVideo() {
         String url = session.getVideoUrl().trim();
 
-
-        vid.setActivity(this);
-        Uri videoUri = Uri.parse(url);
-
-        try {
-            vid.setVideoURI(videoUri);
-            vid.showControls();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        vid.startPlay(url, MxVideoPlayer.SCREEN_LAYOUT_NORMAL, session.getName());
 
         /////////////Token to vid////////////
 //        String url = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";//rm
@@ -212,11 +228,6 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
         return super.onOptionsItemSelected(item);
     }
 
-    private void goBack() {
-        disconnectFromSession();
-        finish();
-    }
-
     private void sendSidSms() {
         String smsBody = "I would like to invite you to join our session in wizeUp.\nSession: " + session.getSid();
 
@@ -258,9 +269,7 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
         if (requestCode == INTENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 try {
-
                     showLoadingDialog();
-
                     InputStream is = getContentResolver().openInputStream(data.getData());
                     tryUploadVid(getBytes(is));
                     is.close();
@@ -345,9 +354,30 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
 
     @Override
     public void onBackPressed() {
-        disconnectFromSession();
-        super.onBackPressed();
-        finish();
+
+        if (MxVideoPlayer.backPress()) {
+            return;
+        }
+        exitAlert();
+    }
+
+    public void exitAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to exit this session?");
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                disconnectFromSession();
+                finish();
+            }
+        });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -360,7 +390,11 @@ public class SessionActivity extends AppCompatActivity implements UploadingDialo
     @Override
     public void onPause() {
         super.onPause();
-        vid.pause();
+        if (MxMediaManager.getInstance().getPlayer().isPlaying()) {
+            MxMediaManager.getInstance().getPlayer().pause();
+            vid.setUiPlayState(5);
+            vid.setUiPlayState(5);
+        }
     }
 
     @Override

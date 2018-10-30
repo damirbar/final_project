@@ -6,17 +6,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baoyz.widget.PullRefreshLayout;
+import com.facebook.shimmer.ShimmerFrameLayout;
+import com.mindorks.placeholderview.PlaceHolderView;
+import com.squareup.picasso.Picasso;
 import com.wizeup.android.R;
 import com.wizeup.android.TermsActivity;
 import com.wizeup.android.course.MyCourseActivity;
@@ -34,9 +39,6 @@ import com.wizeup.android.settings.ChangeLanguage;
 import com.wizeup.android.settings.SettingsActivity;
 import com.wizeup.android.utils.Constants;
 import com.wizeup.android.utils.EndlessScrollListener;
-import com.facebook.shimmer.ShimmerFrameLayout;
-import com.mindorks.placeholderview.PlaceHolderView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +60,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     private ListView notificationsList;
     private TextView mTvNoResults;
     private ImageView imageNoResults;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private PullRefreshLayout mSwipeRefreshLayout;
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
@@ -73,6 +75,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     private static int ADD_ITEMS = 20;
     private boolean first = true;
     private ShimmerFrameLayout mShimmerViewContainer;
+    private View messageDialog;
 
 
     @Override
@@ -118,6 +121,9 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
     }
 
     private void initViews() {
+        messageDialog = findViewById(R.id.msg_public);
+        ImageButton userExitMsg = findViewById(R.id.close_msg);
+        userExitMsg.setOnClickListener(view -> exitMsg());
         mTvNoResults = findViewById(R.id.tv_no_results);
         imageNoResults = findViewById(R.id.imageBase);
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
@@ -128,6 +134,10 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         mToolbar = findViewById(R.id.toolbar);
         notificationsList = findViewById(R.id.search_List);
 
+    }
+
+    private void exitMsg() {
+        messageDialog.setVisibility(View.GONE);
     }
 
     private void initSearchView() {
@@ -165,9 +175,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 //                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_NOTIFICATIONS))
                 .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_TERMS))
                 .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_SETTINGS))
-                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_LOGOUT))
-                .addView(new DrawerEnd());
-
+                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_LOGOUT));
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.open_drawer, R.string.close_drawer) {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -256,10 +264,17 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
 
     @Override
     public void onLogoutMenuSelected() {
-        logout();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure?");
+        builder.setPositiveButton("Log out", (dialog, which) -> logout());
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+        });
+        builder.show();
     }
 
     private void logout() {
+
         stopService(new Intent(getBaseContext(), NotificationService.class));
         RetrofitRequests mRetrofitRequests = new RetrofitRequests(this);
         SharedPreferences.Editor editor = mRetrofitRequests.getSharedPreferences().edit();
@@ -269,7 +284,7 @@ public class BaseActivity extends AppCompatActivity implements DrawerMenuItem.Dr
         editor.putString(USER_NAME, "");
         editor.putString(PROFILE_IMG, "");
 //        editor.putString(Constants.LANG, "en");
-//        editor.putString(Constants.NOTIFICATION‬‏, "on");
+        editor.putString(Constants.NOTIFICATION, "on");
         editor.apply();
         Intent intent = new Intent(this, EntryActivity.class);
         this.startActivity(intent);

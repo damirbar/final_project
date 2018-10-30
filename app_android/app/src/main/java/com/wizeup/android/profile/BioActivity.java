@@ -29,7 +29,6 @@ public class BioActivity extends AppCompatActivity {
         if (!getData()) {
             finish();
         }
-
     }
 
     private void initViews() {

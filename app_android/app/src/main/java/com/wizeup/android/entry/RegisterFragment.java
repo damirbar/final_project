@@ -73,6 +73,7 @@ public class RegisterFragment extends Fragment {
 
     private void initViews(View v) {
         mRadioButtonStudent = v.findViewById(R.id.radio_student);
+        mRadioButtonStudent.toggle();
         mEtFName = v.findViewById(R.id.et_first_name);
         mEtLName = v.findViewById(R.id.et_last_name);
         mEtEmail = v.findViewById(R.id.et_email);
@@ -96,8 +97,6 @@ public class RegisterFragment extends Fragment {
 
 
     private void register() {
-
-
         String first_name = mEtFName.getText().toString().trim();
         String last_name = mEtLName.getText().toString().trim();
         String email = mEtEmail.getText().toString().trim();
@@ -140,8 +139,9 @@ public class RegisterFragment extends Fragment {
             user.setRole("teacher");
         }
 
-
+        mBtRegister.setVisibility(View.GONE);
         mProgressbar.setVisibility(View.VISIBLE);
+
         registerProcess(user);
 
     }
@@ -156,12 +156,14 @@ public class RegisterFragment extends Fragment {
 
     private void handleResponse(Response response) {
         mProgressbar.setVisibility(View.GONE);
+        mBtRegister.setVisibility(View.VISIBLE);
         loginProcess(mEmail, mPass);
     }
 
     private void handleError(Throwable error) {
         mServerResponse.handleError(error);
         mProgressbar.setVisibility(View.GONE);
+        mBtRegister.setVisibility(View.VISIBLE);
     }
 
     private void showMessage(String message) {

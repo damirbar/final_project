@@ -77,20 +77,25 @@ http.listen(3000, function () {
 
 //eran
 const io = require('socket.io')(http);
-app.set('views', __dirname + '/streamTest/views');
-app.set('view engine', 'ejs');
-let streams = require('./streamTest/streams.js')();
-require('./streamTest/stream_requests.js')(app, streams);
-const socketIO = require('./streamTest/socketHandler.js');
+
+// app.set('views', __dirname + '/streamTest/views');
+// app.set('view engine', 'ejs');
+// let streams = require('./streamTest/streams.js')();
+// require('./streamTest/stream_requests.js')(app, streams);
+
+const socketIO = require('./tools/socketIO');
 // require('./streamTest/socketHandler.js')(io, streams);
+
+
+
 io.on('connection', function (socket){
-    socket.id = 'stream_' + socket.id;
+    socket._id = 'stream_' + socket.id;
     console.log(socket.id + ' Connected');
     socket.emit('id', socket.id);
     socketIO.socketInit(socket);
 });
 
-socketIO.setStreams(streams);
+// socketIO.setStreams(streams);
 socketIO.setIO(io);
 //eran
 
@@ -137,6 +142,7 @@ socketIO.setIO(io);
 //         })
 // };
 // addMessage();
+
 
 
 //The 404 Route (ALWAYS Keep this as the last route)

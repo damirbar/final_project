@@ -54,13 +54,13 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <com.baoyz.widget.PullRefreshLayout
         android:id="@+id/activity_main_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button_panel"
         android:layout_below="@+id/tool_bar"
-        android:visibility="visible">
+        app:refreshType="smartisan">
 
         <ListView
             android:id="@+id/comments"
@@ -80,7 +80,8 @@
             android:listSelector="@android:color/transparent"
             android:scrollbarSize="2dp"
             android:scrollbarThumbVertical="@color/highlight_default_color" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+
+    </com.baoyz.widget.PullRefreshLayout>
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"

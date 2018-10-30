@@ -119,7 +119,7 @@ wizerApp.service('CourseService', function($http, socketIO) {
     this.sendMessage = function(posterID, courseId, type, message) {
         return $http.post('/courses/messages', {poster_id: posterID, cid: courseId, type: type, body: message})
             .then(function (data) {
-                socketIO.emit('postCourseMessage', );
+                socketIO.emit('postCourseMessage', message);
                 return data.data;
             }, function () {
                 console.log("Error sending message to course with ID = " + courseId);

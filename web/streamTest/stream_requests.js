@@ -20,7 +20,7 @@ module.exports = function(app, streams) {
         res.json(200, data);
     };
 
-    app.get('/streams', displayStreams);
-    app.get('/stream', index);
-    app.get('/:id', index);
+    // app.get('/streams', displayStreams);
+    // app.get('/stream', index);
+    // app.get('/:id', index);
 };

@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.wizeup.android.BuildConfig;
 import com.wizeup.android.R;
 import com.wizeup.android.base.BaseActivity;
 import com.wizeup.android.model.Language;
@@ -30,6 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
     private SwitchCompat noti;
     private String currentNoti;
     private SharedPreferences mSharedPreferences;
+    private TextView ver;
 
 
     @Override
@@ -84,6 +87,8 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        ver = findViewById(R.id.version);
+        ver.setText(BuildConfig.VERSION_NAME);
         ImageButton buttonBack = findViewById(R.id.image_Button_back);
         langListView = findViewById(R.id.lv_items);
         langListView.setVisibility(View.GONE);

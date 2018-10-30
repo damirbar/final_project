@@ -2,9 +2,11 @@ package com.wizeup.android.course;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import com.wizeup.android.R;
 import com.wizeup.android.model.Response;
@@ -24,6 +26,8 @@ public class AddUserActivity extends AppCompatActivity {
     private ServerResponse mServerResponse;
     private EditText editTextEmail;
     private String cid;
+    private ProgressBar mProgressBar;
+    private Button mBtAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +58,8 @@ public class AddUserActivity extends AppCompatActivity {
 
 
     private void initViews() {
-        Button mBtAdd = findViewById(R.id.addUserButton);
+        mProgressBar = findViewById(R.id.progress);
+        mBtAdd = findViewById(R.id.addUserButton);
         editTextEmail = findViewById(R.id.edit_text_email);
         ImageButton buttonBack = findViewById(R.id.image_Button_back);
         buttonBack.setOnClickListener(view -> finish());
@@ -74,6 +79,9 @@ public class AddUserActivity extends AppCompatActivity {
         }
 
         tryToAddProcess(user);
+        mBtAdd.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+
 
     }
 
@@ -82,14 +90,24 @@ public class AddUserActivity extends AppCompatActivity {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().addStudentToCourse(cid,user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponse, this::handleError));
 
     }
 
     private void handleResponse(Response response) {
+        mProgressBar.setVisibility(View.GONE);
+        mBtAdd.setVisibility(View.VISIBLE);
+
         mServerResponse.showSnackBarMessage(response.getMessage());
         editTextEmail.setText("");
     }
+
+    public void handleError(Throwable error) {
+        mServerResponse.handleError(error);
+        mProgressBar.setVisibility(View.GONE);
+        mBtAdd.setVisibility(View.VISIBLE);
+    }
+
 
 
 }
