@@ -146,6 +146,7 @@ const multer = require('multer');
 const upload = multer({dest: 'upload/'});
 const type = upload.single('recfile');
 let uploader = require('../tools/uploader');
+const fs = require('fs');
 
 router.post('/post-file', type, function (req, res) {
     if (!req.file) {

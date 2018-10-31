@@ -12,6 +12,7 @@ public class User implements Parcelable {
     private String last_name;
     private String email;
     private String password;
+    private String password_cnfrm;
     private String role;
     private String accessToken;
     private String display_name;
@@ -38,6 +39,7 @@ public class User implements Parcelable {
         last_name = in.readString();
         email = in.readString();
         password = in.readString();
+        password_cnfrm = in.readString();
         role = in.readString();
         accessToken = in.readString();
         display_name = in.readString();
@@ -61,6 +63,15 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
+
+
+    public String getPassword_cnfrm() {
+        return password_cnfrm;
+    }
+
+    public void setPassword_cnfrm(String password_cnfrm) {
+        this.password_cnfrm = password_cnfrm;
+    }
 
     public Date getBirthday() {
         return birthday;
@@ -223,6 +234,7 @@ public class User implements Parcelable {
         parcel.writeString(last_name);
         parcel.writeString(email);
         parcel.writeString(password);
+        parcel.writeString(password_cnfrm);
         parcel.writeString(role);
         parcel.writeString(accessToken);
         parcel.writeString(display_name);
