@@ -131,6 +131,7 @@ public class RegisterFragment extends Fragment {
         user.setLname(last_name);
         user.setEmail(email);
         user.setPassword(password);
+        user.setPassword_cnfrm(password2);
 
         if(mRadioButtonStudent.isChecked()){
             user.setRole("student");

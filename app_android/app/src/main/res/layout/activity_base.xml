@@ -166,7 +166,7 @@
                     android:layout_height="120dp"
                     android:layout_below="@+id/toolbar"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="135dp"
+                    android:layout_marginTop="185dp"
                     android:visibility="gone"
                     app:srcCompat="@drawable/book" />
 
